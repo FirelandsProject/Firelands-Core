@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+    fc-database:
+        container_name: "fc-database"
+        image: "mysql:8"
+        restart: always
+        env_file:
+            - ".env"
+        ports:
+            - "3306:3306"
+        expose:
+            - 3306
+        volumes:
+            - "../../config/1-start-script.sql:/docker-entrypoint-initdb.d/1.sql"
+        networks:
+            - fc-network
+
+    fc-server:
+        container_name: "fc-server"
+        build:
+            context: ../
+            dockerfile: ./Docker/Dockerfile.server
+        stdin_open: true
+        tty: true
+        restart: always
+        ports:
+            - "8085:8085"
+            - "7878:7878"
+        expose:
+            - 8085
+            - 7878
+        volumes:
+            - ../../Data/:/firelands/release/bin/Data/
+            - ../../etc/server/:/firelands/release/etc/
+        networks:
+            - fc-network
+    fc-auth:
+        container_name: "fc-auth"
+        build:
+            context: ../
+            dockerfile: ./Docker/Dockerfile.auth
+        restart: always
+        ports:
+            - "3724:3724"
+        expose:
+            - 3724
+        volumes:
+            - ../../etc/auth/:firelands/release/etc/
+        networks:
+            - fc-network
+networks:
+    fc-network:
