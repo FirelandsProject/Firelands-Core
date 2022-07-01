@@ -108,8 +108,8 @@ void UpdateTime::_RecordUpdateTimeDuration(std::string const& text, uint32 minUp
 
 void WorldUpdateTime::LoadFromConfig()
 {
-    _recordUpdateTimeInverval = sConfigMgr->GetIntDefault("RecordUpdateTimeDiffInterval", 60000);
-    _recordUpdateTimeMin = sConfigMgr->GetIntDefault("MinRecordUpdateTimeDiff", 100);
+    _recordUpdateTimeInverval = sConfigMgr->GetOption<int32>("RecordUpdateTimeDiffInterval", 60000);
+    _recordUpdateTimeMin = sConfigMgr->GetOption<int32>("MinRecordUpdateTimeDiff", 100);
 }
 
 void WorldUpdateTime::SetRecordUpdateTimeInterval(uint32 t)

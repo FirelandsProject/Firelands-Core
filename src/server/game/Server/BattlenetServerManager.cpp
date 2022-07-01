@@ -22,8 +22,8 @@
 
 void IPC::BattlenetComm::ServerManager::InitializeConnection()
 {
-    std::string bnetserverAddress = sConfigMgr->GetStringDefault("BnetServer.Address", "127.0.0.1");
-    int32 bnetserverPort = sConfigMgr->GetIntDefault("BnetServer.Port", 1118);
+    std::string bnetserverAddress = sConfigMgr->GetOption<std::string>("BnetServer.Address", "127.0.0.1");
+    int32 bnetserverPort = sConfigMgr->GetOption<int32>("BnetServer.Port", 1118);
     _socket = new ZmqMux("inproc://bnetmgr", "tcp://" + bnetserverAddress + ":" + std::to_string(bnetserverPort));
     _socket->Start();
 }

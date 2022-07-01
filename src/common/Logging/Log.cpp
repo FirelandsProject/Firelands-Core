@@ -64,7 +64,7 @@ void Log::CreateAppenderFromConfig(std::string const& appenderName)
     // Format = type, level, flags, optional1, optional2
     // if type = File. optional1 = file and option2 = mode
     // if type = Console. optional1 = Color
-    std::string options = sConfigMgr->GetStringDefault(appenderName, "");
+    std::string options = sConfigMgr->GetOption<std::string>(appenderName, "");
 
     Tokenizer tokens(options, ',');
     auto iter = tokens.begin();
@@ -117,7 +117,7 @@ void Log::CreateLoggerFromConfig(std::string const& appenderName)
     LogLevel level = LOG_LEVEL_DISABLED;
     uint8 type = uint8(-1);
 
-    std::string options = sConfigMgr->GetStringDefault(appenderName, "");
+    std::string options = sConfigMgr->GetOption<std::string>(appenderName, "");
     std::string name = appenderName.substr(7);
 
     if (options.empty())
@@ -380,7 +380,7 @@ void Log::LoadFromConfig()
 
     lowestLogLevel = LOG_LEVEL_FATAL;
     AppenderId = 0;
-    m_logsDir = sConfigMgr->GetStringDefault("LogsDir", "");
+    m_logsDir = sConfigMgr->GetOption<std::string>("LogsDir", "");
     if (!m_logsDir.empty())
         if ((m_logsDir.at(m_logsDir.length() - 1) != '/') && (m_logsDir.at(m_logsDir.length() - 1) != '\\'))
             m_logsDir.push_back('/');

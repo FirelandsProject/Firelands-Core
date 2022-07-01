@@ -11,6 +11,7 @@
 option(SERVERS "Build worldserver and bnetserver" 1)
 
 set(SCRIPTS_AVAILABLE_OPTIONS none static dynamic minimal-static minimal-dynamic)
+set(MODULES_AVAILABLE_OPTIONS disabled static dynamic)
 
 # Log a fatal error when the value of the SCRIPTS variable isn't a valid option.
 if(SCRIPTS)
@@ -22,8 +23,21 @@ if(SCRIPTS)
     endif()
 endif()
 
+# Log a error when the value of the MODULES variable isn't a valid option.
+if(MODULES)
+    list(FIND MODULES_AVAILABLE_OPTIONS "${MODULES}" MODULES_INDEX)
+
+    if(${MODULES_INDEX} EQUAL -1)
+        message(FATAL_ERROR "The value (${MODULES}) of your MODULES variable is invalid! "
+            "Allowed values are: ${MODULES_AVAILABLE_OPTIONS}. Set static")
+    endif()
+endif()
+
 set(SCRIPTS "static" CACHE STRING "Build core with scripts")
 set_property(CACHE SCRIPTS PROPERTY STRINGS ${SCRIPTS_AVAILABLE_OPTIONS})
+
+set(MODULES "static" CACHE STRING "Build core with modules")
+set_property(CACHE MODULES PROPERTY STRINGS ${MODULES_AVAILABLE_OPTIONS})
 
 # Build a list of all script modules when -DSCRIPT="custom" is selected
 GetScriptModuleList(SCRIPT_MODULE_LIST)
@@ -34,7 +48,15 @@ foreach(SCRIPT_MODULE ${SCRIPT_MODULE_LIST})
     set_property(CACHE ${SCRIPT_MODULE_VARIABLE} PROPERTY STRINGS default disabled static dynamic)
 endforeach()
 
-option(MODULES "Use Modules" 1)
+# Build a list of all modules script when -DMODULE="custom" is selected
+GetModuleSourceList(SCRIPT_MODULE_LIST)
+
+foreach(SCRIPT_MODULE ${SCRIPT_MODULE_LIST})
+    ModuleNameToVariable(${SCRIPT_MODULE} SCRIPT_MODULE_VARIABLE)
+    set(${SCRIPT_MODULE_VARIABLE} "default" CACHE STRING "Build type of the ${SCRIPT_MODULE} module.")
+    set_property(CACHE ${SCRIPT_MODULE_VARIABLE} PROPERTY STRINGS default disabled static dynamic)
+endforeach()
+
 option(TOOLS "Build map/vmap/mmap extraction/assembler tools" 1)
 option(USE_SCRIPTPCH "Use precompiled headers when compiling scripts" 1)
 option(USE_COREPCH "Use precompiled headers when compiling servers" 1)

@@ -1124,7 +1124,7 @@ void ObjectMgr::CheckCreatureTemplate(CreatureTemplate const* cInfo)
     // Hack for modules
     std::vector<uint32> CustomCreatures;
 
-    std::string stringCreatureIds(sConfigMgr->GetStringDefault("Creatures.CustomIDs", ""));
+    std::string stringCreatureIds(sConfigMgr->GetOption<std::string>("Creatures.CustomIDs", ""));
     for (std::string_view id : Firelands::Tokenize(stringCreatureIds, ',', false))
     {
         uint32 entry = Firelands::StringTo<uint32>(id).value_or(0);

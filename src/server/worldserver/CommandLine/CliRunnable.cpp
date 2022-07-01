@@ -133,7 +133,7 @@ void CliThread()
     rl_event_hook = cli_hook_func;
 #endif
 
-    if (sConfigMgr->GetBoolDefault("BeepAtStart", true))
+    if (sConfigMgr->GetOption<bool>("BeepAtStart", true))
         printf("\a");                                       // \a = Alert
 
     // print this here the first time

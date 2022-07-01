@@ -52,6 +52,12 @@ function(ConfigureElunaModule moduleName)
     set(FM_ELUNA_FOUND 1 PARENT_SCOPE)
     GetPathToModuleSource(${SOURCE_MODULE} MODULE_SOURCE_PATH)
     set(FM_ELUNA_PATH ${MODULE_SOURCE_PATH} PARENT_SCOPE)
+
+    # Define eluna compile options
+    target_compile_options(game-interface
+        INTERFACE
+        -DFIRELANDS
+        -DCATA)
 endfunction()
 
 # Set the MODULES_${SOURCE_MODULE} variables from the
@@ -328,6 +334,8 @@ foreach(ModuleName ${MODULE_LIST__})
         message(STATUS "  |  * ${configFileName}")
     endforeach()
 endforeach()
+
+message("")
 
 # Define modules list
 target_compile_options(modules

@@ -18,7 +18,9 @@
 #ifndef FirelandsCore_STRING_FORMAT_H
 #define FirelandsCore_STRING_FORMAT_H
 
-#include "fmt/printf.h"
+#include "Define.h"
+#include <fmt/format.h>
+#include <fmt/printf.h>
 
 namespace Firelands
 {
@@ -27,6 +29,20 @@ namespace Firelands
     inline std::string StringFormat(Format&& fmt, Args&&... args)
     {
         return fmt::sprintf(std::forward<Format>(fmt), std::forward<Args>(args)...);
+    }
+
+    // Default string format function.
+    template<typename... Args>
+    inline std::string StringFormatFmt(std::string_view fmt, Args&&... args)
+    {
+        try
+        {
+            return fmt::format(fmt, std::forward<Args>(args)...);
+        }
+        catch (const fmt::format_error& formatError)
+        {
+            return fmt::format("An error occurred formatting string \"{}\": {}", fmt, formatError.what());
+        }
     }
 
     /// Returns true if the given char pointer is null.
@@ -40,6 +56,16 @@ namespace Firelands
     {
         return fmt.empty();
     }
+
+
+}
+
+namespace Firelands::String
+{
+    template<class Str>
+    FC_COMMON_API Str Trim(const Str& s, const std::locale& loc = std::locale());
+
+    FC_COMMON_API std::string TrimRightInPlace(std::string& str);
 }
 
 #endif

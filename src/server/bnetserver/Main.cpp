@@ -100,11 +100,8 @@ int main(int argc, char** argv)
 #endif
 
     std::string configError;
-    if (!sConfigMgr->LoadInitial(configFile.generic_string(),
-        std::vector<std::string>(argv, argv + argc),
-        configError))
+    if (!sConfigMgr->LoadAppConfigs())
     {
-        printf("Error in config file: %s\n", configError.c_str());
         return 1;
     }
 
@@ -130,7 +127,7 @@ int main(int argc, char** argv)
     seed.SetRand(16 * 8);
 
     // bnetserver PID file creation
-    std::string pidFile = sConfigMgr->GetStringDefault("PidFile", "");
+    std::string pidFile = sConfigMgr->GetOption<std::string>("PidFile", "");
     if (!pidFile.empty())
     {
         if (uint32 pid = CreatePIDFile(pidFile))
@@ -142,7 +139,7 @@ int main(int argc, char** argv)
         }
     }
 
-    int32 worldListenPort = sConfigMgr->GetIntDefault("WorldserverListenPort", 1118);
+    int32 worldListenPort = sConfigMgr->GetOption<int32>("WorldserverListenPort", 1118);
     if (worldListenPort < 0 || worldListenPort > 0xFFFF)
     {
         LOG_ERROR("server.bnetserver", "Specified worldserver listen port (%d) out of allowed range (1-65535)", worldListenPort);
@@ -161,7 +158,7 @@ int main(int argc, char** argv)
     std::shared_ptr<Firelands::Asio::IoContext> ioContext = std::make_shared<Firelands::Asio::IoContext>();
 
     // Start the listening port (acceptor) for auth connections
-    int32 bnport = sConfigMgr->GetIntDefault("BattlenetPort", 1119);
+    int32 bnport = sConfigMgr->GetOption<int32>("BattlenetPort", 1119);
     if (bnport < 0 || bnport > 0xFFFF)
     {
         LOG_ERROR("server.bnetserver", "Specified battle.net port (%d) out of allowed range (1-65535)", bnport);
@@ -169,11 +166,11 @@ int main(int argc, char** argv)
     }
 
     // Get the list of realms for the server
-    sBNetRealmList->Initialize(*ioContext, sConfigMgr->GetIntDefault("RealmsStateUpdateDelay", 10), worldListenPort);
+    sBNetRealmList->Initialize(*ioContext, sConfigMgr->GetOption<int32>("RealmsStateUpdateDelay", 10), worldListenPort);
 
     std::shared_ptr<void> sBNetRealmListHandle(nullptr, [](void*) { sBNetRealmList->Close(); });
 
-    std::string bindIp = sConfigMgr->GetStringDefault("BindIP", "0.0.0.0");
+    std::string bindIp = sConfigMgr->GetOption<std::string>("BindIP", "0.0.0.0");
 
     if (!sSessionMgr.StartNetwork(*ioContext, bindIp, bnport))
     {
@@ -191,10 +188,10 @@ int main(int argc, char** argv)
     signals.async_wait(std::bind(&SignalHandler, std::weak_ptr<Firelands::Asio::IoContext>(ioContext), std::placeholders::_1, std::placeholders::_2));
 
     // Set process priority according to configuration settings
-    SetProcessPriority("server.bnetserver", sConfigMgr->GetIntDefault(CONFIG_PROCESSOR_AFFINITY, 0), sConfigMgr->GetBoolDefault(CONFIG_HIGH_PRIORITY, false));
+    SetProcessPriority("server.bnetserver", sConfigMgr->GetOption<int32>(CONFIG_PROCESSOR_AFFINITY, 0), sConfigMgr->GetOption<bool>(CONFIG_HIGH_PRIORITY, false));
 
     // Enabled a timed callback for handling the database keep alive ping
-    int32 dbPingInterval = sConfigMgr->GetIntDefault("MaxPingTime", 30);
+    int32 dbPingInterval = sConfigMgr->GetOption<int32>("MaxPingTime", 30);
     std::shared_ptr<Firelands::Asio::DeadlineTimer> dbPingTimer = std::make_shared<Firelands::Asio::DeadlineTimer>(*ioContext);
     dbPingTimer->expires_from_now(boost::posix_time::minutes(dbPingInterval));
     dbPingTimer->async_wait(std::bind(&KeepDatabaseAliveHandler, std::weak_ptr<Firelands::Asio::DeadlineTimer>(dbPingTimer), dbPingInterval, std::placeholders::_1));

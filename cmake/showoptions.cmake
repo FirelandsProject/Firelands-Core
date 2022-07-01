@@ -15,11 +15,14 @@ if(UNIX)
     message("* Install libraries to   : ${LIBSDIR}")
 endif()
 
+message("* Install configs to        : ${CONF_DIR}")
+add_definitions(-D_CONF_DIR=$<1:"${CONF_DIR}">)
+
 message("")
 
 # Show infomation about the options selected during configuration
 if(SERVERS)
-    message("* Build world/auth       : Yes (default)")
+    message("* Build world/bnetserver       : Yes (default)")
 else()
     message("* Build world/bnetserver : No")
 endif()
@@ -76,7 +79,7 @@ if(WITH_COREDEBUG)
     message(" *** -DCMAKE_BUILD_TYPE=RelWithDebug")
     message(" *** DO NOT ENABLE IT UNLESS YOU KNOW WHAT YOU'RE DOING!")
     message("* Use coreside debug     : Yes")
-    add_definitions(-DTRINITY_DEBUG)
+    add_definitions(-DFIRELANDS_DEBUG)
 else()
     message("* Use coreside debug     : No  (default)")
 endif()
@@ -136,7 +139,7 @@ if(BUILD_SHARED_LIBS)
         message(" *** Dynamic linking was enforced through a dynamic script module!")
     endif()
 
-    add_definitions(-DTRINITY_API_USE_DYNAMIC_LINKING)
+    add_definitions(-DFIRELANDS_API_USE_DYNAMIC_LINKING)
 endif()
 
 message("")
