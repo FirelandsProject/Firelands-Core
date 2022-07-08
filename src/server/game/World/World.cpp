@@ -501,10 +501,9 @@ void World::LoadConfigSettings(bool reload)
 {
     if (reload)
     {
-        std::string configError;
-        if (!sConfigMgr->Reload(configError))
+        if (!sConfigMgr->Reload())
         {
-            LOG_ERROR("misc", "World settings reload fail: %s.", configError.c_str());
+            LOG_ERROR("misc", "World settings reload fail.");
             return;
         }
         sLog->LoadFromConfig();

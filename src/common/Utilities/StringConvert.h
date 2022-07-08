@@ -253,4 +253,4 @@ namespace Firelands
     }
 }
 
-#endif // _FIRELANDS_STRINGCONVERT_H_
+#endif // _Firelands_STRINGCONVERT_H_

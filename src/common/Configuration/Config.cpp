@@ -17,8 +17,8 @@
 
 #include "Config.h"
 #include "Log.h"
-#include "StringConvert.h"
 #include "StringFormat.h"
+#include "StringConvert.h"
 #include "Tokenize.h"
 #include "Util.h"
 #include <fstream>
@@ -52,20 +52,6 @@ namespace
         return foundAppender != std::string_view::npos || foundLogger != std::string_view::npos;
     }
 
-    template<typename Format, typename... Args>
-    inline void PrintError(std::string_view filename, Format&& fmt, Args&& ... args)
-    {
-        std::string message = Firelands::StringFormatFmt(std::forward<Format>(fmt), std::forward<Args>(args)...);
-
-        if (IsAppConfig(filename))
-        {
-            fmt::print("{}\n", message);
-        }
-        else
-        {
-            LOG_ERROR("server.loading %s", message.c_str());
-        }
-    }
 
     void AddKey(std::string const& optionName, std::string const& optionKey, std::string_view fileName, bool isOptional, [[maybe_unused]] bool isReload)
     {
@@ -76,7 +62,8 @@ namespace
         {
             if (!IsLoggingSystemOptions(optionName) && !isReload)
             {
-                PrintError(fileName, "> Config::LoadFile: Found incorrect option '{}' in config file '{}'. Skip", optionName, fileName);
+                std::string fileNameStr = std::string{ fileName };
+                LOG_ERROR(fileNameStr, "> Config::LoadFile: Found incorrect option '{}' in config file '{}'. Skip", optionName.c_str(), fileNameStr.c_str());
 
 #ifdef CONFIG_ABORT_INCORRECT_OPTIONS
                 ABORT("> Core can't start if found incorrect options");
@@ -107,7 +94,8 @@ namespace
                 return false;
             }
 
-            throw ConfigException(Firelands::StringFormatFmt("Config::LoadFile: Failed open {}file '{}'", isOptional ? "optional " : "", file));
+            std::string message = "Config::LoadFile: Failed open " + std::string(isOptional ? "optional " : "") + " file '" + file + "'";
+            throw ConfigException(message);
         }
 
         uint32 count = 0;
@@ -119,7 +107,7 @@ namespace
             auto const& itr = fileConfigs.find(confOption);
             if (itr != fileConfigs.end())
             {
-                PrintError(file, "> Config::LoadFile: Dublicate key name '{}' in config file '{}'", confOption, file);
+                LOG_ERROR(file, "> Config::LoadFile: Dublicate key name '%s' in config file '%s'", confOption.c_str(), file.c_str());
                 return true;
             }
 
@@ -135,7 +123,8 @@ namespace
             // read line error
             if (!in.good() && !in.eof())
             {
-                throw ConfigException(Firelands::StringFormatFmt("> Config::LoadFile: Failure to read line number {} in file '{}'", lineNumber, file));
+                std::string msg = "> Config::LoadFile: Failure to read line number " + std::to_string(lineNumber) + " in file '" + std::string(file) + "'";
+                throw ConfigException(msg);
             }
 
             // remove whitespace in line
@@ -162,7 +151,7 @@ namespace
 
             if (equal_pos == std::string::npos || equal_pos == line.length())
             {
-                PrintError(file, "> Config::LoadFile: Failure to read line number {} in file '{}'. Skip this line", lineNumber, file);
+                LOG_ERROR(file, "> Config::LoadFile: Failure to read line number {} in file '{}'. Skip this line", lineNumber, file.c_str());
                 continue;
             }
 
@@ -191,7 +180,8 @@ namespace
                 return false;
             }
 
-            throw ConfigException(Firelands::StringFormatFmt("Config::LoadFile: Empty file '{}'", file));
+            std::string msg = "Config::LoadFile: Empty file '" + file + "'";
+            throw ConfigException(msg);
         }
 
         // Add correct keys if file load without errors
@@ -211,7 +201,7 @@ namespace
         }
         catch (const std::exception& e)
         {
-            PrintError(file, "> %s", e.what());
+            LOG_ERROR(file, "> %s", e.what());
         }
 
         return false;
@@ -379,6 +369,7 @@ bool ConfigMgr::LoadAppConfigs(bool isReload /*= false*/)
     // #1 - Load init config file .conf.dist
     if (!LoadInitial(_filename + ".dist", isReload))
     {
+        LOG_ERROR("server.loading", "> Config::LoadAppsConfig: .dist file not found.");
         return false;
     }
 

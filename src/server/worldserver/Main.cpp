@@ -36,6 +36,8 @@
 #include "IoContext.h"
 #include "MapManager.h"
 #include "Metric.h"
+#include "ModuleMgr.h"
+#include "ModulesScriptLoader.h"
 #include "MySQLThreading.h"
 #include "ObjectAccessor.h"
 #include "OpenSSLCrypto.h"
