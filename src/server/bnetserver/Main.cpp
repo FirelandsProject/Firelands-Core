@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 {
     signal(SIGABRT, &Firelands::AbortHandler);
 
-    auto configFile = fs::absolute(_FIRELANDS_BNET_CONFIG);
+    auto configFile = fs::path(sConfigMgr->GetConfigPath() + std::string(_FIRELANDS_BNET_CONFIG));
     std::string configService;
     auto vm = GetConsoleArguments(argc, argv, configFile, configService);
     // exit if help is enabled
@@ -99,7 +99,9 @@ int main(int argc, char** argv)
         return WinServiceRun() ? 0 : 1;
 #endif
 
-    std::string configError;
+    // Add file and args in config
+    sConfigMgr->Configure(configFile.generic_string(), std::vector<std::string>(argv, argv + argc));
+
     if (!sConfigMgr->LoadAppConfigs())
     {
         return 1;
@@ -206,7 +208,7 @@ int main(int argc, char** argv)
             std::weak_ptr<Firelands::Asio::DeadlineTimer>(serviceStatusWatchTimer),
             std::weak_ptr<Firelands::Asio::IoContext>(ioContext),
             std::placeholders::_1));
-    }
+}
 #endif
 
     sComponentMgr->Load();
@@ -288,7 +290,7 @@ void ServiceStatusWatcher(std::weak_ptr<Firelands::Asio::DeadlineTimer> serviceS
                 serviceStatusWatchTimer->expires_from_now(boost::posix_time::seconds(1));
                 serviceStatusWatchTimer->async_wait(std::bind(&ServiceStatusWatcher, serviceStatusWatchTimerRef, ioContext, std::placeholders::_1));
             }
-        }
+}
     }
 }
 #endif

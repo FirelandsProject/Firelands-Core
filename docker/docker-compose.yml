@@ -42,11 +42,12 @@ services:
             dockerfile: ./Docker/Dockerfile.auth
         restart: always
         ports:
-            - "3724:3724"
+            - "1118:1118"
         expose:
-            - 3724
+            - 1118
+        tty: true
         volumes:
-            - ../../etc/auth/:firelands/release/etc/
+            - ../../etc/auth/:/firelands/release/etc/
         networks:
             - fc-network
 networks:

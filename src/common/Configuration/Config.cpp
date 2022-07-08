@@ -37,7 +37,7 @@ namespace
     // Check system configs like *server.conf*
     bool IsAppConfig(std::string_view fileName)
     {
-        size_t foundAuth = fileName.find("authserver.conf");
+        size_t foundAuth = fileName.find("bnetserver.conf");
         size_t foundWorld = fileName.find("worldserver.conf");
 
         return foundAuth != std::string_view::npos || foundWorld != std::string_view::npos;
