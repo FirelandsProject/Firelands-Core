@@ -13,24 +13,26 @@
 # weren't doing some -O3 psychooptimizations etc.
 
 include_directories(
-${Boost_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIR}
 )
 
 if(CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
-  add_definitions(-fno-delete-null-pointer-checks)
+    add_definitions(-fno-delete-null-pointer-checks)
 endif()
 
 if(WIN32)
-  list(APPEND sources_windows
-    ${CMAKE_SOURCE_DIR}/src/common/Platform/ServiceWin32.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/Platform/ServiceWin32.h
-  )
+    list(APPEND sources_windows
+        ${CMAKE_SOURCE_DIR}/src/common/Platform/ServiceWin32.cpp
+        ${CMAKE_SOURCE_DIR}/src/common/Platform/ServiceWin32.h
+    )
 endif(WIN32)
 
 add_subdirectory(database)
 add_subdirectory(shared)
 add_subdirectory(ipc)
-add_subdirectory(bnetserver)
+
+# add_subdirectory(bnetserver)
+add_subdirectory(authserver)
 add_subdirectory(game)
 add_subdirectory(scripts)
 add_subdirectory(worldserver)
