@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+    fc-extractors:
+        container_name: "fc-extractors"
+        build:
+            context: ../
+            dockerfile: ./Docker/Dockerfile.extractors
+        tty: true
+        volumes:
+            - ../../Wow/:/firelands/release/Wow/

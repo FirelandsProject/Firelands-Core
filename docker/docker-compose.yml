@@ -26,9 +26,11 @@ services:
         restart: always
         ports:
             - "8085:8085"
+            - "8086:8086"
             - "7878:7878"
         expose:
             - 8085
+            - 8086
             - 7878
         volumes:
             - ../../Data/:/firelands/release/bin/Data/
@@ -42,9 +44,9 @@ services:
             dockerfile: ./Docker/Dockerfile.auth
         restart: always
         ports:
-            - "1118:1118"
+            - "1119:1119"
         expose:
-            - 1118
+            - 1119
         tty: true
         volumes:
             - ../../etc/auth/:/firelands/release/etc/
