@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -71,7 +71,7 @@
 #include "PoolMgr.h"
 #include "QueryCallback.h"
 #include "QuestPools.h"
-#include "Realm.h"
+#include "Realms/Realm.h"
 #include "ScriptMgr.h"
 #include "ScriptReloadMgr.h"
 #include "SkillDiscovery.h"
@@ -2350,7 +2350,7 @@ void World::LoadAutobroadcasts()
 
     uint32 realmId = sConfigMgr->GetOption<int32>("RealmID", 0);
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_AUTOBROADCAST);
-    stmt->setInt32(0, realmId);
+    stmt->SetData(0, realmId);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (!result)
@@ -2467,10 +2467,10 @@ void World::Update(uint32 diff)
 
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_UPTIME_PLAYERS);
 
-        stmt->setUInt32(0, tmpDiff);
-        stmt->setUInt16(1, uint16(maxOnlinePlayers));
-        stmt->setUInt32(2, realm.Id.Realm);
-        stmt->setUInt32(3, uint32(GameTime::GetStartTime()));
+        stmt->SetData(0, tmpDiff);
+        stmt->SetData(1, uint16(maxOnlinePlayers));
+        stmt->SetData(2, realm.Id.Realm);
+        stmt->SetData(3, uint32(GameTime::GetStartTime()));
 
         LoginDatabase.Execute(stmt);
     }
@@ -2484,9 +2484,9 @@ void World::Update(uint32 diff)
 
             LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_OLD_LOGS);
 
-            stmt->setUInt32(0, sWorld->getIntConfig(CONFIG_LOGDB_CLEARTIME));
-            stmt->setUInt32(1, uint32(time(0)));
-            stmt->setUInt32(2, realm.Id.Realm);
+            stmt->SetData(0, sWorld->getIntConfig(CONFIG_LOGDB_CLEARTIME));
+            stmt->SetData(1, uint32(time(0)));
+            stmt->SetData(2, realm.Id.Realm);
 
             LoginDatabase.Execute(stmt);
         }
@@ -2811,13 +2811,13 @@ BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 du
     {
         // No SQL injection with prepared statements
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_BY_IP);
-        stmt->setString(0, nameOrIP);
+        stmt->SetData(0, nameOrIP);
         resultAccounts = LoginDatabase.Query(stmt);
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_IP_BANNED);
-        stmt->setString(0, nameOrIP);
-        stmt->setUInt32(1, duration_secs);
-        stmt->setString(2, author);
-        stmt->setString(3, reason);
+        stmt->SetData(0, nameOrIP);
+        stmt->SetData(1, duration_secs);
+        stmt->SetData(2, author);
+        stmt->SetData(3, reason);
         LoginDatabase.Execute(stmt);
         break;
     }
@@ -2825,7 +2825,7 @@ BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 du
     {
         // No SQL injection with prepared statements
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_ID_BY_NAME);
-        stmt->setString(0, nameOrIP);
+        stmt->SetData(0, nameOrIP);
         resultAccounts = LoginDatabase.Query(stmt);
         break;
     }
@@ -2833,7 +2833,7 @@ BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 du
     {
         // No SQL injection with prepared statements
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ACCOUNT_BY_NAME);
-        stmt->setString(0, nameOrIP);
+        stmt->SetData(0, nameOrIP);
         resultAccounts = CharacterDatabase.Query(stmt);
         break;
     }
@@ -2860,14 +2860,14 @@ BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 du
         {
             // make sure there is only one active ban
             LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_ACCOUNT_NOT_BANNED);
-            stmt->setUInt32(0, account);
+            stmt->SetData(0, account);
             trans->Append(stmt);
             // No SQL injection with prepared statements
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_BANNED);
-            stmt->setUInt32(0, account);
-            stmt->setUInt32(1, duration_secs);
-            stmt->setString(2, author);
-            stmt->setString(3, reason);
+            stmt->SetData(0, account);
+            stmt->SetData(1, duration_secs);
+            stmt->SetData(2, author);
+            stmt->SetData(3, reason);
             trans->Append(stmt);
         }
 
@@ -2888,7 +2888,7 @@ bool World::RemoveBanAccount(BanMode mode, std::string const& nameOrIP)
     if (mode == BAN_IP)
     {
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_IP_NOT_BANNED);
-        stmt->setString(0, nameOrIP);
+        stmt->SetData(0, nameOrIP);
         LoginDatabase.Execute(stmt);
     }
     else
@@ -2904,7 +2904,7 @@ bool World::RemoveBanAccount(BanMode mode, std::string const& nameOrIP)
 
         //NO SQL injection as account is uint32
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_ACCOUNT_NOT_BANNED);
-        stmt->setUInt32(0, account);
+        stmt->SetData(0, account);
         LoginDatabase.Execute(stmt);
     }
     return true;
@@ -2933,14 +2933,14 @@ BanReturn World::BanCharacter(std::string const& name, std::string const& durati
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
     // make sure there is only one active ban
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_BAN);
-    stmt->setUInt32(0, guid);
+    stmt->SetData(0, guid);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHARACTER_BAN);
-    stmt->setUInt32(0, guid);
-    stmt->setUInt32(1, duration_secs);
-    stmt->setString(2, author);
-    stmt->setString(3, reason);
+    stmt->SetData(0, guid);
+    stmt->SetData(1, duration_secs);
+    stmt->SetData(2, author);
+    stmt->SetData(3, reason);
     trans->Append(stmt);
     CharacterDatabase.CommitTransaction(trans);
 
@@ -2972,7 +2972,7 @@ bool World::RemoveBanCharacter(std::string const& name)
         return false;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_BAN);
-    stmt->setUInt32(0, guid);
+    stmt->SetData(0, guid);
     CharacterDatabase.Execute(stmt);
     return true;
 }
@@ -3213,7 +3213,7 @@ void World::SendAutoBroadcast()
 void World::UpdateRealmCharCount(uint32 accountId)
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARACTER_COUNT);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     _queryProcessor.AddCallback(CharacterDatabase.AsyncQuery(stmt).WithPreparedCallback(std::bind(&World::_UpdateRealmCharCount, this, std::placeholders::_1)));
 }
 
@@ -3228,14 +3228,14 @@ void World::_UpdateRealmCharCount(PreparedQueryResult resultCharCount)
         LoginDatabaseTransaction trans = LoginDatabase.BeginTransaction();
 
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_REALM_CHARACTERS_BY_REALM);
-        stmt->setUInt32(0, accountId);
-        stmt->setUInt32(1, realm.Id.Realm);
+        stmt->SetData(0, accountId);
+        stmt->SetData(1, realm.Id.Realm);
         trans->Append(stmt);
 
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_REALM_CHARACTERS);
-        stmt->setUInt8(0, charCount);
-        stmt->setUInt32(1, accountId);
-        stmt->setUInt32(2, realm.Id.Realm);
+        stmt->SetData(0, charCount);
+        stmt->SetData(1, accountId);
+        stmt->SetData(2, realm.Id.Realm);
         trans->Append(stmt);
 
         LoginDatabase.CommitTransaction(trans);
@@ -3481,7 +3481,7 @@ void World::ResetCurrencyWeekCap()
 void World::LoadDBAllowedSecurityLevel()
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_REALMLIST_SECURITY_LEVEL);
-    stmt->setInt32(0, int32(realm.Id.Realm));
+    stmt->SetData(0, int32(realm.Id.Realm));
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (result)
@@ -3502,7 +3502,7 @@ void World::ResetEventSeasonalQuests(uint16 event_id)
     LOG_INFO("misc", "Seasonal quests reset for all characters.");
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_RESET_CHARACTER_QUESTSTATUS_SEASONAL_BY_EVENT);
-    stmt->setUInt16(0, event_id);
+    stmt->SetData(0, event_id);
     CharacterDatabase.Execute(stmt);
 
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
@@ -3618,8 +3618,8 @@ void World::setWorldState(uint32 index, uint64 value)
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_WORLDSTATE);
 
-        stmt->setUInt32(0, uint32(value));
-        stmt->setUInt32(1, index);
+        stmt->SetData(0, uint32(value));
+        stmt->SetData(1, index);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -3627,8 +3627,8 @@ void World::setWorldState(uint32 index, uint64 value)
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_WORLDSTATE);
 
-        stmt->setUInt32(0, index);
-        stmt->setUInt32(1, uint32(value));
+        stmt->SetData(0, index);
+        stmt->SetData(1, uint32(value));
 
         CharacterDatabase.Execute(stmt);
     }

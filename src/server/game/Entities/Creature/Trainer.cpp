@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -125,9 +125,9 @@ namespace Trainer
     Spell const* Trainer::GetSpell(uint32 spellId) const
     {
         auto itr = std::find_if(_spells.begin(), _spells.end(), [spellId](Spell const& trainerSpell)
-        {
-            return trainerSpell.SpellId == spellId;
-       });
+            {
+                return trainerSpell.SpellId == spellId;
+            });
 
         if (itr != _spells.end())
             return &(*itr);
@@ -211,18 +211,18 @@ namespace Trainer
 
         switch (GetTrainerType())
         {
-            case Type::Class:
-            case Type::Pet:
-                // check class for class trainers
-                return player->getClass() == GetTrainerRequirement();
-            case Type::Mount:
-                // check race for mount trainers
-                return player->getRace() == GetTrainerRequirement();
-            case Type::Tradeskill:
-                // check spell for profession trainers
-                return player->HasSpell(GetTrainerRequirement());
-            default:
-                break;
+        case Type::Class:
+        case Type::Pet:
+            // check class for class trainers
+            return player->getClass() == GetTrainerRequirement();
+        case Type::Mount:
+            // check race for mount trainers
+            return player->getRace() == GetTrainerRequirement();
+        case Type::Tradeskill:
+            // check spell for profession trainers
+            return player->HasSpell(GetTrainerRequirement());
+        default:
+            break;
         }
 
         return true;

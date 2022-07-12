@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -38,7 +38,7 @@ union u_map_fcc
 //
 struct file_MVER
 {
-    union{
+    union {
         uint32 fcc;
         char   fcc_txt[4];
     };
@@ -72,11 +72,11 @@ public:
 class ChunkedFile
 {
 public:
-    uint8  *data;
+    uint8* data;
     uint32  data_size;
 
-    uint8 *GetData()     {return data;}
-    uint32 GetDataSize() {return data_size;}
+    uint8* GetData() { return data; }
+    uint32 GetDataSize() { return data_size; }
 
     ChunkedFile();
     virtual ~ChunkedFile();

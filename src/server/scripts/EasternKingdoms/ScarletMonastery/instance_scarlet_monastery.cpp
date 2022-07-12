@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -52,159 +52,159 @@ enum Events
 
 class instance_scarlet_monastery : public InstanceMapScript
 {
-    public:
-        instance_scarlet_monastery() : InstanceMapScript(SMScriptName, 189) { }
+public:
+    instance_scarlet_monastery() : InstanceMapScript(SMScriptName, 189) { }
 
-        struct instance_scarlet_monastery_InstanceMapScript : public InstanceScript
+    struct instance_scarlet_monastery_InstanceMapScript : public InstanceScript
+    {
+        instance_scarlet_monastery_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_scarlet_monastery_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadObjectData(creatureData, gameObjectData);
-            }
-
-            void Create() override
-            {
-                InstanceScript::Create();
-                instance->SpawnGroupSpawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE, true);
-            }
-
-            void Load(char const* data) override
-            {
-                InstanceScript::Load(data);
-                if (GetBossState(DATA_MOGRAINE_AND_WHITEMANE) != DONE)
-                    instance->SpawnGroupSpawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE, true, true);
-            }
-
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                InstanceScript::OnGameObjectCreate(go);
-
-                switch (go->GetEntry())
-                {
-                    case GO_PUMPKIN_SHRINE:
-                        PumpkinShrineGUID = go->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                InstanceScript::OnCreatureCreate(creature);
-
-                switch (creature->GetEntry())
-                {
-                    case NPC_HORSEMAN:
-                        HorsemanGUID = creature->GetGUID();
-                        break;
-                    case NPC_HEAD:
-                        HeadGUID = creature->GetGUID();
-                        break;
-                    case NPC_PUMPKIN:
-                        HorsemanAdds.insert(creature->GetGUID());
-                        break;
-                    case NPC_VORREL:
-                        VorrelGUID = creature->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            void SetData(uint32 type, uint32 /*data*/) override
-            {
-                switch (type)
-                {
-                    case DATA_PUMPKIN_SHRINE:
-                        HandleGameObject(PumpkinShrineGUID, false);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_HORSEMAN_EVENT:
-                        if (state == DONE)
-                        {
-                            for (ObjectGuid guid : HorsemanAdds)
-                            {
-                                Creature* add = instance->GetCreature(guid);
-                                if (add && add->IsAlive())
-                                    add->KillSelf();
-                            }
-                            HorsemanAdds.clear();
-                            HandleGameObject(PumpkinShrineGUID, false);
-                        }
-                        break;
-                    case DATA_MOGRAINE_AND_WHITEMANE:
-                        if (state == FAIL)
-                        {
-                            instance->SpawnGroupDespawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE);
-                            _events.ScheduleEvent(EVENT_RESPAWN_MOGRAINE_AND_WHITEMANE, 30s);
-
-                            if (GameObject* door = GetGameObject(DATA_HIGH_INQUISITORS_DOOR))
-                                door->ResetDoorOrButton();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-
-            void Update(uint32 diff) override
-            {
-                _events.Update(diff);
-
-                while (uint32 eventId = _events.ExecuteEvent())
-                {
-                    switch (eventId)
-                    {
-                        case EVENT_RESPAWN_MOGRAINE_AND_WHITEMANE:
-                            instance->SpawnGroupSpawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_VORREL:
-                        return VorrelGUID;
-                    default:
-                        break;
-                }
-                return ObjectGuid::Empty;
-            }
-
-        private:
-            EventMap _events;
-
-            ObjectGuid PumpkinShrineGUID;
-            ObjectGuid HorsemanGUID;
-            ObjectGuid HeadGUID;
-            ObjectGuid VorrelGUID;
-            GuidSet HorsemanAdds;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_scarlet_monastery_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadObjectData(creatureData, gameObjectData);
         }
+
+        void Create() override
+        {
+            InstanceScript::Create();
+            instance->SpawnGroupSpawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE, true);
+        }
+
+        void Load(char const* data) override
+        {
+            InstanceScript::Load(data);
+            if (GetBossState(DATA_MOGRAINE_AND_WHITEMANE) != DONE)
+                instance->SpawnGroupSpawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE, true, true);
+        }
+
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+
+            switch (go->GetEntry())
+            {
+            case GO_PUMPKIN_SHRINE:
+                PumpkinShrineGUID = go->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            InstanceScript::OnCreatureCreate(creature);
+
+            switch (creature->GetEntry())
+            {
+            case NPC_HORSEMAN:
+                HorsemanGUID = creature->GetGUID();
+                break;
+            case NPC_HEAD:
+                HeadGUID = creature->GetGUID();
+                break;
+            case NPC_PUMPKIN:
+                HorsemanAdds.insert(creature->GetGUID());
+                break;
+            case NPC_VORREL:
+                VorrelGUID = creature->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        void SetData(uint32 type, uint32 /*data*/) override
+        {
+            switch (type)
+            {
+            case DATA_PUMPKIN_SHRINE:
+                HandleGameObject(PumpkinShrineGUID, false);
+                break;
+            default:
+                break;
+            }
+        }
+
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
+            {
+            case DATA_HORSEMAN_EVENT:
+                if (state == DONE)
+                {
+                    for (ObjectGuid guid : HorsemanAdds)
+                    {
+                        Creature* add = instance->GetCreature(guid);
+                        if (add && add->IsAlive())
+                            add->KillSelf();
+                    }
+                    HorsemanAdds.clear();
+                    HandleGameObject(PumpkinShrineGUID, false);
+                }
+                break;
+            case DATA_MOGRAINE_AND_WHITEMANE:
+                if (state == FAIL)
+                {
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE);
+                    _events.ScheduleEvent(EVENT_RESPAWN_MOGRAINE_AND_WHITEMANE, 30s);
+
+                    if (GameObject* door = GetGameObject(DATA_HIGH_INQUISITORS_DOOR))
+                        door->ResetDoorOrButton();
+                }
+                break;
+            default:
+                break;
+            }
+            return true;
+        }
+
+        void Update(uint32 diff) override
+        {
+            _events.Update(diff);
+
+            while (uint32 eventId = _events.ExecuteEvent())
+            {
+                switch (eventId)
+                {
+                case EVENT_RESPAWN_MOGRAINE_AND_WHITEMANE:
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_ID_WHITEMANE_AND_MOGRAINE);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_VORREL:
+                return VorrelGUID;
+            default:
+                break;
+            }
+            return ObjectGuid::Empty;
+        }
+
+    private:
+        EventMap _events;
+
+        ObjectGuid PumpkinShrineGUID;
+        ObjectGuid HorsemanGUID;
+        ObjectGuid HeadGUID;
+        ObjectGuid VorrelGUID;
+        GuidSet HorsemanAdds;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_scarlet_monastery_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_scarlet_monastery()

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,7 +23,7 @@
 
 char const* GetPlainName(char const* FileName)
 {
-    const char * szTemp;
+    const char* szTemp;
 
     if ((szTemp = strrchr(FileName, '\\')) != nullptr)
         FileName = szTemp + 1;
@@ -32,7 +32,7 @@ char const* GetPlainName(char const* FileName)
 
 char* GetPlainName(char* FileName)
 {
-    char * szTemp;
+    char* szTemp;
 
     if ((szTemp = strrchr(FileName, '\\')) != nullptr)
         FileName = szTemp + 1;
@@ -87,7 +87,7 @@ bool ADTFile::init(uint32 map_num, uint32 originalMapId)
     if (dirfileCache)
         return initFromCache(map_num, originalMapId);
 
-    if (_file.isEof ())
+    if (_file.isEof())
         return false;
 
     uint32 size;
@@ -105,20 +105,20 @@ bool ADTFile::init(uint32 map_num, uint32 originalMapId)
     while (!_file.isEof())
     {
         char fourcc[5];
-        _file.read(&fourcc,4);
+        _file.read(&fourcc, 4);
         _file.read(&size, 4);
         flipcc(fourcc);
         fourcc[4] = 0;
 
         size_t nextpos = _file.getPos() + size;
 
-        if (!strcmp(fourcc,"MCIN"))
+        if (!strcmp(fourcc, "MCIN"))
         {
         }
-        else if (!strcmp(fourcc,"MTEX"))
+        else if (!strcmp(fourcc, "MTEX"))
         {
         }
-        else if (!strcmp(fourcc,"MMDX"))
+        else if (!strcmp(fourcc, "MMDX"))
         {
             if (size)
             {
@@ -142,7 +142,7 @@ bool ADTFile::init(uint32 map_num, uint32 originalMapId)
                 delete[] buf;
             }
         }
-        else if (!strcmp(fourcc,"MWMO"))
+        else if (!strcmp(fourcc, "MWMO"))
         {
             if (size)
             {
@@ -182,7 +182,7 @@ bool ADTFile::init(uint32 map_num, uint32 originalMapId)
                 ModelInstanceNames.clear();
             }
         }
-        else if (!strcmp(fourcc,"MODF"))
+        else if (!strcmp(fourcc, "MODF"))
         {
             if (size)
             {

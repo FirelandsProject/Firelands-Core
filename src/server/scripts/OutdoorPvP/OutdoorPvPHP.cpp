@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,7 +26,7 @@
 #include "WorldStatePackets.h"
 
 uint32 const OutdoorPvPHPBuffZonesNum = 6;
-                                                         //  HP, citadel, ramparts, blood furnace, shattered halls, mag's lair
+//  HP, citadel, ramparts, blood furnace, shattered halls, mag's lair
 uint32 const OutdoorPvPHPBuffZones[OutdoorPvPHPBuffZonesNum] = { 3483, 3563, 3562, 3713, 3714, 3836 };
 
 uint32 const HP_CREDITMARKER[HP_TOWER_NUM] = { 19032, 19028, 19029 };
@@ -62,7 +62,7 @@ uint32 const HP_LANG_CAPTURE_A[HP_TOWER_NUM] = { TEXT_BROKEN_HILL_TAKEN_ALLIANCE
 uint32 const HP_LANG_CAPTURE_H[HP_TOWER_NUM] = { TEXT_BROKEN_HILL_TAKEN_HORDE, TEXT_OVERLOOK_TAKEN_HORDE, TEXT_STADIUM_TAKEN_HORDE };
 
 OPvPCapturePointHP::OPvPCapturePointHP(OutdoorPvP* pvp, OutdoorPvPHPTowerType type)
-: OPvPCapturePoint(pvp), m_TowerType(type)
+    : OPvPCapturePoint(pvp), m_TowerType(type)
 {
     SetCapturePointData(HPCapturePoints[type].entry, HPCapturePoints[type].map, HPCapturePoints[type].pos, HPCapturePoints[type].rot);
     AddObject(type, HPTowerFlags[type].entry, HPTowerFlags[type].map, HPTowerFlags[type].pos, HPTowerFlags[type].rot);
@@ -98,12 +98,12 @@ void OutdoorPvPHP::HandlePlayerEnterZone(Player* player, uint32 zone)
     // add buffs
     if (player->GetTeam() == ALLIANCE)
     {
-        if (m_AllianceTowersControlled >=3)
+        if (m_AllianceTowersControlled >= 3)
             player->CastSpell(player, AllianceBuff, true);
     }
     else
     {
-        if (m_HordeTowersControlled >=3)
+        if (m_HordeTowersControlled >= 3)
             player->CastSpell(player, HordeBuff, true);
     }
     OutdoorPvP::HandlePlayerEnterZone(player, zone);
@@ -276,26 +276,26 @@ void OPvPCapturePointHP::FillInitialWorldStates(WorldPackets::WorldState::InitWo
 {
     switch (m_State)
     {
-        case OBJECTIVESTATE_ALLIANCE:
-        case OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
-            data.Worldstates.emplace_back(HP_MAP_N[m_TowerType], 0);
-            data.Worldstates.emplace_back(HP_MAP_A[m_TowerType], 1);
-            data.Worldstates.emplace_back(HP_MAP_H[m_TowerType], 0);
-            break;
-        case OBJECTIVESTATE_HORDE:
-        case OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
-            data.Worldstates.emplace_back(HP_MAP_N[m_TowerType], 0);
-            data.Worldstates.emplace_back(HP_MAP_A[m_TowerType], 0);
-            data.Worldstates.emplace_back(HP_MAP_H[m_TowerType], 1);
-            break;
-        case OBJECTIVESTATE_NEUTRAL:
-        case OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
-        case OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
-        default:
-            data.Worldstates.emplace_back(HP_MAP_N[m_TowerType], 1);
-            data.Worldstates.emplace_back(HP_MAP_A[m_TowerType], 0);
-            data.Worldstates.emplace_back(HP_MAP_H[m_TowerType], 0);
-            break;
+    case OBJECTIVESTATE_ALLIANCE:
+    case OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
+        data.Worldstates.emplace_back(HP_MAP_N[m_TowerType], 0);
+        data.Worldstates.emplace_back(HP_MAP_A[m_TowerType], 1);
+        data.Worldstates.emplace_back(HP_MAP_H[m_TowerType], 0);
+        break;
+    case OBJECTIVESTATE_HORDE:
+    case OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
+        data.Worldstates.emplace_back(HP_MAP_N[m_TowerType], 0);
+        data.Worldstates.emplace_back(HP_MAP_A[m_TowerType], 0);
+        data.Worldstates.emplace_back(HP_MAP_H[m_TowerType], 1);
+        break;
+    case OBJECTIVESTATE_NEUTRAL:
+    case OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
+    case OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
+    default:
+        data.Worldstates.emplace_back(HP_MAP_N[m_TowerType], 1);
+        data.Worldstates.emplace_back(HP_MAP_A[m_TowerType], 0);
+        data.Worldstates.emplace_back(HP_MAP_H[m_TowerType], 0);
+        break;
     }
 }
 
@@ -332,13 +332,13 @@ void OutdoorPvPHP::SetHordeTowersControlled(uint32 count)
 
 class OutdoorPvP_hellfire_peninsula : public OutdoorPvPScript
 {
-    public:
-        OutdoorPvP_hellfire_peninsula() : OutdoorPvPScript("outdoorpvp_hp") { }
+public:
+    OutdoorPvP_hellfire_peninsula() : OutdoorPvPScript("outdoorpvp_hp") { }
 
-        OutdoorPvP* GetOutdoorPvP() const override
-        {
-            return new OutdoorPvPHP();
-        }
+    OutdoorPvP* GetOutdoorPvP() const override
+    {
+        return new OutdoorPvPHP();
+    }
 };
 
 void AddSC_outdoorpvp_hp()

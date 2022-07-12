@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,7 +19,56 @@
 #define FIRELANDS_TIMER_H
 
 #include "Define.h"
-#include <chrono>
+#include "Duration.h"
+
+enum class TimeFormat : uint8
+{
+    FullText,  // 1 Days 2 Hours 3 Minutes 4 Seconds 5 Milliseconds
+    ShortText, // 1d 2h 3m 4s 5ms
+    Numeric    // 1:2:3:4:5
+};
+
+enum class TimeOutput : uint8
+{
+    Days,         // 1d
+    Hours,        // 1d 2h
+    Minutes,      // 1d 2h 3m
+    Seconds,      // 1d 2h 3m 4s
+    Milliseconds, // 1d 2h 3m 4s 5ms
+    Microseconds  // 1d 2h 3m 4s 5ms 6us
+};
+
+namespace Firelands::Time
+{
+    template <class T>
+    FC_COMMON_API uint32 TimeStringTo(std::string_view timeString);
+
+    template<class T>
+    FC_COMMON_API std::string ToTimeString(uint64 durationTime, TimeOutput timeOutput = TimeOutput::Seconds, TimeFormat timeFormat = TimeFormat::ShortText);
+
+    template<class T>
+    FC_COMMON_API std::string ToTimeString(std::string_view durationTime, TimeOutput timeOutput = TimeOutput::Seconds, TimeFormat timeFormat = TimeFormat::ShortText);
+
+    FC_COMMON_API std::string ToTimeString(Microseconds durationTime, TimeOutput timeOutput = TimeOutput::Seconds, TimeFormat timeFormat = TimeFormat::ShortText);
+
+    FC_COMMON_API time_t LocalTimeToUTCTime(time_t time);
+    FC_COMMON_API time_t GetLocalHourTimestamp(time_t time, uint8 hour, bool onlyAfterTime = true);
+    FC_COMMON_API std::tm TimeBreakdown(time_t t = 0);
+    FC_COMMON_API std::string TimeToTimestampStr(Seconds time = 0s, std::string_view fmt = {});
+    FC_COMMON_API std::string TimeToHumanReadable(Seconds time = 0s, std::string_view fmt = {});
+
+    FC_COMMON_API time_t GetNextTimeWithDayAndHour(int8 dayOfWeek, int8 hour); // int8 dayOfWeek: 0 (sunday) to 6 (saturday)
+    FC_COMMON_API time_t GetNextTimeWithMonthAndHour(int8 month, int8 hour); // int8 month: 0 (january) to 11 (december)
+
+    FC_COMMON_API uint32 GetSeconds(Seconds time = 0s);      // seconds after the minute - [0, 60]
+    FC_COMMON_API uint32 GetMinutes(Seconds time = 0s);      // minutes after the hour - [0, 59]
+    FC_COMMON_API uint32 GetHours(Seconds time = 0s);        // hours since midnight - [0, 23]
+    FC_COMMON_API uint32 GetDayInWeek(Seconds time = 0s);    // days since Sunday - [0, 6]
+    FC_COMMON_API uint32 GetDayInMonth(Seconds time = 0s);   // day of the month - [1, 31]
+    FC_COMMON_API uint32 GetDayInYear(Seconds time = 0s);    // days since January 1 - [0, 365]
+    FC_COMMON_API uint32 GetMonth(Seconds time = 0s);        // months since January - [0, 11]
+    FC_COMMON_API uint32 GetYear(Seconds time = 0s);         // years since 1900
+}
 
 inline std::chrono::steady_clock::time_point GetApplicationStartTime()
 {
@@ -58,6 +107,12 @@ inline uint32 getMSTimeDiff(uint32 oldMSTime, std::chrono::steady_clock::time_po
 inline uint32 GetMSTimeDiffToNow(uint32 oldMSTime)
 {
     return getMSTimeDiff(oldMSTime, getMSTime());
+}
+
+inline Seconds GetEpochTime()
+{
+    using namespace std::chrono;
+    return duration_cast<Seconds>(system_clock::now().time_since_epoch());
 }
 
 struct IntervalTimer

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -537,9 +537,9 @@ void WorldSession::HandleAuctionPlaceBid(WorldPacket& recvData)
         GetPlayer()->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_HIGHEST_AUCTION_BID, price);
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_AUCTION_BID);
-        stmt->setUInt32(0, auction->bidder);
-        stmt->setUInt64(1, auction->bid);
-        stmt->setUInt32(2, auction->Id);
+        stmt->SetData(0, auction->bidder);
+        stmt->SetData(1, auction->bid);
+        stmt->SetData(2, auction->Id);
         trans->Append(stmt);
 
         if (auction->bidders.find(player->GetGUID()) == auction->bidders.end())
@@ -547,8 +547,8 @@ void WorldSession::HandleAuctionPlaceBid(WorldPacket& recvData)
             // save new bidder in list, and save record to db
             auction->bidders.insert(player->GetGUID());
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_AUCTION_BIDDERS);
-            stmt->setUInt32(0, auction->Id);
-            stmt->setUInt32(1, auction->bidder);
+            stmt->SetData(0, auction->Id);
+            stmt->SetData(1, auction->bidder);
             trans->Append(stmt);
         }
 

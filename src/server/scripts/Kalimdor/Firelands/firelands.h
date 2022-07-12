@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,13 +30,13 @@ uint32 const EncounterCount = 7;
 enum FLDataTypes
 {
     // Bosses
-    DATA_BETHTILAC          = 0,
-    DATA_LORD_RHYOLITH      = 1,
-    DATA_SHANNOX            = 2,
-    DATA_ALYSRAZOR          = 3,
-    DATA_BALEROC            = 4,
+    DATA_BETHTILAC = 0,
+    DATA_LORD_RHYOLITH = 1,
+    DATA_SHANNOX = 2,
+    DATA_ALYSRAZOR = 3,
+    DATA_BALEROC = 4,
     DATA_MAJORDOMO_STAGHELM = 5,
-    DATA_RAGNAROS           = 6,
+    DATA_RAGNAROS = 6,
 
     // Encounter Specific
     DATA_LORD_RHYOLITH_MOVEMENT_CONTROLLER,
@@ -56,78 +56,78 @@ enum FLDataTypes
 enum FLCreatureIds
 {
     //Bosses
-    BOSS_SHANNOX                            = 53691,
-    BOSS_LORD_RHYOLITH                      = 52558,
-    BOSS_BETHTILAC                          = 52498,
-    BOSS_ALYSRAZOR                          = 52530,
-    BOSS_BALEROC                            = 53494,
-    BOSS_MAJORDOMO_STAGHELM                 = 52571,
-    BOSS_RAGNAROS                           = 52409,
+    BOSS_SHANNOX = 53691,
+    BOSS_LORD_RHYOLITH = 52558,
+    BOSS_BETHTILAC = 52498,
+    BOSS_ALYSRAZOR = 52530,
+    BOSS_BALEROC = 53494,
+    BOSS_MAJORDOMO_STAGHELM = 52571,
+    BOSS_RAGNAROS = 52409,
 
     //Lord Rhyolith
-    NPC_MOVEMENT_CONTROLLER_LORD_RHYOLITH   = 52659,
-    NPC_LEFT_FOOT                           = 52577,
-    NPC_RIGHT_FOOT                          = 53087,
-    NPC_VOLCANO                             = 52582,
-    NPC_VOLCANO_HEATED                      = 54071,
-    NPC_VOLCANO_CRATER                      = 52866,
-    NPC_LORD_RHYOLITH_PHASE_TWO             = 53772,
-    NPC_LORD_RHYOLITH_DAMAGED_1             = 54192,
-    NPC_LORD_RHYOLITH_DAMAGED_2             = 54199,
-    NPC_PILLAR                              = 53122,
-    NPC_FRAGMENT_OF_RHYOLITH                = 52620,
-    NPC_SPARK_OF_RHYOLITH                   = 53211,
-    NPC_UNLEASHED_FLAME                     = 54347,
+    NPC_MOVEMENT_CONTROLLER_LORD_RHYOLITH = 52659,
+    NPC_LEFT_FOOT = 52577,
+    NPC_RIGHT_FOOT = 53087,
+    NPC_VOLCANO = 52582,
+    NPC_VOLCANO_HEATED = 54071,
+    NPC_VOLCANO_CRATER = 52866,
+    NPC_LORD_RHYOLITH_PHASE_TWO = 53772,
+    NPC_LORD_RHYOLITH_DAMAGED_1 = 54192,
+    NPC_LORD_RHYOLITH_DAMAGED_2 = 54199,
+    NPC_PILLAR = 53122,
+    NPC_FRAGMENT_OF_RHYOLITH = 52620,
+    NPC_SPARK_OF_RHYOLITH = 53211,
+    NPC_UNLEASHED_FLAME = 54347,
 
     //Alysrazor
-    NPC_BLAZING_MONSTROSITY_LEFT            = 53786,
-    NPC_BLAZING_MONSTROSITY_RIGHT           = 53791,
-    NPC_EGG_PILE                            = 53795,
-    NPC_HARBINGER_OF_FLAME                  = 53793,
-    NPC_MOLTEN_EGG_TRASH                    = 53914,
-    NPC_SMOULDERING_HATCHLING               = 53794,
+    NPC_BLAZING_MONSTROSITY_LEFT = 53786,
+    NPC_BLAZING_MONSTROSITY_RIGHT = 53791,
+    NPC_EGG_PILE = 53795,
+    NPC_HARBINGER_OF_FLAME = 53793,
+    NPC_MOLTEN_EGG_TRASH = 53914,
+    NPC_SMOULDERING_HATCHLING = 53794,
 
     // Majordomo Staghelm
-    NPC_SPIRIT_OF_THE_FLAME                 = 52593,
-    NPC_BURNING_ORB                         = 53216,
-    NPC_DRUID_OF_THE_FLAME                  = 53619,
+    NPC_SPIRIT_OF_THE_FLAME = 52593,
+    NPC_BURNING_ORB = 53216,
+    NPC_DRUID_OF_THE_FLAME = 53619,
 
     // Ragnaros
-    NPC_MAGMA_TRAP                          = 53086,
-    NPC_SULFURAS_SMASH_1                    = 53266,
-    NPC_SULFURAS_SMASH_2                    = 53268,
-    NPC_LAVA_WAVE                           = 53363,
-    NPC_SPLITTING_BLOW                      = 53393,
-    NPC_SON_OF_FLAME                        = 53140,
-    NPC_SULFURAS_HAND_OF_RAGNAROS           = 53420,
-    NPC_MOLTEN_ELEMENTAL                    = 53189,
-    NPC_LAVA_SCION                          = 53231,
-    NPC_BLAZING_HEAT                        = 53473,
-    NPC_ARCHDRUID_HAMUUL_RUNETOTEM          = 53876,
-    NPC_MALFURION_STORMRAGE                 = 53875,
-    NPC_CENARIUS                            = 53872,
-    NPC_ENTRAPPING_ROOTS                    = 54074,
-    NPC_DREADFLAME                          = 54127,
-    NPC_DREADFLAME_SPAWN                    = 54203,
-    NPC_CLOUDBURST                          = 54147,
-    NPC_BREADTH_OF_FROST                    = 53953,
-    NPC_MAGMA                               = 53729,
+    NPC_MAGMA_TRAP = 53086,
+    NPC_SULFURAS_SMASH_1 = 53266,
+    NPC_SULFURAS_SMASH_2 = 53268,
+    NPC_LAVA_WAVE = 53363,
+    NPC_SPLITTING_BLOW = 53393,
+    NPC_SON_OF_FLAME = 53140,
+    NPC_SULFURAS_HAND_OF_RAGNAROS = 53420,
+    NPC_MOLTEN_ELEMENTAL = 53189,
+    NPC_LAVA_SCION = 53231,
+    NPC_BLAZING_HEAT = 53473,
+    NPC_ARCHDRUID_HAMUUL_RUNETOTEM = 53876,
+    NPC_MALFURION_STORMRAGE = 53875,
+    NPC_CENARIUS = 53872,
+    NPC_ENTRAPPING_ROOTS = 54074,
+    NPC_DREADFLAME = 54127,
+    NPC_DREADFLAME_SPAWN = 54203,
+    NPC_CLOUDBURST = 54147,
+    NPC_BREADTH_OF_FROST = 53953,
+    NPC_MAGMA = 53729,
 };
 
 enum FLGameobjectIds
 {
-    GO_LORD_RHYOLITH_BRIDGE                 = 209255,
-    GO_BETH_TILAC_DOOR                      = 208877,
-    GO_BALEROC_FIREWALL                     = 209066,
-    GO_MAJORDOMO_FIREWALL                   = 208906,
-    GO_RAGNAROS_DOOR                        = 209073,
-    GO_RAGNAROS_PLATFORM                    = 208835,
+    GO_LORD_RHYOLITH_BRIDGE = 209255,
+    GO_BETH_TILAC_DOOR = 208877,
+    GO_BALEROC_FIREWALL = 209066,
+    GO_MAJORDOMO_FIREWALL = 208906,
+    GO_RAGNAROS_DOOR = 209073,
+    GO_RAGNAROS_PLATFORM = 208835,
 };
 
 enum FLSpawnGroups
 {
-    SPAWN_GROUP_ID_RAGNAROS             = 458,
-    SPAWN_GROUP_ID_RAGNAROS_STALKERS    = 459
+    SPAWN_GROUP_ID_RAGNAROS = 458,
+    SPAWN_GROUP_ID_RAGNAROS_STALKERS = 459
 };
 
 struct DreadflamePositionInfo

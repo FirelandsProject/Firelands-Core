@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,9 +22,9 @@
 #include <cstdlib>
 #include <cstring>
 
-/*! Basic, ad-hoc queries. */
+ /*! Basic, ad-hoc queries. */
 BasicStatementTask::BasicStatementTask(char const* sql, bool async) :
-m_result(nullptr)
+    m_result(nullptr)
 {
     m_sql = strdup(sql);
     m_has_result = async; // If the operation is async, then there's a result

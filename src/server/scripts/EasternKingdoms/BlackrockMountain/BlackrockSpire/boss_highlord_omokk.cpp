@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,14 +21,14 @@
 
 enum Spells
 {
-    SPELL_FRENZY                    = 8269,
-    SPELL_KNOCK_AWAY                = 10101
+    SPELL_FRENZY = 8269,
+    SPELL_KNOCK_AWAY = 10101
 };
 
 enum Events
 {
-    EVENT_FRENZY                    = 1,
-    EVENT_KNOCK_AWAY                = 2
+    EVENT_FRENZY = 1,
+    EVENT_KNOCK_AWAY = 2
 };
 
 class boss_highlord_omokk : public CreatureScript
@@ -53,8 +53,8 @@ public:
         void JustEngagedWith(Unit* who) override
         {
             BossAI::JustEngagedWith(who);
-            events.ScheduleEvent(EVENT_FRENZY,      20000);
-            events.ScheduleEvent(EVENT_KNOCK_AWAY,  18000);
+            events.ScheduleEvent(EVENT_FRENZY, 20000);
+            events.ScheduleEvent(EVENT_KNOCK_AWAY, 18000);
         }
 
         void JustDied(Unit* /*killer*/) override
@@ -76,16 +76,16 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_FRENZY:
-                        DoCastVictim(SPELL_FRENZY);
-                        events.ScheduleEvent(EVENT_FRENZY, 60000);
-                        break;
-                    case EVENT_KNOCK_AWAY:
-                        DoCastVictim(SPELL_KNOCK_AWAY);
-                        events.ScheduleEvent(EVENT_KNOCK_AWAY, 12000);
-                        break;
-                    default:
-                        break;
+                case EVENT_FRENZY:
+                    DoCastVictim(SPELL_FRENZY);
+                    events.ScheduleEvent(EVENT_FRENZY, 60000);
+                    break;
+                case EVENT_KNOCK_AWAY:
+                    DoCastVictim(SPELL_KNOCK_AWAY);
+                    events.ScheduleEvent(EVENT_KNOCK_AWAY, 12000);
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

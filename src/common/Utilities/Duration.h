@@ -1,14 +1,14 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
+ * under the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
@@ -20,19 +20,58 @@
 
 #include <chrono>
 
+ /// Microseconds shorthand typedef.
+using Microseconds = std::chrono::microseconds;
+
 /// Milliseconds shorthand typedef.
-typedef std::chrono::milliseconds Milliseconds;
+using Milliseconds = std::chrono::milliseconds;
 
 /// Seconds shorthand typedef.
-typedef std::chrono::seconds Seconds;
+using Seconds = std::chrono::seconds;
 
 /// Minutes shorthand typedef.
-typedef std::chrono::minutes Minutes;
+using Minutes = std::chrono::minutes;
 
 /// Hours shorthand typedef.
-typedef std::chrono::hours Hours;
+using Hours = std::chrono::hours;
+
+/// Days shorthand typedef.
+using Days = std::chrono::duration<__INT64_TYPE__, std::ratio<86400>>;
+
+/// Weeks shorthand typedef.
+using Weeks = std::chrono::duration<__INT64_TYPE__, std::ratio<604800>>;
+
+/// Years shorthand typedef.
+using Years = std::chrono::duration<__INT64_TYPE__, std::ratio<31556952>>;
+
+/// Months shorthand typedef.
+using Months = std::chrono::duration<__INT64_TYPE__, std::ratio<2629746>>;
+
+/// time_point shorthand typedefs
+using TimePoint = std::chrono::steady_clock::time_point;
+using SystemTimePoint = std::chrono::system_clock::time_point;
 
 /// Makes std::chrono_literals globally available.
 using namespace std::chrono_literals;
 
-#endif // _DURATION_H_
+constexpr Days operator""_days(unsigned long long days)
+{
+    return Days(days);
+}
+
+constexpr Weeks operator""_weeks(unsigned long long weeks)
+{
+    return Weeks(weeks);
+}
+
+constexpr Years operator""_years(unsigned long long years)
+{
+    return Years(years);
+}
+
+constexpr Months operator""_months(unsigned long long months)
+{
+    return Months(months);
+}
+
+#endif

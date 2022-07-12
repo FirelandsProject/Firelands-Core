@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Luetenant_Drake
-SD%Complete: 70
-SDComment: Missing proper code for patrolling area after being spawned. Script for GO (barrels) quest 10283
-SDCategory: Caverns of Time, Old Hillsbrad Foothills
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Luetenant_Drake
+ SD%Complete: 70
+ SDComment: Missing proper code for patrolling area after being spawned. Script for GO (barrels) quest 10283
+ SDCategory: Caverns of Time, Old Hillsbrad Foothills
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "GameObject.h"
@@ -30,9 +30,9 @@ EndScriptData */
 #include "old_hillsbrad.h"
 #include "ScriptedEscortAI.h"
 
-/*######
-## go_barrel_old_hillsbrad
-######*/
+ /*######
+ ## go_barrel_old_hillsbrad
+ ######*/
 
 class go_barrel_old_hillsbrad : public GameObjectScript
 {
@@ -67,20 +67,20 @@ public:
 
 enum LieutenantDrake
 {
-    SAY_ENTER               = 0,
-    SAY_AGGRO               = 1,
-    SAY_SLAY                = 2,
-    SAY_MORTAL              = 3,
-    SAY_SHOUT               = 4,
-    SAY_DEATH               = 5,
+    SAY_ENTER = 0,
+    SAY_AGGRO = 1,
+    SAY_SLAY = 2,
+    SAY_MORTAL = 3,
+    SAY_SHOUT = 4,
+    SAY_DEATH = 5,
 
-    SPELL_WHIRLWIND         = 31909,
-    SPELL_HAMSTRING         = 9080,
-    SPELL_MORTAL_STRIKE     = 31911,
+    SPELL_WHIRLWIND = 31909,
+    SPELL_HAMSTRING = 9080,
+    SPELL_MORTAL_STRIKE = 31911,
     SPELL_FRIGHTENING_SHOUT = 33789
 };
 
-Position const DrakeWP[]=
+Position const DrakeWP[] =
 {
     { 2125.84f, 88.2535f, 54.8830f },
     { 2111.01f, 93.8022f, 52.6356f },
@@ -172,7 +172,8 @@ public:
             {
                 DoCastVictim(SPELL_WHIRLWIND);
                 Whirlwind_Timer = 20000 + rand32() % 5000;
-            } else Whirlwind_Timer -= diff;
+            }
+            else Whirlwind_Timer -= diff;
 
             //Fear
             if (Fear_Timer <= diff)
@@ -180,7 +181,8 @@ public:
                 Talk(SAY_SHOUT);
                 DoCastVictim(SPELL_FRIGHTENING_SHOUT);
                 Fear_Timer = 25000 + rand32() % 10000;
-            } else Fear_Timer -= diff;
+            }
+            else Fear_Timer -= diff;
 
             //Mortal Strike
             if (MortalStrike_Timer <= diff)
@@ -188,7 +190,8 @@ public:
                 Talk(SAY_MORTAL);
                 DoCastVictim(SPELL_MORTAL_STRIKE);
                 MortalStrike_Timer = 20000 + rand32() % 10000;
-            } else MortalStrike_Timer -= diff;
+            }
+            else MortalStrike_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

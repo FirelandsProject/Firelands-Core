@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,23 +29,23 @@
 enum Text
 {
     // Ascendant Lord Obsidius
-    SAY_AGGRO                   = 0,
-    SAY_SLAY                    = 1,
-    SAY_TRANSFORMATION          = 2,
-    SAY_DEATH                   = 3,
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_TRANSFORMATION = 2,
+    SAY_DEATH = 3,
     SAY_ANNOUNCE_TRANSFORMATION = 4
 };
 
 enum Spells
 {
     // Ascendant Lord Obsidius
-    SPELL_STOP_HEART            = 82393,
-    SPELL_STONE_BLOW            = 76185,
-    SPELL_THUNDERCLAP           = 76186,
-    SPELL_TRANSFORMATION        = 76196,
+    SPELL_STOP_HEART = 82393,
+    SPELL_STONE_BLOW = 76185,
+    SPELL_THUNDERCLAP = 76186,
+    SPELL_TRANSFORMATION = 76196,
 
     // Shadow of Obsidius
-    SPELL_SHADOWY_CORRUPTION    = 75054,
+    SPELL_SHADOWY_CORRUPTION = 75054,
 };
 
 #define SPELL_TWILIGHT_CORRUPTION RAID_MODE<int32>(76188, 93613)
@@ -59,7 +59,7 @@ enum Events
 {
     // Ascendant Lord Obsidius
     EVENT_FINISH_RAZ_INTRO = 1,
-    EVENT_STONE_BLOW ,
+    EVENT_STONE_BLOW,
     EVENT_TWILIGHT_CORRUPTION,
     EVENT_THUNDERCLAP,
 };
@@ -164,26 +164,26 @@ struct boss_ascendant_lord_obsidius : public BossAI
     {
         switch (type)
         {
-            case DATA_DEAD_ELEMENTAL_WARDEN:
-                _deadElementalWardenCount++;
-                if (_deadElementalWardenCount == 7)
-                {
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_STUNNED);
-                    me->RemoveAurasDueToSpell(SPELL_SHADOWY_CORRUPTION);
+        case DATA_DEAD_ELEMENTAL_WARDEN:
+            _deadElementalWardenCount++;
+            if (_deadElementalWardenCount == 7)
+            {
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_STUNNED);
+                me->RemoveAurasDueToSpell(SPELL_SHADOWY_CORRUPTION);
 
-                    for (ObjectGuid guid : summons)
+                for (ObjectGuid guid : summons)
+                {
+                    if (Creature* shadow = ObjectAccessor::GetCreature(*me, guid))
                     {
-                        if (Creature* shadow = ObjectAccessor::GetCreature(*me, guid))
-                        {
-                            shadow->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
-                            shadow->RemoveAurasDueToSpell(SPELL_SHADOWY_CORRUPTION);
-                        }
+                        shadow->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+                        shadow->RemoveAurasDueToSpell(SPELL_SHADOWY_CORRUPTION);
                     }
-                    DoCastAOE(SPELL_STOP_HEART);
                 }
-                break;
-            default:
-                break;
+                DoCastAOE(SPELL_STOP_HEART);
+            }
+            break;
+        default:
+            break;
         }
     }
 
@@ -201,21 +201,21 @@ struct boss_ascendant_lord_obsidius : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_STONE_BLOW:
-                    DoCastVictim(SPELL_STONE_BLOW);
-                    events.Repeat(12s);
-                    break;
-                case EVENT_TWILIGHT_CORRUPTION:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true, true, -SPELL_TWILIGHT_CORRUPTION))
-                        DoCast(target, SPELL_TWILIGHT_CORRUPTION);
-                    events.Repeat(12s);
-                    break;
-                case EVENT_THUNDERCLAP:
-                    DoCastAOE(SPELL_THUNDERCLAP);
-                    events.Repeat(23s);
-                    break;
-                default:
-                    break;
+            case EVENT_STONE_BLOW:
+                DoCastVictim(SPELL_STONE_BLOW);
+                events.Repeat(12s);
+                break;
+            case EVENT_TWILIGHT_CORRUPTION:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true, true, -SPELL_TWILIGHT_CORRUPTION))
+                    DoCast(target, SPELL_TWILIGHT_CORRUPTION);
+                events.Repeat(12s);
+                break;
+            case EVENT_THUNDERCLAP:
+                DoCastAOE(SPELL_THUNDERCLAP);
+                events.Repeat(23s);
+                break;
+            default:
+                break;
             }
         }
 

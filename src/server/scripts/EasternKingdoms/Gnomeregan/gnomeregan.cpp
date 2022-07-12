@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Script Data Start
-SDName: Gnomeregan
-SDAuthor: Manuel
-SD%Complete: 90%
-SDComment: Some visual effects are not implemented.
-Script Data End */
+ /* Script Data Start
+ SDName: Gnomeregan
+ SDAuthor: Manuel
+ SD%Complete: 90%
+ SDComment: Some visual effects are not implemented.
+ Script Data End */
 
 #include "ScriptMgr.h"
 #include "GameObject.h"
@@ -36,28 +36,28 @@ Script Data End */
 
 enum BlastmasterEmi
 {
-    SAY_BLASTMASTER_0   = 0,
-    SAY_BLASTMASTER_1   = 1,
-    SAY_BLASTMASTER_2   = 2,
-    SAY_BLASTMASTER_3   = 3,
-    SAY_BLASTMASTER_4   = 4,
-    SAY_BLASTMASTER_5   = 5,
-    SAY_BLASTMASTER_6   = 6,
-    SAY_BLASTMASTER_7   = 7,
-    SAY_BLASTMASTER_8   = 8,
-    SAY_BLASTMASTER_9   = 9,
-    SAY_BLASTMASTER_10  = 10,
-    SAY_BLASTMASTER_11  = 11,
-    SAY_BLASTMASTER_12  = 12,
-    SAY_BLASTMASTER_13  = 13,
-    SAY_BLASTMASTER_14  = 14,
-    SAY_BLASTMASTER_15  = 15,
-    SAY_BLASTMASTER_16  = 16,
-    SAY_BLASTMASTER_17  = 17,
-    SAY_BLASTMASTER_18  = 18,
-    SAY_BLASTMASTER_19  = 19,
+    SAY_BLASTMASTER_0 = 0,
+    SAY_BLASTMASTER_1 = 1,
+    SAY_BLASTMASTER_2 = 2,
+    SAY_BLASTMASTER_3 = 3,
+    SAY_BLASTMASTER_4 = 4,
+    SAY_BLASTMASTER_5 = 5,
+    SAY_BLASTMASTER_6 = 6,
+    SAY_BLASTMASTER_7 = 7,
+    SAY_BLASTMASTER_8 = 8,
+    SAY_BLASTMASTER_9 = 9,
+    SAY_BLASTMASTER_10 = 10,
+    SAY_BLASTMASTER_11 = 11,
+    SAY_BLASTMASTER_12 = 12,
+    SAY_BLASTMASTER_13 = 13,
+    SAY_BLASTMASTER_14 = 14,
+    SAY_BLASTMASTER_15 = 15,
+    SAY_BLASTMASTER_16 = 16,
+    SAY_BLASTMASTER_17 = 17,
+    SAY_BLASTMASTER_18 = 18,
+    SAY_BLASTMASTER_19 = 19,
 
-    SAY_GRUBBIS         = 0
+    SAY_GRUBBIS = 0
 };
 
 const Position SpawnPosition[] =
@@ -223,38 +223,38 @@ public:
 
             switch (waypointId)
             {
-                case 3:
-                    SetEscortPaused(true);
-                    NextStep(2000, false, 3);
-                    break;
-                case 7:
-                    SetEscortPaused(true);
-                    NextStep(2000, false, 4);
-                    break;
-                case 9:
-                    NextStep(1000, false, 8);
-                    break;
-                case 10:
-                    NextStep(25000, false, 10);
-                    break;
-                case 11:
-                    SetEscortPaused(true);
-                    SetInFace(true);
-                    NextStep(1000, false, 11);
-                    break;
-                case 12:
-                    NextStep(25000, false, 18);
-                    break;
-                case 13:
-                    Summon(6);
-                    NextStep(25000, false, 19);
-                    break;
-                case 14:
-                    SetInFace(false);
-                    Talk(SAY_BLASTMASTER_17);
-                    SetEscortPaused(true);
-                    NextStep(5000, false, 20);
-                    break;
+            case 3:
+                SetEscortPaused(true);
+                NextStep(2000, false, 3);
+                break;
+            case 7:
+                SetEscortPaused(true);
+                NextStep(2000, false, 4);
+                break;
+            case 9:
+                NextStep(1000, false, 8);
+                break;
+            case 10:
+                NextStep(25000, false, 10);
+                break;
+            case 11:
+                SetEscortPaused(true);
+                SetInFace(true);
+                NextStep(1000, false, 11);
+                break;
+            case 12:
+                NextStep(25000, false, 18);
+                break;
+            case 13:
+                Summon(6);
+                NextStep(25000, false, 19);
+                break;
+            case 14:
+                SetInFace(false);
+                Talk(SAY_BLASTMASTER_17);
+                SetEscortPaused(true);
+                NextStep(5000, false, 20);
+                break;
             }
         }
 
@@ -262,23 +262,23 @@ public:
         {
             switch (uiI)
             {
+            case 1:
+                SetEscortPaused(true);
+                Talk(SAY_BLASTMASTER_0);
+                NextStep(2000, true);
+                break;
+            case 2:
+                switch (uiValue)
+                {
                 case 1:
-                    SetEscortPaused(true);
-                    Talk(SAY_BLASTMASTER_0);
-                    NextStep(2000, true);
+                    instance->SetData(TYPE_EVENT, IN_PROGRESS);
                     break;
                 case 2:
-                    switch (uiValue)
-                    {
-                        case 1:
-                            instance->SetData(TYPE_EVENT, IN_PROGRESS);
-                            break;
-                        case 2:
-                            instance->SetData(TYPE_EVENT, DONE);
-                            NextStep(5000, false, 22);
-                            break;
-                    }
+                    instance->SetData(TYPE_EVENT, DONE);
+                    NextStep(5000, false, 22);
                     break;
+                }
+                break;
             }
         }
 
@@ -286,72 +286,72 @@ public:
         {
             switch (uiCase)
             {
-                case 1:
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[0], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[3], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[4], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[5], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[6], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[7], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[8], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[9], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    break;
-                case 2:
-                    if (GameObject* go = me->SummonGameObject(183410, -533.140f, -105.322f, -156.016f, 0.f, QuaternionData(), 1))
-                    {
-                        GoSummonList.push_back(go->GetGUID());
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE); //We can't use it!
-                    }
-                    Summon(3);
-                    break;
-                case 3:
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[0], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[3], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    Talk(SAY_BLASTMASTER_7);
-                    break;
-                case 4:
-                    if (GameObject* go = me->SummonGameObject(183410, -542.199f, -96.854f, -155.790f, 0.f, QuaternionData(), 1))
-                    {
-                        GoSummonList.push_back(go->GetGUID());
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                    }
-                    break;
-                case 5:
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[10], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[11], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[12], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[13], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[14], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    break;
-                case 6:
-                    if (GameObject* go = me->SummonGameObject(183410, -507.820f, -103.333f, -151.353f, 0.f, QuaternionData(), 1))
-                    {
-                        GoSummonList.push_back(go->GetGUID());
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE); //We can't use it!
-                        Summon(5);
-                    }
-                    break;
-                case 7:
-                    if (GameObject* go = me->SummonGameObject(183410, -511.829f, -86.249f, -151.431f, 0.f, QuaternionData(), 1))
-                    {
-                        GoSummonList.push_back(go->GetGUID());
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE); //We can't use it!
-                    }
-                    break;
-                case 8:
-                    if (Creature* grubbis = me->SummonCreature(NPC_GRUBBIS, SpawnPosition[15], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000))
-                        grubbis->AI()->Talk(SAY_GRUBBIS);
-                    me->SummonCreature(NPC_CHOMPER, SpawnPosition[16], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
-                    break;
-                case 9:
-                    me->SummonGameObject(GO_RED_ROCKET, SpawnPosition[17], QuaternionData(), 7200);
-                    me->SummonGameObject(GO_RED_ROCKET, SpawnPosition[18], QuaternionData(), 7200);
-                    me->SummonGameObject(GO_RED_ROCKET, SpawnPosition[19], QuaternionData(), 7200);
-                    break;
+            case 1:
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[0], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[3], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[4], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[5], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[6], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[7], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[8], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[9], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                break;
+            case 2:
+                if (GameObject* go = me->SummonGameObject(183410, -533.140f, -105.322f, -156.016f, 0.f, QuaternionData(), 1))
+                {
+                    GoSummonList.push_back(go->GetGUID());
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE); //We can't use it!
+                }
+                Summon(3);
+                break;
+            case 3:
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[0], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[3], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                Talk(SAY_BLASTMASTER_7);
+                break;
+            case 4:
+                if (GameObject* go = me->SummonGameObject(183410, -542.199f, -96.854f, -155.790f, 0.f, QuaternionData(), 1))
+                {
+                    GoSummonList.push_back(go->GetGUID());
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                }
+                break;
+            case 5:
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[10], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[11], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[12], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[13], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                me->SummonCreature(NPC_CAVERNDEEP_AMBUSHER, SpawnPosition[14], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                break;
+            case 6:
+                if (GameObject* go = me->SummonGameObject(183410, -507.820f, -103.333f, -151.353f, 0.f, QuaternionData(), 1))
+                {
+                    GoSummonList.push_back(go->GetGUID());
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE); //We can't use it!
+                    Summon(5);
+                }
+                break;
+            case 7:
+                if (GameObject* go = me->SummonGameObject(183410, -511.829f, -86.249f, -151.431f, 0.f, QuaternionData(), 1))
+                {
+                    GoSummonList.push_back(go->GetGUID());
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE); //We can't use it!
+                }
+                break;
+            case 8:
+                if (Creature* grubbis = me->SummonCreature(NPC_GRUBBIS, SpawnPosition[15], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000))
+                    grubbis->AI()->Talk(SAY_GRUBBIS);
+                me->SummonCreature(NPC_CHOMPER, SpawnPosition[16], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 1800000);
+                break;
+            case 9:
+                me->SummonGameObject(GO_RED_ROCKET, SpawnPosition[17], QuaternionData(), 7200);
+                me->SummonGameObject(GO_RED_ROCKET, SpawnPosition[18], QuaternionData(), 7200);
+                me->SummonGameObject(GO_RED_ROCKET, SpawnPosition[19], QuaternionData(), 7200);
+                break;
             }
         }
 
@@ -363,117 +363,118 @@ public:
                 {
                     switch (uiPhase)
                     {
-                        case 1:
-                            Talk(SAY_BLASTMASTER_1);
-                            NextStep(2000, true);
-                            break;
-                        case 2:
-                            SetEscortPaused(false);
-                            NextStep(0, false, 0);
-                            break;
-                        case 3:
-                            Talk(SAY_BLASTMASTER_2);
-                            SetEscortPaused(false);
-                            NextStep(0, false, 0);
-                            break;
-                        case 4:
-                            Talk(SAY_BLASTMASTER_3);
-                            NextStep(3000, true);
-                            break;
-                        case 5:
-                            Talk(SAY_BLASTMASTER_4);
-                            NextStep(3000, true);
-                            break;
-                        case 6:
-                            SetInFace(true);
-                            Talk(SAY_BLASTMASTER_5);
-                            Summon(1);
-                            if (GameObject* go = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(DATA_GO_CAVE_IN_RIGHT)))
-                                instance->HandleGameObject(ObjectGuid::Empty, true, go);
-                            NextStep(3000, true);
-                            break;
-                        case 7:
-                            Talk(SAY_BLASTMASTER_6);
-                            SetEscortPaused(false);
-                            NextStep(0, false, 0);
-                            break;
-                        case 8:
-                            me->HandleEmoteCommand(EMOTE_STATE_USE_STANDING);
-                            NextStep(25000, true);
-                            break;
-                        case 9:
-                            Summon(2);
-                            NextStep(0, false);
-                            break;
-                        case 10:
-                            Summon(4);
-                            Talk(SAY_BLASTMASTER_8);
-                            NextStep(0, false);
-                            break;
-                        case 11:
-                            Talk(SAY_BLASTMASTER_9);
-                            NextStep(5000, true);
-                            break;
-                        case 12:
-                            Talk(SAY_BLASTMASTER_10);
-                            NextStep(5000, true);
-                            break;
-                        case 13:
-                            Talk(SAY_BLASTMASTER_11);
-                            CaveDestruction(true);
-                            NextStep(8000, true);
-                            break;
-                        case 14:
-                            Talk(SAY_BLASTMASTER_12);
-                            NextStep(8500, true);
-                            break;
-                        case 15:
-                            Talk(SAY_BLASTMASTER_13);
-                            NextStep(2000, true);
-                            break;
-                        case 16:
-                            Talk(SAY_BLASTMASTER_14);
-                            SetInFace(false);
-                            if (GameObject* go = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(DATA_GO_CAVE_IN_LEFT)))
-                                instance->HandleGameObject(ObjectGuid::Empty, true, go);
-                            NextStep(2000, true);
-                            break;
-                        case 17:
-                            SetEscortPaused(false);
-                            Talk(SAY_BLASTMASTER_15);
-                            Summon(5);
-                            NextStep(0, false);
-                            break;
-                        case 18:
-                            Summon(6);
-                            NextStep(0, false);
-                            break;
-                        case 19:
-                            SetInFace(false);
-                            Summon(7);
-                            Talk(SAY_BLASTMASTER_16);
-                            NextStep(0, false);
-                            break;
-                        case 20:
-                            Talk(SAY_BLASTMASTER_18);
-                            NextStep(2000, true);
-                            break;
-                        case 21:
-                            Summon(8);
-                            NextStep(0, false);
-                            break;
-                        case 22:
-                            CaveDestruction(false);
-                            Talk(SAY_BLASTMASTER_11);
-                            NextStep(3000, true);
-                            break;
-                        case 23:
-                            Summon(9);
-                            Talk(SAY_BLASTMASTER_19);
-                            NextStep(0, false);
-                            break;
+                    case 1:
+                        Talk(SAY_BLASTMASTER_1);
+                        NextStep(2000, true);
+                        break;
+                    case 2:
+                        SetEscortPaused(false);
+                        NextStep(0, false, 0);
+                        break;
+                    case 3:
+                        Talk(SAY_BLASTMASTER_2);
+                        SetEscortPaused(false);
+                        NextStep(0, false, 0);
+                        break;
+                    case 4:
+                        Talk(SAY_BLASTMASTER_3);
+                        NextStep(3000, true);
+                        break;
+                    case 5:
+                        Talk(SAY_BLASTMASTER_4);
+                        NextStep(3000, true);
+                        break;
+                    case 6:
+                        SetInFace(true);
+                        Talk(SAY_BLASTMASTER_5);
+                        Summon(1);
+                        if (GameObject* go = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(DATA_GO_CAVE_IN_RIGHT)))
+                            instance->HandleGameObject(ObjectGuid::Empty, true, go);
+                        NextStep(3000, true);
+                        break;
+                    case 7:
+                        Talk(SAY_BLASTMASTER_6);
+                        SetEscortPaused(false);
+                        NextStep(0, false, 0);
+                        break;
+                    case 8:
+                        me->HandleEmoteCommand(EMOTE_STATE_USE_STANDING);
+                        NextStep(25000, true);
+                        break;
+                    case 9:
+                        Summon(2);
+                        NextStep(0, false);
+                        break;
+                    case 10:
+                        Summon(4);
+                        Talk(SAY_BLASTMASTER_8);
+                        NextStep(0, false);
+                        break;
+                    case 11:
+                        Talk(SAY_BLASTMASTER_9);
+                        NextStep(5000, true);
+                        break;
+                    case 12:
+                        Talk(SAY_BLASTMASTER_10);
+                        NextStep(5000, true);
+                        break;
+                    case 13:
+                        Talk(SAY_BLASTMASTER_11);
+                        CaveDestruction(true);
+                        NextStep(8000, true);
+                        break;
+                    case 14:
+                        Talk(SAY_BLASTMASTER_12);
+                        NextStep(8500, true);
+                        break;
+                    case 15:
+                        Talk(SAY_BLASTMASTER_13);
+                        NextStep(2000, true);
+                        break;
+                    case 16:
+                        Talk(SAY_BLASTMASTER_14);
+                        SetInFace(false);
+                        if (GameObject* go = ObjectAccessor::GetGameObject(*me, instance->GetGuidData(DATA_GO_CAVE_IN_LEFT)))
+                            instance->HandleGameObject(ObjectGuid::Empty, true, go);
+                        NextStep(2000, true);
+                        break;
+                    case 17:
+                        SetEscortPaused(false);
+                        Talk(SAY_BLASTMASTER_15);
+                        Summon(5);
+                        NextStep(0, false);
+                        break;
+                    case 18:
+                        Summon(6);
+                        NextStep(0, false);
+                        break;
+                    case 19:
+                        SetInFace(false);
+                        Summon(7);
+                        Talk(SAY_BLASTMASTER_16);
+                        NextStep(0, false);
+                        break;
+                    case 20:
+                        Talk(SAY_BLASTMASTER_18);
+                        NextStep(2000, true);
+                        break;
+                    case 21:
+                        Summon(8);
+                        NextStep(0, false);
+                        break;
+                    case 22:
+                        CaveDestruction(false);
+                        Talk(SAY_BLASTMASTER_11);
+                        NextStep(3000, true);
+                        break;
+                    case 23:
+                        Summon(9);
+                        Talk(SAY_BLASTMASTER_19);
+                        NextStep(0, false);
+                        break;
                     }
-                } else uiTimer -= uiDiff;
+                }
+                else uiTimer -= uiDiff;
             }
 
             if (!UpdateVictim())
@@ -545,39 +546,39 @@ public:
 // 12709 - Collecting Fallout
 class spell_collecting_fallout : public SpellScriptLoader
 {
-    public:
-        spell_collecting_fallout() : SpellScriptLoader("spell_collecting_fallout") { }
+public:
+    spell_collecting_fallout() : SpellScriptLoader("spell_collecting_fallout") { }
 
-        class spell_collecting_fallout_SpellScript : public SpellScript
+    class spell_collecting_fallout_SpellScript : public SpellScript
+    {
+        void OnLaunch(SpellEffIndex effIndex)
         {
-            void OnLaunch(SpellEffIndex effIndex)
-            {
-                // estimated 25% chance of success
-                if (roll_chance_i(25))
-                    _spellFail = false;
-                else
-                    PreventHitDefaultEffect(effIndex);
-            }
-
-            void HandleFail(SpellEffIndex effIndex)
-            {
-                if (!_spellFail)
-                    PreventHitDefaultEffect(effIndex);
-            }
-
-            void Register() override
-            {
-                OnEffectLaunch.Register(&spell_collecting_fallout_SpellScript::OnLaunch, EFFECT_0, SPELL_EFFECT_TRIGGER_SPELL);
-                OnEffectLaunch.Register(&spell_collecting_fallout_SpellScript::HandleFail, EFFECT_1, SPELL_EFFECT_TRIGGER_SPELL);
-            }
-
-            bool _spellFail = true;
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_collecting_fallout_SpellScript();
+            // estimated 25% chance of success
+            if (roll_chance_i(25))
+                _spellFail = false;
+            else
+                PreventHitDefaultEffect(effIndex);
         }
+
+        void HandleFail(SpellEffIndex effIndex)
+        {
+            if (!_spellFail)
+                PreventHitDefaultEffect(effIndex);
+        }
+
+        void Register() override
+        {
+            OnEffectLaunch.Register(&spell_collecting_fallout_SpellScript::OnLaunch, EFFECT_0, SPELL_EFFECT_TRIGGER_SPELL);
+            OnEffectLaunch.Register(&spell_collecting_fallout_SpellScript::HandleFail, EFFECT_1, SPELL_EFFECT_TRIGGER_SPELL);
+        }
+
+        bool _spellFail = true;
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_collecting_fallout_SpellScript();
+    }
 };
 
 void AddSC_gnomeregan()

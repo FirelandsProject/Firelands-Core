@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,26 +26,26 @@ class GridRefManager;
 template<class OBJECT>
 class GridReference : public Reference<GridRefManager<OBJECT>, OBJECT>
 {
-    protected:
-        void targetObjectBuildLink() override
-        {
-            // called from link()
-            this->getTarget()->insertFirst(this);
-            this->getTarget()->incSize();
-        }
-        void targetObjectDestroyLink() override
-        {
-            // called from unlink()
-            if (this->isValid()) this->getTarget()->decSize();
-        }
-        void sourceObjectDestroyLink() override
-        {
-            // called from invalidate()
-            this->getTarget()->decSize();
-        }
-    public:
-        GridReference() : Reference<GridRefManager<OBJECT>, OBJECT>() { }
-        ~GridReference() { this->unlink(); }
-        GridReference* next() { return (GridReference*)Reference<GridRefManager<OBJECT>, OBJECT>::next(); }
+protected:
+    void targetObjectBuildLink() override
+    {
+        // called from link()
+        this->getTarget()->insertFirst(this);
+        this->getTarget()->incSize();
+    }
+    void targetObjectDestroyLink() override
+    {
+        // called from unlink()
+        if (this->isValid()) this->getTarget()->decSize();
+    }
+    void sourceObjectDestroyLink() override
+    {
+        // called from invalidate()
+        this->getTarget()->decSize();
+    }
+public:
+    GridReference() : Reference<GridRefManager<OBJECT>, OBJECT>() { }
+    ~GridReference() { this->unlink(); }
+    GridReference* next() { return (GridReference*)Reference<GridRefManager<OBJECT>, OBJECT>::next(); }
 };
 #endif

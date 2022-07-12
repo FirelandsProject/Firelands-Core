@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,9 +21,9 @@
 
 enum Spells
 {
-    SPELL_FIREBALL      = 12466,
-    SPELL_OVERHEAT      = 86633,
-    SPELL_RAIN_OF_FIRE  = 86636
+    SPELL_FIREBALL = 12466,
+    SPELL_OVERHEAT = 86633,
+    SPELL_RAIN_OF_FIRE = 86636
 };
 
 enum Events
@@ -72,21 +72,21 @@ struct boss_lord_overheat : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_FIREBALL:
-                    DoCastVictim(SPELL_FIREBALL);
-                    events.Repeat(2s);
-                    break;
-                case EVENT_OVERHEAT:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                        DoCast(target, SPELL_OVERHEAT);
-                    events.Repeat(9s, 10s);
-                    break;
-                case EVENT_RAIN_OF_FIRE:
-                    DoCastAOE(SPELL_RAIN_OF_FIRE);
-                    events.Repeat(15s, 20s);
-                    break;
-                default:
-                    break;
+            case EVENT_FIREBALL:
+                DoCastVictim(SPELL_FIREBALL);
+                events.Repeat(2s);
+                break;
+            case EVENT_OVERHEAT:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                    DoCast(target, SPELL_OVERHEAT);
+                events.Repeat(9s, 10s);
+                break;
+            case EVENT_RAIN_OF_FIRE:
+                DoCastAOE(SPELL_RAIN_OF_FIRE);
+                events.Repeat(15s, 20s);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))

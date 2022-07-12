@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,29 +43,29 @@ namespace Movement
         data.WriteBits(moveSpline.getPath().size(), 22);
         switch (moveSpline.splineflags & MoveSplineFlag::Mask_Final_Facing)
         {
-            case MoveSplineFlag::Final_Target:
-            {
-                ObjectGuid targetGuid(moveSpline.facing.target);
-                data.WriteBits(2, 2);
-                data.WriteBit(targetGuid[4]);
-                data.WriteBit(targetGuid[3]);
-                data.WriteBit(targetGuid[7]);
-                data.WriteBit(targetGuid[2]);
-                data.WriteBit(targetGuid[6]);
-                data.WriteBit(targetGuid[1]);
-                data.WriteBit(targetGuid[0]);
-                data.WriteBit(targetGuid[5]);
-                break;
-            }
-            case MoveSplineFlag::Final_Angle:
-                data.WriteBits(0, 2);
-                break;
-            case MoveSplineFlag::Final_Point:
-                data.WriteBits(1, 2);
-                break;
-            default:
-                data.WriteBits(3, 2);
-                break;
+        case MoveSplineFlag::Final_Target:
+        {
+            ObjectGuid targetGuid(moveSpline.facing.target);
+            data.WriteBits(2, 2);
+            data.WriteBit(targetGuid[4]);
+            data.WriteBit(targetGuid[3]);
+            data.WriteBit(targetGuid[7]);
+            data.WriteBit(targetGuid[2]);
+            data.WriteBit(targetGuid[6]);
+            data.WriteBit(targetGuid[1]);
+            data.WriteBit(targetGuid[0]);
+            data.WriteBit(targetGuid[5]);
+            break;
+        }
+        case MoveSplineFlag::Final_Angle:
+            data.WriteBits(0, 2);
+            break;
+        case MoveSplineFlag::Final_Point:
+            data.WriteBits(1, 2);
+            break;
+        default:
+            data.WriteBits(3, 2);
+            break;
         }
 
         data.WriteBit((moveSpline.splineflags & MoveSplineFlag::Parabolic) && moveSpline.effect_start_time < moveSpline.Duration());

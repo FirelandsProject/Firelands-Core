@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_the_black_stalker
-SD%Complete: 95
-SDComment: Timers may be incorrect
-SDCategory: Coilfang Resevoir, Underbog
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_the_black_stalker
+ SD%Complete: 95
+ SDComment: Timers may be incorrect
+ SDCategory: Coilfang Resevoir, Underbog
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ObjectAccessor.h"
@@ -29,18 +29,18 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_LEVITATE              = 31704,
-    SPELL_SUSPENSION            = 31719,
-    SPELL_LEVITATION_PULSE      = 31701,
-    SPELL_MAGNETIC_PULL         = 31705,
-    SPELL_CHAIN_LIGHTNING       = 31717,
-    SPELL_STATIC_CHARGE         = 31715,
-    SPELL_SUMMON_SPORE_STRIDER  = 38755
+    SPELL_LEVITATE = 31704,
+    SPELL_SUSPENSION = 31719,
+    SPELL_LEVITATION_PULSE = 31701,
+    SPELL_MAGNETIC_PULL = 31705,
+    SPELL_CHAIN_LIGHTNING = 31717,
+    SPELL_STATIC_CHARGE = 31715,
+    SPELL_SUMMON_SPORE_STRIDER = 38755
 };
 
 enum CreatureIdS
 {
-    ENTRY_SPORE_STRIDER         = 22299
+    ENTRY_SPORE_STRIDER = 22299
 };
 
 class boss_the_black_stalker : public CreatureScript
@@ -124,14 +124,16 @@ public:
                     return;
                 }
                 check_Timer = 1000;
-            } else check_Timer -= diff;
+            }
+            else check_Timer -= diff;
 
             // Spore Striders
             if (IsHeroic() && SporeStriders_Timer <= diff)
             {
                 DoCast(me, SPELL_SUMMON_SPORE_STRIDER);
                 SporeStriders_Timer = 10000 + rand32() % 5000;
-            } else SporeStriders_Timer -= diff;
+            }
+            else SporeStriders_Timer -= diff;
 
             // Levitate
             if (LevitatedTarget)
@@ -159,7 +161,8 @@ public:
                     }
                     else
                         LevitatedTarget.Clear();
-                } else LevitatedTarget_Timer -= diff;
+                }
+                else LevitatedTarget_Timer -= diff;
             }
             if (Levitate_Timer <= diff)
             {
@@ -171,7 +174,8 @@ public:
                     InAir = false;
                 }
                 Levitate_Timer = 12000 + rand32() % 3000;
-            } else Levitate_Timer -= diff;
+            }
+            else Levitate_Timer -= diff;
 
             // Chain Lightning
             if (ChainLightning_Timer <= diff)
@@ -179,7 +183,8 @@ public:
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                     DoCast(target, SPELL_CHAIN_LIGHTNING);
                 ChainLightning_Timer = 7000;
-            } else ChainLightning_Timer -= diff;
+            }
+            else ChainLightning_Timer -= diff;
 
             // Static Charge
             if (StaticCharge_Timer <= diff)
@@ -187,7 +192,8 @@ public:
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30, true))
                     DoCast(target, SPELL_STATIC_CHARGE);
                 StaticCharge_Timer = 10000;
-            } else StaticCharge_Timer -= diff;
+            }
+            else StaticCharge_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

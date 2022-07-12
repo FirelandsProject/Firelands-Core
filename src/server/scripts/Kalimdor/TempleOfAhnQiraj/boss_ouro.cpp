@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,8 +23,8 @@
 enum Spells
 {
     // Ouro
-    SPELL_BIRTH             = 26586,
-    SPELL_GROUND_RUPTURE    = 26100,
+    SPELL_BIRTH = 26586,
+    SPELL_GROUND_RUPTURE = 26100,
 };
 
 enum Misc

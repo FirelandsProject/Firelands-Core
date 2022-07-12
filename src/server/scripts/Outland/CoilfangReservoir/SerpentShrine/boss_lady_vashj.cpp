@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Lady_Vashj
-SD%Complete: 99
-SDComment: Missing blizzlike Shield Generators coords
-SDCategory: Coilfang Resevoir, Serpent Shrine Cavern
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Lady_Vashj
+ SD%Complete: 99
+ SDComment: Missing blizzlike Shield Generators coords
+ SDCategory: Coilfang Resevoir, Serpent Shrine Cavern
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "GameObject.h"
@@ -37,33 +37,33 @@ EndScriptData */
 
 enum LadyVashj
 {
-    SAY_INTRO                   = 0,
-    SAY_AGGRO                   = 1,
-    SAY_PHASE1                  = 2,
-    SAY_PHASE2                  = 3,
-    SAY_PHASE3                  = 4,
-    SAY_BOWSHOT                 = 5,
-    SAY_SLAY                    = 6,
-    SAY_DEATH                   = 7,
+    SAY_INTRO = 0,
+    SAY_AGGRO = 1,
+    SAY_PHASE1 = 2,
+    SAY_PHASE2 = 3,
+    SAY_PHASE3 = 4,
+    SAY_BOWSHOT = 5,
+    SAY_SLAY = 6,
+    SAY_DEATH = 7,
 
-    SPELL_SURGE                 = 38044,
-    SPELL_MULTI_SHOT            = 38310,
-    SPELL_SHOCK_BLAST           = 38509,
-    SPELL_ENTANGLE              = 38316,
+    SPELL_SURGE = 38044,
+    SPELL_MULTI_SHOT = 38310,
+    SPELL_SHOCK_BLAST = 38509,
+    SPELL_ENTANGLE = 38316,
     SPELL_STATIC_CHARGE_TRIGGER = 38280,
-    SPELL_FORKED_LIGHTNING      = 40088,
-    SPELL_SHOOT                 = 40873,
-    SPELL_POISON_BOLT           = 40095,
-    SPELL_TOXIC_SPORES          = 38575,
-    SPELL_MAGIC_BARRIER         = 38112,
+    SPELL_FORKED_LIGHTNING = 40088,
+    SPELL_SHOOT = 40873,
+    SPELL_POISON_BOLT = 40095,
+    SPELL_TOXIC_SPORES = 38575,
+    SPELL_MAGIC_BARRIER = 38112,
 
-    SHIED_GENERATOR_CHANNEL     = 19870,
-    ENCHANTED_ELEMENTAL         = 21958,
-    TAINTED_ELEMENTAL           = 22009,
-    COILFANG_STRIDER            = 22056,
-    COILFANG_ELITE              = 22055,
-    TOXIC_SPOREBAT              = 22140,
-    TOXIC_SPORES_TRIGGER        = 22207
+    SHIED_GENERATOR_CHANNEL = 19870,
+    ENCHANTED_ELEMENTAL = 21958,
+    TAINTED_ELEMENTAL = 22009,
+    COILFANG_STRIDER = 22056,
+    COILFANG_ELITE = 22055,
+    TOXIC_SPOREBAT = 22140,
+    TOXIC_SPORES_TRIGGER = 22207
 };
 
 #define MIDDLE_X                30.134f
@@ -212,7 +212,8 @@ public:
             {
                 CanAttack = false;
                 JustCreated = false;
-            } else CanAttack = true;
+            }
+            else CanAttack = true;
 
             for (uint8 i = 0; i < 4; ++i)
             {
@@ -228,7 +229,7 @@ public:
 
             instance->SetData(DATA_LADYVASHJEVENT, NOT_STARTED);
 
-            me->SetCorpseDelay(1000*60*60);
+            me->SetCorpseDelay(1000 * 60 * 60);
         }
 
         // Called when a tainted elemental dies
@@ -303,16 +304,16 @@ public:
         {
             switch (urand(0, 1))
             {
-                case 0:
-                    // Shoot
-                    // Used in Phases 1 and 3 after Entangle or while having nobody in melee range. A shot that hits her target for 4097-5543 Physical damage.
-                    DoCastVictim(SPELL_SHOOT);
-                    break;
-                case 1:
-                    // Multishot
-                    // Used in Phases 1 and 3 after Entangle or while having nobody in melee range. A shot that hits 1 person and 4 people around him for 6475-7525 physical damage.
-                    DoCastVictim(SPELL_MULTI_SHOT);
-                    break;
+            case 0:
+                // Shoot
+                // Used in Phases 1 and 3 after Entangle or while having nobody in melee range. A shot that hits her target for 4097-5543 Physical damage.
+                DoCastVictim(SPELL_SHOOT);
+                break;
+            case 1:
+                // Multishot
+                // Used in Phases 1 and 3 after Entangle or while having nobody in melee range. A shot that hits 1 person and 4 people around him for 6475-7525 physical damage.
+                DoCastVictim(SPELL_MULTI_SHOT);
+                break;
             }
             if (rand32() % 3)
             {
@@ -328,7 +329,7 @@ public:
                 {
                     CanAttack = true;
                     me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                    AggroTimer=19000;
+                    AggroTimer = 19000;
                 }
                 else
                 {
@@ -356,7 +357,8 @@ public:
                     DoCastVictim(SPELL_SHOCK_BLAST);
 
                     ShockBlastTimer = 1000 + rand32() % 14000;       // random cooldown
-                } else ShockBlastTimer -= diff;
+                }
+                else ShockBlastTimer -= diff;
 
                 // StaticChargeTimer
                 if (StaticChargeTimer <= diff)
@@ -368,7 +370,8 @@ public:
                         DoCast(target, SPELL_STATIC_CHARGE_TRIGGER); // cast Static Charge every 2 seconds for 20 seconds
 
                     StaticChargeTimer = 10000 + rand32() % 20000;
-                } else StaticChargeTimer -= diff;
+                }
+                else StaticChargeTimer -= diff;
 
                 // EntangleTimer
                 if (EntangleTimer <= diff)
@@ -387,7 +390,8 @@ public:
                         Entangle = false;
                         EntangleTimer = 20000 + rand32() % 5000;
                     }
-                } else EntangleTimer -= diff;
+                }
+                else EntangleTimer -= diff;
 
                 // Phase 1
                 if (Phase == 1)
@@ -402,7 +406,7 @@ public:
                         DoTeleportTo(MIDDLE_X, MIDDLE_Y, MIDDLE_Z);
 
                         for (uint8 i = 0; i < 4; ++i)
-                            if (Creature* creature = me->SummonCreature(SHIED_GENERATOR_CHANNEL, ShieldGeneratorChannelPos[i][0],  ShieldGeneratorChannelPos[i][1],  ShieldGeneratorChannelPos[i][2],  ShieldGeneratorChannelPos[i][3], TEMPSUMMON_CORPSE_DESPAWN, 0))
+                            if (Creature* creature = me->SummonCreature(SHIED_GENERATOR_CHANNEL, ShieldGeneratorChannelPos[i][0], ShieldGeneratorChannelPos[i][1], ShieldGeneratorChannelPos[i][2], ShieldGeneratorChannelPos[i][3], TEMPSUMMON_CORPSE_DESPAWN, 0))
                                 ShieldGeneratorChannel[i] = creature->GetGUID();
 
                         Talk(SAY_PHASE2);
@@ -427,7 +431,8 @@ public:
                         if (SummonSporebatTimer < 5000)
                             SummonSporebatTimer = 5000;
 
-                    } else SummonSporebatTimer -= diff;
+                    }
+                    else SummonSporebatTimer -= diff;
                 }
 
                 // Melee attack
@@ -452,7 +457,8 @@ public:
                         CastShootOrMultishot();
 
                     CheckTimer = 5000;
-                } else CheckTimer -= diff;
+                }
+                else CheckTimer -= diff;
             }
             // Phase 2
             else
@@ -470,7 +476,8 @@ public:
                     DoCast(target, SPELL_FORKED_LIGHTNING);
 
                     ForkedLightningTimer = 2000 + rand32() % 6000;
-                } else ForkedLightningTimer -= diff;
+                }
+                else ForkedLightningTimer -= diff;
 
                 // EnchantedElementalTimer
                 if (EnchantedElementalTimer <= diff)
@@ -483,7 +490,8 @@ public:
                         ++EnchantedElementalPos;
 
                     EnchantedElementalTimer = 10000 + rand32() % 5000;
-                } else EnchantedElementalTimer -= diff;
+                }
+                else EnchantedElementalTimer -= diff;
 
                 // TaintedElementalTimer
                 if (TaintedElementalTimer <= diff)
@@ -492,7 +500,8 @@ public:
                     me->SummonCreature(TAINTED_ELEMENTAL, ElementPos[pos][0], ElementPos[pos][1], ElementPos[pos][2], ElementPos[pos][3], TEMPSUMMON_DEAD_DESPAWN, 0);
 
                     TaintedElementalTimer = 120000;
-                } else TaintedElementalTimer -= diff;
+                }
+                else TaintedElementalTimer -= diff;
 
                 // CoilfangEliteTimer
                 if (CoilfangEliteTimer <= diff)
@@ -507,7 +516,8 @@ public:
                             coilfangElite->AI()->AttackStart(me->GetVictim());
                     }
                     CoilfangEliteTimer = 45000 + rand32() % 5000;
-                } else CoilfangEliteTimer -= diff;
+                }
+                else CoilfangEliteTimer -= diff;
 
                 // CoilfangStriderTimer
                 if (CoilfangStriderTimer <= diff)
@@ -521,7 +531,8 @@ public:
                             CoilfangStrider->AI()->AttackStart(me->GetVictim());
                     }
                     CoilfangStriderTimer = 60000 + rand32() % 10000;
-                } else CoilfangStriderTimer -= diff;
+                }
+                else CoilfangStriderTimer -= diff;
 
                 // CheckTimer
                 if (CheckTimer <= diff)
@@ -542,7 +553,8 @@ public:
                         me->GetMotionMaster()->MoveChase(me->GetVictim());
                     }
                     CheckTimer = 1000;
-                } else CheckTimer -= diff;
+                }
+                else CheckTimer -= diff;
             }
         }
     };
@@ -638,7 +650,8 @@ public:
                     if (!vashj->IsInCombat() || ENSURE_AI(boss_lady_vashj::boss_lady_vashjAI, vashj->AI())->Phase != 2 || vashj->isDead())
                         me->KillSelf();
                 Move = 1000;
-            } else Move -= diff;
+            }
+            else Move -= diff;
         }
     };
 
@@ -702,7 +715,8 @@ public:
                     DoCast(target, SPELL_POISON_BOLT);
 
                 PoisonBoltTimer = 5000 + rand32() % 5000;
-            } else PoisonBoltTimer -= diff;
+            }
+            else PoisonBoltTimer -= diff;
 
             // DespawnTimer
             if (DespawnTimer <= diff)
@@ -712,7 +726,8 @@ public:
 
                 // to prevent crashes
                 DespawnTimer = 1000;
-            } else DespawnTimer -= diff;
+            }
+            else DespawnTimer -= diff;
         }
     };
 
@@ -783,7 +798,8 @@ public:
                 uint32 rndpos = rand32() % 8;
                 me->GetMotionMaster()->MovePoint(1, SporebatWPPos[rndpos][0], SporebatWPPos[rndpos][1], SporebatWPPos[rndpos][2]);
                 MovementTimer = 6000;
-            } else MovementTimer -= diff;
+            }
+            else MovementTimer -= diff;
 
             // toxic spores
             if (BoltTimer <= diff)
@@ -877,7 +893,8 @@ public:
                     }
                 }
                 CheckTimer = 1000;
-            } else CheckTimer -= diff;
+            }
+            else CheckTimer -= diff;
         }
     };
 
@@ -906,24 +923,24 @@ public:
                 uint8 channelIdentifier;
                 switch (gObj->GetEntry())
                 {
-                    case 185052:
-                        identifier = DATA_SHIELDGENERATOR1;
-                        channelIdentifier = 0;
-                        break;
-                    case 185053:
-                        identifier = DATA_SHIELDGENERATOR2;
-                        channelIdentifier = 1;
-                        break;
-                    case 185051:
-                        identifier = DATA_SHIELDGENERATOR3;
-                        channelIdentifier = 2;
-                        break;
-                    case 185054:
-                        identifier = DATA_SHIELDGENERATOR4;
-                        channelIdentifier = 3;
-                        break;
-                    default:
-                        return true;
+                case 185052:
+                    identifier = DATA_SHIELDGENERATOR1;
+                    channelIdentifier = 0;
+                    break;
+                case 185053:
+                    identifier = DATA_SHIELDGENERATOR2;
+                    channelIdentifier = 1;
+                    break;
+                case 185051:
+                    identifier = DATA_SHIELDGENERATOR3;
+                    channelIdentifier = 2;
+                    break;
+                case 185054:
+                    identifier = DATA_SHIELDGENERATOR4;
+                    channelIdentifier = 3;
+                    break;
+                default:
+                    return true;
                 }
 
                 if (instance->GetData(identifier))

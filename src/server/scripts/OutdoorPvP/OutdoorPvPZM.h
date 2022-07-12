@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,16 +30,16 @@ namespace WorldPackets
 
 enum DefenseMessages
 {
-    TEXT_WEST_BEACON_TAKEN_ALLIANCE         = 15541, // '|cffffff00The Alliance has taken control of the West Beacon!|r'
-    TEXT_WEST_BEACON_TAKEN_HORDE            = 15543, // '|cffffff00The Horde has taken control of the West Beacon!|r'
-    TEXT_EAST_BEACON_TAKEN_ALLIANCE         = 15546, // '|cffffff00The Alliance has taken control of the East Beacon!|r'
-    TEXT_EAST_BEACON_TAKEN_HORDE            = 15545, // '|cffffff00The Horde has taken control of the East Beacon!|r'
-    TEXT_TWIN_SPIRE_RUINS_TAKEN_ALLIANCE    = 15591, // '|cffffff00The Alliance has taken control of Twin Spire Ruins!|r'
-    TEXT_TWIN_SPIRE_RUINS_TAKEN_HORDE       = 15590, // '|cffffff00The Horde has taken control of Twin Spire Ruins!|r'
-    TEXT_BOTH_BEACONS_TAKEN_ALLIANCE        = 16284, // (NYI) '|cffffff00The Alliance has taken control of both beacons!|r'
-    TEXT_BOTH_BEACONS_TAKEN_HORDE           = 16285, // (NYI) '|cffffff00The Horde has taken control of both beacons!|r'
-    TEXT_BATTLE_STANDARDS_ALLIANCE          = 16287, // (NYI) '|cffffff00The Alliance Field Scout is now issuing battle standards.|r'
-    TEXT_BATTLE_STANDARDS_HORDE             = 16288  // (NYI) '|cffffff00The Horde Field Scout is now issuing battle standards.|r'
+    TEXT_WEST_BEACON_TAKEN_ALLIANCE = 15541, // '|cffffff00The Alliance has taken control of the West Beacon!|r'
+    TEXT_WEST_BEACON_TAKEN_HORDE = 15543, // '|cffffff00The Horde has taken control of the West Beacon!|r'
+    TEXT_EAST_BEACON_TAKEN_ALLIANCE = 15546, // '|cffffff00The Alliance has taken control of the East Beacon!|r'
+    TEXT_EAST_BEACON_TAKEN_HORDE = 15545, // '|cffffff00The Horde has taken control of the East Beacon!|r'
+    TEXT_TWIN_SPIRE_RUINS_TAKEN_ALLIANCE = 15591, // '|cffffff00The Alliance has taken control of Twin Spire Ruins!|r'
+    TEXT_TWIN_SPIRE_RUINS_TAKEN_HORDE = 15590, // '|cffffff00The Horde has taken control of Twin Spire Ruins!|r'
+    TEXT_BOTH_BEACONS_TAKEN_ALLIANCE = 16284, // (NYI) '|cffffff00The Alliance has taken control of both beacons!|r'
+    TEXT_BOTH_BEACONS_TAKEN_HORDE = 16285, // (NYI) '|cffffff00The Horde has taken control of both beacons!|r'
+    TEXT_BATTLE_STANDARDS_ALLIANCE = 16287, // (NYI) '|cffffff00The Alliance Field Scout is now issuing battle standards.|r'
+    TEXT_BATTLE_STANDARDS_HORDE = 16288  // (NYI) '|cffffff00The Horde Field Scout is now issuing battle standards.|r'
 };
 
 enum OutdoorPvPZMSpells
@@ -108,18 +108,18 @@ class OutdoorPvPZM;
 
 class OPvPCapturePointZM_Beacon : public OPvPCapturePoint
 {
-    public:
-        OPvPCapturePointZM_Beacon(OutdoorPvP* pvp, ZM_BeaconType type);
+public:
+    OPvPCapturePointZM_Beacon(OutdoorPvP* pvp, ZM_BeaconType type);
 
-        void ChangeState() override;
+    void ChangeState() override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
 
-        void UpdateTowerState();
+    void UpdateTowerState();
 
-    protected:
-        ZM_BeaconType m_TowerType;
-        uint32 m_TowerState;
+protected:
+    ZM_BeaconType m_TowerType;
+    uint32 m_TowerState;
 };
 
 enum ZM_GraveyardState
@@ -131,67 +131,67 @@ enum ZM_GraveyardState
 
 class OPvPCapturePointZM_Graveyard : public OPvPCapturePoint
 {
-    public:
-        OPvPCapturePointZM_Graveyard(OutdoorPvP* pvp);
+public:
+    OPvPCapturePointZM_Graveyard(OutdoorPvP* pvp);
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void ChangeState() override { }
+    void ChangeState() override { }
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
 
-        void UpdateTowerState();
+    void UpdateTowerState();
 
-        int32 HandleOpenGo(Player* player, GameObject* go) override;
+    int32 HandleOpenGo(Player* player, GameObject* go) override;
 
-        void SetBeaconState(uint32 controlling_team); // not good atm
+    void SetBeaconState(uint32 controlling_team); // not good atm
 
-        bool HandleGossipOption(Player* player, Creature* creature, uint32 gossipid) override;
+    bool HandleGossipOption(Player* player, Creature* creature, uint32 gossipid) override;
 
-        bool HandleDropFlag(Player* player, uint32 spellId) override;
+    bool HandleDropFlag(Player* player, uint32 spellId) override;
 
-        bool CanTalkTo(Player* player, Creature* creature, GossipMenuItems const& gso) override;
+    bool CanTalkTo(Player* player, Creature* creature, GossipMenuItems const& gso) override;
 
-        uint32 GetGraveyardState() const;
+    uint32 GetGraveyardState() const;
 
-    private:
-        uint32 m_GraveyardState;
+private:
+    uint32 m_GraveyardState;
 
-    protected:
-        uint32 m_BothControllingFaction;
+protected:
+    uint32 m_BothControllingFaction;
 
-        ObjectGuid m_FlagCarrierGUID;
+    ObjectGuid m_FlagCarrierGUID;
 };
 
 class OutdoorPvPZM : public OutdoorPvP
 {
-    public:
-        OutdoorPvPZM();
+public:
+    OutdoorPvPZM();
 
-        bool SetupOutdoorPvP() override;
+    bool SetupOutdoorPvP() override;
 
-        void HandlePlayerEnterZone(Player* player, uint32 zone) override;
-        void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
+    void HandlePlayerEnterZone(Player* player, uint32 zone) override;
+    void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
 
-        void SendRemoveWorldStates(Player* player) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        void HandleKillImpl(Player* player, Unit* killed) override;
+    void HandleKillImpl(Player* player, Unit* killed) override;
 
-        uint32 GetAllianceTowersControlled() const;
-        void SetAllianceTowersControlled(uint32 count);
+    uint32 GetAllianceTowersControlled() const;
+    void SetAllianceTowersControlled(uint32 count);
 
-        uint32 GetHordeTowersControlled() const;
-        void SetHordeTowersControlled(uint32 count);
+    uint32 GetHordeTowersControlled() const;
+    void SetHordeTowersControlled(uint32 count);
 
-    private:
-        OPvPCapturePointZM_Graveyard * m_Graveyard;
+private:
+    OPvPCapturePointZM_Graveyard* m_Graveyard;
 
-        uint32 m_AllianceTowersControlled;
-        uint32 m_HordeTowersControlled;
+    uint32 m_AllianceTowersControlled;
+    uint32 m_HordeTowersControlled;
 };
 
 /// @todo flag carrier death/leave/mount/activitychange should give back the gossip options

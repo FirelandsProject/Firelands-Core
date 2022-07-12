@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -28,9 +28,9 @@ uint32 const EncounterCount = 4;
 enum RCDataTypes
 {
     // Bosses
-    DATA_OGGLEFLINT             = 0,
-    DATA_JERGOSH_THE_INVOKER    = 1,
-    DATA_BAZZALAN               = 2,
+    DATA_OGGLEFLINT = 0,
+    DATA_JERGOSH_THE_INVOKER = 1,
+    DATA_BAZZALAN = 2,
     DATA_TARAGAMAN_THE_HUNGERER = 3
 };
 

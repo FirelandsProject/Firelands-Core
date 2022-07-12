@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,33 +26,33 @@
 
 enum Spells
 {
-    SPELL_BANE                                = 48294,
-    SPELL_BANE_HIT                            = 59203, // Checked for King's Bane achievement.
-    SPELL_DARK_SLASH                          = 48292,
-    SPELL_FETID_ROT                           = 48291,
-    SPELL_SCREAMS_OF_THE_DEAD                 = 51750,
-    SPELL_SPIRIT_BURST                        = 48529,
-    SPELL_SPIRIT_STRIKE                       = 48423,
-    SPELL_ANCESTORS_VENGEANCE                 = 16939,
+    SPELL_BANE = 48294,
+    SPELL_BANE_HIT = 59203, // Checked for King's Bane achievement.
+    SPELL_DARK_SLASH = 48292,
+    SPELL_FETID_ROT = 48291,
+    SPELL_SCREAMS_OF_THE_DEAD = 51750,
+    SPELL_SPIRIT_BURST = 48529,
+    SPELL_SPIRIT_STRIKE = 48423,
+    SPELL_ANCESTORS_VENGEANCE = 16939,
 
-    SPELL_SUMMON_AVENGING_SPIRIT              = 48592,
-    SPELL_SUMMON_SPIRIT_FOUNT                 = 48386,
+    SPELL_SUMMON_AVENGING_SPIRIT = 48592,
+    SPELL_SUMMON_SPIRIT_FOUNT = 48386,
 
-    SPELL_CHANNEL_SPIRIT_TO_YMIRON            = 48316,
-    SPELL_CHANNEL_YMIRON_TO_SPIRIT            = 48307,
+    SPELL_CHANNEL_SPIRIT_TO_YMIRON = 48316,
+    SPELL_CHANNEL_YMIRON_TO_SPIRIT = 48307,
 
-    SPELL_SPIRIT_FOUNT                        = 48380
+    SPELL_SPIRIT_FOUNT = 48380
 };
 
 enum Texts
 {
-    SAY_AGGRO                               = 0,
-    SAY_SLAY                                = 1,
-    SAY_DEATH                               = 2,
-    SAY_SUMMON_BJORN                        = 3,
-    SAY_SUMMON_HALDOR                       = 4,
-    SAY_SUMMON_RANULF                       = 5,
-    SAY_SUMMON_TORGYN                       = 6
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_DEATH = 2,
+    SAY_SUMMON_BJORN = 3,
+    SAY_SUMMON_HALDOR = 4,
+    SAY_SUMMON_RANULF = 5,
+    SAY_SUMMON_TORGYN = 6
 };
 
 enum Events
@@ -96,7 +96,7 @@ static ActiveBoatStruct ActiveBoat[4] =
 
 enum Misc
 {
-    DATA_KINGS_BANE                 = 2157
+    DATA_KINGS_BANE = 2157
 };
 
 class boss_ymiron : public CreatureScript
@@ -186,20 +186,20 @@ public:
         {
             switch (summon->GetEntry())
             {
-                case NPC_SPIRIT_FOUNT:
-                    summon->CastSpell(summon, SPELL_SPIRIT_FOUNT, true);
-                    summon->SetDisplayId(11686);
-                    SpiritFountGUID = summon->GetGUID();
-                    break;
-                case NPC_AVENGING_SPIRIT:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                    {
-                        AddThreat(target, 0.0f, summon);
-                        summon->AI()->AttackStart(target);
-                    }
-                    break;
-                default:
-                    break;
+            case NPC_SPIRIT_FOUNT:
+                summon->CastSpell(summon, SPELL_SPIRIT_FOUNT, true);
+                summon->SetDisplayId(11686);
+                SpiritFountGUID = summon->GetGUID();
+                break;
+            case NPC_AVENGING_SPIRIT:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                {
+                    AddThreat(target, 0.0f, summon);
+                    summon->AI()->AttackStart(target);
+                }
+                break;
+            default:
+                break;
             }
 
             summons.Summon(summon);
@@ -233,44 +233,44 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_BANE:
-                    DoCast(SPELL_BANE);
-                    events.ScheduleEvent(EVENT_BANE, urand(20000, 25000));
-                    break;
-                case EVENT_FETID_ROT:
-                    DoCastVictim(SPELL_FETID_ROT);
-                    events.ScheduleEvent(EVENT_FETID_ROT, urand(10000, 15000));
-                    break;
-                case EVENT_DARK_SLASH:
-                    DoCastVictim(SPELL_DARK_SLASH);
-                    events.ScheduleEvent(EVENT_DARK_SLASH, urand(30000, 35000));
-                    break;
-                case EVENT_ANCESTORS_VENGEANCE:
-                    DoCast(me, SPELL_ANCESTORS_VENGEANCE);
-                    events.ScheduleEvent(EVENT_ANCESTORS_VENGEANCE, DUNGEON_MODE(urand(60000, 65000), urand(45000, 50000)));
-                    break;
-                case EVENT_RESUME_COMBAT:
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    events.ScheduleEvent(ActiveBoat[ActiveOrder[ActivedNumber]].event, 5000);
-                    break;
-                case EVENT_BJORN_SPIRIT_FOUNT:
-                    DoCast(SPELL_SUMMON_SPIRIT_FOUNT);
-                    break;
-                case EVENT_HALDOR_SPIRIT_STRIKE:
-                    DoCastVictim(SPELL_SPIRIT_STRIKE);
-                    events.ScheduleEvent(EVENT_HALDOR_SPIRIT_STRIKE, 5000);
-                    break;
-                case EVENT_RANULF_SPIRIT_BURST:
-                    DoCast(me, SPELL_SPIRIT_BURST);
-                    events.ScheduleEvent(EVENT_RANULF_SPIRIT_BURST, 10000);
-                    break;
-                case EVENT_TORGYN_SUMMON_AVENGING_SPIRITS:
-                    for (uint8 i = 0; i < 4; ++i)
-                        DoCast(SPELL_SUMMON_AVENGING_SPIRIT);
-                    events.ScheduleEvent(EVENT_TORGYN_SUMMON_AVENGING_SPIRITS, 15000);
-                    break;
-                default:
-                    break;
+            case EVENT_BANE:
+                DoCast(SPELL_BANE);
+                events.ScheduleEvent(EVENT_BANE, urand(20000, 25000));
+                break;
+            case EVENT_FETID_ROT:
+                DoCastVictim(SPELL_FETID_ROT);
+                events.ScheduleEvent(EVENT_FETID_ROT, urand(10000, 15000));
+                break;
+            case EVENT_DARK_SLASH:
+                DoCastVictim(SPELL_DARK_SLASH);
+                events.ScheduleEvent(EVENT_DARK_SLASH, urand(30000, 35000));
+                break;
+            case EVENT_ANCESTORS_VENGEANCE:
+                DoCast(me, SPELL_ANCESTORS_VENGEANCE);
+                events.ScheduleEvent(EVENT_ANCESTORS_VENGEANCE, DUNGEON_MODE(urand(60000, 65000), urand(45000, 50000)));
+                break;
+            case EVENT_RESUME_COMBAT:
+                me->SetReactState(REACT_AGGRESSIVE);
+                events.ScheduleEvent(ActiveBoat[ActiveOrder[ActivedNumber]].event, 5000);
+                break;
+            case EVENT_BJORN_SPIRIT_FOUNT:
+                DoCast(SPELL_SUMMON_SPIRIT_FOUNT);
+                break;
+            case EVENT_HALDOR_SPIRIT_STRIKE:
+                DoCastVictim(SPELL_SPIRIT_STRIKE);
+                events.ScheduleEvent(EVENT_HALDOR_SPIRIT_STRIKE, 5000);
+                break;
+            case EVENT_RANULF_SPIRIT_BURST:
+                DoCast(me, SPELL_SPIRIT_BURST);
+                events.ScheduleEvent(EVENT_RANULF_SPIRIT_BURST, 10000);
+                break;
+            case EVENT_TORGYN_SUMMON_AVENGING_SPIRITS:
+                for (uint8 i = 0; i < 4; ++i)
+                    DoCast(SPELL_SUMMON_AVENGING_SPIRIT);
+                events.ScheduleEvent(EVENT_TORGYN_SUMMON_AVENGING_SPIRITS, 15000);
+                break;
+            default:
+                break;
             }
         }
 
@@ -314,20 +314,20 @@ public:
 
 class achievement_kings_bane : public AchievementCriteriaScript
 {
-    public:
-        achievement_kings_bane() : AchievementCriteriaScript("achievement_kings_bane") { }
+public:
+    achievement_kings_bane() : AchievementCriteriaScript("achievement_kings_bane") { }
 
-        bool OnCheck(Player* /*player*/, Unit* target) override
-        {
-            if (!target)
-                return false;
-
-            if (Creature* Ymiron = target->ToCreature())
-                if (Ymiron->AI()->GetData(DATA_KINGS_BANE))
-                    return true;
-
+    bool OnCheck(Player* /*player*/, Unit* target) override
+    {
+        if (!target)
             return false;
-        }
+
+        if (Creature* Ymiron = target->ToCreature())
+            if (Ymiron->AI()->GetData(DATA_KINGS_BANE))
+                return true;
+
+        return false;
+    }
 };
 
 void AddSC_boss_ymiron()

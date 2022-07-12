@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "npc_pet_pri_".
- */
+ /*
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "npc_pet_pri_".
+  */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
@@ -27,60 +27,60 @@
 
 enum PriestSpells
 {
-    SPELL_PRIEST_GLYPH_OF_SHADOWFIEND       = 58228,
-    SPELL_PRIEST_SHADOWFIEND_DEATH          = 57989,
-    SPELL_PRIEST_LIGHTWELL_CHARGES          = 59907
+    SPELL_PRIEST_GLYPH_OF_SHADOWFIEND = 58228,
+    SPELL_PRIEST_SHADOWFIEND_DEATH = 57989,
+    SPELL_PRIEST_LIGHTWELL_CHARGES = 59907
 };
 
 class npc_pet_pri_lightwell : public CreatureScript
 {
-    public:
-        npc_pet_pri_lightwell() : CreatureScript("npc_pet_pri_lightwell") { }
+public:
+    npc_pet_pri_lightwell() : CreatureScript("npc_pet_pri_lightwell") { }
 
-        struct npc_pet_pri_lightwellAI : public PassiveAI
+    struct npc_pet_pri_lightwellAI : public PassiveAI
+    {
+        npc_pet_pri_lightwellAI(Creature* creature) : PassiveAI(creature)
         {
-            npc_pet_pri_lightwellAI(Creature* creature) : PassiveAI(creature)
-            {
-                DoCast(me, SPELL_PRIEST_LIGHTWELL_CHARGES, false);
-            }
-
-            void EnterEvadeMode(EvadeReason /*why*/) override
-            {
-                if (!me->IsAlive())
-                    return;
-
-                me->CombatStop(true);
-                EngagementOver();
-                me->ResetPlayerDamageReq();
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new npc_pet_pri_lightwellAI(creature);
+            DoCast(me, SPELL_PRIEST_LIGHTWELL_CHARGES, false);
         }
+
+        void EnterEvadeMode(EvadeReason /*why*/) override
+        {
+            if (!me->IsAlive())
+                return;
+
+            me->CombatStop(true);
+            EngagementOver();
+            me->ResetPlayerDamageReq();
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new npc_pet_pri_lightwellAI(creature);
+    }
 };
 
 class npc_pet_pri_shadowfiend : public CreatureScript
 {
-    public:
-        npc_pet_pri_shadowfiend() : CreatureScript("npc_pet_pri_shadowfiend") { }
+public:
+    npc_pet_pri_shadowfiend() : CreatureScript("npc_pet_pri_shadowfiend") { }
 
-        struct npc_pet_pri_shadowfiendAI : public PetAI
+    struct npc_pet_pri_shadowfiendAI : public PetAI
+    {
+        npc_pet_pri_shadowfiendAI(Creature* creature) : PetAI(creature) { }
+
+        void IsSummonedBy(Unit* summoner) override
         {
-            npc_pet_pri_shadowfiendAI(Creature* creature) : PetAI(creature) { }
-
-            void IsSummonedBy(Unit* summoner) override
-            {
-                if (summoner->HasAura(SPELL_PRIEST_GLYPH_OF_SHADOWFIEND))
-                    DoCastAOE(SPELL_PRIEST_SHADOWFIEND_DEATH);
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new npc_pet_pri_shadowfiendAI(creature);
+            if (summoner->HasAura(SPELL_PRIEST_GLYPH_OF_SHADOWFIEND))
+                DoCastAOE(SPELL_PRIEST_SHADOWFIEND_DEATH);
         }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new npc_pet_pri_shadowfiendAI(creature);
+    }
 };
 
 void AddSC_priest_pet_scripts()

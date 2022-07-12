@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,8 +28,8 @@ enum Yells
 
 enum Spells
 {
-    SPELL_BATTLE_SHOUT  = 77808,
-    SPELL_BLOODLUST     = 6742
+    SPELL_BATTLE_SHOUT = 77808,
+    SPELL_BLOODLUST = 6742
 };
 
 enum Events
@@ -49,10 +49,10 @@ struct boss_houndmaster_loksey : public BossAI
 
     void Reset() override
     {
-       BossAI::Reset();
+        BossAI::Reset();
 
-       // The dogs will respawn after a wipe
-       instance->instance->SpawnGroupSpawn(SPAWN_GROUP_ID_HOUNDS, true);
+        // The dogs will respawn after a wipe
+        instance->instance->SpawnGroupSpawn(SPAWN_GROUP_ID_HOUNDS, true);
     }
 
     void JustEngagedWith(Unit* who) override
@@ -77,17 +77,17 @@ struct boss_houndmaster_loksey : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_BATTLE_SHOUT:
-                    DoCastAOE(SPELL_BATTLE_SHOUT);
-                    events.Repeat(17s, 20s);
-                    break;
-                case EVENT_BLOODLUST:
-                    if (Creature* hound = me->FindNearestCreature(NPC_SCARLET_TRACKING_HOUND, 10.f, true))
-                        DoCast(hound, SPELL_BLOODLUST);
-                    events.Repeat(46s);
-                    break;
-                default:
-                    break;
+            case EVENT_BATTLE_SHOUT:
+                DoCastAOE(SPELL_BATTLE_SHOUT);
+                events.Repeat(17s, 20s);
+                break;
+            case EVENT_BLOODLUST:
+                if (Creature* hound = me->FindNearestCreature(NPC_SCARLET_TRACKING_HOUND, 10.f, true))
+                    DoCast(hound, SPELL_BLOODLUST);
+                events.Repeat(46s);
+                break;
+            default:
+                break;
             }
         }
 

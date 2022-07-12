@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -41,12 +41,12 @@ enum CommonDefines
 enum AsHyjalBurns
 {
     // Texts
-    SAY_BURNT_PLAIN                 = 0,
-    SAY_APPROACH_FIRELANDS          = 1,
-    SAY_RAGNAROS_SUMMONED           = 2,
+    SAY_BURNT_PLAIN = 0,
+    SAY_APPROACH_FIRELANDS = 1,
+    SAY_RAGNAROS_SUMMONED = 2,
 
     // Events
-    EVENT_ARONUS_FLY_TO_PORTAL      = 1,
+    EVENT_ARONUS_FLY_TO_PORTAL = 1,
     EVENT_ARONUS_INTRO_TELEPORT,
     EVENT_ARONUS_FLY_AFTER_TELEPORT,
     EVENT_ARONUS_FLY_OVER_PLAIN,
@@ -56,17 +56,17 @@ enum AsHyjalBurns
     EVENT_ARONUS_EJECT_PASSENGERS,
 
     // Spells
-    SPELL_HYJAL_INTRO_PORT          = 73519,
+    SPELL_HYJAL_INTRO_PORT = 73519,
     SPELL_PLAY_HYJAL_INTRO_FLIGHT_A = 94508,
     SPELL_PLAY_HYJAL_INTRO_FLIGHT_B = 94509,
     SPELL_PLAY_HYJAL_INTRO_FLIGHT_C = 94510,
     SPELL_PLAY_HYJAL_INTRO_FLIGHT_D = 94511,
-    SPELL_FLAME_BREATH              = 92815,
+    SPELL_FLAME_BREATH = 92815,
     SPELL_FORCECAST_SUMMON_RAGNAROS = 74437,
     SPELL_DANS_EJECT_ALL_PASSENGERS = 51254,
 
     // Creature
-    NPC_DEATHWING                   = 39867
+    NPC_DEATHWING = 39867
 };
 
 Position const AronusPath1[] =
@@ -141,48 +141,48 @@ struct npc_mh_aronus : public PassiveAI
         {
             switch (eventId)
             {
-                case EVENT_ARONUS_FLY_TO_PORTAL:
-                    // Preload grid to avoid waypoint issues after teleport
-                    me->GetMap()->LoadGrid(AronusPath2[0].GetPositionX(), AronusPath2[0].GetPositionY());
+            case EVENT_ARONUS_FLY_TO_PORTAL:
+                // Preload grid to avoid waypoint issues after teleport
+                me->GetMap()->LoadGrid(AronusPath2[0].GetPositionX(), AronusPath2[0].GetPositionY());
 
-                    DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_A);
-                    _events.ScheduleEvent(EVENT_ARONUS_INTRO_TELEPORT, MoveByPathAndGetTravelTime(AronusPath1, 3, 7.0f));
-                    break;
-                case EVENT_ARONUS_INTRO_TELEPORT:
-                    DoCastSelf(SPELL_HYJAL_INTRO_PORT);
-                    _events.ScheduleEvent(EVENT_ARONUS_FLY_AFTER_TELEPORT, 1s + 500ms);
-                    break;
-                case EVENT_ARONUS_FLY_AFTER_TELEPORT:
-                    _events.ScheduleEvent(EVENT_ARONUS_FLY_OVER_PLAIN, MoveByPathAndGetTravelTime(AronusPath2, 3, 14.0f));
-                    break;
-                case EVENT_ARONUS_FLY_OVER_PLAIN:
-                    Talk(SAY_BURNT_PLAIN);
-                    DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_B);
-                    _events.ScheduleEvent(EVENT_ARONUS_FLY_TO_FIRELANDS, MoveByPathAndGetTravelTime(AronusPath3, 4, 14.0f));
-                    break;
-                case EVENT_ARONUS_FLY_TO_FIRELANDS:
-                    Talk(SAY_APPROACH_FIRELANDS);
-                    DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_C);
-                    _events.ScheduleEvent(EVENT_ARONUS_SUMMON_RAGNAROS, MoveByPathAndGetTravelTime(AronusPath4, 6, 21.0f));
-                    break;
-                case EVENT_ARONUS_SUMMON_RAGNAROS:
-                    if (Creature* deathwing = me->FindNearestCreature(NPC_DEATHWING, 200.0f, true))
-                        deathwing->CastSpell(deathwing, SPELL_FLAME_BREATH);
+                DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_A);
+                _events.ScheduleEvent(EVENT_ARONUS_INTRO_TELEPORT, MoveByPathAndGetTravelTime(AronusPath1, 3, 7.0f));
+                break;
+            case EVENT_ARONUS_INTRO_TELEPORT:
+                DoCastSelf(SPELL_HYJAL_INTRO_PORT);
+                _events.ScheduleEvent(EVENT_ARONUS_FLY_AFTER_TELEPORT, 1s + 500ms);
+                break;
+            case EVENT_ARONUS_FLY_AFTER_TELEPORT:
+                _events.ScheduleEvent(EVENT_ARONUS_FLY_OVER_PLAIN, MoveByPathAndGetTravelTime(AronusPath2, 3, 14.0f));
+                break;
+            case EVENT_ARONUS_FLY_OVER_PLAIN:
+                Talk(SAY_BURNT_PLAIN);
+                DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_B);
+                _events.ScheduleEvent(EVENT_ARONUS_FLY_TO_FIRELANDS, MoveByPathAndGetTravelTime(AronusPath3, 4, 14.0f));
+                break;
+            case EVENT_ARONUS_FLY_TO_FIRELANDS:
+                Talk(SAY_APPROACH_FIRELANDS);
+                DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_C);
+                _events.ScheduleEvent(EVENT_ARONUS_SUMMON_RAGNAROS, MoveByPathAndGetTravelTime(AronusPath4, 6, 21.0f));
+                break;
+            case EVENT_ARONUS_SUMMON_RAGNAROS:
+                if (Creature* deathwing = me->FindNearestCreature(NPC_DEATHWING, 200.0f, true))
+                    deathwing->CastSpell(deathwing, SPELL_FLAME_BREATH);
 
-                    DoCastSelf(SPELL_FORCECAST_SUMMON_RAGNAROS);
-                    _events.ScheduleEvent(EVENT_ARONUS_FLY_TO_NORDRASSIL, 7s);
-                    break;
-                case EVENT_ARONUS_FLY_TO_NORDRASSIL:
-                    Talk(SAY_RAGNAROS_SUMMONED);
-                    _events.ScheduleEvent(EVENT_ARONUS_EJECT_PASSENGERS, MoveByPathAndGetTravelTime(AronusPath5, 9, 42.0f));
-                    break;
-                case EVENT_ARONUS_EJECT_PASSENGERS:
-                    DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_D);
-                    DoCastSelf(SPELL_DANS_EJECT_ALL_PASSENGERS, true);
-                    me->DespawnOrUnsummon(MoveByPathAndGetTravelTime(AronusPath6, 3, 21.0f));
-                    break;
-                default:
-                    break;
+                DoCastSelf(SPELL_FORCECAST_SUMMON_RAGNAROS);
+                _events.ScheduleEvent(EVENT_ARONUS_FLY_TO_NORDRASSIL, 7s);
+                break;
+            case EVENT_ARONUS_FLY_TO_NORDRASSIL:
+                Talk(SAY_RAGNAROS_SUMMONED);
+                _events.ScheduleEvent(EVENT_ARONUS_EJECT_PASSENGERS, MoveByPathAndGetTravelTime(AronusPath5, 9, 42.0f));
+                break;
+            case EVENT_ARONUS_EJECT_PASSENGERS:
+                DoCastSelf(SPELL_PLAY_HYJAL_INTRO_FLIGHT_D);
+                DoCastSelf(SPELL_DANS_EJECT_ALL_PASSENGERS, true);
+                me->DespawnOrUnsummon(MoveByPathAndGetTravelTime(AronusPath6, 3, 21.0f));
+                break;
+            default:
+                break;
             }
         }
     }
@@ -195,9 +195,9 @@ private:
         Movement::PointsArray path;
         path.reserve(pathSize);
         std::transform(pathPoints, pathPoints + pathSize, std::back_inserter(path), [](Position const& point)
-        {
-            return G3D::Vector3(point.GetPositionX(), point.GetPositionY(), point.GetPositionZ());
-        });
+            {
+                return G3D::Vector3(point.GetPositionX(), point.GetPositionY(), point.GetPositionZ());
+            });
 
         init.SetFly();
         init.SetUncompressed();
@@ -212,12 +212,12 @@ private:
 enum IncitingTheElements
 {
     // Texts
-    SAY_FEED_BERRIES                    = 0,
-    SAY_FIGHT_INFILTRATOR               = 1,
-    SAY_INFILTRATOR_SPOTTED             = 0,
+    SAY_FEED_BERRIES = 0,
+    SAY_FIGHT_INFILTRATOR = 1,
+    SAY_INFILTRATOR_SPOTTED = 0,
 
     // Events
-    EVENT_FIND_INFILTRATOR              = 1,
+    EVENT_FIND_INFILTRATOR = 1,
     EVENT_SUMMON_INFILTRATOR,
     EVENT_INFILTRATOR_ATTACK,
     EVENT_INFILTRATOR_TALK_SPOTTED,
@@ -225,14 +225,14 @@ enum IncitingTheElements
     EVENT_INFILTRATOR_BACKSTAB,
 
     // Move Points
-    POINT_SUMMON_INFILTRATOR            = 1,
+    POINT_SUMMON_INFILTRATOR = 1,
 
     // Spells
-    SPELL_FEED_BERRIES                  = 74513,
-    SPELL_FORCECAST_SPOT_INFILTRATOR    = 74515,
-    SPELL_STEALTH                       = 30991,
-    SPELL_SHADOWSTEP                    = 80576,
-    SPELL_BACKSTAB                      = 37685
+    SPELL_FEED_BERRIES = 74513,
+    SPELL_FORCECAST_SPOT_INFILTRATOR = 74515,
+    SPELL_STEALTH = 30991,
+    SPELL_SHADOWSTEP = 80576,
+    SPELL_BACKSTAB = 37685
 };
 
 struct npc_mh_faerie_dragon : public ScriptedAI
@@ -275,16 +275,16 @@ struct npc_mh_faerie_dragon : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_FIND_INFILTRATOR:
-                {
-                    Position pos = me->GetPosition();
-                    me->SetWalk(true);
-                    me->MovePosition(pos, 30.0f, frand(0.0f, float(M_PI * 2)));
-                    me->GetMotionMaster()->MovePoint(POINT_SUMMON_INFILTRATOR, pos);
-                    break;
-                }
-                default:
-                    break;
+            case EVENT_FIND_INFILTRATOR:
+            {
+                Position pos = me->GetPosition();
+                me->SetWalk(true);
+                me->MovePosition(pos, 30.0f, frand(0.0f, float(M_PI * 2)));
+                me->GetMotionMaster()->MovePoint(POINT_SUMMON_INFILTRATOR, pos);
+                break;
+            }
+            default:
+                break;
             }
         }
     }
@@ -353,29 +353,29 @@ struct npc_mh_twilight_inciter : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_INFILTRATOR_ATTACK:
-                    _spotted = true;
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
-                    if (TempSummon* summon = me->ToTempSummon())
-                        if (Unit* target = summon->GetSummoner())
-                            AttackStart(target);
-                    break;
-                case EVENT_INFILTRATOR_TALK_SPOTTED:
-                    if (TempSummon* summon = me->ToTempSummon())
-                        if (Unit* target = summon->GetSummoner())
-                            Talk(SAY_INFILTRATOR_SPOTTED, target);
-                    break;
-                case EVENT_INFILTRATOR_SHADOWSTEP:
-                    DoCastVictim(SPELL_SHADOWSTEP);
-                    _events.ScheduleEvent(EVENT_INFILTRATOR_BACKSTAB, 1s);
-                    _events.Repeat(30s);
-                    break;
-                case EVENT_INFILTRATOR_BACKSTAB:
-                    DoCastVictim(SPELL_BACKSTAB);
-                    break;
-                default:
-                    break;
+            case EVENT_INFILTRATOR_ATTACK:
+                _spotted = true;
+                me->SetReactState(REACT_AGGRESSIVE);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                if (TempSummon* summon = me->ToTempSummon())
+                    if (Unit* target = summon->GetSummoner())
+                        AttackStart(target);
+                break;
+            case EVENT_INFILTRATOR_TALK_SPOTTED:
+                if (TempSummon* summon = me->ToTempSummon())
+                    if (Unit* target = summon->GetSummoner())
+                        Talk(SAY_INFILTRATOR_SPOTTED, target);
+                break;
+            case EVENT_INFILTRATOR_SHADOWSTEP:
+                DoCastVictim(SPELL_SHADOWSTEP);
+                _events.ScheduleEvent(EVENT_INFILTRATOR_BACKSTAB, 1s);
+                _events.Repeat(30s);
+                break;
+            case EVENT_INFILTRATOR_BACKSTAB:
+                DoCastVictim(SPELL_BACKSTAB);
+                break;
+            default:
+                break;
             }
         }
 
@@ -389,13 +389,13 @@ private:
 enum FlamesFromAbove
 {
     // Events
-    EVENT_SUMMON_EMERALD_FLAMES             = 1,
+    EVENT_SUMMON_EMERALD_FLAMES = 1,
 
     // Spells
-    SPELL_EMERALD_FRAMEWEAVER_DRAKE_BREATH  = 76205,
+    SPELL_EMERALD_FRAMEWEAVER_DRAKE_BREATH = 76205,
 
     // Gameobjects
-    GO_EMERALD_FLAME                        = 203065
+    GO_EMERALD_FLAME = 203065
 };
 
 Position const EmeraldFlameweaverSummonPos = { 5725.01f, -3305.924f, 1625.708f };
@@ -454,23 +454,23 @@ struct npc_mh_emerald_flameweaver : public PassiveAI
         {
             switch (eventId)
             {
-                case EVENT_SUMMON_EMERALD_FLAMES:
-                    for (uint8 i = 0; i < 10; i++)
-                        if (GameObject* flame = me->SummonGameObject(GO_EMERALD_FLAME, EmeraldFlamesPositions[i], emeraldFlameRotation, 0, GO_SUMMON_TIMED_DESPAWN))
-                            flame->DespawnOrUnsummon(20s);
+            case EVENT_SUMMON_EMERALD_FLAMES:
+                for (uint8 i = 0; i < 10; i++)
+                    if (GameObject* flame = me->SummonGameObject(GO_EMERALD_FLAME, EmeraldFlamesPositions[i], emeraldFlameRotation, 0, GO_SUMMON_TIMED_DESPAWN))
+                        flame->DespawnOrUnsummon(20s);
 
-                    DoCastAOE(SPELL_EMERALD_FRAMEWEAVER_DRAKE_BREATH);
+                DoCastAOE(SPELL_EMERALD_FRAMEWEAVER_DRAKE_BREATH);
 
-                    if (TempSummon* summon = me->ToTempSummon())
-                        if (Unit* target = summon->GetSummoner())
-                            if (Player* player = target->ToPlayer())
-                                player->KilledMonsterCredit(me->GetEntry());
+                if (TempSummon* summon = me->ToTempSummon())
+                    if (Unit* target = summon->GetSummoner())
+                        if (Player* player = target->ToPlayer())
+                            player->KilledMonsterCredit(me->GetEntry());
 
-                    me->GetMotionMaster()->MoveSmoothPath(POINT_NONE, EmeraldFlameweaverPath2, 6, false, true);
-                    me->DespawnOrUnsummon(9s);
-                    break;
-                default:
-                    break;
+                me->GetMotionMaster()->MoveSmoothPath(POINT_NONE, EmeraldFlameweaverPath2, 6, false, true);
+                me->DespawnOrUnsummon(9s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -482,9 +482,9 @@ private:
 
 enum RagingFirestorm
 {
-    NPC_GROVE_WARDEN    = 39941,
-    NPC_LAINA_NIGHTSKY  = 39927,
-    SPELL_SUMMON_TREES  = 74565,
+    NPC_GROVE_WARDEN = 39941,
+    NPC_LAINA_NIGHTSKY = 39927,
+    SPELL_SUMMON_TREES = 74565,
     SPELL_GOUT_OF_FLAME = 80549,
 
     EVENT_GOUT_OF_FLAME = 1
@@ -545,12 +545,12 @@ struct npc_mh_raging_firestorm : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_GOUT_OF_FLAME:
-                    DoCastVictim(SPELL_GOUT_OF_FLAME);
-                    _events.Repeat(21s);
-                    break;
-                default:
-                    break;
+            case EVENT_GOUT_OF_FLAME:
+                DoCastVictim(SPELL_GOUT_OF_FLAME);
+                _events.Repeat(21s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -576,23 +576,23 @@ private:
                 warden->CastSpell(laina, SPELL_SUMMON_TREES);
 
             warden->m_Events.AddEventAtOffset([warden, waypointPos, homePos]()
-            {
-                Movement::MoveSplineInit init(warden);
-                init.MoveTo(waypointPos.GetPositionX(), waypointPos.GetPositionY(), waypointPos.GetPositionZ());
-                if (int32 travelTime = init.Launch())
-                    warden->m_Events.AddEventAtOffset([warden, homePos]()
                 {
-                    warden->GetMotionMaster()->MovePoint(POINT_NONE, homePos);
-                }, Milliseconds(travelTime));
-            }, 2s + 500ms);
+                    Movement::MoveSplineInit init(warden);
+                    init.MoveTo(waypointPos.GetPositionX(), waypointPos.GetPositionY(), waypointPos.GetPositionZ());
+                    if (int32 travelTime = init.Launch())
+                        warden->m_Events.AddEventAtOffset([warden, homePos]()
+                            {
+                                warden->GetMotionMaster()->MovePoint(POINT_NONE, homePos);
+                            }, Milliseconds(travelTime));
+                }, 2s + 500ms);
         }
     }
 };
 
 enum ThroughTheDream
 {
-    QUEST_THROUGH_THE_DREAM         = 25325,
-    SPELL_CUE_FANDRAL_TO_DESPAWN    = 77828
+    QUEST_THROUGH_THE_DREAM = 25325,
+    SPELL_CUE_FANDRAL_TO_DESPAWN = 77828
 };
 
 struct npc_mh_arch_druid_fandral_staghelm : public PassiveAI
@@ -719,15 +719,15 @@ class spell_mh_fandral_creator_aura : public AuraScript
 
 class at_mh_hyjal_barrow_dens : public AreaTriggerScript
 {
-    public:
-        at_mh_hyjal_barrow_dens() : AreaTriggerScript("at_mh_hyjal_barrow_dens") { }
+public:
+    at_mh_hyjal_barrow_dens() : AreaTriggerScript("at_mh_hyjal_barrow_dens") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/) override
-        {
-            if (player->GetQuestStatus(QUEST_THROUGH_THE_DREAM) == QUEST_STATUS_INCOMPLETE)
-                player->CompleteQuest(QUEST_THROUGH_THE_DREAM);
-            return true;
-        }
+    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/) override
+    {
+        if (player->GetQuestStatus(QUEST_THROUGH_THE_DREAM) == QUEST_STATUS_INCOMPLETE)
+            player->CompleteQuest(QUEST_THROUGH_THE_DREAM);
+        return true;
+    }
 };
 
 void AddSC_mount_hyjal()

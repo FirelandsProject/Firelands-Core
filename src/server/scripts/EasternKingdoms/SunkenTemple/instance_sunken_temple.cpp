@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Instance_Sunken_Temple
-SD%Complete: 100
-SDComment:Place Holder
-SDCategory: Sunken Temple
-EndScriptData */
+ /* ScriptData
+ SDName: Instance_Sunken_Temple
+ SD%Complete: 100
+ SDComment:Place Holder
+ SDCategory: Sunken Temple
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "GameObject.h"
@@ -30,19 +30,19 @@ EndScriptData */
 
 enum Gameobject
 {
-    GO_ATALAI_STATUE1           = 148830,
-    GO_ATALAI_STATUE2           = 148831,
-    GO_ATALAI_STATUE3           = 148832,
-    GO_ATALAI_STATUE4           = 148833,
-    GO_ATALAI_STATUE5           = 148834,
-    GO_ATALAI_STATUE6           = 148835,
-    GO_ATALAI_LIGHT1            = 148883,
-    GO_ATALAI_LIGHT2            = 148937
+    GO_ATALAI_STATUE1 = 148830,
+    GO_ATALAI_STATUE2 = 148831,
+    GO_ATALAI_STATUE3 = 148832,
+    GO_ATALAI_STATUE4 = 148833,
+    GO_ATALAI_STATUE5 = 148834,
+    GO_ATALAI_STATUE6 = 148835,
+    GO_ATALAI_LIGHT1 = 148883,
+    GO_ATALAI_LIGHT2 = 148937
 };
 
 enum CreatureIds
 {
-    NPC_ATALALARION             = 8580
+    NPC_ATALALARION = 8580
 };
 
 static Position const atalalarianPos = { -466.5134f, 95.19822f, -189.6463f, 0.03490658f };
@@ -97,20 +97,20 @@ public:
         {
             switch (go->GetEntry())
             {
-                case GO_ATALAI_STATUE1: GOAtalaiStatue1 = go->GetGUID();   break;
-                case GO_ATALAI_STATUE2: GOAtalaiStatue2 = go->GetGUID();   break;
-                case GO_ATALAI_STATUE3: GOAtalaiStatue3 = go->GetGUID();   break;
-                case GO_ATALAI_STATUE4: GOAtalaiStatue4 = go->GetGUID();   break;
-                case GO_ATALAI_STATUE5: GOAtalaiStatue5 = go->GetGUID();   break;
-                case GO_ATALAI_STATUE6: GOAtalaiStatue6 = go->GetGUID();   break;
+            case GO_ATALAI_STATUE1: GOAtalaiStatue1 = go->GetGUID();   break;
+            case GO_ATALAI_STATUE2: GOAtalaiStatue2 = go->GetGUID();   break;
+            case GO_ATALAI_STATUE3: GOAtalaiStatue3 = go->GetGUID();   break;
+            case GO_ATALAI_STATUE4: GOAtalaiStatue4 = go->GetGUID();   break;
+            case GO_ATALAI_STATUE5: GOAtalaiStatue5 = go->GetGUID();   break;
+            case GO_ATALAI_STATUE6: GOAtalaiStatue6 = go->GetGUID();   break;
             }
         }
 
-         virtual void Update(uint32 /*diff*/) override // correct order goes form 1-6
-         {
-             switch (State)
-             {
-             case GO_ATALAI_STATUE1:
+        virtual void Update(uint32 /*diff*/) override // correct order goes form 1-6
+        {
+            switch (State)
+            {
+            case GO_ATALAI_STATUE1:
                 if (!s1 && !s2 && !s3 && !s4 && !s5 && !s6)
                 {
                     if (GameObject* pAtalaiStatue1 = instance->GetGameObject(GOAtalaiStatue1))
@@ -119,7 +119,7 @@ public:
                     State = 0;
                 };
                 break;
-             case GO_ATALAI_STATUE2:
+            case GO_ATALAI_STATUE2:
                 if (s1 && !s2 && !s3 && !s4 && !s5 && !s6)
                 {
                     if (GameObject* pAtalaiStatue2 = instance->GetGameObject(GOAtalaiStatue2))
@@ -128,7 +128,7 @@ public:
                     State = 0;
                 };
                 break;
-             case GO_ATALAI_STATUE3:
+            case GO_ATALAI_STATUE3:
                 if (s1 && s2 && !s3 && !s4 && !s5 && !s6)
                 {
                     if (GameObject* pAtalaiStatue3 = instance->GetGameObject(GOAtalaiStatue3))
@@ -137,7 +137,7 @@ public:
                     State = 0;
                 };
                 break;
-             case GO_ATALAI_STATUE4:
+            case GO_ATALAI_STATUE4:
                 if (s1 && s2 && s3 && !s4 && !s5 && !s6)
                 {
                     if (GameObject* pAtalaiStatue4 = instance->GetGameObject(GOAtalaiStatue4))
@@ -146,7 +146,7 @@ public:
                     State = 0;
                 }
                 break;
-             case GO_ATALAI_STATUE5:
+            case GO_ATALAI_STATUE5:
                 if (s1 && s2 && s3 && s4 && !s5 && !s6)
                 {
                     if (GameObject* pAtalaiStatue5 = instance->GetGameObject(GOAtalaiStatue5))
@@ -155,7 +155,7 @@ public:
                     State = 0;
                 }
                 break;
-             case GO_ATALAI_STATUE6:
+            case GO_ATALAI_STATUE6:
                 if (s1 && s2 && s3 && s4 && s5 && !s6)
                 {
                     if (GameObject* pAtalaiStatue6 = instance->GetGameObject(GOAtalaiStatue6))
@@ -167,8 +167,8 @@ public:
                     State = 0;
                 }
                 break;
-             }
-         };
+            }
+        };
 
         void UseStatue(GameObject* go)
         {
@@ -184,18 +184,18 @@ public:
             go->SummonCreature(NPC_ATALALARION, atalalarianPos, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 7200);
         }
 
-         void SetData(uint32 type, uint32 data) override
-         {
+        void SetData(uint32 type, uint32 data) override
+        {
             if (type == EVENT_STATE)
                 State = data;
-         }
+        }
 
-         uint32 GetData(uint32 type) const override
-         {
+        uint32 GetData(uint32 type) const override
+        {
             if (type == EVENT_STATE)
                 return State;
             return 0;
-         }
+        }
     };
 
     InstanceScript* GetInstanceScript(InstanceMap* map) const override

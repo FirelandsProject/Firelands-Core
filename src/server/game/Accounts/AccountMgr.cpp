@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,8 +22,8 @@
 #include "ObjectAccessor.h"
 #include "Player.h"
 #include "Realm.h"
+#include "SRP6.h"
 #include "ScriptMgr.h"
-#include "SHA1.h"
 #include "Util.h"
 #include "World.h"
 #include "WorldSession.h"
@@ -54,38 +54,30 @@ AccountOpResult AccountMgr::CreateAccount(std::string username, std::string pass
     Utf8ToUpperOnlyLatin(email);
 
     if (GetId(username))
-        return AccountOpResult::AOR_NAME_ALREADY_EXIST;                       // username does already exist
+        return AccountOpResult::AOR_NAME_ALREADY_EXIST;                      // username does already exist
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT);
 
-    stmt->setString(0, username);
-    stmt->setString(1, CalculateShaPassHash(username, password));
-    stmt->setString(2, email);
-    stmt->setString(3, email);
-    if (bnetAccountId && bnetIndex)
-    {
-        stmt->setUInt32(4, bnetAccountId);
-        stmt->setUInt8(5, bnetIndex);
-    }
-    else
-    {
-        stmt->setNull(4);
-        stmt->setNull(5);
-    }
+    stmt->SetData(0, username);
+    auto [salt, verifier] = Firelands::Crypto::SRP6::MakeRegistrationData(username, password);
+    stmt->SetData(1, salt);
+    stmt->SetData(2, verifier);
+    stmt->SetData(3, uint8(sWorld->getIntConfig(CONFIG_EXPANSION)));
 
-    LoginDatabase.DirectExecute(stmt); // Enforce saving, otherwise AddGroup can fail
-
-    stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_REALM_CHARACTERS_INIT);
     LoginDatabase.Execute(stmt);
 
-    return AccountOpResult::AOR_OK;                                          // everything's fine
+    stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_REALM_CHARACTERS_INIT);
+
+    LoginDatabase.Execute(stmt);
+
+    return AccountOpResult::AOR_OK; // everything's fine
 }
 
 AccountOpResult AccountMgr::DeleteAccount(uint32 accountId)
 {
     // Check if accounts exists
     LoginDatabasePreparedStatement* loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_BY_ID);
-    loginStmt->setUInt32(0, accountId);
+    loginStmt->SetData(0, accountId);
     PreparedQueryResult result = LoginDatabase.Query(loginStmt);
 
     if (!result)
@@ -94,7 +86,7 @@ AccountOpResult AccountMgr::DeleteAccount(uint32 accountId)
     // Obtain accounts characters
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARS_BY_ACCOUNT_ID);
 
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
 
     result = CharacterDatabase.Query(stmt);
 
@@ -118,37 +110,37 @@ AccountOpResult AccountMgr::DeleteAccount(uint32 accountId)
 
     // table realm specific but common for all characters of account for realm
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_TUTORIALS);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     CharacterDatabase.Execute(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ACCOUNT_DATA);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     CharacterDatabase.Execute(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHARACTER_BAN);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     CharacterDatabase.Execute(stmt);
 
     LoginDatabaseTransaction trans = LoginDatabase.BeginTransaction();
 
     loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT);
-    loginStmt->setUInt32(0, accountId);
+    loginStmt->SetData(0, accountId);
     trans->Append(loginStmt);
 
     loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_ACCESS);
-    loginStmt->setUInt32(0, accountId);
+    loginStmt->SetData(0, accountId);
     trans->Append(loginStmt);
 
     loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_REALM_CHARACTERS);
-    loginStmt->setUInt32(0, accountId);
+    loginStmt->SetData(0, accountId);
     trans->Append(loginStmt);
 
     loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_BANNED);
-    loginStmt->setUInt32(0, accountId);
+    loginStmt->SetData(0, accountId);
     trans->Append(loginStmt);
 
     loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_MUTED);
-    loginStmt->setUInt32(0, accountId);
+    loginStmt->SetData(0, accountId);
     trans->Append(loginStmt);
 
     LoginDatabase.CommitTransaction(trans);
@@ -160,7 +152,7 @@ AccountOpResult AccountMgr::ChangeUsername(uint32 accountId, std::string newUser
 {
     // Check if accounts exists
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_BY_ID);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (!result)
@@ -169,18 +161,22 @@ AccountOpResult AccountMgr::ChangeUsername(uint32 accountId, std::string newUser
     if (utf8length(newUsername) > MAX_ACCOUNT_STR)
         return AccountOpResult::AOR_NAME_TOO_LONG;
 
-    if (utf8length(newPassword) > MAX_ACCOUNT_STR)
-        return AccountOpResult::AOR_PASS_TOO_LONG;
+    if (utf8length(newPassword) > MAX_PASS_STR)
+        return AccountOpResult::AOR_PASS_TOO_LONG;                           // password's too long
 
     Utf8ToUpperOnlyLatin(newUsername);
     Utf8ToUpperOnlyLatin(newPassword);
 
     stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_USERNAME);
+    stmt->SetData(0, newUsername);
+    stmt->SetData(1, accountId);
+    LoginDatabase.Execute(stmt);
 
-    stmt->setString(0, newUsername);
-    stmt->setString(1, CalculateShaPassHash(newUsername, newPassword));
-    stmt->setUInt32(2, accountId);
-
+    auto [salt, verifier] = Firelands::Crypto::SRP6::MakeRegistrationData(newUsername, newPassword);
+    stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_LOGON);
+    stmt->SetData(0, salt);
+    stmt->SetData(1, verifier);
+    stmt->SetData(2, accountId);
     LoginDatabase.Execute(stmt);
 
     return AccountOpResult::AOR_OK;
@@ -196,28 +192,21 @@ AccountOpResult AccountMgr::ChangePassword(uint32 accountId, std::string newPass
         return AccountOpResult::AOR_NAME_NOT_EXIST;                          // account doesn't exist
     }
 
-    if (utf8length(newPassword) > MAX_ACCOUNT_STR)
+    if (utf8length(newPassword) > MAX_PASS_STR)
     {
-        sScriptMgr->OnFailedPasswordChange(accountId);
-        return AccountOpResult::AOR_PASS_TOO_LONG;
+        sScriptMgr->OnFailedEmailChange(accountId);
+        return AccountOpResult::AOR_PASS_TOO_LONG;                           // password's too long
     }
 
     Utf8ToUpperOnlyLatin(username);
     Utf8ToUpperOnlyLatin(newPassword);
 
-    LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_PASSWORD);
+    auto [salt, verifier] = Firelands::Crypto::SRP6::MakeRegistrationData(username, newPassword);
 
-    stmt->setString(0, CalculateShaPassHash(username, newPassword));
-    stmt->setUInt32(1, accountId);
-
-    LoginDatabase.Execute(stmt);
-
-    stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_VS);
-
-    stmt->setString(0, "");
-    stmt->setString(1, "");
-    stmt->setString(2, username);
-
+    LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_LOGON);
+    stmt->SetData(0, salt);
+    stmt->SetData(1, verifier);
+    stmt->SetData(2, accountId);
     LoginDatabase.Execute(stmt);
 
     sScriptMgr->OnPasswordChange(accountId);
@@ -245,8 +234,8 @@ AccountOpResult AccountMgr::ChangeEmail(uint32 accountId, std::string newEmail)
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_EMAIL);
 
-    stmt->setString(0, newEmail);
-    stmt->setUInt32(1, accountId);
+    stmt->SetData(0, newEmail);
+    stmt->SetData(1, accountId);
 
     LoginDatabase.Execute(stmt);
 
@@ -272,8 +261,8 @@ AccountOpResult AccountMgr::ChangeRegEmail(uint32 accountId, std::string newEmai
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_REG_EMAIL);
 
-    stmt->setString(0, newEmail);
-    stmt->setUInt32(1, accountId);
+    stmt->SetData(0, newEmail);
+    stmt->SetData(1, accountId);
 
     LoginDatabase.Execute(stmt);
 
@@ -284,7 +273,7 @@ AccountOpResult AccountMgr::ChangeRegEmail(uint32 accountId, std::string newEmai
 uint32 AccountMgr::GetId(std::string const& username)
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_ACCOUNT_ID_BY_USERNAME);
-    stmt->setString(0, username);
+    stmt->SetData(0, username);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     return (result) ? (*result)[0].GetUInt32() : 0;
@@ -293,8 +282,8 @@ uint32 AccountMgr::GetId(std::string const& username)
 uint32 AccountMgr::GetSecurity(uint32 accountId, int32 realmId)
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_GMLEVEL_BY_REALMID);
-    stmt->setUInt32(0, accountId);
-    stmt->setInt32(1, realmId);
+    stmt->SetData(0, accountId);
+    stmt->SetData(1, realmId);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     return (result) ? (*result)[0].GetUInt8() : uint32(SEC_PLAYER);
@@ -303,8 +292,8 @@ uint32 AccountMgr::GetSecurity(uint32 accountId, int32 realmId)
 QueryCallback AccountMgr::GetSecurityAsync(uint32 accountId, int32 realmId, std::function<void(uint32)> callback)
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_GMLEVEL_BY_REALMID);
-    stmt->setUInt32(0, accountId);
-    stmt->setInt32(1, realmId);
+    stmt->SetData(0, accountId);
+    stmt->SetData(1, realmId);
     return LoginDatabase.AsyncQuery(stmt).WithPreparedCallback([callback = std::move(callback)](PreparedQueryResult result)
         {
             callback(result ? uint32((*result)[0].GetUInt8()) : uint32(SEC_PLAYER));
@@ -314,7 +303,7 @@ QueryCallback AccountMgr::GetSecurityAsync(uint32 accountId, int32 realmId, std:
 bool AccountMgr::GetName(uint32 accountId, std::string& name)
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_USERNAME_BY_ID);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (result)
@@ -329,7 +318,7 @@ bool AccountMgr::GetName(uint32 accountId, std::string& name)
 bool AccountMgr::GetEmail(uint32 accountId, std::string& email)
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_EMAIL_BY_ID);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (result)
@@ -352,11 +341,16 @@ bool AccountMgr::CheckPassword(uint32 accountId, std::string password)
     Utf8ToUpperOnlyLatin(password);
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_CHECK_PASSWORD);
-    stmt->setUInt32(0, accountId);
-    stmt->setString(1, CalculateShaPassHash(username, password));
-    PreparedQueryResult result = LoginDatabase.Query(stmt);
+    stmt->SetData(0, accountId);
+    if (PreparedQueryResult result = LoginDatabase.Query(stmt))
+    {
+        Firelands::Crypto::SRP6::Salt salt = (*result)[0].Get<Binary, Firelands::Crypto::SRP6::SALT_LENGTH>();
+        Firelands::Crypto::SRP6::Verifier verifier = (*result)[1].Get<Binary, Firelands::Crypto::SRP6::VERIFIER_LENGTH>();
+        if (Firelands::Crypto::SRP6::CheckLogin(username, password, salt, verifier))
+            return true;
+    }
 
-    return (result) ? true : false;
+    return false;
 }
 
 bool AccountMgr::CheckEmail(uint32 accountId, std::string newEmail)
@@ -380,28 +374,17 @@ uint32 AccountMgr::GetCharactersCount(uint32 accountId)
 {
     // check character count
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_SUM_CHARS);
-    stmt->setUInt32(0, accountId);
+    stmt->SetData(0, accountId);
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
     return (result) ? (*result)[0].GetUInt64() : 0;
 }
 
-std::string AccountMgr::CalculateShaPassHash(std::string const& name, std::string const& password)
-{
-    SHA1Hash sha;
-    sha.Initialize();
-    sha.UpdateData(name);
-    sha.UpdateData(":");
-    sha.UpdateData(password);
-    sha.Finalize();
-
-    return ByteArrayToHexStr(sha.GetDigest(), sha.GetLength());
-}
 
 bool AccountMgr::IsBannedAccount(std::string const& name)
 {
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_BANNED_BY_USERNAME);
-    stmt->setString(0, name);
+    stmt->SetData(0, name);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (!result)
@@ -519,14 +502,14 @@ void AccountMgr::UpdateAccountAccess(rbac::RBACData* rbac, uint32 accountId, uin
     if (realmId == -1)
     {
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_ACCESS);
-        stmt->setUInt32(0, accountId);
+        stmt->SetData(0, accountId);
         trans->Append(stmt);
     }
     else
     {
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_ACCESS_BY_REALM);
-        stmt->setUInt32(0, accountId);
-        stmt->setUInt32(1, realmId);
+        stmt->SetData(0, accountId);
+        stmt->SetData(1, realmId);
         trans->Append(stmt);
     }
 
@@ -534,9 +517,9 @@ void AccountMgr::UpdateAccountAccess(rbac::RBACData* rbac, uint32 accountId, uin
     if (securityLevel)
     {
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_ACCESS);
-        stmt->setUInt32(0, accountId);
-        stmt->setUInt8(1, securityLevel);
-        stmt->setInt32(2, realmId);
+        stmt->SetData(0, accountId);
+        stmt->SetData(1, securityLevel);
+        stmt->SetData(2, realmId);
         trans->Append(stmt);
     }
 

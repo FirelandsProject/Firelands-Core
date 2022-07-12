@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,20 +24,20 @@
 
 enum Says
 {
-    SAY_AGGRO      = 0,
-    SAY_ENRAGE     = 1,
-    SAY_DEATH      = 2,
+    SAY_AGGRO = 0,
+    SAY_ENRAGE = 1,
+    SAY_DEATH = 2,
 
-    SAY_WARDEN_1   = 0,
-    SAY_WARDEN_2   = 1,
-    SAY_WARDEN_3   = 2
+    SAY_WARDEN_1 = 0,
+    SAY_WARDEN_2 = 1,
+    SAY_WARDEN_3 = 2
 };
 
 enum Spells
 {
-    SPELL_VICIOUS_SLICE     = 86604,
-    SPELL_MADDENING_CALL    = 86620,
-    SPELL_ENRAGE            = 86736
+    SPELL_VICIOUS_SLICE = 86604,
+    SPELL_MADDENING_CALL = 86620,
+    SPELL_ENRAGE = 86736
 };
 
 enum Events
@@ -99,14 +99,14 @@ struct boss_hogger : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_VICIOUS_SLICE:
-                    DoCastVictim(SPELL_VICIOUS_SLICE);
-                    events.Repeat(10s, 14s);
-                    break;
-                case EVENT_MADDENING_CALL:
-                    DoCast(SPELL_MADDENING_CALL);
-                    events.Repeat(15s, 20s);
-                    break;
+            case EVENT_VICIOUS_SLICE:
+                DoCastVictim(SPELL_VICIOUS_SLICE);
+                events.Repeat(10s, 14s);
+                break;
+            case EVENT_MADDENING_CALL:
+                DoCast(SPELL_MADDENING_CALL);
+                events.Repeat(15s, 20s);
+                break;
             }
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
@@ -147,17 +147,17 @@ struct npc_warden_thelwater : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_SAY_WARDEN_1:
-                    Talk(SAY_WARDEN_1);
-                    _events.ScheduleEvent(EVENT_SAY_WARDEN_2, 4s);
-                    break;
-                case EVENT_SAY_WARDEN_2:
-                    Talk(SAY_WARDEN_2);
-                    _events.ScheduleEvent(EVENT_SAY_WARDEN_3, 3s);
-                    break;
-                case EVENT_SAY_WARDEN_3:
-                    Talk(SAY_WARDEN_3);
-                    break;
+            case EVENT_SAY_WARDEN_1:
+                Talk(SAY_WARDEN_1);
+                _events.ScheduleEvent(EVENT_SAY_WARDEN_2, 4s);
+                break;
+            case EVENT_SAY_WARDEN_2:
+                Talk(SAY_WARDEN_2);
+                _events.ScheduleEvent(EVENT_SAY_WARDEN_3, 3s);
+                break;
+            case EVENT_SAY_WARDEN_3:
+                Talk(SAY_WARDEN_3);
+                break;
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,26 +28,26 @@
 
 enum Spells
 {
-    SPELL_FACE_RANDOM_PLAYER        = 82530,
+    SPELL_FACE_RANDOM_PLAYER = 82530,
 
     // Slabhide
-    SPELL_LAVA_FISSURE              = 80803,
-    SPELL_SAND_BLAST                = 80807,
-    SPELL_STALACTITE_SUMMON         = 80656,
-    SPELL_COOLDOWN_5S               = 95323,
-    SPELL_CRYSTAL_STORM_PERIODIC    = 92305,
-    SPELL_CRYSTAL_STORM             = 92265,
+    SPELL_LAVA_FISSURE = 80803,
+    SPELL_SAND_BLAST = 80807,
+    SPELL_STALACTITE_SUMMON = 80656,
+    SPELL_COOLDOWN_5S = 95323,
+    SPELL_CRYSTAL_STORM_PERIODIC = 92305,
+    SPELL_CRYSTAL_STORM = 92265,
 
     // Lava Fissure
-    SPELL_LAVA_FISSURE_CRACK        = 80798,
-    SPELL_LAVA_FISSURE_ERUPTION     = 80800,
+    SPELL_LAVA_FISSURE_CRACK = 80798,
+    SPELL_LAVA_FISSURE_ERUPTION = 80800,
 
     // Stalactite Trigger
     SPELL_STALACTITE_SUMMON_TRIGGER = 81028,
-    SPELL_STALACTITE_SHADE          = 80654,
-    SPELL_STALACTITE_MISSILE        = 80643,
-    SPELL_STALACTITE_MISSILE_HC     = 92653,
-    SPELL_STALACTITE_CREATE         = 80647
+    SPELL_STALACTITE_SHADE = 80654,
+    SPELL_STALACTITE_MISSILE = 80643,
+    SPELL_STALACTITE_MISSILE_HC = 92653,
+    SPELL_STALACTITE_CREATE = 80647
 };
 
 enum Actions
@@ -75,8 +75,8 @@ enum Events
 
 enum Phases
 {
-    PHASE_INTRO     = 0,
-    PHASE_COMBAT    = 1
+    PHASE_INTRO = 0,
+    PHASE_COMBAT = 1
 };
 
 enum MovementPoints
@@ -156,12 +156,12 @@ struct boss_slabhide : public BossAI
     {
         switch (action)
         {
-            case ACTION_SLABHIDE_INTRO:
-                me->setActive(true);
-                me->GetMotionMaster()->MovePoint(POINT_SLABHIDE_INTRO, SlabhideIntroPos, false);
-                break;
-            default:
-                break;
+        case ACTION_SLABHIDE_INTRO:
+            me->setActive(true);
+            me->GetMotionMaster()->MovePoint(POINT_SLABHIDE_INTRO, SlabhideIntroPos, false);
+            break;
+        default:
+            break;
         }
     }
 
@@ -172,38 +172,38 @@ struct boss_slabhide : public BossAI
 
         switch (id)
         {
-            case POINT_SLABHIDE_INTRO:
-                me->SetFacingTo(SlabhideIntroLandPos.GetOrientation());
-                events.ScheduleEvent(EVENT_LAND_INTRO, 200ms, 0, PHASE_INTRO);
-                break;
-            case POINT_SLABHIDE_INTRO_LAND:
-                me->setActive(false);
-                me->SetDisableGravity(false);
-                me->SetHover(false);
-                me->SetHomePosition(SlabhideIntroLandPos);
-                me->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                me->SetReactState(REACT_AGGRESSIVE);
-                break;
-            case POINT_SLABHIDE_MIDDLE:
-                _isFlying = true;
-                me->GetMotionMaster()->MoveTakeoff(POINT_SLABHIDE_IN_AIR, SlabhideInAirPos);
-                break;
-            case POINT_SLABHIDE_IN_AIR:
-                me->SetDisableGravity(true);
-                me->SetHover(true);
-                DoCastSelf(SPELL_STALACTITE_SUMMON);
-                events.ScheduleEvent(EVENT_LAND, 8s);
-                break;
-            case POINT_SLABHIDE_LAND:
-                _isFlying = false;
-                me->SetDisableGravity(false);
-                me->SetHover(false);
-                DoCastSelf(SPELL_COOLDOWN_5S);
-                events.ScheduleEvent(EVENT_ATTACK, 1s + 200ms);
-                break;
-            default:
-                break;
+        case POINT_SLABHIDE_INTRO:
+            me->SetFacingTo(SlabhideIntroLandPos.GetOrientation());
+            events.ScheduleEvent(EVENT_LAND_INTRO, 200ms, 0, PHASE_INTRO);
+            break;
+        case POINT_SLABHIDE_INTRO_LAND:
+            me->setActive(false);
+            me->SetDisableGravity(false);
+            me->SetHover(false);
+            me->SetHomePosition(SlabhideIntroLandPos);
+            me->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
+            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            me->SetReactState(REACT_AGGRESSIVE);
+            break;
+        case POINT_SLABHIDE_MIDDLE:
+            _isFlying = true;
+            me->GetMotionMaster()->MoveTakeoff(POINT_SLABHIDE_IN_AIR, SlabhideInAirPos);
+            break;
+        case POINT_SLABHIDE_IN_AIR:
+            me->SetDisableGravity(true);
+            me->SetHover(true);
+            DoCastSelf(SPELL_STALACTITE_SUMMON);
+            events.ScheduleEvent(EVENT_LAND, 8s);
+            break;
+        case POINT_SLABHIDE_LAND:
+            _isFlying = false;
+            me->SetDisableGravity(false);
+            me->SetHover(false);
+            DoCastSelf(SPELL_COOLDOWN_5S);
+            events.ScheduleEvent(EVENT_ATTACK, 1s + 200ms);
+            break;
+        default:
+            break;
         }
     }
 
@@ -221,40 +221,40 @@ struct boss_slabhide : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_LAND_INTRO:
-                    me->GetMotionMaster()->MoveLand(POINT_SLABHIDE_INTRO_LAND, SlabhideIntroLandPos);
-                    break;
-                case EVENT_HANDLE_ROCK_WALLS:
-                    instance->SetData(DATA_SLABHIDE_ROCK_WALL, false);
-                    break;
-                case EVENT_LAVA_FISSURE:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                        DoCast(target, SPELL_LAVA_FISSURE);
-                    events.Repeat(6s, 8s);
-                    break;
-                case EVENT_SAND_BLAST:
-                    DoCast(me, SPELL_SAND_BLAST);
-                    events.Repeat(8s, 11s);
-                    break;
-                case EVENT_AIR_PHASE:
-                    events.Reset();
-                    me->SetReactState(REACT_PASSIVE);
-                    me->AttackStop();
-                    me->GetMotionMaster()->MovePoint(POINT_SLABHIDE_MIDDLE, SlabhideMiddlePos);
-                    events.Repeat(60s);
-                    break;
-                case EVENT_LAND:
-                    me->GetMotionMaster()->MoveLand(POINT_SLABHIDE_LAND, SlabhideMiddlePos);
-                    break;
-                case EVENT_ATTACK:
-                    events.ScheduleEvent(EVENT_LAVA_FISSURE, 6s, 8s);
-                    events.ScheduleEvent(EVENT_SAND_BLAST, 8s, 10s);
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    if (IsHeroic())
-                        DoCast(me, SPELL_CRYSTAL_STORM_PERIODIC);
-                    break;
-                default:
-                    break;
+            case EVENT_LAND_INTRO:
+                me->GetMotionMaster()->MoveLand(POINT_SLABHIDE_INTRO_LAND, SlabhideIntroLandPos);
+                break;
+            case EVENT_HANDLE_ROCK_WALLS:
+                instance->SetData(DATA_SLABHIDE_ROCK_WALL, false);
+                break;
+            case EVENT_LAVA_FISSURE:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                    DoCast(target, SPELL_LAVA_FISSURE);
+                events.Repeat(6s, 8s);
+                break;
+            case EVENT_SAND_BLAST:
+                DoCast(me, SPELL_SAND_BLAST);
+                events.Repeat(8s, 11s);
+                break;
+            case EVENT_AIR_PHASE:
+                events.Reset();
+                me->SetReactState(REACT_PASSIVE);
+                me->AttackStop();
+                me->GetMotionMaster()->MovePoint(POINT_SLABHIDE_MIDDLE, SlabhideMiddlePos);
+                events.Repeat(60s);
+                break;
+            case EVENT_LAND:
+                me->GetMotionMaster()->MoveLand(POINT_SLABHIDE_LAND, SlabhideMiddlePos);
+                break;
+            case EVENT_ATTACK:
+                events.ScheduleEvent(EVENT_LAVA_FISSURE, 6s, 8s);
+                events.ScheduleEvent(EVENT_SAND_BLAST, 8s, 10s);
+                me->SetReactState(REACT_AGGRESSIVE);
+                if (IsHeroic())
+                    DoCast(me, SPELL_CRYSTAL_STORM_PERIODIC);
+                break;
+            default:
+                break;
             }
         }
 
@@ -300,12 +300,12 @@ struct npc_slabhide_lava_fissure : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_LAVA_FISSURE_ERUPTION:
-                    me->RemoveAurasDueToSpell(SPELL_LAVA_FISSURE_CRACK);
-                    DoCast(me, SPELL_LAVA_FISSURE_ERUPTION);
-                    break;
-                default:
-                    break;
+            case EVENT_LAVA_FISSURE_ERUPTION:
+                me->RemoveAurasDueToSpell(SPELL_LAVA_FISSURE_CRACK);
+                DoCast(me, SPELL_LAVA_FISSURE_ERUPTION);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -332,12 +332,12 @@ struct npc_slabhide_stalactite_trigger : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_STALACTITE_MISSLE:
-                    DoCastSelf(SPELL_STALACTITE_MISSILE);
-                    me->DespawnOrUnsummon(11s);
-                    break;
-                default:
-                    break;
+            case EVENT_STALACTITE_MISSLE:
+                DoCastSelf(SPELL_STALACTITE_MISSILE);
+                me->DespawnOrUnsummon(11s);
+                break;
+            default:
+                break;
             }
         }
     }

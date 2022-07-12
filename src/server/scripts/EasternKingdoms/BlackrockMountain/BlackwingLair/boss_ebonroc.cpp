@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,16 +21,16 @@
 
 enum Spells
 {
-    SPELL_SHADOWFLAME           = 22539,
-    SPELL_WINGBUFFET            = 23339,
-    SPELL_SHADOWOFEBONROC       = 23340
+    SPELL_SHADOWFLAME = 22539,
+    SPELL_WINGBUFFET = 23339,
+    SPELL_SHADOWOFEBONROC = 23340
 };
 
 enum Events
 {
-    EVENT_SHADOWFLAME           = 1,
-    EVENT_WINGBUFFET            = 2,
-    EVENT_SHADOWOFEBONROC       = 3
+    EVENT_SHADOWFLAME = 1,
+    EVENT_WINGBUFFET = 2,
+    EVENT_SHADOWOFEBONROC = 3
 };
 
 class boss_ebonroc : public CreatureScript
@@ -65,18 +65,18 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_SHADOWFLAME:
-                        DoCastVictim(SPELL_SHADOWFLAME);
-                        events.ScheduleEvent(EVENT_SHADOWFLAME, urand(10000, 20000));
-                        break;
-                    case EVENT_WINGBUFFET:
-                        DoCastVictim(SPELL_WINGBUFFET);
-                        events.ScheduleEvent(EVENT_WINGBUFFET, 30000);
-                        break;
-                    case EVENT_SHADOWOFEBONROC:
-                        DoCastVictim(SPELL_SHADOWOFEBONROC);
-                        events.ScheduleEvent(EVENT_SHADOWOFEBONROC, urand(8000, 10000));
-                        break;
+                case EVENT_SHADOWFLAME:
+                    DoCastVictim(SPELL_SHADOWFLAME);
+                    events.ScheduleEvent(EVENT_SHADOWFLAME, urand(10000, 20000));
+                    break;
+                case EVENT_WINGBUFFET:
+                    DoCastVictim(SPELL_WINGBUFFET);
+                    events.ScheduleEvent(EVENT_WINGBUFFET, 30000);
+                    break;
+                case EVENT_SHADOWOFEBONROC:
+                    DoCastVictim(SPELL_SHADOWOFEBONROC);
+                    events.ScheduleEvent(EVENT_SHADOWOFEBONROC, urand(8000, 10000));
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -92,7 +92,7 @@ uint32 urandweighted(size_t count, double const* chances)
 
 bool coin_flip(float chance)
 {
-    std::bernoulli_distribution bd { chance / 100.0 };
+    std::bernoulli_distribution bd{ chance / 100.0 };
     return bd(engine);
 }
 

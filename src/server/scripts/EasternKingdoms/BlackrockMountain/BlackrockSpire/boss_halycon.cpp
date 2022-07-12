@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,19 +21,19 @@
 
 enum Spells
 {
-    SPELL_REND                      = 13738,
-    SPELL_THRASH                    = 3391,
+    SPELL_REND = 13738,
+    SPELL_THRASH = 3391,
 };
 
 enum Says
 {
-    EMOTE_DEATH                     = 0
+    EMOTE_DEATH = 0
 };
 
 enum Events
 {
-    EVENT_REND                      = 1,
-    EVENT_THRASH                    = 2,
+    EVENT_REND = 1,
+    EVENT_THRASH = 2,
 };
 
 const Position SummonLocation = { -167.9561f, -411.7844f, 76.23057f, 1.53589f };
@@ -64,8 +64,8 @@ public:
         void JustEngagedWith(Unit* who) override
         {
             BossAI::JustEngagedWith(who);
-            events.ScheduleEvent(EVENT_REND, urand(17000,20000));
-            events.ScheduleEvent(EVENT_THRASH, urand(10000,12000));
+            events.ScheduleEvent(EVENT_REND, urand(17000, 20000));
+            events.ScheduleEvent(EVENT_THRASH, urand(10000, 12000));
         }
 
         void JustDied(Unit* /*killer*/) override
@@ -90,15 +90,15 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_REND:
-                        DoCastVictim(SPELL_REND);
-                        events.ScheduleEvent(EVENT_REND, urand(8000,10000));
-                        break;
-                    case EVENT_THRASH:
-                        DoCast(me, SPELL_THRASH);
-                        break;
-                    default:
-                        break;
+                case EVENT_REND:
+                    DoCastVictim(SPELL_REND);
+                    events.ScheduleEvent(EVENT_REND, urand(8000, 10000));
+                    break;
+                case EVENT_THRASH:
+                    DoCast(me, SPELL_THRASH);
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -106,8 +106,8 @@ public:
             }
             DoMeleeAttackIfReady();
         }
-        private:
-            bool Summoned;
+    private:
+        bool Summoned;
     };
 
     CreatureAI* GetAI(Creature* creature) const override

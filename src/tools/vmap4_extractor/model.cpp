@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,7 +29,7 @@
 
 extern HANDLE WorldMpq;
 
-Model::Model(std::string &filename) : filename(filename), header(), vertices(nullptr), indices(nullptr)
+Model::Model(std::string& filename) : filename(filename), header(), vertices(nullptr), indices(nullptr)
 {
 }
 
@@ -54,13 +54,13 @@ bool Model::open()
         f.seek(0);
         f.seekRelative(header.ofsBoundingVertices);
         vertices = new Vec3D[header.nBoundingVertices];
-        f.read(vertices,header.nBoundingVertices*12);
-        for (uint32 i=0; i<header.nBoundingVertices; i++)
+        f.read(vertices, header.nBoundingVertices * 12);
+        for (uint32 i = 0; i < header.nBoundingVertices; i++)
             vertices[i] = fixCoordSystem(vertices[i]);
         f.seek(0);
         f.seekRelative(header.ofsBoundingTriangles);
         indices = new uint16[header.nBoundingTriangles];
-        f.read(indices,header.nBoundingTriangles*2);
+        f.read(indices, header.nBoundingTriangles * 2);
         f.close();
     }
     else
@@ -72,13 +72,13 @@ bool Model::open()
     return true;
 }
 
-bool Model::ConvertToVMAPModel(const char * outfilename)
+bool Model::ConvertToVMAPModel(const char* outfilename)
 {
-    int N[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
-    FILE* output=fopen(outfilename, "wb");
+    int N[12] = { 0,0,0,0,0,0,0,0,0,0,0,0 };
+    FILE* output = fopen(outfilename, "wb");
     if (!output)
     {
-        printf("Can't create the output file '%s'\n",outfilename);
+        printf("Can't create the output file '%s'\n", outfilename);
         return false;
     }
     fwrite(VMAP::RAW_VMAP_MAGIC, 8, 1, output);
@@ -97,7 +97,7 @@ bool Model::ConvertToVMAPModel(const char * outfilename)
     fwrite(&branches, sizeof(branches), 1, output);
     uint32 nIndexes = header.nBoundingTriangles;
     fwrite(&nIndexes, sizeof(uint32), 1, output);
-    fwrite("INDX",4, 1, output);
+    fwrite("INDX", 4, 1, output);
     wsize = sizeof(uint32) + sizeof(unsigned short) * nIndexes;
     fwrite(&wsize, sizeof(int), 1, output);
     fwrite(&nIndexes, sizeof(uint32), 1, output);
@@ -119,7 +119,7 @@ bool Model::ConvertToVMAPModel(const char * outfilename)
     wsize = sizeof(int) + sizeof(float) * 3 * nVertices;
     fwrite(&wsize, sizeof(int), 1, output);
     fwrite(&nVertices, sizeof(int), 1, output);
-    if (nVertices >0)
+    if (nVertices > 0)
     {
         for (uint32 vpos = 0; vpos < nVertices; ++vpos)
         {
@@ -128,7 +128,7 @@ bool Model::ConvertToVMAPModel(const char * outfilename)
             vertices[vpos].z = tmp;
         }
 
-        fwrite(vertices, sizeof(float)*3, nVertices, output);
+        fwrite(vertices, sizeof(float) * 3, nVertices, output);
     }
 
     fclose(output);
@@ -155,7 +155,7 @@ void Doodad::Extract(ADT::MDDF const& doodadDef, char const* ModelInstName, uint
 
     fseek(input, 8, SEEK_SET); // get the correct no of vertices
     int nVertices;
-    int count = fread(&nVertices, sizeof (int), 1, input);
+    int count = fread(&nVertices, sizeof(int), 1, input);
     fclose(input);
 
     if (count != 1 || nVertices == 0)
@@ -177,7 +177,7 @@ void Doodad::Extract(ADT::MDDF const& doodadDef, char const* ModelInstName, uint
     fwrite(&position, sizeof(Vec3D), 1, pDirfile);
     fwrite(&doodadDef.Rotation, sizeof(Vec3D), 1, pDirfile);
     fwrite(&sc, sizeof(float), 1, pDirfile);
-    uint32 nlen=strlen(ModelInstName);
+    uint32 nlen = strlen(ModelInstName);
     fwrite(&nlen, sizeof(uint32), 1, pDirfile);
     fwrite(ModelInstName, sizeof(char), nlen, pDirfile);
 

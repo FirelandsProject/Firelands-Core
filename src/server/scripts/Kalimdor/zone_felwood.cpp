@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -28,13 +28,13 @@
 
 enum WhisperwindLasher
 {
-    EVENT_CHECK_OOC        = 1,
-    SPELL_INFECTED_WOULD   = 52225,
-    SPELL_STAND            = 37752,
+    EVENT_CHECK_OOC = 1,
+    SPELL_INFECTED_WOULD = 52225,
+    SPELL_STAND = 37752,
     NPC_WHISPERWIND_LASHER = 47747,
-    NPC_CORRUPTED_LASHER   = 48387,
-    FACTION_HOSTILE        = 14,
-    CHANCE_HOSTILE         = 30
+    NPC_CORRUPTED_LASHER = 48387,
+    FACTION_HOSTILE = 14,
+    CHANCE_HOSTILE = 30
 };
 
 class npc_whisperwind_lasher : public CreatureScript
@@ -118,7 +118,7 @@ enum SwipeHoney
 {
     NPC_HONEY_BUNNY = 47308,
     ITEM_HONEY_GLOB = 62820,
-    SPELL_BEES      = 94064
+    SPELL_BEES = 94064
 };
 
 class spell_swipe_honey : public SpellScriptLoader
@@ -176,34 +176,34 @@ enum BeesBEES
 
 class spell_beesbees : public SpellScriptLoader
 {
-    public:
-        spell_beesbees() : SpellScriptLoader("spell_beesbees") { }
+public:
+    spell_beesbees() : SpellScriptLoader("spell_beesbees") { }
 
-        class spell_beesbees_SpellScript : public SpellScript
+    class spell_beesbees_SpellScript : public SpellScript
+    {
+        void HandleScriptEffect(SpellEffIndex /* effIndex */)
         {
-            void HandleScriptEffect(SpellEffIndex /* effIndex */)
+            if (Creature* honey = GetCaster()->ToCreature())
             {
-                if (Creature* honey = GetCaster()->ToCreature())
+                if (Player* player = GetHitPlayer())
                 {
-                    if (Player* player = GetHitPlayer())
-                    {
-                        honey->AI()->Talk(BOSS_EMOTE_BEES, player);
-                        honey->CastSpell(player, SPELL_BEES_BEES);
-                        honey->DespawnOrUnsummon();
-                    }
+                    honey->AI()->Talk(BOSS_EMOTE_BEES, player);
+                    honey->CastSpell(player, SPELL_BEES_BEES);
+                    honey->DespawnOrUnsummon();
                 }
             }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_beesbees_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_beesbees_SpellScript();
         }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_beesbees_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_beesbees_SpellScript();
+    }
 };
 
 /*#####
@@ -212,8 +212,8 @@ class spell_beesbees : public SpellScriptLoader
 
 enum RuumbosSillyDance
 {
-    NPC_DRIZZLE  = 47556,
-    NPC_FERLI    = 47558,
+    NPC_DRIZZLE = 47556,
+    NPC_FERLI = 47558,
     MAP_KALIMDOR = 1
 };
 
@@ -222,35 +222,35 @@ Position const FerliSpawnPos = { 3850.44f, -1323.34f, 213.2113f, 5.637414f };
 
 class spell_ruumbos_silly_dance : public SpellScriptLoader
 {
-    public:
-        spell_ruumbos_silly_dance() : SpellScriptLoader("spell_ruumbos_silly_dance") { }
+public:
+    spell_ruumbos_silly_dance() : SpellScriptLoader("spell_ruumbos_silly_dance") { }
 
-        class spell_ruumbos_silly_dance_SpellScript : public SpellScript
+    class spell_ruumbos_silly_dance_SpellScript : public SpellScript
+    {
+        void HandleScriptEffect(SpellEffIndex /* effIndex */)
         {
-            void HandleScriptEffect(SpellEffIndex /* effIndex */)
+            if (Player* player = GetHitPlayer())
             {
-                if (Player* player = GetHitPlayer())
-                {
-                    player->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_DANCE);
+                player->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_DANCE);
 
-                    if (player->GetMapId() == MAP_KALIMDOR)
-                    {
-                        player->SummonCreature(NPC_DRIZZLE, DrizzleSpawnPos, TEMPSUMMON_TIMED_DESPAWN, 20000);
-                        player->SummonCreature(NPC_FERLI, FerliSpawnPos, TEMPSUMMON_TIMED_DESPAWN, 20000);
-                    }
+                if (player->GetMapId() == MAP_KALIMDOR)
+                {
+                    player->SummonCreature(NPC_DRIZZLE, DrizzleSpawnPos, TEMPSUMMON_TIMED_DESPAWN, 20000);
+                    player->SummonCreature(NPC_FERLI, FerliSpawnPos, TEMPSUMMON_TIMED_DESPAWN, 20000);
                 }
             }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_ruumbos_silly_dance_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_ruumbos_silly_dance_SpellScript();
         }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_ruumbos_silly_dance_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_ruumbos_silly_dance_SpellScript();
+    }
 };
 
 void AddSC_felwood()

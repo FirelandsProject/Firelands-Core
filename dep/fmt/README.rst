@@ -81,7 +81,7 @@ Examples
 .. code:: c++
 
     #include <fmt/core.h>
-    
+
     int main() {
       fmt::print("Hello, world!\n");
     }
@@ -294,13 +294,13 @@ Projects using this library
   an open-source library for mathematical programming
 
 * `Aseprite <https://github.com/aseprite/aseprite>`_:
-  animated sprite editor & pixel art tool 
+  animated sprite editor & pixel art tool
 
 * `AvioBook <https://www.aviobook.aero/en>`_: a comprehensive aircraft
   operations suite
-  
+
 * `Blizzard Battle.net <https://battle.net/>`_: an online gaming platform
-  
+
 * `Celestia <https://celestia.space/>`_: real-time 3D visualization of space
 
 * `Ceph <https://ceph.com/>`_: a scalable distributed storage system
@@ -354,7 +354,7 @@ Projects using this library
 
 * `quasardb <https://www.quasardb.net/>`_: a distributed, high-performance,
   associative database
-  
+
 * `Quill <https://github.com/odygrd/quill>`_: asynchronous low-latency logging library
 
 * `QKW <https://github.com/ravijanjam/qkw>`_: generalizing aliasing to simplify
@@ -385,7 +385,7 @@ Projects using this library
 
 * `Touch Surgery <https://www.touchsurgery.com/>`_: surgery simulator
 
-* `FirelandsCore <https://github.com/FirelandsCore/FirelandsCore>`_: open-source
+* `Firelands Core <https://github.com/FirelandsCore/FirelandsCore>`_: open-source
   MMORPG framework
 
 * `Windows Terminal <https://github.com/microsoft/terminal>`_: the new Windows

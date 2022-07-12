@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -95,7 +95,7 @@ char const* GitRevision::GetHotfixesDatabase()
 
 char const* GitRevision::GetFullVersion()
 {
-    return "FirelandsCore rev. " VER_PRODUCTVERSION_STR
+    return "Firelands Core rev. " VER_PRODUCTVERSION_STR
         " (" FIRELANDS_PLATFORM_STR ", " _BUILD_DIRECTIVE ", " FIRELANDS_LINKAGE_TYPE_STR ")";
 }
 

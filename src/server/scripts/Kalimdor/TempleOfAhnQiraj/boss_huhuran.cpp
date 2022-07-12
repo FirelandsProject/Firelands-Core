@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Huhuran
-SD%Complete: 100
-SDComment:
-SDCategory: Temple of Ahn'Qiraj
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Huhuran
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Temple of Ahn'Qiraj
+ EndScriptData */
 
 #include "temple_of_ahnqiraj.h"
 #include "ScriptMgr.h"
@@ -28,15 +28,15 @@ EndScriptData */
 
 enum Huhuran
 {
-    EMOTE_FRENZY_KILL           = 0,
-    EMOTE_BERSERK               = 1,
+    EMOTE_FRENZY_KILL = 0,
+    EMOTE_BERSERK = 1,
 
-    SPELL_FRENZY                = 26051,
-    SPELL_BERSERK               = 26068,
-    SPELL_POISONBOLT            = 26052,
-    SPELL_NOXIOUSPOISON         = 26053,
-    SPELL_WYVERNSTING           = 26180,
-    SPELL_ACIDSPIT              = 26050
+    SPELL_FRENZY = 26051,
+    SPELL_BERSERK = 26068,
+    SPELL_POISONBOLT = 26052,
+    SPELL_NOXIOUSPOISON = 26053,
+    SPELL_WYVERNSTING = 26180,
+    SPELL_ACIDSPIT = 26050
 };
 
 class boss_huhuran : public CreatureScript
@@ -99,7 +99,8 @@ public:
                 Frenzy = true;
                 PoisonBolt_Timer = 3000;
                 Frenzy_Timer = urand(25000, 35000);
-            } else Frenzy_Timer -= diff;
+            }
+            else Frenzy_Timer -= diff;
 
             // Wyvern Timer
             if (Wyvern_Timer <= diff)
@@ -107,21 +108,24 @@ public:
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                     DoCast(target, SPELL_WYVERNSTING);
                 Wyvern_Timer = urand(15000, 32000);
-            } else Wyvern_Timer -= diff;
+            }
+            else Wyvern_Timer -= diff;
 
             //Spit Timer
             if (Spit_Timer <= diff)
             {
                 DoCastVictim(SPELL_ACIDSPIT);
                 Spit_Timer = urand(5000, 10000);
-            } else Spit_Timer -= diff;
+            }
+            else Spit_Timer -= diff;
 
             //NoxiousPoison_Timer
             if (NoxiousPoison_Timer <= diff)
             {
                 DoCastVictim(SPELL_NOXIOUSPOISON);
                 NoxiousPoison_Timer = urand(12000, 24000);
-            } else NoxiousPoison_Timer -= diff;
+            }
+            else NoxiousPoison_Timer -= diff;
 
             //PoisonBolt only if frenzy or berserk
             if (Frenzy || Berserk)
@@ -130,7 +134,8 @@ public:
                 {
                     DoCastVictim(SPELL_POISONBOLT);
                     PoisonBolt_Timer = 3000;
-                } else PoisonBolt_Timer -= diff;
+                }
+                else PoisonBolt_Timer -= diff;
             }
 
             //FrenzyBack_Timer
@@ -139,7 +144,8 @@ public:
                 me->InterruptNonMeleeSpells(false);
                 Frenzy = false;
                 FrenzyBack_Timer = 15000;
-            } else FrenzyBack_Timer -= diff;
+            }
+            else FrenzyBack_Timer -= diff;
 
             if (!Berserk && HealthBelowPct(31))
             {

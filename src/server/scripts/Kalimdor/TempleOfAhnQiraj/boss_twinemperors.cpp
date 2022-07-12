@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Twinemperors
-SD%Complete: 95
-SDComment:
-SDCategory: Temple of Ahn'Qiraj
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Twinemperors
+ SD%Complete: 95
+ SDComment:
+ SDCategory: Temple of Ahn'Qiraj
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -32,40 +32,40 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_HEAL_BROTHER            = 7393,
-    SPELL_TWIN_TELEPORT           = 800,                     // CTRA watches for this spell to start its teleport timer
-    SPELL_TWIN_TELEPORT_VISUAL    = 26638,                  // visual
-    SPELL_EXPLODEBUG              = 804,
-    SPELL_MUTATE_BUG              = 802,
-    SPELL_BERSERK                 = 26662,
-    SPELL_UPPERCUT                = 26007,
-    SPELL_UNBALANCING_STRIKE      = 26613,
-    SPELL_SHADOWBOLT              = 26006,
-    SPELL_BLIZZARD                = 26607,
-    SPELL_ARCANEBURST             = 568,
+    SPELL_HEAL_BROTHER = 7393,
+    SPELL_TWIN_TELEPORT = 800,                     // CTRA watches for this spell to start its teleport timer
+    SPELL_TWIN_TELEPORT_VISUAL = 26638,                  // visual
+    SPELL_EXPLODEBUG = 804,
+    SPELL_MUTATE_BUG = 802,
+    SPELL_BERSERK = 26662,
+    SPELL_UPPERCUT = 26007,
+    SPELL_UNBALANCING_STRIKE = 26613,
+    SPELL_SHADOWBOLT = 26006,
+    SPELL_BLIZZARD = 26607,
+    SPELL_ARCANEBURST = 568,
 };
 
 enum Sound
 {
-    SOUND_VL_AGGRO                = 8657,                    //8657 - Aggro - To Late
-    SOUND_VL_KILL                 = 8658,                    //8658 - Kill - You will not
-    SOUND_VL_DEATH                = 8659,                    //8659 - Death
-    SOUND_VN_DEATH                = 8660,                    //8660 - Death - Feel
-    SOUND_VN_AGGRO                = 8661,                    //8661 - Aggro - Let none
-    SOUND_VN_KILL                 = 8662,                    //8661 - Kill - your fate
+    SOUND_VL_AGGRO = 8657,                    //8657 - Aggro - To Late
+    SOUND_VL_KILL = 8658,                    //8658 - Kill - You will not
+    SOUND_VL_DEATH = 8659,                    //8659 - Death
+    SOUND_VN_DEATH = 8660,                    //8660 - Death - Feel
+    SOUND_VN_AGGRO = 8661,                    //8661 - Aggro - Let none
+    SOUND_VN_KILL = 8662,                    //8661 - Kill - your fate
 };
 
 enum Misc
 {
-    PULL_RANGE                    = 50,
-    ABUSE_BUG_RANGE               = 20,
-    VEKLOR_DIST                   = 20,                      // VL will not come to melee when attacking
-    TELEPORTTIME                  = 30000
+    PULL_RANGE = 50,
+    ABUSE_BUG_RANGE = 20,
+    VEKLOR_DIST = 20,                      // VL will not come to melee when attacking
+    TELEPORTTIME = 30000
 };
 
 struct boss_twinemperorsAI : public BossAI
 {
-    boss_twinemperorsAI(Creature* creature): BossAI(creature, DATA_TWIN_EMPERORS)
+    boss_twinemperorsAI(Creature* creature) : BossAI(creature, DATA_TWIN_EMPERORS)
     {
         Initialize();
     }
@@ -109,14 +109,14 @@ struct boss_twinemperorsAI : public BossAI
         return ObjectAccessor::GetCreature(*me, instance->GetGuidData(IAmVeklor() ? DATA_VEKNILASH : DATA_VEKLOR));
     }
 
-    void DamageTaken(Unit* /*done_by*/, uint32 &damage) override
+    void DamageTaken(Unit* /*done_by*/, uint32& damage) override
     {
         Unit* pOtherBoss = GetOtherBoss();
         if (pOtherBoss)
         {
             float dPercent = ((float)damage) / ((float)me->GetMaxHealth());
             int odmg = (int)(dPercent * ((float)pOtherBoss->GetMaxHealth()));
-            int ohealth = pOtherBoss->GetHealth()-odmg;
+            int ohealth = pOtherBoss->GetHealth() - odmg;
             pOtherBoss->SetHealth(ohealth > 0 ? ohealth : 0);
             if (ohealth <= 0)
             {
@@ -177,18 +177,18 @@ struct boss_twinemperorsAI : public BossAI
         uint32 mytotal = me->GetMaxHealth(), histotal = pOtherBoss->GetMaxHealth();
         float mult = ((float)mytotal) / ((float)histotal);
         if (mult < 1)
-            mult = 1.0f/mult;
-        #define HEAL_BROTHER_AMOUNT 30000.0f
+            mult = 1.0f / mult;
+#define HEAL_BROTHER_AMOUNT 30000.0f
         uint32 largerAmount = (uint32)((HEAL_BROTHER_AMOUNT * mult) - HEAL_BROTHER_AMOUNT);
 
         if (mytotal > histotal)
         {
-            uint32 h = me->GetHealth()+largerAmount;
+            uint32 h = me->GetHealth() + largerAmount;
             me->SetHealth(std::min(mytotal, h));
         }
         else
         {
-            uint32 h = pOtherBoss->GetHealth()+largerAmount;
+            uint32 h = pOtherBoss->GetHealth() + largerAmount;
             pOtherBoss->SetHealth(std::min(histotal, h));
         }
     }
@@ -206,7 +206,8 @@ struct boss_twinemperorsAI : public BossAI
                 DoCast(pOtherBoss, SPELL_HEAL_BROTHER);
                 Heal_Timer = 1000;
             }
-        } else Heal_Timer -= diff;
+        }
+        else Heal_Timer -= diff;
     }
 
     void TeleportToMyBrother()
@@ -379,9 +380,11 @@ struct boss_twinemperorsAI : public BossAI
             if (!me->IsNonMeleeSpellCast(true))
             {
                 DoCast(me, SPELL_BERSERK);
-                EnrageTimer = 60*60000;
-            } else EnrageTimer = 0;
-        } else EnrageTimer-=diff;
+                EnrageTimer = 60 * 60000;
+            }
+            else EnrageTimer = 0;
+        }
+        else EnrageTimer -= diff;
     }
 };
 
@@ -392,7 +395,7 @@ public:
 
     struct boss_veknilashAI : public boss_twinemperorsAI
     {
-        bool IAmVeklor() override {return false;}
+        bool IAmVeklor() override { return false; }
         boss_veknilashAI(Creature* creature) : boss_twinemperorsAI(creature)
         {
             Initialize();
@@ -413,7 +416,7 @@ public:
         {
             TwinReset();
             Initialize();
-                                                                //Added. Can be removed if its included in DB.
+            //Added. Can be removed if its included in DB.
             me->ApplySpellImmune(0, IMMUNITY_DAMAGE, SPELL_SCHOOL_MASK_MAGIC, true);
         }
 
@@ -439,7 +442,8 @@ public:
             {
                 DoCastVictim(SPELL_UNBALANCING_STRIKE);
                 UnbalancingStrike_Timer = 8000 + rand32() % 12000;
-            } else UnbalancingStrike_Timer -= diff;
+            }
+            else UnbalancingStrike_Timer -= diff;
 
             if (UpperCut_Timer <= diff)
             {
@@ -447,7 +451,8 @@ public:
                 if (randomMelee)
                     DoCast(randomMelee, SPELL_UPPERCUT);
                 UpperCut_Timer = 15000 + rand32() % 15000;
-            } else UpperCut_Timer -= diff;
+            }
+            else UpperCut_Timer -= diff;
 
             HandleBugs(diff);
 
@@ -458,7 +463,8 @@ public:
             if (Teleport_Timer <= diff)
             {
                 TeleportToMyBrother();
-            } else Teleport_Timer -= diff;
+            }
+            else Teleport_Timer -= diff;
 
             CheckEnrage(diff);
 
@@ -479,7 +485,7 @@ public:
 
     struct boss_veklorAI : public boss_twinemperorsAI
     {
-        bool IAmVeklor() override {return true;}
+        bool IAmVeklor() override { return true; }
         boss_veklorAI(Creature* creature) : boss_twinemperorsAI(creature)
         {
             Initialize();
@@ -536,7 +542,8 @@ public:
                 else
                     DoCastVictim(SPELL_SHADOWBOLT);
                 ShadowBolt_Timer = 2000;
-            } else ShadowBolt_Timer -= diff;
+            }
+            else ShadowBolt_Timer -= diff;
 
             //Blizzard_Timer
             if (Blizzard_Timer <= diff)
@@ -544,7 +551,8 @@ public:
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 45, true))
                     DoCast(target, SPELL_BLIZZARD);
                 Blizzard_Timer = 15000 + rand32() % 15000;
-            } else Blizzard_Timer -= diff;
+            }
+            else Blizzard_Timer -= diff;
 
             if (ArcaneBurst_Timer <= diff)
             {
@@ -553,7 +561,8 @@ public:
                     DoCast(mvic, SPELL_ARCANEBURST);
                     ArcaneBurst_Timer = 5000;
                 }
-            } else ArcaneBurst_Timer -= diff;
+            }
+            else ArcaneBurst_Timer -= diff;
 
             HandleBugs(diff);
 
@@ -564,7 +573,8 @@ public:
             if (Teleport_Timer <= diff)
             {
                 TeleportToMyBrother();
-            } else Teleport_Timer -= diff;
+            }
+            else Teleport_Timer -= diff;
 
             CheckEnrage(diff);
 

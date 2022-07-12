@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,42 +28,42 @@ void TCSoapThread(const std::string& host, uint16 port);
 
 class SOAPCommand
 {
-    public:
-        SOAPCommand():
-            m_success(false)
-        {
-        }
+public:
+    SOAPCommand() :
+        m_success(false)
+    {
+    }
 
-        ~SOAPCommand()
-        {
-        }
+    ~SOAPCommand()
+    {
+    }
 
-        void appendToPrintBuffer(char const* msg)
-        {
-            m_printBuffer += msg;
-        }
+    void appendToPrintBuffer(char const* msg)
+    {
+        m_printBuffer += msg;
+    }
 
-        void setCommandSuccess(bool val)
-        {
-            m_success = val;
-            finishedPromise.set_value();
-        }
+    void setCommandSuccess(bool val)
+    {
+        m_success = val;
+        finishedPromise.set_value();
+    }
 
-        bool hasCommandSucceeded() const
-        {
-            return m_success;
-        }
+    bool hasCommandSucceeded() const
+    {
+        return m_success;
+    }
 
-        static void print(void* callbackArg, char const* msg)
-        {
-            ((SOAPCommand*)callbackArg)->appendToPrintBuffer(msg);
-        }
+    static void print(void* callbackArg, char const* msg)
+    {
+        ((SOAPCommand*)callbackArg)->appendToPrintBuffer(msg);
+    }
 
-        static void commandFinished(void* callbackArg, bool success);
+    static void commandFinished(void* callbackArg, bool success);
 
-        bool m_success;
-        std::string m_printBuffer;
-        std::promise<void> finishedPromise;
+    bool m_success;
+    std::string m_printBuffer;
+    std::promise<void> finishedPromise;
 };
 
 #endif

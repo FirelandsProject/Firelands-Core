@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,30 +28,30 @@
 
 enum BlackheartTheInciter
 {
-    SPELL_INCITE_CHAOS      = 33676,
-    SPELL_INCITE_CHAOS_B    = 33684,                         //debuff applied to each member of party
-    SPELL_CHARGE            = 33709,
-    SPELL_WAR_STOMP         = 33707,
+    SPELL_INCITE_CHAOS = 33676,
+    SPELL_INCITE_CHAOS_B = 33684,                         //debuff applied to each member of party
+    SPELL_CHARGE = 33709,
+    SPELL_WAR_STOMP = 33707,
 
-    SAY_INTRO               = 0,
-    SAY_AGGRO               = 1,
-    SAY_SLAY                = 2,
-    SAY_HELP                = 3,
-    SAY_DEATH               = 4,
+    SAY_INTRO = 0,
+    SAY_AGGRO = 1,
+    SAY_SLAY = 2,
+    SAY_HELP = 3,
+    SAY_DEATH = 4,
 
     //below, not used
-    SAY2_INTRO              = 5,
-    SAY2_AGGRO              = 6,
-    SAY2_SLAY               = 7,
-    SAY2_HELP               = 8,
-    SAY2_DEATH              = 9
+    SAY2_INTRO = 5,
+    SAY2_AGGRO = 6,
+    SAY2_SLAY = 7,
+    SAY2_HELP = 8,
+    SAY2_DEATH = 9
 };
 
 enum Events
 {
-    EVENT_INCITE_CHAOS          = 1,
-    EVENT_CHARGE_ATTACK         = 2,
-    EVENT_WAR_STOMP             = 3
+    EVENT_INCITE_CHAOS = 1,
+    EVENT_CHARGE_ATTACK = 2,
+    EVENT_WAR_STOMP = 3
 };
 
 class BlackheartCharmedPlayerAI : public SimpleCharmedPlayerAI
@@ -131,25 +131,25 @@ struct boss_blackheart_the_inciter : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_INCITE_CHAOS:
+            case EVENT_INCITE_CHAOS:
+            {
+                if (me->GetThreatManager().GetThreatListSize() > 1)
                 {
-                    if (me->GetThreatManager().GetThreatListSize() > 1)
-                    {
-                        ResetThreatList();
-                        DoCast(me, SPELL_INCITE_CHAOS);
-                    }
-                    events.ScheduleEvent(EVENT_INCITE_CHAOS, 40000);
-                    break;
+                    ResetThreatList();
+                    DoCast(me, SPELL_INCITE_CHAOS);
                 }
-                case EVENT_CHARGE_ATTACK:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                        DoCast(target, SPELL_CHARGE);
-                    events.ScheduleEvent(EVENT_CHARGE, urand(15000, 25000));
-                    break;
-                case EVENT_WAR_STOMP:
-                    DoCast(me, SPELL_WAR_STOMP);
-                    events.ScheduleEvent(EVENT_WAR_STOMP, urand(18000, 24000));
-                    break;
+                events.ScheduleEvent(EVENT_INCITE_CHAOS, 40000);
+                break;
+            }
+            case EVENT_CHARGE_ATTACK:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_CHARGE);
+                events.ScheduleEvent(EVENT_CHARGE, urand(15000, 25000));
+                break;
+            case EVENT_WAR_STOMP:
+                DoCast(me, SPELL_WAR_STOMP);
+                events.ScheduleEvent(EVENT_WAR_STOMP, urand(18000, 24000));
+                break;
             }
 
             if (me->HasReactState(REACT_PASSIVE) || me->HasUnitState(UNIT_STATE_CASTING))
@@ -204,7 +204,7 @@ class spell_blackheart_incite_chaos : public SpellScript
 
     static const uint8 NUM_INCITE_SPELLS = 5;
     static const uint32 INCITE_SPELLS[NUM_INCITE_SPELLS];
-    uint8 i=0;
+    uint8 i = 0;
     void HandleDummy(SpellEffIndex /*effIndex*/)
     {
         if (Unit* target = GetHitUnit())

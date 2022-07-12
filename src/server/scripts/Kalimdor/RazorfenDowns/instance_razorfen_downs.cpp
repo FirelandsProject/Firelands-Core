@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -68,39 +68,39 @@ public:
         {
             switch (gameObject->GetEntry())
             {
-                case GO_GONG:
-                    goGongGUID = gameObject->GetGUID();
-                    if (GetBossState(DATA_TUTEN_KASH) == DONE)
-                        gameObject->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                    break;
-                case GO_IDOL_OVEN_FIRE:
-                case GO_IDOL_CUP_FIRE:
-                case GO_IDOL_MOUTH_FIRE:
-                    if (GetBossState(DATA_EXTINGUISHING_THE_IDOL) == DONE)
-                        gameObject->Delete();
-                    break;
-                default:
-                    break;
+            case GO_GONG:
+                goGongGUID = gameObject->GetGUID();
+                if (GetBossState(DATA_TUTEN_KASH) == DONE)
+                    gameObject->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_IDOL_OVEN_FIRE:
+            case GO_IDOL_CUP_FIRE:
+            case GO_IDOL_MOUTH_FIRE:
+                if (GetBossState(DATA_EXTINGUISHING_THE_IDOL) == DONE)
+                    gameObject->Delete();
+                break;
+            default:
+                break;
             }
         }
 
         bool SetBossState(uint32 type, EncounterState state) override
         {
             if (!InstanceScript::SetBossState(type, state))
-                 return false;
+                return false;
 
             switch (type)
             {
-                case DATA_TUTEN_KASH:
-                case DATA_MORDRESH_FIRE_EYE:
-                case DATA_GLUTTON:
-                case DATA_AMNENNAR_THE_COLD_BRINGER:
-                case DATA_GONG:
-                case DATA_WAVE:
-                case DATA_EXTINGUISHING_THE_IDOL:
-                    break;
-                default:
-                    break;
+            case DATA_TUTEN_KASH:
+            case DATA_MORDRESH_FIRE_EYE:
+            case DATA_GLUTTON:
+            case DATA_AMNENNAR_THE_COLD_BRINGER:
+            case DATA_GONG:
+            case DATA_WAVE:
+            case DATA_EXTINGUISHING_THE_IDOL:
+                break;
+            default:
+                break;
             }
             return true;
         }
@@ -111,58 +111,58 @@ public:
             {
                 switch (data)
                 {
-                    case IN_PROGRESS:
+                case IN_PROGRESS:
+                {
+                    if (GameObject* go = instance->GetGameObject(goGongGUID))
+                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+
+                    switch (gongWave)
                     {
-                        if (GameObject* go = instance->GetGameObject(goGongGUID))
-                            go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-
-                        switch (gongWave)
-                        {
-                            case 0:
-                                summonLowRange = 0;
-                                summonHighRange = 10;
-                                summonCreature = NPC_TOMB_FIEND;
-                                break;
-                            case 1:
-                                summonLowRange = 10;
-                                summonHighRange = 14;
-                                summonCreature = NPC_TOMB_REAVER;
-                                break;
-                            case 2:
-                                summonLowRange = 14;
-                                summonHighRange = 15;
-                                summonCreature = NPC_TUTEN_KASH;
-                                break;
-                        }
-
-                        if (GameObject* go = instance->GetGameObject(goGongGUID))
-                        {
-                            for (uint8 i = summonLowRange; i < summonHighRange; ++i)
-                            {
-                                Creature* creature = go->SummonCreature(summonCreature, PosSummonTutenkash[i]);
-                                    creature->GetMotionMaster()->MovePoint(0, 2533.479f + float(irand(-5, 5)), 870.020f + float(irand(-5, 5)), 47.678f);
-                            }
-                        }
-
-                        ++gongWave;
+                    case 0:
+                        summonLowRange = 0;
+                        summonHighRange = 10;
+                        summonCreature = NPC_TOMB_FIEND;
+                        break;
+                    case 1:
+                        summonLowRange = 10;
+                        summonHighRange = 14;
+                        summonCreature = NPC_TOMB_REAVER;
+                        break;
+                    case 2:
+                        summonLowRange = 14;
+                        summonHighRange = 15;
+                        summonCreature = NPC_TUTEN_KASH;
                         break;
                     }
-                    case NPC_TOMB_FIEND:
-                        if (++fiendsKilled == 10)
+
+                    if (GameObject* go = instance->GetGameObject(goGongGUID))
+                    {
+                        for (uint8 i = summonLowRange; i < summonHighRange; ++i)
                         {
-                            fiendsKilled = 0;
-                            if (GameObject* go = instance->GetGameObject(goGongGUID))
-                                go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                            Creature* creature = go->SummonCreature(summonCreature, PosSummonTutenkash[i]);
+                            creature->GetMotionMaster()->MovePoint(0, 2533.479f + float(irand(-5, 5)), 870.020f + float(irand(-5, 5)), 47.678f);
                         }
-                        break;
-                    case NPC_TOMB_REAVER:
-                        if (++reaversKilled == 4)
-                        {
-                            reaversKilled = 0;
-                            if (GameObject* go = instance->GetGameObject(goGongGUID))
-                                go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        }
-                        break;
+                    }
+
+                    ++gongWave;
+                    break;
+                }
+                case NPC_TOMB_FIEND:
+                    if (++fiendsKilled == 10)
+                    {
+                        fiendsKilled = 0;
+                        if (GameObject* go = instance->GetGameObject(goGongGUID))
+                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                    }
+                    break;
+                case NPC_TOMB_REAVER:
+                    if (++reaversKilled == 4)
+                    {
+                        reaversKilled = 0;
+                        if (GameObject* go = instance->GetGameObject(goGongGUID))
+                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                    }
+                    break;
                 }
             }
         }

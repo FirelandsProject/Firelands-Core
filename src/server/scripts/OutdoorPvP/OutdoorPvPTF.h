@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,12 +30,12 @@ namespace WorldPackets
 
 enum DefenseMessages
 {
-    TEXT_BONE_WASTES_TAKEN_ALLIANCE     = 16120, // (NYI) '|cffffff00The Alliance has taken control of The Bone Wastes!|r'
-    TEXT_BONE_WASTES_TAKEN_HORDE        = 16119, // (NYI) '|cffffff00The Horde has taken control of The Bone Wastes!|r'
-    TEXT_SPIRIT_TOWER_TAKEN_ALLIANCE    = 18285, // '|cffffff00The Alliance has taken control of a Spirit Tower!|r'
-    TEXT_SPIRIT_TOWER_TAKEN_HORDE       = 18286, // '|cffffff00The Horde has taken control of a Spirit Tower!|r'
-    TEXT_SPIRIT_TOWER_LOSE_ALLIANCE     = 18288, // '|cffffff00The Alliance has lost control of a Spirit Tower!|r'
-    TEXT_SPIRIT_TOWER_LOSE_HORDE        = 18287  // '|cffffff00The Horde has lost control of a Spirit Tower!|r'
+    TEXT_BONE_WASTES_TAKEN_ALLIANCE = 16120, // (NYI) '|cffffff00The Alliance has taken control of The Bone Wastes!|r'
+    TEXT_BONE_WASTES_TAKEN_HORDE = 16119, // (NYI) '|cffffff00The Horde has taken control of The Bone Wastes!|r'
+    TEXT_SPIRIT_TOWER_TAKEN_ALLIANCE = 18285, // '|cffffff00The Alliance has taken control of a Spirit Tower!|r'
+    TEXT_SPIRIT_TOWER_TAKEN_HORDE = 18286, // '|cffffff00The Horde has taken control of a Spirit Tower!|r'
+    TEXT_SPIRIT_TOWER_LOSE_ALLIANCE = 18288, // '|cffffff00The Alliance has lost control of a Spirit Tower!|r'
+    TEXT_SPIRIT_TOWER_LOSE_HORDE = 18287  // '|cffffff00The Horde has lost control of a Spirit Tower!|r'
 };
 
 enum OutdoorPvPTF_TowerType
@@ -71,56 +71,56 @@ enum TFTowerStates
 
 class OPvPCapturePointTF : public OPvPCapturePoint
 {
-    public:
-        OPvPCapturePointTF(OutdoorPvP* pvp, OutdoorPvPTF_TowerType type);
+public:
+    OPvPCapturePointTF(OutdoorPvP* pvp, OutdoorPvPTF_TowerType type);
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void ChangeState() override;
+    void ChangeState() override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-        void UpdateTowerState();
+    void UpdateTowerState();
 
-    protected:
-        OutdoorPvPTF_TowerType m_TowerType;
+protected:
+    OutdoorPvPTF_TowerType m_TowerType;
 
-        uint32 m_TowerState;
+    uint32 m_TowerState;
 };
 
 class OutdoorPvPTF : public OutdoorPvP
 {
-    public:
-        OutdoorPvPTF();
+public:
+    OutdoorPvPTF();
 
-        bool SetupOutdoorPvP() override;
+    bool SetupOutdoorPvP() override;
 
-        void HandlePlayerEnterZone(Player* player, uint32 zone) override;
-        void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
+    void HandlePlayerEnterZone(Player* player, uint32 zone) override;
+    void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-        void SendRemoveWorldStates(Player* player) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        uint32 GetAllianceTowersControlled() const;
-        void SetAllianceTowersControlled(uint32 count);
+    uint32 GetAllianceTowersControlled() const;
+    void SetAllianceTowersControlled(uint32 count);
 
-        uint32 GetHordeTowersControlled() const;
-        void SetHordeTowersControlled(uint32 count);
+    uint32 GetHordeTowersControlled() const;
+    void SetHordeTowersControlled(uint32 count);
 
-        bool IsLocked() const;
+    bool IsLocked() const;
 
-    private:
-        bool m_IsLocked;
-        uint32 m_LockTimer;
-        uint32 m_LockTimerUpdate;
+private:
+    bool m_IsLocked;
+    uint32 m_LockTimer;
+    uint32 m_LockTimerUpdate;
 
-        uint32 m_AllianceTowersControlled;
-        uint32 m_HordeTowersControlled;
+    uint32 m_AllianceTowersControlled;
+    uint32 m_HordeTowersControlled;
 
-        uint32 hours_left, second_digit, first_digit;
+    uint32 hours_left, second_digit, first_digit;
 };
 
 #endif

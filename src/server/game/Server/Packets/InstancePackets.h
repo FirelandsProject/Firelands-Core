@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -43,7 +43,7 @@ namespace WorldPackets
             WorldPacket const* Write() override;
 
             int32 IOwnInstance = 0; // Used to control whether "Reset all instances" button appears on the UI - Script_CanShowResetInstances()
-                                    // but it has been deperecated in favor of simply checking group leader, being inside an instance or using dungeon finder
+            // but it has been deperecated in favor of simply checking group leader, being inside an instance or using dungeon finder
         };
 
         struct InstanceLock

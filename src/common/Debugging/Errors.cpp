@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -71,7 +71,7 @@ namespace Firelands
     void Assert(char const* file, int line, char const* function, char const* message)
     {
         std::string formattedMessage = StringFormat("\n%s:%i in %s ASSERTION FAILED:\n  %s\n", file, line, function, message);
-        fprintf(stderr, "%s", formattedMessage.c_str());
+        fmt::print(stderr, "{}", formattedMessage);
         fflush(stderr);
         Crash(formattedMessage.c_str());
     }
@@ -84,7 +84,7 @@ namespace Firelands
         std::string formattedMessage = StringFormat("\n%s:%i in %s ASSERTION FAILED:\n  %s\n", file, line, function, message) + FormatAssertionMessage(format, args) + '\n';
         va_end(args);
 
-        fprintf(stderr, "%s", formattedMessage.c_str());
+        fmt::print(stderr, "{}", formattedMessage);
         fflush(stderr);
 
         Crash(formattedMessage.c_str());
@@ -98,7 +98,7 @@ namespace Firelands
         std::string formattedMessage = StringFormat("\n%s:%i in %s FATAL ERROR:\n", file, line, function) + FormatAssertionMessage(message, args) + '\n';
         va_end(args);
 
-        fprintf(stderr, "%s", formattedMessage.c_str());
+        fmt::print(stderr, "{}", formattedMessage);
         fflush(stderr);
 
         std::this_thread::sleep_for(std::chrono::seconds(10));
@@ -108,22 +108,24 @@ namespace Firelands
     void Error(char const* file, int line, char const* function, char const* message)
     {
         std::string formattedMessage = StringFormat("\n%s:%i in %s ERROR:\n  %s\n", file, line, function, message);
-        fprintf(stderr, "%s", formattedMessage.c_str());
+        fmt::print(stderr, "{}", formattedMessage);
         fflush(stderr);
+        std::this_thread::sleep_for(std::chrono::seconds(10));
         Crash(formattedMessage.c_str());
     }
 
     void Warning(char const* file, int line, char const* function, char const* message)
     {
-        fprintf(stderr, "\n%s:%i in %s WARNING:\n  %s\n",
+        fmt::print(stderr, "\n{}:{} in {} WARNING:\n  {}\n",
             file, line, function, message);
     }
 
     void Abort(char const* file, int line, char const* function)
     {
         std::string formattedMessage = StringFormat("\n%s:%i in %s ABORTED.\n", file, line, function);
-        fprintf(stderr, "%s", formattedMessage.c_str());
+        fmt::print(stderr, "{}", formattedMessage);
         fflush(stderr);
+        std::this_thread::sleep_for(std::chrono::seconds(10));
         Crash(formattedMessage.c_str());
     }
 
@@ -131,7 +133,7 @@ namespace Firelands
     {
         // nothing useful to log here, no way to pass args
         std::string formattedMessage = StringFormat("Caught signal %i\n", sigval);
-        fprintf(stderr, "%s", formattedMessage.c_str());
+        fmt::print(stderr, "{}", formattedMessage);
         fflush(stderr);
         Crash(formattedMessage.c_str());
     }

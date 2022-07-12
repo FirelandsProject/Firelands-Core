@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,52 +30,52 @@
 enum Says
 {
     // Kael'thas Sunstrider
-    SAY_INTRO_1                 = 0,
-    SAY_INTRO_2                 = 1,
-    SAY_GRAVITY_LAPSE_1         = 2,
-    SAY_GRAVITY_LAPSE_2         = 3,
-    SAY_POWER_FEEDBACK          = 4,
-    SAY_SUMMON_PHOENIX          = 5,
-    SAY_ANNOUNCE_PYROBLAST      = 6,
-    SAY_FLAME_STRIKE            = 7,
-    SAY_DEATH                   = 8
+    SAY_INTRO_1 = 0,
+    SAY_INTRO_2 = 1,
+    SAY_GRAVITY_LAPSE_1 = 2,
+    SAY_GRAVITY_LAPSE_2 = 3,
+    SAY_POWER_FEEDBACK = 4,
+    SAY_SUMMON_PHOENIX = 5,
+    SAY_ANNOUNCE_PYROBLAST = 6,
+    SAY_FLAME_STRIKE = 7,
+    SAY_DEATH = 8
 };
 
 enum Spells
 {
     // Kael'thas Sunstrider
-    SPELL_FIREBALL                              = 44189,
-    SPELL_GRAVITY_LAPSE_CENTER_TELEPORT         = 44218,
-    SPELL_GRAVITY_LAPSE_LEFT_TELEPORT           = 44219,
-    SPELL_GRAVITY_LAPSE_FRONT_LEFT_TELEPORT     = 44220,
-    SPELL_GRAVITY_LAPSE_FRONT_TELEPORT          = 44221,
-    SPELL_GRAVITY_LAPSE_FRONT_RIGHT_TELEPORT    = 44222,
-    SPELL_GRAVITY_LAPSE_RIGHT_TELEPORT          = 44223,
-    SPELL_GRAVITY_LAPSE_INITIAL                 = 44224,
-    SPELL_GRAVITY_LAPSE_FLY                     = 44227,
-    SPELL_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC    = 44251,
-    SPELL_SUMMON_ARCANE_SPHERE                  = 44265,
-    SPELL_POWER_FEEDBACK                        = 44233,
-    SPELL_FLAME_STRIKE                          = 46162,
-    SPELL_SHOCK_BARRIER                         = 46165,
-    SPELL_PYROBLAST                             = 36819,
-    SPELL_PHOENIX                               = 44194,
-    SPELL_EMOTE_TALK_EXCLAMATION                = 48348,
-    SPELL_EMOTE_POINT                           = 48349,
-    SPELL_EMOTE_ROAR                            = 48350,
-    SPELL_CLEAR_FLIGHT                          = 44232,
-    SPELL_QUITE_SUICIDE                         = 3617, // Serverside spell
+    SPELL_FIREBALL = 44189,
+    SPELL_GRAVITY_LAPSE_CENTER_TELEPORT = 44218,
+    SPELL_GRAVITY_LAPSE_LEFT_TELEPORT = 44219,
+    SPELL_GRAVITY_LAPSE_FRONT_LEFT_TELEPORT = 44220,
+    SPELL_GRAVITY_LAPSE_FRONT_TELEPORT = 44221,
+    SPELL_GRAVITY_LAPSE_FRONT_RIGHT_TELEPORT = 44222,
+    SPELL_GRAVITY_LAPSE_RIGHT_TELEPORT = 44223,
+    SPELL_GRAVITY_LAPSE_INITIAL = 44224,
+    SPELL_GRAVITY_LAPSE_FLY = 44227,
+    SPELL_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC = 44251,
+    SPELL_SUMMON_ARCANE_SPHERE = 44265,
+    SPELL_POWER_FEEDBACK = 44233,
+    SPELL_FLAME_STRIKE = 46162,
+    SPELL_SHOCK_BARRIER = 46165,
+    SPELL_PYROBLAST = 36819,
+    SPELL_PHOENIX = 44194,
+    SPELL_EMOTE_TALK_EXCLAMATION = 48348,
+    SPELL_EMOTE_POINT = 48349,
+    SPELL_EMOTE_ROAR = 48350,
+    SPELL_CLEAR_FLIGHT = 44232,
+    SPELL_QUITE_SUICIDE = 3617, // Serverside spell
 
     // Flame Strike 
-    SPELL_FLAME_STRIKE_DUMMY                    = 44191,
-    SPELL_FLAME_STRIKE_DAMAGE                   = 44190,
+    SPELL_FLAME_STRIKE_DUMMY = 44191,
+    SPELL_FLAME_STRIKE_DAMAGE = 44190,
 
     // Phoenix
-    SPELL_REBIRTH                               = 44196,
-    SPELL_BURN                                  = 44197,
-    SPELL_EMBER_BLAST                           = 44199,
-    SPELL_SUMMON_PHOENIX_EGG                    = 44195, // Serverside spell
-    SPELL_FULL_HEAL                             = 17683
+    SPELL_REBIRTH = 44196,
+    SPELL_BURN = 44197,
+    SPELL_EMBER_BLAST = 44199,
+    SPELL_SUMMON_PHOENIX_EGG = 44195, // Serverside spell
+    SPELL_FULL_HEAL = 17683
 };
 
 uint32 gravityLapseTeleportSpells[] =
@@ -123,8 +123,8 @@ enum Events
 enum Phases
 {
     PHASE_INTRO = 0,
-    PHASE_ONE   = 1,
-    PHASE_TWO   = 2,
+    PHASE_ONE = 1,
+    PHASE_TWO = 2,
     PHASE_OUTRO = 3
 };
 
@@ -173,7 +173,7 @@ struct boss_felblood_kaelthas : public BossAI
         _DespawnAtEvade();
     }
 
-    void DamageTaken(Unit* attacker, uint32 &damage) override
+    void DamageTaken(Unit* attacker, uint32& damage) override
     {
         // Checking for lethal damage first so we trigger the outro phase without triggering phase two in case of oneshot attacks
         if (damage >= me->GetHealth() && !events.IsInPhase(PHASE_OUTRO))
@@ -222,25 +222,25 @@ struct boss_felblood_kaelthas : public BossAI
     {
         switch (spell->Id)
         {
-            case SPELL_GRAVITY_LAPSE_INITIAL:
-            {
-                DoCast(target, gravityLapseTeleportSpells[_gravityLapseTargetCount], true);
-                uint32 gravityLapseDamageSpell = SPELL_GRAVITY_LAPSE_DAMAGE;
-                target->m_Events.AddEventAtOffset([target, gravityLapseDamageSpell]()
+        case SPELL_GRAVITY_LAPSE_INITIAL:
+        {
+            DoCast(target, gravityLapseTeleportSpells[_gravityLapseTargetCount], true);
+            uint32 gravityLapseDamageSpell = SPELL_GRAVITY_LAPSE_DAMAGE;
+            target->m_Events.AddEventAtOffset([target, gravityLapseDamageSpell]()
                 {
                     target->CastSpell(target, gravityLapseDamageSpell);
                     target->CastSpell(target, SPELL_GRAVITY_LAPSE_FLY);
 
                 }, 400ms);
-                _gravityLapseTargetCount++;
-                break;
-            }
-            case SPELL_CLEAR_FLIGHT:
-                target->RemoveAurasDueToSpell(SPELL_GRAVITY_LAPSE_FLY);
-                target->RemoveAurasDueToSpell(SPELL_GRAVITY_LAPSE_DAMAGE);
-                break;
-            default:
-                break;
+            _gravityLapseTargetCount++;
+            break;
+        }
+        case SPELL_CLEAR_FLIGHT:
+            target->RemoveAurasDueToSpell(SPELL_GRAVITY_LAPSE_FLY);
+            target->RemoveAurasDueToSpell(SPELL_GRAVITY_LAPSE_DAMAGE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -250,16 +250,16 @@ struct boss_felblood_kaelthas : public BossAI
 
         switch (summon->GetEntry())
         {
-            case NPC_ARCANE_SPHERE:
-                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 70.0f, true, true, 0))
-                    summon->GetMotionMaster()->MoveFollow(target, 0.0f, 0.0f);
-                break;
-            case NPC_FLAME_STRIKE:
-                summon->CastSpell(summon, SPELL_FLAME_STRIKE_DUMMY);
-                summon->DespawnOrUnsummon(15s);
-                break;
-            default:
-                break;
+        case NPC_ARCANE_SPHERE:
+            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 70.0f, true, true, 0))
+                summon->GetMotionMaster()->MoveFollow(target, 0.0f, 0.0f);
+            break;
+        case NPC_FLAME_STRIKE:
+            summon->CastSpell(summon, SPELL_FLAME_STRIKE_DUMMY);
+            summon->DespawnOrUnsummon(15s);
+            break;
+        default:
+            break;
         }
     }
 
@@ -277,95 +277,95 @@ struct boss_felblood_kaelthas : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_TALK_INTRO_1:
-                    Talk(SAY_INTRO_1);
-                    me->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_TALK);
-                    events.ScheduleEvent(EVENT_TALK_INTRO_2, 20s + 600ms, 0, PHASE_INTRO);
-                    events.ScheduleEvent(EVENT_LAUGH_EMOTE, 15s + 600ms, 0, PHASE_INTRO);
-                    break;
-                case EVENT_TALK_INTRO_2:
-                    Talk(SAY_INTRO_2);
-                    events.ScheduleEvent(EVENT_FINISH_INTRO, 15s + 500ms, 0, PHASE_INTRO);
-                    break;
-                case EVENT_LAUGH_EMOTE:
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH_NO_SHEATHE);
-                    break;
-                case EVENT_FINISH_INTRO:
-                    me->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_ONESHOT_NONE);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
-                    break;
-                case EVENT_FIREBALL:
-                    DoCastVictim(SPELL_FIREBALL);
-                    events.Repeat(2s + 500ms);
-                    break;
-                case EVENT_FLAME_STRIKE:
-                    Talk(SAY_FLAME_STRIKE);
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40.0f, true, true, 0))
-                        DoCast(target, SPELL_FLAME_STRIKE);
-                    events.Repeat(44s);
-                    break;
-                case EVENT_SHOCK_BARRIER:
-                    Talk(SAY_ANNOUNCE_PYROBLAST);
-                    DoCastSelf(SPELL_SHOCK_BARRIER);
-                    events.RescheduleEvent(EVENT_FIREBALL, 2s + 500ms, 0, PHASE_ONE);
-                    events.ScheduleEvent(EVENT_PYROBLAST, 2s, 0, PHASE_ONE);
-                    events.Repeat(1min);
-                    break;
-                case EVENT_PYROBLAST:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40.0f, true, true, 0))
-                        DoCast(target, SPELL_PYROBLAST);
-                    break;
-                case EVENT_PHOENIX:
-                    Talk(SAY_SUMMON_PHOENIX);
-                    DoCastSelf(SPELL_PHOENIX);
-                    events.Repeat(45s);
-                    break;
-                case EVENT_PREPARE_GRAVITY_LAPSE:
-                    Talk(_firstGravityLapse ? SAY_GRAVITY_LAPSE_1 : SAY_GRAVITY_LAPSE_2);
-                    _firstGravityLapse = false;
-                    me->AttackStop();
-                    me->SetReactState(REACT_PASSIVE);
-                    events.ScheduleEvent(EVENT_GRAVITY_LAPSE_CENTER_TELEPORT, 1s, 0, PHASE_TWO);
-                    break;
-                case EVENT_GRAVITY_LAPSE_CENTER_TELEPORT:
-                    DoCastSelf(SPELL_GRAVITY_LAPSE_CENTER_TELEPORT);
-                    events.ScheduleEvent(EVENT_GRAVITY_LAPSE, 1s, 0, PHASE_TWO);
-                    break;
-                case EVENT_GRAVITY_LAPSE:
-                    _gravityLapseTargetCount = 0;
-                    DoCastAOE(SPELL_GRAVITY_LAPSE_INITIAL);
-                    events.ScheduleEvent(EVENT_SUMMON_ARCANE_SPHERE, 4s, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC, 5s, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_POWER_FEEDBACK, 35s, 0, PHASE_TWO);
-                    break;
-                case EVENT_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC:
-                    DoCastAOE(SPELL_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC);
-                    break;
-                case EVENT_SUMMON_ARCANE_SPHERE:
-                    for (uint8 i = 0; i < 3; i++)
-                        DoCastSelf(SPELL_SUMMON_ARCANE_SPHERE, true);
-                    break;
-                case EVENT_POWER_FEEDBACK:
-                    Talk(SAY_POWER_FEEDBACK);
-                    DoCastAOE(SPELL_CLEAR_FLIGHT);
-                    DoCastSelf(SPELL_POWER_FEEDBACK);
-                    summons.DespawnEntry(NPC_ARCANE_SPHERE);
-                    events.ScheduleEvent(EVENT_PREPARE_GRAVITY_LAPSE, 11s, 0, PHASE_TWO);
-                    break;
-                case EVENT_EMOTE_TALK_EXCLAMATION:
-                    DoCastSelf(SPELL_EMOTE_TALK_EXCLAMATION);
-                    break;
-                case EVENT_EMOTE_POINT:
-                    DoCastSelf(SPELL_EMOTE_POINT);
-                    break;
-                case EVENT_EMOTE_ROAR:
-                    DoCastSelf(SPELL_EMOTE_ROAR);
-                    break;
-                case EVENT_QUITE_SUICIDE:
-                    DoCastSelf(SPELL_QUITE_SUICIDE);
-                    break;
-                default:
-                    break;
+            case EVENT_TALK_INTRO_1:
+                Talk(SAY_INTRO_1);
+                me->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_TALK);
+                events.ScheduleEvent(EVENT_TALK_INTRO_2, 20s + 600ms, 0, PHASE_INTRO);
+                events.ScheduleEvent(EVENT_LAUGH_EMOTE, 15s + 600ms, 0, PHASE_INTRO);
+                break;
+            case EVENT_TALK_INTRO_2:
+                Talk(SAY_INTRO_2);
+                events.ScheduleEvent(EVENT_FINISH_INTRO, 15s + 500ms, 0, PHASE_INTRO);
+                break;
+            case EVENT_LAUGH_EMOTE:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH_NO_SHEATHE);
+                break;
+            case EVENT_FINISH_INTRO:
+                me->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_ONESHOT_NONE);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                break;
+            case EVENT_FIREBALL:
+                DoCastVictim(SPELL_FIREBALL);
+                events.Repeat(2s + 500ms);
+                break;
+            case EVENT_FLAME_STRIKE:
+                Talk(SAY_FLAME_STRIKE);
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40.0f, true, true, 0))
+                    DoCast(target, SPELL_FLAME_STRIKE);
+                events.Repeat(44s);
+                break;
+            case EVENT_SHOCK_BARRIER:
+                Talk(SAY_ANNOUNCE_PYROBLAST);
+                DoCastSelf(SPELL_SHOCK_BARRIER);
+                events.RescheduleEvent(EVENT_FIREBALL, 2s + 500ms, 0, PHASE_ONE);
+                events.ScheduleEvent(EVENT_PYROBLAST, 2s, 0, PHASE_ONE);
+                events.Repeat(1min);
+                break;
+            case EVENT_PYROBLAST:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40.0f, true, true, 0))
+                    DoCast(target, SPELL_PYROBLAST);
+                break;
+            case EVENT_PHOENIX:
+                Talk(SAY_SUMMON_PHOENIX);
+                DoCastSelf(SPELL_PHOENIX);
+                events.Repeat(45s);
+                break;
+            case EVENT_PREPARE_GRAVITY_LAPSE:
+                Talk(_firstGravityLapse ? SAY_GRAVITY_LAPSE_1 : SAY_GRAVITY_LAPSE_2);
+                _firstGravityLapse = false;
+                me->AttackStop();
+                me->SetReactState(REACT_PASSIVE);
+                events.ScheduleEvent(EVENT_GRAVITY_LAPSE_CENTER_TELEPORT, 1s, 0, PHASE_TWO);
+                break;
+            case EVENT_GRAVITY_LAPSE_CENTER_TELEPORT:
+                DoCastSelf(SPELL_GRAVITY_LAPSE_CENTER_TELEPORT);
+                events.ScheduleEvent(EVENT_GRAVITY_LAPSE, 1s, 0, PHASE_TWO);
+                break;
+            case EVENT_GRAVITY_LAPSE:
+                _gravityLapseTargetCount = 0;
+                DoCastAOE(SPELL_GRAVITY_LAPSE_INITIAL);
+                events.ScheduleEvent(EVENT_SUMMON_ARCANE_SPHERE, 4s, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC, 5s, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_POWER_FEEDBACK, 35s, 0, PHASE_TWO);
+                break;
+            case EVENT_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC:
+                DoCastAOE(SPELL_GRAVITY_LAPSE_BEAM_VISUAL_PERIODIC);
+                break;
+            case EVENT_SUMMON_ARCANE_SPHERE:
+                for (uint8 i = 0; i < 3; i++)
+                    DoCastSelf(SPELL_SUMMON_ARCANE_SPHERE, true);
+                break;
+            case EVENT_POWER_FEEDBACK:
+                Talk(SAY_POWER_FEEDBACK);
+                DoCastAOE(SPELL_CLEAR_FLIGHT);
+                DoCastSelf(SPELL_POWER_FEEDBACK);
+                summons.DespawnEntry(NPC_ARCANE_SPHERE);
+                events.ScheduleEvent(EVENT_PREPARE_GRAVITY_LAPSE, 11s, 0, PHASE_TWO);
+                break;
+            case EVENT_EMOTE_TALK_EXCLAMATION:
+                DoCastSelf(SPELL_EMOTE_TALK_EXCLAMATION);
+                break;
+            case EVENT_EMOTE_POINT:
+                DoCastSelf(SPELL_EMOTE_POINT);
+                break;
+            case EVENT_EMOTE_ROAR:
+                DoCastSelf(SPELL_EMOTE_ROAR);
+                break;
+            case EVENT_QUITE_SUICIDE:
+                DoCastSelf(SPELL_QUITE_SUICIDE);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -398,7 +398,7 @@ struct npc_felblood_kaelthas_phoenix : public ScriptedAI
 
     void JustEngagedWith(Unit* /*who*/) override { }
 
-    void DamageTaken(Unit* /*attacker*/, uint32 &damage) override
+    void DamageTaken(Unit* /*attacker*/, uint32& damage) override
     {
         if (damage >= me->GetHealth())
         {
@@ -447,28 +447,28 @@ struct npc_felblood_kaelthas_phoenix : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_ATTACK_PLAYERS:
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    break;
-                case EVENT_HATCH_FROM_EGG:
-                    if (Creature* egg = ObjectAccessor::GetCreature(*me, _eggGUID))
-                        egg->DespawnOrUnsummon();
-                    me->RemoveAllAuras();
-                    _events.ScheduleEvent(EVENT_REBIRTH, 2s);
-                    break;
-                case EVENT_REBIRTH:
-                    DoCastSelf(SPELL_REBIRTH);
-                    _events.ScheduleEvent(EVENT_PREPARE_REENGAGE, 2s);
-                    break;
-                case EVENT_PREPARE_REENGAGE:
-                    _isInEgg = false;
-                    DoCastSelf(SPELL_FULL_HEAL);
-                    DoCastSelf(SPELL_BURN);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                    _events.ScheduleEvent(EVENT_ATTACK_PLAYERS, 2s);
-                    break;
-                default:
-                    break;
+            case EVENT_ATTACK_PLAYERS:
+                me->SetReactState(REACT_AGGRESSIVE);
+                break;
+            case EVENT_HATCH_FROM_EGG:
+                if (Creature* egg = ObjectAccessor::GetCreature(*me, _eggGUID))
+                    egg->DespawnOrUnsummon();
+                me->RemoveAllAuras();
+                _events.ScheduleEvent(EVENT_REBIRTH, 2s);
+                break;
+            case EVENT_REBIRTH:
+                DoCastSelf(SPELL_REBIRTH);
+                _events.ScheduleEvent(EVENT_PREPARE_REENGAGE, 2s);
+                break;
+            case EVENT_PREPARE_REENGAGE:
+                _isInEgg = false;
+                DoCastSelf(SPELL_FULL_HEAL);
+                DoCastSelf(SPELL_BURN);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                _events.ScheduleEvent(EVENT_ATTACK_PLAYERS, 2s);
+                break;
+            default:
+                break;
             }
         }
 

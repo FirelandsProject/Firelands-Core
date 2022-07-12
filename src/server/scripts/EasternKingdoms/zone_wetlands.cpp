@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,34 +15,34 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Wetlands
-SD%Complete: 80
-SDComment: Quest support: 1249
-SDCategory: Wetlands
-EndScriptData */
+ /* ScriptData
+ SDName: Wetlands
+ SD%Complete: 80
+ SDComment: Quest support: 1249
+ SDCategory: Wetlands
+ EndScriptData */
 
-/* ContentData
-npc_mikhail
-npc_tapoke_slim_jahn
-EndContentData */
+ /* ContentData
+ npc_mikhail
+ npc_tapoke_slim_jahn
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 #include "ScriptedEscortAI.h"
 #include "Player.h"
 
-/*######
-## npc_tapoke_slim_jahn
-######*/
+ /*######
+ ## npc_tapoke_slim_jahn
+ ######*/
 
 enum TapokeSlim
 {
-    QUEST_MISSING_DIPLO_PT11    = 1249,
-    SPELL_STEALTH               = 1785,
-    SPELL_CALL_FRIENDS          = 16457,                    //summons 1x friend
-    NPC_SLIMS_FRIEND            = 4971,
-    NPC_TAPOKE_SLIM_JAHN        = 4962
+    QUEST_MISSING_DIPLO_PT11 = 1249,
+    SPELL_STEALTH = 1785,
+    SPELL_CALL_FRIENDS = 16457,                    //summons 1x friend
+    NPC_SLIMS_FRIEND = 4971,
+    NPC_TAPOKE_SLIM_JAHN = 4962
 };
 
 class npc_tapoke_slim_jahn : public CreatureScript
@@ -79,12 +79,12 @@ public:
         {
             switch (waypointId)
             {
-                case 2:
-                    if (me->HasStealthAura())
-                        me->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
-                    SetRun();
-                    me->SetFaction(FACTION_ENEMY);
-                    break;
+            case 2:
+                if (me->HasStealthAura())
+                    me->RemoveAurasByType(SPELL_AURA_MOD_STEALTH);
+                SetRun();
+                me->SetFaction(FACTION_ENEMY);
+                break;
             }
         }
 
@@ -133,35 +133,35 @@ public:
 
 class npc_mikhail : public CreatureScript
 {
-    public:
-        npc_mikhail() : CreatureScript("npc_mikhail") { }
+public:
+    npc_mikhail() : CreatureScript("npc_mikhail") { }
 
-        struct npc_mikhailAI : public ScriptedAI
+    struct npc_mikhailAI : public ScriptedAI
+    {
+        npc_mikhailAI(Creature* creature) : ScriptedAI(creature) { }
+
+        void QuestAccept(Player* player, const Quest* quest) override
         {
-            npc_mikhailAI(Creature* creature) : ScriptedAI(creature) { }
-
-            void QuestAccept(Player* player, const Quest* quest) override
+            if (quest->GetQuestId() == QUEST_MISSING_DIPLO_PT11)
             {
-                if (quest->GetQuestId() == QUEST_MISSING_DIPLO_PT11)
-                {
-                    Creature* pSlim = me->FindNearestCreature(NPC_TAPOKE_SLIM_JAHN, 25.0f);
+                Creature* pSlim = me->FindNearestCreature(NPC_TAPOKE_SLIM_JAHN, 25.0f);
 
-                    if (!pSlim)
-                        return;
+                if (!pSlim)
+                    return;
 
-                    if (!pSlim->HasStealthAura())
-                        pSlim->CastSpell(pSlim, SPELL_STEALTH, true);
+                if (!pSlim->HasStealthAura())
+                    pSlim->CastSpell(pSlim, SPELL_STEALTH, true);
 
-                    if (npc_tapoke_slim_jahn::npc_tapoke_slim_jahnAI* pEscortAI = CAST_AI(npc_tapoke_slim_jahn::npc_tapoke_slim_jahnAI, pSlim->AI()))
-                        pEscortAI->Start(false, false, player->GetGUID(), quest);
-                }
+                if (npc_tapoke_slim_jahn::npc_tapoke_slim_jahnAI* pEscortAI = CAST_AI(npc_tapoke_slim_jahn::npc_tapoke_slim_jahnAI, pSlim->AI()))
+                    pEscortAI->Start(false, false, player->GetGUID(), quest);
             }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new npc_mikhailAI(creature);
         }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new npc_mikhailAI(creature);
+    }
 };
 
 /*######

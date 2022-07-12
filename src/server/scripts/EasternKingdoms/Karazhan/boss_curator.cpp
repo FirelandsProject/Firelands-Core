@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,20 +21,20 @@
 
 enum CuratorSays
 {
-    SAY_AGGRO                    = 0,
-    SAY_SUMMON                   = 1,
-    SAY_EVOCATE                  = 2,
-    SAY_ENRAGE                   = 3,
-    SAY_KILL                     = 4,
-    SAY_DEATH                    = 5
+    SAY_AGGRO = 0,
+    SAY_SUMMON = 1,
+    SAY_EVOCATE = 2,
+    SAY_ENRAGE = 3,
+    SAY_KILL = 4,
+    SAY_DEATH = 5
 };
 
 enum CuratorSpells
 {
-    SPELL_HATEFUL_BOLT           = 30383,
-    SPELL_EVOCATION              = 30254,
-    SPELL_ARCANE_INFUSION        = 30403,
-    SPELL_BERSERK                = 26662,
+    SPELL_HATEFUL_BOLT = 30383,
+    SPELL_EVOCATION = 30254,
+    SPELL_ARCANE_INFUSION = 30403,
+    SPELL_BERSERK = 26662,
     SPELL_SUMMON_ASTRAL_FLARE_NE = 30236,
     SPELL_SUMMON_ASTRAL_FLARE_NW = 30239,
     SPELL_SUMMON_ASTRAL_FLARE_SE = 30240,
@@ -101,39 +101,39 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_HATEFUL_BOLT:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_MAXTHREAT, 1))
-                        DoCast(target, SPELL_HATEFUL_BOLT);
-                    events.Repeat(Seconds(7), Seconds(15));
-                    break;
-                case EVENT_ARCANE_INFUSION:
-                    DoCastSelf(SPELL_ARCANE_INFUSION, true);
-                    break;
-                case EVENT_SUMMON_ASTRAL_FLARE:
-                    if (roll_chance_i(50))
-                        Talk(SAY_SUMMON);
+            case EVENT_HATEFUL_BOLT:
+                if (Unit* target = SelectTarget(SELECT_TARGET_MAXTHREAT, 1))
+                    DoCast(target, SPELL_HATEFUL_BOLT);
+                events.Repeat(Seconds(7), Seconds(15));
+                break;
+            case EVENT_ARCANE_INFUSION:
+                DoCastSelf(SPELL_ARCANE_INFUSION, true);
+                break;
+            case EVENT_SUMMON_ASTRAL_FLARE:
+                if (roll_chance_i(50))
+                    Talk(SAY_SUMMON);
 
-                    DoCastSelf(RAND(SPELL_SUMMON_ASTRAL_FLARE_NE, SPELL_SUMMON_ASTRAL_FLARE_NW, SPELL_SUMMON_ASTRAL_FLARE_SE, SPELL_SUMMON_ASTRAL_FLARE_SW), true);
+                DoCastSelf(RAND(SPELL_SUMMON_ASTRAL_FLARE_NE, SPELL_SUMMON_ASTRAL_FLARE_NW, SPELL_SUMMON_ASTRAL_FLARE_SE, SPELL_SUMMON_ASTRAL_FLARE_SW), true);
 
-                    if (int32 mana = int32(me->GetMaxPower(POWER_MANA) / 10))
+                if (int32 mana = int32(me->GetMaxPower(POWER_MANA) / 10))
+                {
+                    me->ModifyPower(POWER_MANA, -mana);
+
+                    if (me->GetPower(POWER_MANA) * 100 / me->GetMaxPower(POWER_MANA) < 10)
                     {
-                        me->ModifyPower(POWER_MANA, -mana);
-
-                        if (me->GetPower(POWER_MANA) * 100 / me->GetMaxPower(POWER_MANA) < 10)
-                        {
-                            Talk(SAY_EVOCATE);
-                            me->InterruptNonMeleeSpells(false);
-                            DoCastSelf(SPELL_EVOCATION);
-                        }
+                        Talk(SAY_EVOCATE);
+                        me->InterruptNonMeleeSpells(false);
+                        DoCastSelf(SPELL_EVOCATION);
                     }
-                    events.Repeat(Seconds(10));
-                    break;
-                case EVENT_BERSERK:
-                    Talk(SAY_ENRAGE);
-                    DoCastSelf(SPELL_BERSERK, true);
-                    break;
-                default:
-                    break;
+                }
+                events.Repeat(Seconds(10));
+                break;
+            case EVENT_BERSERK:
+                Talk(SAY_ENRAGE);
+                DoCastSelf(SPELL_BERSERK, true);
+                break;
+            default:
+                break;
             }
         }
 
@@ -162,11 +162,11 @@ public:
         void Reset() override
         {
             _scheduler.Schedule(Seconds(2), [this](TaskContext /*context*/)
-            {
-                me->SetReactState(REACT_AGGRESSIVE);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                DoZoneInCombat();
-            });
+                {
+                    me->SetReactState(REACT_AGGRESSIVE);
+                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                    DoZoneInCombat();
+                });
         }
 
         void UpdateAI(uint32 diff) override

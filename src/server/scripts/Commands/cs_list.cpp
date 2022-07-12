@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -205,15 +205,15 @@ public:
         uint32 inventoryCount = 0;
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_INVENTORY_COUNT_ITEM);
-        stmt->setUInt32(0, itemId);
+        stmt->SetData(0, itemId);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
             inventoryCount = (*result)[0].GetUInt64();
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_INVENTORY_ITEM_BY_ENTRY);
-        stmt->setUInt32(0, itemId);
-        stmt->setUInt32(1, count);
+        stmt->SetData(0, itemId);
+        stmt->SetData(1, count);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -253,7 +253,7 @@ public:
         uint32 mailCount = 0;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_COUNT_ITEM);
-        stmt->setUInt32(0, itemId);
+        stmt->SetData(0, itemId);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -262,8 +262,8 @@ public:
         if (count > 0)
         {
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_ITEMS_BY_ENTRY);
-            stmt->setUInt32(0, itemId);
-            stmt->setUInt32(1, count);
+            stmt->SetData(0, itemId);
+            stmt->SetData(1, count);
             result = CharacterDatabase.Query(stmt);
         }
         else
@@ -299,7 +299,7 @@ public:
         uint32 auctionCount = 0;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_AUCTIONHOUSE_COUNT_ITEM);
-        stmt->setUInt32(0, itemId);
+        stmt->SetData(0, itemId);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -308,8 +308,8 @@ public:
         if (count > 0)
         {
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_AUCTIONHOUSE_ITEM_BY_ENTRY);
-            stmt->setUInt32(0, itemId);
-            stmt->setUInt32(1, count);
+            stmt->SetData(0, itemId);
+            stmt->SetData(1, count);
             result = CharacterDatabase.Query(stmt);
         }
         else
@@ -335,15 +335,15 @@ public:
         uint32 guildCount = 0;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_BANK_COUNT_ITEM);
-        stmt->setUInt32(0, itemId);
+        stmt->SetData(0, itemId);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
             guildCount = (*result)[0].GetUInt64();
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_BANK_ITEM_BY_ENTRY);
-        stmt->setUInt32(0, itemId);
-        stmt->setUInt32(1, count);
+        stmt->SetData(0, itemId);
+        stmt->SetData(1, count);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -551,7 +551,7 @@ public:
             return false;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_LIST_COUNT);
-        stmt->setUInt32(0, targetGuid.GetCounter());
+        stmt->SetData(0, targetGuid.GetCounter());
         PreparedQueryResult queryResult = CharacterDatabase.Query(stmt);
         if (queryResult)
         {
@@ -563,7 +563,7 @@ public:
             handler->PSendSysMessage(LANG_ACCOUNT_LIST_BAR);
 
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_LIST_INFO);
-            stmt->setUInt32(0, targetGuid.GetCounter());
+            stmt->SetData(0, targetGuid.GetCounter());
             queryResult = CharacterDatabase.Query(stmt);
 
             if (queryResult)
@@ -600,7 +600,7 @@ public:
                             {
                                 ObjectGuid::LowType item_guid = (*result2)[0].GetUInt32();
                                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_LIST_ITEMS);
-                                stmt->setUInt32(0, item_guid);
+                                stmt->SetData(0, item_guid);
                                 PreparedQueryResult result3 = CharacterDatabase.Query(stmt);
                                 if (result3)
                                 {

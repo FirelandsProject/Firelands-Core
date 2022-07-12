@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,22 +23,22 @@
 #define MechanarScriptName "instance_mechanar"
 #define DataHeader "MR"
 
-uint32 const EncounterCount             = 5;
+uint32 const EncounterCount = 5;
 
 enum MRDataTypes
 {
-    DATA_GATEWATCHER_GYROKILL           = 0,
-    DATA_GATEWATCHER_IRON_HAND          = 1,
-    DATA_MECHANOLORD_CAPACITUS          = 2,
-    DATA_NETHERMANCER_SEPRETHREA        = 3,
-    DATA_PATHALEON_THE_CALCULATOR       = 4
+    DATA_GATEWATCHER_GYROKILL = 0,
+    DATA_GATEWATCHER_IRON_HAND = 1,
+    DATA_MECHANOLORD_CAPACITUS = 2,
+    DATA_NETHERMANCER_SEPRETHREA = 3,
+    DATA_PATHALEON_THE_CALCULATOR = 4
 };
 
 enum MRGameobjectIds
 {
-    GO_DOOR_MOARG_1                     = 184632,
-    GO_DOOR_MOARG_2                     = 184322,
-    GO_DOOR_NETHERMANCER                = 184449
+    GO_DOOR_MOARG_1 = 184632,
+    GO_DOOR_MOARG_2 = 184322,
+    GO_DOOR_NETHERMANCER = 184449
 };
 
 template <class AI, class T>

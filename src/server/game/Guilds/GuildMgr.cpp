@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -445,10 +445,10 @@ void GuildMgr::LoadGuilds()
         for (GuildContainer::const_iterator itr = GuildStore.begin(); itr != GuildStore.end(); ++itr)
         {
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_ACHIEVEMENT);
-            stmt->setUInt32(0, itr->first);
+            stmt->SetData(0, itr->first);
             achievementResult = CharacterDatabase.Query(stmt);
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_ACHIEVEMENT_CRITERIA);
-            stmt->setUInt32(0, itr->first);
+            stmt->SetData(0, itr->first);
             criteriaResult = CharacterDatabase.Query(stmt);
 
             itr->second->GetAchievementMgr().LoadFromDB(achievementResult, criteriaResult);
@@ -633,7 +633,7 @@ void GuildMgr::ResetTimes(bool week)
 
     // Delete too old old guild member
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_OLD_OLD_GUILD_MEMBER);
-    stmt->setUInt32(0, uint32(GameTime::GetGameTime() - time_t(30 * DAY)));
+    stmt->SetData(0, uint32(GameTime::GetGameTime() - time_t(30 * DAY)));
     CharacterDatabase.Execute(stmt);
 
     // Reset week reputation for old guild member and reset weekly bonus money from cash flow contributions
@@ -652,7 +652,7 @@ void GuildMgr::ClearExpiredGuildNews()
 {
     // Clean guild news that are older than a week
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GUILD_NEWS);
-    stmt->setUInt64(0, uint64(GameTime::GetGameTime() - time_t(7 * DAY)));
+    stmt->SetData(0, uint64(GameTime::GetGameTime() - time_t(7 * DAY)));
     CharacterDatabase.Execute(stmt);
 
     for (std::pair<ObjectGuid::LowType, Guild*> guildPair : GuildStore)

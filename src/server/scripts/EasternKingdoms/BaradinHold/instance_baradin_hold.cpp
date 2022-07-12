@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -39,41 +39,41 @@ DoorData const doorData[] =
     { 0,                 0,             DOOR_TYPE_ROOM }  // END
 };
 
-class instance_baradin_hold: public InstanceMapScript
+class instance_baradin_hold : public InstanceMapScript
 {
-    public:
-        instance_baradin_hold() : InstanceMapScript(BHScriptName, 757) { }
+public:
+    instance_baradin_hold() : InstanceMapScript(BHScriptName, 757) { }
 
-        struct instance_baradin_hold_InstanceMapScript: public InstanceScript
+    struct instance_baradin_hold_InstanceMapScript : public InstanceScript
+    {
+        instance_baradin_hold_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_baradin_hold_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadObjectData(creatureData, nullptr);
-                LoadDoorData(doorData);
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                InstanceScript::OnCreatureCreate(creature);
-
-                switch (creature->GetEntry())
-                {
-                    case NPC_FEL_FLAMES:
-                        if (Creature* argaloth = GetCreature(DATA_ARGALOTH))
-                            argaloth->AI()->JustSummoned(creature);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const
-        {
-            return new instance_baradin_hold_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadObjectData(creatureData, nullptr);
+            LoadDoorData(doorData);
         }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            InstanceScript::OnCreatureCreate(creature);
+
+            switch (creature->GetEntry())
+            {
+            case NPC_FEL_FLAMES:
+                if (Creature* argaloth = GetCreature(DATA_ARGALOTH))
+                    argaloth->AI()->JustSummoned(creature);
+                break;
+            default:
+                break;
+            }
+        }
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const
+    {
+        return new instance_baradin_hold_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_baradin_hold()

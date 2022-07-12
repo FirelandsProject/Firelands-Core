@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-Name: Boss_Aeonus
-%Complete: 80
-Comment: Some spells not implemented
-Category: Caverns of Time, The Dark Portal
-*/
+ /*
+ Name: Boss_Aeonus
+ %Complete: 80
+ Comment: Some spells not implemented
+ Category: Caverns of Time, The Dark Portal
+ */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -29,25 +29,25 @@ Category: Caverns of Time, The Dark Portal
 
 enum Enums
 {
-    SAY_ENTER           = 0,
-    SAY_AGGRO           = 1,
-    SAY_BANISH          = 2,
-    SAY_SLAY            = 3,
-    SAY_DEATH           = 4,
-    EMOTE_FRENZY        = 5,
+    SAY_ENTER = 0,
+    SAY_AGGRO = 1,
+    SAY_BANISH = 2,
+    SAY_SLAY = 3,
+    SAY_DEATH = 4,
+    EMOTE_FRENZY = 5,
 
-    SPELL_CLEAVE        = 40504,
-    SPELL_TIME_STOP     = 31422,
-    SPELL_ENRAGE        = 37605,
-    SPELL_SAND_BREATH   = 31473,
+    SPELL_CLEAVE = 40504,
+    SPELL_TIME_STOP = 31422,
+    SPELL_ENRAGE = 37605,
+    SPELL_SAND_BREATH = 31473,
     H_SPELL_SAND_BREATH = 39049
 };
 
 enum Events
 {
-    EVENT_SANDBREATH    = 1,
-    EVENT_TIMESTOP      = 2,
-    EVENT_FRENZY        = 3
+    EVENT_SANDBREATH = 1,
+    EVENT_TIMESTOP = 2,
+    EVENT_FRENZY = 3
 };
 
 class boss_aeonus : public CreatureScript
@@ -115,21 +115,21 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_SANDBREATH:
-                        DoCastVictim(SPELL_SAND_BREATH);
-                        events.ScheduleEvent(EVENT_SANDBREATH, urand(15000, 25000));
-                        break;
-                    case EVENT_TIMESTOP:
-                        DoCastVictim(SPELL_TIME_STOP);
-                        events.ScheduleEvent(EVENT_TIMESTOP, urand(20000, 35000));
-                        break;
-                    case EVENT_FRENZY:
-                         Talk(EMOTE_FRENZY);
-                         DoCast(me, SPELL_ENRAGE);
-                        events.ScheduleEvent(EVENT_FRENZY, urand(20000, 35000));
-                        break;
-                    default:
-                        break;
+                case EVENT_SANDBREATH:
+                    DoCastVictim(SPELL_SAND_BREATH);
+                    events.ScheduleEvent(EVENT_SANDBREATH, urand(15000, 25000));
+                    break;
+                case EVENT_TIMESTOP:
+                    DoCastVictim(SPELL_TIME_STOP);
+                    events.ScheduleEvent(EVENT_TIMESTOP, urand(20000, 35000));
+                    break;
+                case EVENT_FRENZY:
+                    Talk(EMOTE_FRENZY);
+                    DoCast(me, SPELL_ENRAGE);
+                    events.ScheduleEvent(EVENT_FRENZY, urand(20000, 35000));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

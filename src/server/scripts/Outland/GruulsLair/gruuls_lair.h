@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,23 +28,23 @@ uint32 const EncounterCount = 2;
 enum GLDataTypes
 {
     // Encounter States/Boss GUIDs
-    DATA_MAULGAR                = 0,
-    DATA_GRUUL                  = 1
+    DATA_MAULGAR = 0,
+    DATA_GRUUL = 1
 };
 
 enum GLCreatureIds
 {
-    NPC_MAULGAR                 = 18831,
-    NPC_KROSH_FIREHAND          = 18832,
-    NPC_OLM_THE_SUMMONER        = 18834,
-    NPC_KIGGLER_THE_CRAZED      = 18835,
-    NPC_BLINDEYE_THE_SEER       = 18836
+    NPC_MAULGAR = 18831,
+    NPC_KROSH_FIREHAND = 18832,
+    NPC_OLM_THE_SUMMONER = 18834,
+    NPC_KIGGLER_THE_CRAZED = 18835,
+    NPC_BLINDEYE_THE_SEER = 18836
 };
 
 enum GLGameObjectIds
 {
-    GO_MAULGAR_DOOR             = 184468,
-    GO_GRUUL_DOOR               = 184662
+    GO_MAULGAR_DOOR = 184468,
+    GO_GRUUL_DOOR = 184662
 };
 
 template <class AI, class T>

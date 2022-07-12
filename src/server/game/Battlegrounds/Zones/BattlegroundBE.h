@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,36 +30,36 @@ namespace WorldPackets
 
 enum BattlegroundBEObjectTypes
 {
-    BG_BE_OBJECT_DOOR_1         = 0,
-    BG_BE_OBJECT_DOOR_2         = 1,
-    BG_BE_OBJECT_DOOR_3         = 2,
-    BG_BE_OBJECT_DOOR_4         = 3,
-    BG_BE_OBJECT_BUFF_1         = 4,
-    BG_BE_OBJECT_BUFF_2         = 5,
-    BG_BE_OBJECT_MAX            = 6
+    BG_BE_OBJECT_DOOR_1 = 0,
+    BG_BE_OBJECT_DOOR_2 = 1,
+    BG_BE_OBJECT_DOOR_3 = 2,
+    BG_BE_OBJECT_DOOR_4 = 3,
+    BG_BE_OBJECT_BUFF_1 = 4,
+    BG_BE_OBJECT_BUFF_2 = 5,
+    BG_BE_OBJECT_MAX = 6
 };
 
 enum BattlegroundBEGameObjects
 {
-    BG_BE_OBJECT_TYPE_DOOR_1    = 183971,
-    BG_BE_OBJECT_TYPE_DOOR_2    = 183973,
-    BG_BE_OBJECT_TYPE_DOOR_3    = 183970,
-    BG_BE_OBJECT_TYPE_DOOR_4    = 183972,
-    BG_BE_OBJECT_TYPE_BUFF_1    = 184663,
-    BG_BE_OBJECT_TYPE_BUFF_2    = 184664
+    BG_BE_OBJECT_TYPE_DOOR_1 = 183971,
+    BG_BE_OBJECT_TYPE_DOOR_2 = 183973,
+    BG_BE_OBJECT_TYPE_DOOR_3 = 183970,
+    BG_BE_OBJECT_TYPE_DOOR_4 = 183972,
+    BG_BE_OBJECT_TYPE_BUFF_1 = 184663,
+    BG_BE_OBJECT_TYPE_BUFF_2 = 184664
 };
 
 class BattlegroundBE : public Arena
 {
-    public:
-        BattlegroundBE();
+public:
+    BattlegroundBE();
 
-        /* inherited from BattlegroundClass */
-        void StartingEventCloseDoors() override;
-        void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    void StartingEventCloseDoors() override;
+    void StartingEventOpenDoors() override;
 
-        void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
-        bool SetupBattleground() override;
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
+    void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
+    bool SetupBattleground() override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
 };
 #endif

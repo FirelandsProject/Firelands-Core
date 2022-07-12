@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,17 +29,17 @@ uint32 const EncounterCount = 3;
 enum SSDataTypes
 {
     DATA_RANDOLPH_MOLOCH = 0,
-    DATA_LORD_OVERHEAT   = 1,
-    DATA_HOGGER          = 2
+    DATA_LORD_OVERHEAT = 1,
+    DATA_HOGGER = 2
 };
 
 enum SSCreatureIds
 {
-    NPC_RANDOLPH_MOLOCH  = 46383,
-    NPC_LORD_OVERHEAT    = 46264,
-    NPC_HOGGER           = 46254,
+    NPC_RANDOLPH_MOLOCH = 46383,
+    NPC_LORD_OVERHEAT = 46264,
+    NPC_HOGGER = 46254,
     NPC_WARDEN_THELWATER = 46409,
-    NPC_MORTIMER_MOLOCH  = 46482
+    NPC_MORTIMER_MOLOCH = 46482
 };
 
 template <class AI, class T>

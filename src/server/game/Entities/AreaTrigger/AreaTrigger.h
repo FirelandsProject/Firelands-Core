@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,22 +26,22 @@ class SpellInfo;
 
 class AreaTrigger : public WorldObject, public GridObject<AreaTrigger>
 {
-    public:
-        AreaTrigger();
-        ~AreaTrigger();
+public:
+    AreaTrigger();
+    ~AreaTrigger();
 
-        void AddToWorld();
-        void RemoveFromWorld();
+    void AddToWorld();
+    void RemoveFromWorld();
 
-        bool CreateAreaTrigger(uint32 guidlow, uint32 triggerEntry, Unit* caster, SpellInfo const* spell, Position const& pos);
-        void Update(uint32 p_time);
-        void Remove();
-        uint32 GetSpellId() const { return GetUInt32Value(AREATRIGGER_SPELLID); }
-        int32 GetDuration() const { return _duration; }
-        void SetDuration(int32 newDuration) { _duration = newDuration; }
-        void Delay(int32 delaytime) { SetDuration(GetDuration() - delaytime); }
+    bool CreateAreaTrigger(uint32 guidlow, uint32 triggerEntry, Unit* caster, SpellInfo const* spell, Position const& pos);
+    void Update(uint32 p_time);
+    void Remove();
+    uint32 GetSpellId() const { return GetUInt32Value(AREATRIGGER_SPELLID); }
+    int32 GetDuration() const { return _duration; }
+    void SetDuration(int32 newDuration) { _duration = newDuration; }
+    void Delay(int32 delaytime) { SetDuration(GetDuration() - delaytime); }
 
-    protected:
-        int32 _duration;
+protected:
+    int32 _duration;
 };
 #endif

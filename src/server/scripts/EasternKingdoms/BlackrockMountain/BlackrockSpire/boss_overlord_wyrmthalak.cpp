@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,24 +22,24 @@
 
 enum Spells
 {
-    SPELL_BLASTWAVE                 = 11130,
-    SPELL_SHOUT                     = 23511,
-    SPELL_CLEAVE                    = 20691,
-    SPELL_KNOCKAWAY                 = 20686
+    SPELL_BLASTWAVE = 11130,
+    SPELL_SHOUT = 23511,
+    SPELL_CLEAVE = 20691,
+    SPELL_KNOCKAWAY = 20686
 };
 
 enum Events
 {
-    EVENT_BLAST_WAVE                = 1,
-    EVENT_SHOUT                     = 2,
-    EVENT_CLEAVE                    = 3,
-    EVENT_KNOCK_AWAY                = 4
+    EVENT_BLAST_WAVE = 1,
+    EVENT_SHOUT = 2,
+    EVENT_CLEAVE = 3,
+    EVENT_KNOCK_AWAY = 4
 };
 
 enum Adds
 {
-    NPC_SPIRESTONE_WARLORD          = 9216,
-    NPC_SMOLDERTHORN_BERSERKER      = 9268
+    NPC_SPIRESTONE_WARLORD = 9216,
+    NPC_SMOLDERTHORN_BERSERKER = 9268
 };
 
 const Position SummonLocation1 = { -39.355f, -513.456f, 88.472f, 4.679f };
@@ -74,8 +74,8 @@ public:
         {
             BossAI::JustEngagedWith(who);
             events.ScheduleEvent(EVENT_BLAST_WAVE, 20 * IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_SHOUT,       2 * IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_CLEAVE,      6 * IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_SHOUT, 2 * IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_CLEAVE, 6 * IN_MILLISECONDS);
             events.ScheduleEvent(EVENT_KNOCK_AWAY, 12 * IN_MILLISECONDS);
         }
 
@@ -110,22 +110,22 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_BLAST_WAVE:
-                        DoCastVictim(SPELL_BLASTWAVE);
-                        events.ScheduleEvent(EVENT_BLAST_WAVE, 20 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_SHOUT:
-                        DoCastVictim(SPELL_SHOUT);
-                        events.ScheduleEvent(EVENT_SHOUT, 10 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_CLEAVE:
-                        DoCastVictim(SPELL_CLEAVE);
-                        events.ScheduleEvent(EVENT_CLEAVE, 7 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_KNOCK_AWAY:
-                        DoCastVictim(SPELL_KNOCKAWAY);
-                        events.ScheduleEvent(EVENT_KNOCK_AWAY, 14 * IN_MILLISECONDS);
-                        break;
+                case EVENT_BLAST_WAVE:
+                    DoCastVictim(SPELL_BLASTWAVE);
+                    events.ScheduleEvent(EVENT_BLAST_WAVE, 20 * IN_MILLISECONDS);
+                    break;
+                case EVENT_SHOUT:
+                    DoCastVictim(SPELL_SHOUT);
+                    events.ScheduleEvent(EVENT_SHOUT, 10 * IN_MILLISECONDS);
+                    break;
+                case EVENT_CLEAVE:
+                    DoCastVictim(SPELL_CLEAVE);
+                    events.ScheduleEvent(EVENT_CLEAVE, 7 * IN_MILLISECONDS);
+                    break;
+                case EVENT_KNOCK_AWAY:
+                    DoCastVictim(SPELL_KNOCKAWAY);
+                    events.ScheduleEvent(EVENT_KNOCK_AWAY, 14 * IN_MILLISECONDS);
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

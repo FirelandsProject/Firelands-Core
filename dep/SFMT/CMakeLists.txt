@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 # Copyright 2019 Josua Mayer <josua.mayer97@gmail.com>
 #
 # This file is free software; as a special exception the author gives
@@ -81,5 +81,5 @@ endif()
 
 set_target_properties(sfmt PROPERTIES LINKER_LANGUAGE CXX)
 
-# inherit FirelandsCore generic build options (e.g. fPIC)
+# inherit Firelands Core generic build options (e.g. fPIC)
 target_link_libraries(sfmt PRIVATE firelands-dependency-interface)

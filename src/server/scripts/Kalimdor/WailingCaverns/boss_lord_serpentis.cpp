@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,15 +27,15 @@ enum Texts
 enum Spells
 {
     SPELL_LIGHTNING_BOLT = 12167,
-    SPELL_DRUID_SLUMBER  = 8040,
-    SPELL_HEALING_TOUCH  = 23381
+    SPELL_DRUID_SLUMBER = 8040,
+    SPELL_HEALING_TOUCH = 23381
 };
 
 enum Events
 {
     EVENT_LIGHTNING_BOLT = 1,
-    EVENT_HEALING_TOUCH  = 2,
-    EVENT_DRUID_SLUMBER  = 3
+    EVENT_HEALING_TOUCH = 2,
+    EVENT_DRUID_SLUMBER = 3
 };
 
 class boss_lord_serpentis : public CreatureScript
@@ -71,21 +71,21 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_LIGHTNING_BOLT:
-                        DoCastVictim(SPELL_LIGHTNING_BOLT);
-                        events.Repeat(Seconds(15));
-                        break;
-                    case EVENT_HEALING_TOUCH:
-                        DoCastSelf(SPELL_HEALING_TOUCH);
-                        events.Repeat(Seconds(9));
-                        break;
-                    case EVENT_DRUID_SLUMBER:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                            DoCast(target, SPELL_DRUID_SLUMBER);
-                        events.Repeat(Seconds(40));
-                        break;
-                    default:
-                        break;
+                case EVENT_LIGHTNING_BOLT:
+                    DoCastVictim(SPELL_LIGHTNING_BOLT);
+                    events.Repeat(Seconds(15));
+                    break;
+                case EVENT_HEALING_TOUCH:
+                    DoCastSelf(SPELL_HEALING_TOUCH);
+                    events.Repeat(Seconds(9));
+                    break;
+                case EVENT_DRUID_SLUMBER:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                        DoCast(target, SPELL_DRUID_SLUMBER);
+                    events.Repeat(Seconds(40));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

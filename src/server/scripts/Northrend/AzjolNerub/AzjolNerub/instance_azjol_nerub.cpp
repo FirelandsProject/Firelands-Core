@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -58,81 +58,81 @@ BossBoundaryData const boundaries =
 
 class instance_azjol_nerub : public InstanceMapScript
 {
-    public:
-        instance_azjol_nerub() : InstanceMapScript(AzjolNerubScriptName, 601) { }
+public:
+    instance_azjol_nerub() : InstanceMapScript(AzjolNerubScriptName, 601) { }
 
-        struct instance_azjol_nerub_InstanceScript : public InstanceScript
+    struct instance_azjol_nerub_InstanceScript : public InstanceScript
+    {
+        instance_azjol_nerub_InstanceScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_azjol_nerub_InstanceScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadBossBoundaries(boundaries);
-                LoadDoorData(doorData);
-                LoadObjectData(creatureData, gameobjectData);
-                GateWatcherGreet = 0;
-            }
-
-            void OnUnitDeath(Unit* who) override
-            {
-                InstanceScript::OnUnitDeath(who);
-
-                if (who->GetTypeId() != TYPEID_UNIT || GetBossState(DATA_KRIKTHIR) == DONE)
-                    return;
-
-                Creature* creature = who->ToCreature();
-                if (creature->IsCritter() || creature->IsCharmedOwnedByPlayerOrPlayer())
-                    return;
-
-                if (Creature* gatewatcher = GetCreature(DATA_KRIKTHIR))
-                    gatewatcher->AI()->DoAction(-ACTION_GATEWATCHER_GREET);
-            }
-
-            bool CheckRequiredBosses(uint32 bossId, Player const* player) const override
-            {
-                if (_SkipCheckRequiredBosses(player))
-                    return true;
-
-                if (bossId > DATA_KRIKTHIR && GetBossState(DATA_KRIKTHIR) != DONE)
-                    return false;
-
-                return true;
-            }
-
-            uint32 GetData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_GATEWATCHER_GREET:
-                        return GateWatcherGreet;
-                    default:
-                        return 0;
-                }
-            }
-
-            void SetData(uint32 type, uint32 data) override
-            {
-                switch (type)
-                {
-                    case DATA_GATEWATCHER_GREET:
-                        GateWatcherGreet = data;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-        protected:
-            uint8 GateWatcherGreet;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_azjol_nerub_InstanceScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadBossBoundaries(boundaries);
+            LoadDoorData(doorData);
+            LoadObjectData(creatureData, gameobjectData);
+            GateWatcherGreet = 0;
         }
+
+        void OnUnitDeath(Unit* who) override
+        {
+            InstanceScript::OnUnitDeath(who);
+
+            if (who->GetTypeId() != TYPEID_UNIT || GetBossState(DATA_KRIKTHIR) == DONE)
+                return;
+
+            Creature* creature = who->ToCreature();
+            if (creature->IsCritter() || creature->IsCharmedOwnedByPlayerOrPlayer())
+                return;
+
+            if (Creature* gatewatcher = GetCreature(DATA_KRIKTHIR))
+                gatewatcher->AI()->DoAction(-ACTION_GATEWATCHER_GREET);
+        }
+
+        bool CheckRequiredBosses(uint32 bossId, Player const* player) const override
+        {
+            if (_SkipCheckRequiredBosses(player))
+                return true;
+
+            if (bossId > DATA_KRIKTHIR && GetBossState(DATA_KRIKTHIR) != DONE)
+                return false;
+
+            return true;
+        }
+
+        uint32 GetData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_GATEWATCHER_GREET:
+                return GateWatcherGreet;
+            default:
+                return 0;
+            }
+        }
+
+        void SetData(uint32 type, uint32 data) override
+        {
+            switch (type)
+            {
+            case DATA_GATEWATCHER_GREET:
+                GateWatcherGreet = data;
+                break;
+            default:
+                break;
+            }
+        }
+
+    protected:
+        uint8 GateWatcherGreet;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_azjol_nerub_InstanceScript(map);
+    }
 };
 
 void AddSC_instance_azjol_nerub()
 {
-   new instance_azjol_nerub();
+    new instance_azjol_nerub();
 }

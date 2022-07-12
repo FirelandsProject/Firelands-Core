@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -37,13 +37,13 @@ void boss_horAI::DoAction(int32 actionId)
 {
     switch (actionId)
     {
-        case ACTION_ENTER_COMBAT: // called by InstanceScript when boss shall enter in combat.
-            me->SetImmuneToAll(false);
-            me->SetReactState(REACT_AGGRESSIVE);
-            DoZoneInCombat(me);
-            break;
-        default:
-            break;
+    case ACTION_ENTER_COMBAT: // called by InstanceScript when boss shall enter in combat.
+        me->SetImmuneToAll(false);
+        me->SetReactState(REACT_AGGRESSIVE);
+        DoZoneInCombat(me);
+        break;
+    default:
+        break;
     }
 }
 

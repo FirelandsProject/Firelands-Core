@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,25 +28,25 @@
 enum Text
 {
     // Karsh Steelbender
-    SAY_AGGRO                                   = 0,
-    SAY_SLAY                                    = 1,
-    SAY_SUPERHEATED_QUICKSILVER_ARMOR           = 2,
-    SAY_DEATH                                   = 3,
-    SAY_ANNOUNCE_SUPERHEATED_QUICKSILVER_ARMOR  = 4
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_SUPERHEATED_QUICKSILVER_ARMOR = 2,
+    SAY_DEATH = 3,
+    SAY_ANNOUNCE_SUPERHEATED_QUICKSILVER_ARMOR = 4
 };
 
 enum Spells
 {
     // Karsh Steelbender
-    SPELL_QUICKSILVER_ARMOR                         = 75854,
-    SPELL_QUICKSILVER_ARMOR_DAMAGE_REDUCTION        = 75842,
-    SPELL_SUPERHEATED_QUICKSILVER_ARMOR_PROC_AURA   = 76015,
-    SPELL_SUPERHEATED_QUICKSILVER_ARMOR             = 75846,
-    SPELL_HEAT_WAVE                                 = 75851,
-    SPELL_CLEAVE                                    = 15284,
-    SPELL_BOUND_FLAMES                              = 93499,
-    SPELL_FORCECAST_LAVA_SPOUT                      = 88538,
-    SPELL_TRANSFORM                                 = 93750
+    SPELL_QUICKSILVER_ARMOR = 75854,
+    SPELL_QUICKSILVER_ARMOR_DAMAGE_REDUCTION = 75842,
+    SPELL_SUPERHEATED_QUICKSILVER_ARMOR_PROC_AURA = 76015,
+    SPELL_SUPERHEATED_QUICKSILVER_ARMOR = 75846,
+    SPELL_HEAT_WAVE = 75851,
+    SPELL_CLEAVE = 15284,
+    SPELL_BOUND_FLAMES = 93499,
+    SPELL_FORCECAST_LAVA_SPOUT = 88538,
+    SPELL_TRANSFORM = 93750
 };
 
 enum Events
@@ -65,19 +65,19 @@ enum Actions
 
 class AttackStartEvent : public BasicEvent
 {
-    public:
-        AttackStartEvent(Creature* owner) :  _owner(owner) { }
+public:
+    AttackStartEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            _owner->SetReactState(REACT_AGGRESSIVE);
-            if (_owner->IsAIEnabled())
-                _owner->AI()->DoZoneInCombat();
-            return true;
-        }
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        _owner->SetReactState(REACT_AGGRESSIVE);
+        if (_owner->IsAIEnabled())
+            _owner->AI()->DoZoneInCombat();
+        return true;
+    }
 
-    private:
-        Creature* _owner;
+private:
+    Creature* _owner;
 };
 
 Position const InvisibleStalkerLavaFountainPos = { 237.2951f, 784.7761f, 95.99241f };
@@ -156,12 +156,12 @@ struct boss_karsh_steelbender : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_CLEAVE:
-                    DoCastVictim(SPELL_CLEAVE);
-                    events.Repeat(10s, 12s);
-                    break;
-                default:
-                    break;
+            case EVENT_CLEAVE:
+                DoCastVictim(SPELL_CLEAVE);
+                events.Repeat(10s, 12s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -304,19 +304,19 @@ class spell_karsh_superheated_quicksilver_armor_proc : public AuraScript
 
 class achievement_too_hot_to_handle : public AchievementCriteriaScript
 {
-    public:
-        achievement_too_hot_to_handle() : AchievementCriteriaScript("achievement_too_hot_to_handle") { }
+public:
+    achievement_too_hot_to_handle() : AchievementCriteriaScript("achievement_too_hot_to_handle") { }
 
-        bool OnCheck(Player* /*source*/, Unit* target) override
-        {
-            if (!target)
-                return false;
-
-            if (uint32 spellId = sSpellMgr->GetSpellIdForDifficulty(SPELL_SUPERHEATED_QUICKSILVER_ARMOR, target))
-                return (target->HasAura(spellId) && target->GetAura(spellId)->GetStackAmount() >= 15);
-
+    bool OnCheck(Player* /*source*/, Unit* target) override
+    {
+        if (!target)
             return false;
-        }
+
+        if (uint32 spellId = sSpellMgr->GetSpellIdForDifficulty(SPELL_SUPERHEATED_QUICKSILVER_ARMOR, target))
+            return (target->HasAura(spellId) && target->GetAura(spellId)->GetStackAmount() >= 15);
+
+        return false;
+    }
 };
 
 void AddSC_boss_karsh_steelbender()

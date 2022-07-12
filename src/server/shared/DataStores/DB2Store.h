@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,7 +25,7 @@
 #include "ByteBuffer.h"
 #include <vector>
 
-/// Interface class for common access
+ /// Interface class for common access
 class DB2StorageBase
 {
 public:
@@ -65,7 +65,7 @@ public:
             delete[] stringPool;
     }
 
-    bool HasRecord(uint32 id) const override { return id < _indexTableSize && _indexTable.AsT[id] != nullptr; }
+    bool HasRecord(uint32 id) const override { return id < _indexTableSize&& _indexTable.AsT[id] != nullptr; }
     void WriteRecord(uint32 id, uint32 locale, ByteBuffer& buffer) const override
     {
         ASSERT(id < _indexTableSize);
@@ -77,37 +77,37 @@ public:
         {
             switch (_format[i])
             {
-                case FT_IND:
-                case FT_INT:
-                    buffer << *(uint32*)entry;
-                    entry += 4;
-                    break;
-                case FT_FLOAT:
-                    buffer << *(float*)entry;
-                    entry += 4;
-                    break;
-                case FT_BYTE:
-                    buffer << *(uint8*)entry;
-                    entry += 1;
-                    break;
-                case FT_STRING:
-                {
-                    uint32 selectedLocale = locale;
-                    LocalizedString* locStr = *(LocalizedString**)entry;
-                    if (locStr->Str[selectedLocale][0] == '\0')
-                        selectedLocale = 0;
+            case FT_IND:
+            case FT_INT:
+                buffer << *(uint32*)entry;
+                entry += 4;
+                break;
+            case FT_FLOAT:
+                buffer << *(float*)entry;
+                entry += 4;
+                break;
+            case FT_BYTE:
+                buffer << *(uint8*)entry;
+                entry += 1;
+                break;
+            case FT_STRING:
+            {
+                uint32 selectedLocale = locale;
+                LocalizedString* locStr = *(LocalizedString**)entry;
+                if (locStr->Str[selectedLocale][0] == '\0')
+                    selectedLocale = 0;
 
-                    char const* str = locStr->Str[selectedLocale];
-                    std::size_t len = strlen(str);
-                    buffer << uint16(len ? len : 0);
-                    if (len)
-                    {
-                        buffer.append(str, len);
-                        buffer << uint8(0);
-                    }
-                    entry += sizeof(LocalizedString*);
-                    break;
+                char const* str = locStr->Str[selectedLocale];
+                std::size_t len = strlen(str);
+                buffer << uint16(len ? len : 0);
+                if (len)
+                {
+                    buffer.append(str, len);
+                    buffer << uint8(0);
                 }
+                entry += sizeof(LocalizedString*);
+                break;
+            }
             }
         }
     }

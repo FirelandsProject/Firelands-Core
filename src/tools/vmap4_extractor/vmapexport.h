@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -31,11 +31,11 @@ enum ModelFlags
     MOD_PARENT_SPAWN = 1 << 2
 };
 
-extern const char * szWorkDirWmo;
+extern const char* szWorkDirWmo;
 extern std::unordered_map<std::string, WMODoodadData> WmoDoodads;
 uint32 GenerateUniqueObjectId(uint32 clientId, uint16 clientDoodadId);
 
-bool FileExists(const char * file);
+bool FileExists(const char* file);
 
 bool ExtractSingleWmo(std::string& fname);
 bool ExtractSingleModel(std::string& fname);

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,22 +25,22 @@
 
 enum OHDataTypes
 {
-    TYPE_BARREL_DIVERSION   = 1,
-    TYPE_THRALL_EVENT       = 2,
-    TYPE_THRALL_PART1       = 3,
-    TYPE_THRALL_PART2       = 4,
-    TYPE_THRALL_PART3       = 5,
-    TYPE_THRALL_PART4       = 6,
+    TYPE_BARREL_DIVERSION = 1,
+    TYPE_THRALL_EVENT = 2,
+    TYPE_THRALL_PART1 = 3,
+    TYPE_THRALL_PART2 = 4,
+    TYPE_THRALL_PART3 = 5,
+    TYPE_THRALL_PART4 = 6,
 
-    DATA_THRALL             = 7,
-    DATA_TARETHA            = 8,
-    DATA_EPOCH              = 9
+    DATA_THRALL = 7,
+    DATA_TARETHA = 8,
+    DATA_EPOCH = 9
 
 };
 
 enum OHWorldStateIds
 {
-    WORLD_STATE_OH              = 2436
+    WORLD_STATE_OH = 2436
 };
 
 template <class AI, class T>

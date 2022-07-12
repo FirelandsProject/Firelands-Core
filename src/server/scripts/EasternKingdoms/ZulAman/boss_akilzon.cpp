@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -33,36 +33,36 @@
 enum Texts
 {
     // Akil'zon
-    SAY_AGGRO                       = 0,
-    SAY_SUMMON_EAGLES               = 1,
-    SAY_ANNOUNCE_ELECTRICAL_STORM   = 2,
-    SAY_SLAY                        = 3,
-    SAY_DEATH                       = 4
+    SAY_AGGRO = 0,
+    SAY_SUMMON_EAGLES = 1,
+    SAY_ANNOUNCE_ELECTRICAL_STORM = 2,
+    SAY_SLAY = 3,
+    SAY_DEATH = 4
 };
 
 enum Spells
 {
     // Akil'zon
-    SPELL_STATIC_DISRUPTION             = 43622,
-    SPELL_CALL_LIGHTNING                = 43661,
-    SPELL_GUST_OF_WIND                  = 43621,
-    SPELL_ELECTRICAL_STORM              = 43648,
+    SPELL_STATIC_DISRUPTION = 43622,
+    SPELL_CALL_LIGHTNING = 43661,
+    SPELL_GUST_OF_WIND = 43621,
+    SPELL_ELECTRICAL_STORM = 43648,
 
     // Soaring Eagle
-    SPELL_EAGLE_SWOOP                   = 44732,
+    SPELL_EAGLE_SWOOP = 44732,
 
     // Amani Kidnapper
-    SPELL_GRAB_PASSENGER                = 98869,
-    SPELL_PLUCKED                       = 97318,
+    SPELL_GRAB_PASSENGER = 98869,
+    SPELL_PLUCKED = 97318,
 
     // Player
-    SPELL_TELEPORT_SELF                 = 44006,
-    SPELL_ELECTRICAL_STORM_AREA_AURA    = 44007,
-    SPELL_ELECTRICAL_ARC_1              = 43653,
-    SPELL_ELECTRICAL_ARC_2              = 43654,
-    SPELL_ELECTRICAL_ARC_3              = 43655,
-    SPELL_ELECTRICAL_ARC_4              = 43656,
-    SPELL_ELECTRICAL_ARC_5              = 43659
+    SPELL_TELEPORT_SELF = 44006,
+    SPELL_ELECTRICAL_STORM_AREA_AURA = 44007,
+    SPELL_ELECTRICAL_ARC_1 = 43653,
+    SPELL_ELECTRICAL_ARC_2 = 43654,
+    SPELL_ELECTRICAL_ARC_3 = 43655,
+    SPELL_ELECTRICAL_ARC_4 = 43656,
+    SPELL_ELECTRICAL_ARC_5 = 43659
 };
 
 uint32 const electricalArcSpells[5] =
@@ -111,8 +111,8 @@ enum MovePoints
 
 enum Misc
 {
-    ZONE_ID_ZULAMAN         = 3805,
-    SOUND_ID_EAGLE_SCREECH  = 12196
+    ZONE_ID_ZULAMAN = 3805,
+    SOUND_ID_EAGLE_SCREECH = 12196
 };
 
 Position const SoaringEagleSummonPositions[] =
@@ -350,61 +350,61 @@ struct boss_akilzon : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_STATIC_DISRUPTION:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
-                        DoCast(target, SPELL_STATIC_DISRUPTION);
-                    events.Repeat(12s);
-                    break;
-                case EVENT_CALL_LIGHTNING:
-                    DoCastVictim(SPELL_CALL_LIGHTNING);
-                    events.Repeat(7s, 9s);
-                    break;
-                case EVENT_GUST_OF_WIND:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit const* potentialTarget)->bool
-                        {
-                            return potentialTarget && me->GetVictim() != potentialTarget && !potentialTarget->HasAura(SPELL_PLUCKED);
-                        }))
-                        DoCast(target, SPELL_GUST_OF_WIND);
+            case EVENT_STATIC_DISRUPTION:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
+                    DoCast(target, SPELL_STATIC_DISRUPTION);
+                events.Repeat(12s);
+                break;
+            case EVENT_CALL_LIGHTNING:
+                DoCastVictim(SPELL_CALL_LIGHTNING);
+                events.Repeat(7s, 9s);
+                break;
+            case EVENT_GUST_OF_WIND:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit const* potentialTarget)->bool
+                    {
+                        return potentialTarget && me->GetVictim() != potentialTarget && !potentialTarget->HasAura(SPELL_PLUCKED);
+                    }))
+                    DoCast(target, SPELL_GUST_OF_WIND);
                     events.Repeat(24s);
                     break;
-                case EVENT_ELECTRICAL_STORM:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
-                        DoCast(target, SPELL_ELECTRICAL_STORM);
+            case EVENT_ELECTRICAL_STORM:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
+                    DoCast(target, SPELL_ELECTRICAL_STORM);
 
-                    events.RescheduleEvent(EVENT_STATIC_DISRUPTION, 14s + 500ms);
-                    events.RescheduleEvent(EVENT_GUST_OF_WIND, 17s);
-                    events.RescheduleEvent(EVENT_CALL_LIGHTNING, 18s);
-                    events.ScheduleEvent(EVENT_END_RAIN, 8s);
-                    events.ScheduleEvent(EVENT_START_RAIN, 41s);
-                    events.ScheduleEvent(EVENT_SUMMON_SOARING_EAGLES, 19s);
-                    events.Repeat(49s);
-                    break;
-                case EVENT_START_RAIN:
-                    me->GetMap()->SetZoneWeather(ZONE_ID_ZULAMAN, WEATHER_STATE_MEDIUM_RAIN, 0.75f);
-                    break;
-                case EVENT_END_RAIN:
-                    me->GetMap()->SetZoneWeather(ZONE_ID_ZULAMAN, WEATHER_STATE_FOG, 0.f);
-                    break;
-                case EVENT_SUMMON_SOARING_EAGLES:
-                    Talk(SAY_SUMMON_EAGLES);
-                    for (uint8 i = 0; i < 8; i++)
+                events.RescheduleEvent(EVENT_STATIC_DISRUPTION, 14s + 500ms);
+                events.RescheduleEvent(EVENT_GUST_OF_WIND, 17s);
+                events.RescheduleEvent(EVENT_CALL_LIGHTNING, 18s);
+                events.ScheduleEvent(EVENT_END_RAIN, 8s);
+                events.ScheduleEvent(EVENT_START_RAIN, 41s);
+                events.ScheduleEvent(EVENT_SUMMON_SOARING_EAGLES, 19s);
+                events.Repeat(49s);
+                break;
+            case EVENT_START_RAIN:
+                me->GetMap()->SetZoneWeather(ZONE_ID_ZULAMAN, WEATHER_STATE_MEDIUM_RAIN, 0.75f);
+                break;
+            case EVENT_END_RAIN:
+                me->GetMap()->SetZoneWeather(ZONE_ID_ZULAMAN, WEATHER_STATE_FOG, 0.f);
+                break;
+            case EVENT_SUMMON_SOARING_EAGLES:
+                Talk(SAY_SUMMON_EAGLES);
+                for (uint8 i = 0; i < 8; i++)
+                {
+                    bool cyclic = i == 0 || i == 2 || i == 4 || i == 6;
+
+                    if (Creature* eagle = DoSummon(NPC_SOARING_EAGLE, SoaringEagleSummonPositions[i], 4000))
                     {
-                        bool cyclic = i == 0 || i == 2 || i == 4 || i == 6;
-
-                        if (Creature* eagle = DoSummon(NPC_SOARING_EAGLE, SoaringEagleSummonPositions[i], 4000))
+                        if (cyclic)
                         {
-                            if (cyclic)
-                            {
-                                eagle->GetMotionMaster()->MoveCyclicPath(CyclicPathsByEagleNumber[i].data(), CyclicPathsByEagleNumber[i].size(), false, true);
-                                eagle->AI()->SetData(DATA_EAGLE_NUMBER, i);
-                            }
-                            else
-                                eagle->AI()->DoAction(ACTION_DO_RANDOM_MOVEMENT);
+                            eagle->GetMotionMaster()->MoveCyclicPath(CyclicPathsByEagleNumber[i].data(), CyclicPathsByEagleNumber[i].size(), false, true);
+                            eagle->AI()->SetData(DATA_EAGLE_NUMBER, i);
                         }
+                        else
+                            eagle->AI()->DoAction(ACTION_DO_RANDOM_MOVEMENT);
                     }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();
@@ -426,12 +426,12 @@ struct npc_akilzon_soaring_eagle : public PassiveAI
     {
         switch (action)
         {
-            case ACTION_DO_RANDOM_MOVEMENT:
-                _events.ScheduleEvent(EVENT_MOVE_RANDOM, 1ms);
-                _randomMovement = true;
-                break;
-            default:
-                break;
+        case ACTION_DO_RANDOM_MOVEMENT:
+            _events.ScheduleEvent(EVENT_MOVE_RANDOM, 1ms);
+            _randomMovement = true;
+            break;
+        default:
+            break;
         }
     }
 
@@ -439,11 +439,11 @@ struct npc_akilzon_soaring_eagle : public PassiveAI
     {
         switch (type)
         {
-            case DATA_EAGLE_NUMBER:
-                _eagleNumber = data;
-                break;
-            default:
-                break;
+        case DATA_EAGLE_NUMBER:
+            _eagleNumber = data;
+            break;
+        default:
+            break;
         }
     }
 
@@ -455,36 +455,36 @@ struct npc_akilzon_soaring_eagle : public PassiveAI
         {
             switch (eventId)
             {
-                case EVENT_EAGLE_SCREECH:
-                    me->PlayDirectSound(SOUND_ID_EAGLE_SCREECH);
-                    _events.Repeat(3s + 500ms, 10s);
-                    break;
-                case EVENT_EAGLE_SWOOP:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40.f, true))
-                        DoCast(target, SPELL_EAGLE_SWOOP);
-                    _events.Repeat(5s, 6s);
+            case EVENT_EAGLE_SCREECH:
+                me->PlayDirectSound(SOUND_ID_EAGLE_SCREECH);
+                _events.Repeat(3s + 500ms, 10s);
+                break;
+            case EVENT_EAGLE_SWOOP:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 40.f, true))
+                    DoCast(target, SPELL_EAGLE_SWOOP);
+                _events.Repeat(5s, 6s);
 
-                    if (_randomMovement)
-                        _events.RescheduleEvent(EVENT_MOVE_RANDOM, 2s);
-                    else
-                        _events.ScheduleEvent(EVENT_MOVE_CYCLIC_PATH, 2s);
-                    break;
-                case EVENT_MOVE_RANDOM:
-                {
-                    Position pos = me->GetHomePosition();
-                    pos.RelocateOffset({ frand(-7.f, 7.f), frand(-7.f, 7.f), frand(-1.f, 1.f) });
-                    if (me->GetPositionZ() <= 90.f)
-                        pos.m_positionZ = std::min(me->GetPositionZ() + 10.f, pos.GetPositionZ());
+                if (_randomMovement)
+                    _events.RescheduleEvent(EVENT_MOVE_RANDOM, 2s);
+                else
+                    _events.ScheduleEvent(EVENT_MOVE_CYCLIC_PATH, 2s);
+                break;
+            case EVENT_MOVE_RANDOM:
+            {
+                Position pos = me->GetHomePosition();
+                pos.RelocateOffset({ frand(-7.f, 7.f), frand(-7.f, 7.f), frand(-1.f, 1.f) });
+                if (me->GetPositionZ() <= 90.f)
+                    pos.m_positionZ = std::min(me->GetPositionZ() + 10.f, pos.GetPositionZ());
 
-                    me->GetMotionMaster()->MovePoint(0, pos, false);
-                    _events.Repeat(1s + 200ms);
-                    break;
-                }
-                case EVENT_MOVE_CYCLIC_PATH:
-                    me->GetMotionMaster()->MoveCyclicPath(CyclicPathsByEagleNumber[_eagleNumber].data(), CyclicPathsByEagleNumber[_eagleNumber].size(), false, true);
-                    break;
-                default:
-                    break;
+                me->GetMotionMaster()->MovePoint(0, pos, false);
+                _events.Repeat(1s + 200ms);
+                break;
+            }
+            case EVENT_MOVE_CYCLIC_PATH:
+                me->GetMotionMaster()->MoveCyclicPath(CyclicPathsByEagleNumber[_eagleNumber].data(), CyclicPathsByEagleNumber[_eagleNumber].size(), false, true);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -525,13 +525,13 @@ struct npc_akilzon_amani_kidnapper : public PassiveAI
 
         switch (pointId)
         {
-            case POINT_GRAB_PASSENGER:
-                if (TempSummon* summon = me->ToTempSummon())
-                    if (Unit* summoner = summon->GetSummoner())
-                        DoCast(summoner, SPELL_GRAB_PASSENGER);
-                break;
-            default:
-                break;
+        case POINT_GRAB_PASSENGER:
+            if (TempSummon* summon = me->ToTempSummon())
+                if (Unit* summoner = summon->GetSummoner())
+                    DoCast(summoner, SPELL_GRAB_PASSENGER);
+            break;
+        default:
+            break;
         }
     }
 
@@ -592,9 +592,9 @@ class spell_akilzon_electrical_storm_damage : public SpellScript
             return;
 
         targets.remove_if([](WorldObject const* target)->bool
-        {
-            return (!target->ToUnit() || target->ToUnit()->HasAura(SPELL_ELECTRICAL_STORM_AREA_AURA));
-        });
+            {
+                return (!target->ToUnit() || target->ToUnit()->HasAura(SPELL_ELECTRICAL_STORM_AREA_AURA));
+            });
     }
 
     void Register() override

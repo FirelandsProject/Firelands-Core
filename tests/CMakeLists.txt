@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -17,7 +17,7 @@ add_executable(tests-common ${COMMON_SOURCES})
 
 target_link_libraries(tests-common
   PRIVATE
-    common
-    Catch2::Catch2)
+  common
+  Catch2::Catch2)
 
 catch_discover_tests(tests-common)

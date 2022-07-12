@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Warlord_Kalithres
-SD%Complete: 65
-SDComment: Contains workarounds regarding warlord's rage spells not acting as expected. Both scripts here require review and fine tuning.
-SDCategory: Coilfang Resevoir, The Steamvault
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Warlord_Kalithres
+ SD%Complete: 65
+ SDComment: Contains workarounds regarding warlord's rage spells not acting as expected. Both scripts here require review and fine tuning.
+ SDCategory: Coilfang Resevoir, The Steamvault
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -30,18 +30,18 @@ EndScriptData */
 
 enum NagaDistiller
 {
-    SAY_INTRO                   = 0,
-    SAY_REGEN                   = 1,
-    SAY_AGGRO                   = 2,
-    SAY_SLAY                    = 3,
-    SAY_DEATH                   = 4,
+    SAY_INTRO = 0,
+    SAY_REGEN = 1,
+    SAY_AGGRO = 2,
+    SAY_SLAY = 3,
+    SAY_DEATH = 4,
 
-    SPELL_SPELL_REFLECTION      = 31534,
-    SPELL_IMPALE                = 39061,
-    SPELL_WARLORDS_RAGE         = 37081,
-    SPELL_WARLORDS_RAGE_NAGA    = 31543,
+    SPELL_SPELL_REFLECTION = 31534,
+    SPELL_IMPALE = 39061,
+    SPELL_WARLORDS_RAGE = 37081,
+    SPELL_WARLORDS_RAGE_NAGA = 31543,
 
-    SPELL_WARLORDS_RAGE_PROC    = 36453
+    SPELL_WARLORDS_RAGE_PROC = 36453
 };
 
 class npc_naga_distiller : public CreatureScript
@@ -88,7 +88,7 @@ public:
             instance->SetData(DATA_DISTILLER, IN_PROGRESS);
         }
 
-        void DamageTaken(Unit* /*done_by*/, uint32 &damage) override
+        void DamageTaken(Unit* /*done_by*/, uint32& damage) override
         {
             if (me->GetHealth() <= damage)
                 instance->SetData(DATA_DISTILLER, DONE);
@@ -178,14 +178,16 @@ public:
                     ENSURE_AI(npc_naga_distiller::npc_naga_distillerAI, distiller->AI())->StartRageGen(me);
                 }
                 Rage_Timer = 3000 + rand32() % 15000;
-            } else Rage_Timer -= diff;
+            }
+            else Rage_Timer -= diff;
 
             //Reflection_Timer
             if (Reflection_Timer <= diff)
             {
                 DoCast(me, SPELL_SPELL_REFLECTION);
                 Reflection_Timer = 15000 + rand32() % 10000;
-            } else Reflection_Timer -= diff;
+            }
+            else Reflection_Timer -= diff;
 
             //Impale_Timer
             if (Impale_Timer <= diff)
@@ -194,7 +196,8 @@ public:
                     DoCast(target, SPELL_IMPALE);
 
                 Impale_Timer = 7500 + rand32() % 5000;
-            } else Impale_Timer -= diff;
+            }
+            else Impale_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

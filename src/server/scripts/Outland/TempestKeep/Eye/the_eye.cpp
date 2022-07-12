@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,16 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: The_Eye
-SD%Complete: 100
-SDComment:
-SDCategory: Tempest Keep, The Eye
-EndScriptData */
+ /* ScriptData
+ SDName: The_Eye
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Tempest Keep, The Eye
+ EndScriptData */
 
-/* ContentData
-npc_crystalcore_devastator
-EndContentData */
+ /* ContentData
+ npc_crystalcore_devastator
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
@@ -32,80 +32,80 @@ EndContentData */
 
 enum Spells
 {
-    SPELL_COUNTERCHARGE    = 35035,
-    SPELL_KNOCKAWAY        = 22893,
+    SPELL_COUNTERCHARGE = 35035,
+    SPELL_KNOCKAWAY = 22893,
 };
 
 class npc_crystalcore_devastator : public CreatureScript
 {
-    public:
+public:
 
-        npc_crystalcore_devastator()
-            : CreatureScript("npc_crystalcore_devastator")
+    npc_crystalcore_devastator()
+        : CreatureScript("npc_crystalcore_devastator")
+    {
+    }
+    struct npc_crystalcore_devastatorAI : public ScriptedAI
+    {
+        npc_crystalcore_devastatorAI(Creature* creature) : ScriptedAI(creature)
+        {
+            Initialize();
+        }
+
+        void Initialize()
+        {
+            Countercharge_Timer = 9000;
+            Knockaway_Timer = 25000;
+        }
+
+        uint32 Knockaway_Timer;
+        uint32 Countercharge_Timer;
+
+        void Reset() override
+        {
+            Initialize();
+        }
+
+        void JustEngagedWith(Unit* /*who*/) override
         {
         }
-        struct npc_crystalcore_devastatorAI : public ScriptedAI
+
+        void UpdateAI(uint32 diff) override
         {
-            npc_crystalcore_devastatorAI(Creature* creature) : ScriptedAI(creature)
+            if (!UpdateVictim())
+                return;
+
+            //Check if we have a current target
+            //Knockaway_Timer
+            if (Knockaway_Timer <= diff)
             {
-                Initialize();
-            }
-
-            void Initialize()
-            {
-                Countercharge_Timer = 9000;
-                Knockaway_Timer = 25000;
-            }
-
-            uint32 Knockaway_Timer;
-            uint32 Countercharge_Timer;
-
-            void Reset() override
-            {
-                Initialize();
-            }
-
-            void JustEngagedWith(Unit* /*who*/) override
-            {
-            }
-
-            void UpdateAI(uint32 diff) override
-            {
-                if (!UpdateVictim())
-                    return;
-
-                //Check if we have a current target
-                //Knockaway_Timer
-                if (Knockaway_Timer <= diff)
+                if (Unit* victim = me->GetVictim())
                 {
-                    if (Unit* victim = me->GetVictim())
-                    {
-                        DoCastVictim(SPELL_KNOCKAWAY, true);
-                        me->GetThreatManager().ResetThreat(victim);
-                    }
-
-                    Knockaway_Timer = 23000;
+                    DoCastVictim(SPELL_KNOCKAWAY, true);
+                    me->GetThreatManager().ResetThreat(victim);
                 }
-                else
-                    Knockaway_Timer -= diff;
 
-                //Countercharge_Timer
-                if (Countercharge_Timer <= diff)
-                {
-                    DoCast(me, SPELL_COUNTERCHARGE);
-                    Countercharge_Timer = 45000;
-                }
-                else
-                    Countercharge_Timer -= diff;
-
-                DoMeleeAttackIfReady();
+                Knockaway_Timer = 23000;
             }
-        };
+            else
+                Knockaway_Timer -= diff;
 
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return GetTheEyeAI<npc_crystalcore_devastatorAI>(creature);
+            //Countercharge_Timer
+            if (Countercharge_Timer <= diff)
+            {
+                DoCast(me, SPELL_COUNTERCHARGE);
+                Countercharge_Timer = 45000;
+            }
+            else
+                Countercharge_Timer -= diff;
+
+            DoMeleeAttackIfReady();
         }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return GetTheEyeAI<npc_crystalcore_devastatorAI>(creature);
+    }
 };
 void AddSC_the_eye()
 {

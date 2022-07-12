@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -45,52 +45,52 @@ WorldPacket const* WorldPackets::Trade::TradeStatus::Write()
 
     switch (Status)
     {
-        case TRADE_STATUS_BEGIN_TRADE:
-            _worldPacket.WriteBit(Partner[2]);
-            _worldPacket.WriteBit(Partner[4]);
-            _worldPacket.WriteBit(Partner[6]);
-            _worldPacket.WriteBit(Partner[0]);
-            _worldPacket.WriteBit(Partner[1]);
-            _worldPacket.WriteBit(Partner[3]);
-            _worldPacket.WriteBit(Partner[7]);
-            _worldPacket.WriteBit(Partner[5]);
-            _worldPacket.FlushBits();
+    case TRADE_STATUS_BEGIN_TRADE:
+        _worldPacket.WriteBit(Partner[2]);
+        _worldPacket.WriteBit(Partner[4]);
+        _worldPacket.WriteBit(Partner[6]);
+        _worldPacket.WriteBit(Partner[0]);
+        _worldPacket.WriteBit(Partner[1]);
+        _worldPacket.WriteBit(Partner[3]);
+        _worldPacket.WriteBit(Partner[7]);
+        _worldPacket.WriteBit(Partner[5]);
+        _worldPacket.FlushBits();
 
-            _worldPacket.WriteByteSeq(Partner[4]);
-            _worldPacket.WriteByteSeq(Partner[1]);
-            _worldPacket.WriteByteSeq(Partner[2]);
-            _worldPacket.WriteByteSeq(Partner[3]);
-            _worldPacket.WriteByteSeq(Partner[0]);
-            _worldPacket.WriteByteSeq(Partner[7]);
-            _worldPacket.WriteByteSeq(Partner[6]);
-            _worldPacket.WriteByteSeq(Partner[5]);
-            break;
-        case TRADE_STATUS_INITIATED:
-            _worldPacket.FlushBits();
-            _worldPacket << uint32(ID);
-            break;
-        case TRADE_STATUS_FAILED:
-            _worldPacket.WriteBit(FailureForYou);
-            _worldPacket.FlushBits();
+        _worldPacket.WriteByteSeq(Partner[4]);
+        _worldPacket.WriteByteSeq(Partner[1]);
+        _worldPacket.WriteByteSeq(Partner[2]);
+        _worldPacket.WriteByteSeq(Partner[3]);
+        _worldPacket.WriteByteSeq(Partner[0]);
+        _worldPacket.WriteByteSeq(Partner[7]);
+        _worldPacket.WriteByteSeq(Partner[6]);
+        _worldPacket.WriteByteSeq(Partner[5]);
+        break;
+    case TRADE_STATUS_INITIATED:
+        _worldPacket.FlushBits();
+        _worldPacket << uint32(ID);
+        break;
+    case TRADE_STATUS_FAILED:
+        _worldPacket.WriteBit(FailureForYou);
+        _worldPacket.FlushBits();
 
-            _worldPacket << int32(BagResult);
-            _worldPacket << uint32(ItemID); // @todo: validate
-            break;
-        case TRADE_STATUS_WRONG_REALM:
-        case TRADE_STATUS_NOT_ON_TAPLIST:
-            _worldPacket.FlushBits();
-            _worldPacket << uint8(TradeSlot);
-            break;
-        case TRADE_STATUS_CURRENCY:                 // Not implemented
-        case TRADE_STATUS_CURRENCY_NOT_TRADABLE:    // Not implemented
-            _worldPacket.FlushBits();
-            // Blizzard never implemented these, you can only trade currency with the field9 & 1 in CurrencyTypes.DBC, and only two test currencies have that flag
-            _worldPacket << int32(CurrencyType);
-            _worldPacket << int32(CurrencyQuantity);
-            break;
-        default:
-            _worldPacket.FlushBits();
-            break;
+        _worldPacket << int32(BagResult);
+        _worldPacket << uint32(ItemID); // @todo: validate
+        break;
+    case TRADE_STATUS_WRONG_REALM:
+    case TRADE_STATUS_NOT_ON_TAPLIST:
+        _worldPacket.FlushBits();
+        _worldPacket << uint8(TradeSlot);
+        break;
+    case TRADE_STATUS_CURRENCY:                 // Not implemented
+    case TRADE_STATUS_CURRENCY_NOT_TRADABLE:    // Not implemented
+        _worldPacket.FlushBits();
+        // Blizzard never implemented these, you can only trade currency with the field9 & 1 in CurrencyTypes.DBC, and only two test currencies have that flag
+        _worldPacket << int32(CurrencyType);
+        _worldPacket << int32(CurrencyQuantity);
+        break;
+    default:
+        _worldPacket.FlushBits();
+        break;
     }
 
     return &_worldPacket;

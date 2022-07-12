@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -104,28 +104,28 @@ WorldPacket const* WorldPackets::Instance::UpdateInstanceEncounterUnit::Write()
 
     switch (Type)
     {
-        case ENCOUNTER_FRAME_ENGAGE:
-        case ENCOUNTER_FRAME_DISENGAGE:
-        case ENCOUNTER_FRAME_UPDATE_PRIORITY:
-            _worldPacket << Unit.WriteAsPacked();
-            _worldPacket << uint8(Param1);
-            break;
-        case ENCOUNTER_FRAME_ADD_TIMER:
-        case ENCOUNTER_FRAME_ENABLE_OBJECTIVE:
-        case ENCOUNTER_FRAME_DISABLE_OBJECTIVE:
-        case ENCOUNTER_FRAME_SET_COMBAT_RES_LIMIT:
-            _worldPacket << uint8(Param1);
-            break;
-        case ENCOUNTER_FRAME_UPDATE_OBJECTIVE:
-            _worldPacket << uint8(Param1);
-            _worldPacket << uint8(Param2);
-            break;
-        case ENCOUNTER_FRAME_UNK7:
-        case ENCOUNTER_FRAME_ADD_COMBAT_RES_LIMIT:
-        case ENCOUNTER_FRAME_RESET_COMBAT_RES_LIMIT:
-            break;
-        default:
-            break;
+    case ENCOUNTER_FRAME_ENGAGE:
+    case ENCOUNTER_FRAME_DISENGAGE:
+    case ENCOUNTER_FRAME_UPDATE_PRIORITY:
+        _worldPacket << Unit.WriteAsPacked();
+        _worldPacket << uint8(Param1);
+        break;
+    case ENCOUNTER_FRAME_ADD_TIMER:
+    case ENCOUNTER_FRAME_ENABLE_OBJECTIVE:
+    case ENCOUNTER_FRAME_DISABLE_OBJECTIVE:
+    case ENCOUNTER_FRAME_SET_COMBAT_RES_LIMIT:
+        _worldPacket << uint8(Param1);
+        break;
+    case ENCOUNTER_FRAME_UPDATE_OBJECTIVE:
+        _worldPacket << uint8(Param1);
+        _worldPacket << uint8(Param2);
+        break;
+    case ENCOUNTER_FRAME_UNK7:
+    case ENCOUNTER_FRAME_ADD_COMBAT_RES_LIMIT:
+    case ENCOUNTER_FRAME_RESET_COMBAT_RES_LIMIT:
+        break;
+    default:
+        break;
     }
 
     return &_worldPacket;

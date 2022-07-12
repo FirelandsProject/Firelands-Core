@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2018 FirelandsCore <http://www.FirelandsCore.org/>
+# Copyright (C) 2008-2018 Firelands Core <http://www.FirelandsCore.org/>
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without

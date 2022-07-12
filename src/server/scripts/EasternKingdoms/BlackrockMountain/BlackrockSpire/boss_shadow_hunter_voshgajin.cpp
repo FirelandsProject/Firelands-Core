@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,16 +21,16 @@
 
 enum Spells
 {
-    SPELL_CURSEOFBLOOD              = 24673,
-    SPELL_HEX                       = 16708,
-    SPELL_CLEAVE                    = 20691,
+    SPELL_CURSEOFBLOOD = 24673,
+    SPELL_HEX = 16708,
+    SPELL_CLEAVE = 20691,
 };
 
 enum Events
 {
-    EVENT_CURSE_OF_BLOOD            = 1,
-    EVENT_HEX                       = 2,
-    EVENT_CLEAVE                    = 3,
+    EVENT_CURSE_OF_BLOOD = 1,
+    EVENT_HEX = 2,
+    EVENT_CLEAVE = 3,
 };
 
 class boss_shadow_hunter_voshgajin : public CreatureScript
@@ -57,7 +57,7 @@ public:
         {
             BossAI::JustEngagedWith(who);
             events.ScheduleEvent(EVENT_CURSE_OF_BLOOD, 2 * IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_HEX,     8 * IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_HEX, 8 * IN_MILLISECONDS);
             events.ScheduleEvent(EVENT_CLEAVE, 14 * IN_MILLISECONDS);
         }
 
@@ -80,19 +80,19 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_CURSE_OF_BLOOD:
-                        DoCastVictim(SPELL_CURSEOFBLOOD);
-                        events.ScheduleEvent(EVENT_CURSE_OF_BLOOD, 45 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_HEX:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
-                            DoCast(target, SPELL_HEX);
-                        events.ScheduleEvent(EVENT_HEX, 15 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_CLEAVE:
-                        DoCastVictim(SPELL_CLEAVE);
-                        events.ScheduleEvent(EVENT_CLEAVE, 7 * IN_MILLISECONDS);
-                        break;
+                case EVENT_CURSE_OF_BLOOD:
+                    DoCastVictim(SPELL_CURSEOFBLOOD);
+                    events.ScheduleEvent(EVENT_CURSE_OF_BLOOD, 45 * IN_MILLISECONDS);
+                    break;
+                case EVENT_HEX:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                        DoCast(target, SPELL_HEX);
+                    events.ScheduleEvent(EVENT_HEX, 15 * IN_MILLISECONDS);
+                    break;
+                case EVENT_CLEAVE:
+                    DoCastVictim(SPELL_CLEAVE);
+                    events.ScheduleEvent(EVENT_CLEAVE, 7 * IN_MILLISECONDS);
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

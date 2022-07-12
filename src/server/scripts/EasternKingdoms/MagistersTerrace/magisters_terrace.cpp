@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,16 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Magisters_Terrace
-SD%Complete: 100
-SDComment: Quest support: 11490(post-event)
-SDCategory: Magisters Terrace
-EndScriptData */
+ /* ScriptData
+ SDName: Magisters_Terrace
+ SD%Complete: 100
+ SDComment: Quest support: 11490(post-event)
+ SDCategory: Magisters Terrace
+ EndScriptData */
 
-/* ContentData
-npc_kalecgos
-EndContentData */
+ /* ContentData
+ npc_kalecgos
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "magisters_terrace.h"
@@ -33,27 +33,27 @@ EndContentData */
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 
-/*######
-## npc_kalecgos
-######*/
+ /*######
+ ## npc_kalecgos
+ ######*/
 
 enum Spells
 {
-    SPELL_KALECGOS_TRANSFORM    = 44670,
-    SPELL_TRANSFORM_VISUAL      = 24085,
-    SPELL_CAMERA_SHAKE          = 44762,
-    SPELL_ORB_KILL_CREDIT       = 46307
+    SPELL_KALECGOS_TRANSFORM = 44670,
+    SPELL_TRANSFORM_VISUAL = 24085,
+    SPELL_CAMERA_SHAKE = 44762,
+    SPELL_ORB_KILL_CREDIT = 46307
 };
 
 enum MovementPoints
 {
-    POINT_ID_PREPARE_LANDING    = 6
+    POINT_ID_PREPARE_LANDING = 6
 };
 
 enum EventIds
 {
-    EVENT_KALECGOS_TRANSFORM         = 1,
-    EVENT_KALECGOS_LANDING           = 2
+    EVENT_KALECGOS_TRANSFORM = 1,
+    EVENT_KALECGOS_LANDING = 2
 };
 
 #define GOSSIP_ITEM_KAEL_1      "Who are you?"
@@ -91,19 +91,19 @@ public:
 
             switch (events.ExecuteEvent())
             {
-                case EVENT_KALECGOS_LANDING:
-                    DoCastAOE(SPELL_CAMERA_SHAKE);
-                    me->SetObjectScale(0.6f);
-                    events.ScheduleEvent(EVENT_KALECGOS_TRANSFORM, Seconds(1));
-                    break;
-                case EVENT_KALECGOS_TRANSFORM:
-                    DoCast(me, SPELL_ORB_KILL_CREDIT, true);
-                    DoCast(me, SPELL_TRANSFORM_VISUAL, false);
-                    DoCast(me, SPELL_KALECGOS_TRANSFORM, false);
-                    me->UpdateEntry(NPC_HUMAN_KALECGOS);
-                    break;
-                default:
-                    break;
+            case EVENT_KALECGOS_LANDING:
+                DoCastAOE(SPELL_CAMERA_SHAKE);
+                me->SetObjectScale(0.6f);
+                events.ScheduleEvent(EVENT_KALECGOS_TRANSFORM, Seconds(1));
+                break;
+            case EVENT_KALECGOS_TRANSFORM:
+                DoCast(me, SPELL_ORB_KILL_CREDIT, true);
+                DoCast(me, SPELL_TRANSFORM_VISUAL, false);
+                DoCast(me, SPELL_KALECGOS_TRANSFORM, false);
+                me->UpdateEntry(NPC_HUMAN_KALECGOS);
+                break;
+            default:
+                break;
             }
         }
 
@@ -113,25 +113,25 @@ public:
             ClearGossipMenuFor(player);
             switch (action)
             {
-                case GOSSIP_ACTION_INFO_DEF:
-                    AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-                    SendGossipMenuFor(player, 12500, me->GetGUID());
-                    break;
-                case GOSSIP_ACTION_INFO_DEF + 1:
-                    AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_3, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
-                    SendGossipMenuFor(player, 12502, me->GetGUID());
-                    break;
-                case GOSSIP_ACTION_INFO_DEF + 2:
-                    AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_4, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
-                    SendGossipMenuFor(player, 12606, me->GetGUID());
-                    break;
-                case GOSSIP_ACTION_INFO_DEF + 3:
-                    AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_5, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
-                    SendGossipMenuFor(player, 12607, me->GetGUID());
-                    break;
-                case GOSSIP_ACTION_INFO_DEF + 4:
-                    SendGossipMenuFor(player, 12608, me->GetGUID());
-                    break;
+            case GOSSIP_ACTION_INFO_DEF:
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+                SendGossipMenuFor(player, 12500, me->GetGUID());
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 1:
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_3, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+                SendGossipMenuFor(player, 12502, me->GetGUID());
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 2:
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_4, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+                SendGossipMenuFor(player, 12606, me->GetGUID());
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 3:
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_ITEM_KAEL_5, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+                SendGossipMenuFor(player, 12607, me->GetGUID());
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 4:
+                SendGossipMenuFor(player, 12608, me->GetGUID());
+                break;
             }
 
             return true;
@@ -148,8 +148,8 @@ public:
             return true;
         }
 
-        private:
-            EventMap events;
+    private:
+        EventMap events;
     };
 
     CreatureAI* GetAI(Creature* creature) const override
@@ -160,9 +160,9 @@ public:
 
 enum ShatteredSunSentry
 {
-    POINT_ID_PREPARE_SPLINE_PATH            = 1,
-    POINT_ID_REPEAT_PATH                    = 1,
-    MAX_SHATTERED_SUN_SENTRY_SPLINE_POINTS  = 10
+    POINT_ID_PREPARE_SPLINE_PATH = 1,
+    POINT_ID_REPEAT_PATH = 1,
+    MAX_SHATTERED_SUN_SENTRY_SPLINE_POINTS = 10
 };
 
 // Sniffed data. There is one single waypoint before the 2nd one is a smooth round
@@ -190,9 +190,9 @@ struct npc_mgt_shattered_sun_sentry : public ScriptedAI
         me->SetWalk(true);
         Unit* unit = me;
         me->m_Events.AddEventAtOffset([unit]()
-        {
-            unit->GetMotionMaster()->MovePoint(POINT_ID_PREPARE_SPLINE_PATH, ShatteredSunSentryWaypoint1);
-        }, 2s);
+            {
+                unit->GetMotionMaster()->MovePoint(POINT_ID_PREPARE_SPLINE_PATH, ShatteredSunSentryWaypoint1);
+            }, 2s);
     }
 
     void MovementInform(uint32 type, uint32 pointId) override

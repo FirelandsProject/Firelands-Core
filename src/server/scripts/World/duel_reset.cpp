@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,72 +26,72 @@
 
 class DuelResetScript : public PlayerScript
 {
-    public:
-        DuelResetScript() : PlayerScript("DuelResetScript") { }
+public:
+    DuelResetScript() : PlayerScript("DuelResetScript") { }
 
-        // Called when a duel starts (after 3s countdown)
-        void OnDuelStart(Player* player1, Player* player2) override
+    // Called when a duel starts (after 3s countdown)
+    void OnDuelStart(Player* player1, Player* player2) override
+    {
+        // Cooldowns reset
+        if (sWorld->getBoolConfig(CONFIG_RESET_DUEL_COOLDOWNS))
         {
-            // Cooldowns reset
+            player1->GetSpellHistory()->SaveCooldownStateBeforeDuel();
+            player2->GetSpellHistory()->SaveCooldownStateBeforeDuel();
+
+            ResetSpellCooldowns(player1, true);
+            ResetSpellCooldowns(player2, true);
+        }
+
+        // Health and mana reset
+        if (sWorld->getBoolConfig(CONFIG_RESET_DUEL_HEALTH_MANA))
+        {
+            player1->SaveHealthBeforeDuel();
+            player1->SaveManaBeforeDuel();
+            player1->ResetAllPowers();
+
+            player2->SaveHealthBeforeDuel();
+            player2->SaveManaBeforeDuel();
+            player2->ResetAllPowers();
+        }
+    }
+
+    // Called when a duel ends
+    void OnDuelEnd(Player* winner, Player* loser, DuelCompleteType type) override
+    {
+        // do not reset anything if DUEL_INTERRUPTED or DUEL_FLED
+        if (type == DUEL_WON)
+        {
+            // Cooldown restore
             if (sWorld->getBoolConfig(CONFIG_RESET_DUEL_COOLDOWNS))
             {
-                player1->GetSpellHistory()->SaveCooldownStateBeforeDuel();
-                player2->GetSpellHistory()->SaveCooldownStateBeforeDuel();
+                ResetSpellCooldowns(winner, false);
+                ResetSpellCooldowns(loser, false);
 
-                ResetSpellCooldowns(player1, true);
-                ResetSpellCooldowns(player2, true);
+                winner->GetSpellHistory()->RestoreCooldownStateAfterDuel();
+                loser->GetSpellHistory()->RestoreCooldownStateAfterDuel();
             }
 
-            // Health and mana reset
+            // Health and mana restore
             if (sWorld->getBoolConfig(CONFIG_RESET_DUEL_HEALTH_MANA))
             {
-                player1->SaveHealthBeforeDuel();
-                player1->SaveManaBeforeDuel();
-                player1->ResetAllPowers();
+                winner->RestoreHealthAfterDuel();
+                loser->RestoreHealthAfterDuel();
 
-                player2->SaveHealthBeforeDuel();
-                player2->SaveManaBeforeDuel();
-                player2->ResetAllPowers();
+                // check if player1 class uses mana
+                if (winner->GetPowerType() == POWER_MANA || winner->getClass() == CLASS_DRUID)
+                    winner->RestoreManaAfterDuel();
+
+                // check if player2 class uses mana
+                if (loser->GetPowerType() == POWER_MANA || loser->getClass() == CLASS_DRUID)
+                    loser->RestoreManaAfterDuel();
             }
         }
+    }
 
-        // Called when a duel ends
-        void OnDuelEnd(Player* winner, Player* loser, DuelCompleteType type) override
-        {
-            // do not reset anything if DUEL_INTERRUPTED or DUEL_FLED
-            if (type == DUEL_WON)
-            {
-                // Cooldown restore
-                if (sWorld->getBoolConfig(CONFIG_RESET_DUEL_COOLDOWNS))
-                {
-                    ResetSpellCooldowns(winner, false);
-                    ResetSpellCooldowns(loser, false);
-
-                    winner->GetSpellHistory()->RestoreCooldownStateAfterDuel();
-                    loser->GetSpellHistory()->RestoreCooldownStateAfterDuel();
-                }
-
-                // Health and mana restore
-                if (sWorld->getBoolConfig(CONFIG_RESET_DUEL_HEALTH_MANA))
-                {
-                    winner->RestoreHealthAfterDuel();
-                    loser->RestoreHealthAfterDuel();
-
-                    // check if player1 class uses mana
-                    if (winner->GetPowerType() == POWER_MANA || winner->getClass() == CLASS_DRUID)
-                        winner->RestoreManaAfterDuel();
-
-                    // check if player2 class uses mana
-                    if (loser->GetPowerType() == POWER_MANA || loser->getClass() == CLASS_DRUID)
-                        loser->RestoreManaAfterDuel();
-                }
-            }
-        }
-
-        static void ResetSpellCooldowns(Player* player, bool onStartDuel)
-        {
-            // remove cooldowns on spells that have < 10 min CD, has no onHold and Aura
-            player->GetSpellHistory()->ResetCooldowns([player, onStartDuel](SpellHistory::CooldownStorageType::iterator itr) -> bool
+    static void ResetSpellCooldowns(Player* player, bool onStartDuel)
+    {
+        // remove cooldowns on spells that have < 10 min CD, has no onHold and Aura
+        player->GetSpellHistory()->ResetCooldowns([player, onStartDuel](SpellHistory::CooldownStorageType::iterator itr) -> bool
             {
                 SpellInfo const* spellInfo = sSpellMgr->AssertSpellInfo(itr->first);
                 uint32 remainingCooldown = player->GetSpellHistory()->GetRemainingCooldown(spellInfo);
@@ -103,10 +103,10 @@ class DuelResetScript : public PlayerScript
                     && (onStartDuel ? !player->HasAura(spellInfo->Id) : true);
             }, true);
 
-            // pet cooldowns
-            if (Pet* pet = player->GetPet())
-                pet->GetSpellHistory()->ResetAllCooldowns();
-        }
+        // pet cooldowns
+        if (Pet* pet = player->GetPet())
+            pet->GetSpellHistory()->ResetAllCooldowns();
+    }
 };
 
 void AddSC_duel_reset()

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -34,14 +34,14 @@ namespace VMAP
 {
     class ManagedModel
     {
-        public:
-            ManagedModel() : iRefCount(0) { }
-            WorldModel* getModel() { return &iModel; }
-            void incRefCount() { ++iRefCount; }
-            int decRefCount() { return --iRefCount; }
-        protected:
-            WorldModel iModel;
-            int iRefCount;
+    public:
+        ManagedModel() : iRefCount(0) { }
+        WorldModel* getModel() { return &iModel; }
+        void incRefCount() { ++iRefCount; }
+        int decRefCount() { return --iRefCount; }
+    protected:
+        WorldModel iModel;
+        int iRefCount;
     };
 
 
@@ -224,7 +224,7 @@ namespace VMAP
     get the hit position and return true if we hit something
     otherwise the result pos will be the dest pos
     */
-    bool VMapManager2::getObjectHitPos(unsigned int mapId, float x1, float y1, float z1, float x2, float y2, float z2, float& rx, float &ry, float& rz, float modifyDist)
+    bool VMapManager2::getObjectHitPos(unsigned int mapId, float x1, float y1, float z1, float x2, float y2, float z2, float& rx, float& ry, float& rz, float modifyDist)
     {
         if (isLineOfSightCalcEnabled() && !IsVMAPDisabledForPtr(mapId, VMAP_DISABLE_LOS))
         {
@@ -378,7 +378,7 @@ namespace VMAP
         return model->second->getModel();
     }
 
-    void VMapManager2::releaseModelInstance(const std::string &filename)
+    void VMapManager2::releaseModelInstance(const std::string& filename)
     {
         //! Critical section, thread safe access to iLoadedModelFiles
         std::lock_guard<std::mutex> lock(LoadedModelFilesLock);
@@ -402,7 +402,7 @@ namespace VMAP
         return StaticMapTree::CanLoadMap(std::string(basePath), mapId, x, y, this);
     }
 
-    void VMapManager2::getInstanceMapTree(InstanceTreeMap &instanceMapTree)
+    void VMapManager2::getInstanceMapTree(InstanceTreeMap& instanceMapTree)
     {
         instanceMapTree = iInstanceMapTrees;
     }

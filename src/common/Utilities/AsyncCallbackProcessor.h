@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,8 +22,8 @@
 #include <algorithm>
 #include <vector>
 
-//template <class T>
-//concept AsyncCallback = requires(T t) { { t.InvokeIfReady() } -> std::convertible_to<bool> };
+ //template <class T>
+ //concept AsyncCallback = requires(T t) { { t.InvokeIfReady() } -> std::convertible_to<bool> };
 
 template<typename T> // requires AsyncCallback<T>
 class AsyncCallbackProcessor
@@ -46,9 +46,9 @@ public:
         std::vector<T> updateCallbacks{ std::move(_callbacks) };
 
         updateCallbacks.erase(std::remove_if(updateCallbacks.begin(), updateCallbacks.end(), [](T& callback)
-        {
-            return callback.InvokeIfReady();
-        }), updateCallbacks.end());
+            {
+                return callback.InvokeIfReady();
+            }), updateCallbacks.end());
 
         _callbacks.insert(_callbacks.end(), std::make_move_iterator(updateCallbacks.begin()), std::make_move_iterator(updateCallbacks.end()));
     }

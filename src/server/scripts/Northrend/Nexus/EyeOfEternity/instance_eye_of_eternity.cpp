@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -103,24 +103,24 @@ public:
         {
             switch (go->GetEntry())
             {
-                case GO_NEXUS_RAID_PLATFORM:
-                    platformGUID = go->GetGUID();
-                    break;
-                case GO_FOCUSING_IRIS_10:
-                case GO_FOCUSING_IRIS_25:
-                    irisGUID = go->GetGUID();
-                    focusingIrisPosition = go->GetPosition();
-                    break;
-                case GO_EXIT_PORTAL:
-                    exitPortalGUID = go->GetGUID();
-                    exitPortalPosition = go->GetPosition();
-                    break;
-                case GO_HEART_OF_MAGIC_10:
-                case GO_HEART_OF_MAGIC_25:
-                    heartOfMagicGUID = go->GetGUID();
-                    break;
-                default:
-                    break;
+            case GO_NEXUS_RAID_PLATFORM:
+                platformGUID = go->GetGUID();
+                break;
+            case GO_FOCUSING_IRIS_10:
+            case GO_FOCUSING_IRIS_25:
+                irisGUID = go->GetGUID();
+                focusingIrisPosition = go->GetPosition();
+                break;
+            case GO_EXIT_PORTAL:
+                exitPortalGUID = go->GetGUID();
+                exitPortalPosition = go->GetPosition();
+                break;
+            case GO_HEART_OF_MAGIC_10:
+            case GO_HEART_OF_MAGIC_25:
+                heartOfMagicGUID = go->GetGUID();
+                break;
+            default:
+                break;
             }
         }
 
@@ -128,21 +128,21 @@ public:
         {
             switch (creature->GetEntry())
             {
-                case NPC_VORTEX_TRIGGER:
-                    vortexTriggers.push_back(creature->GetGUID());
-                    break;
-                case NPC_MALYGOS:
-                    malygosGUID = creature->GetGUID();
-                    break;
-                case NPC_PORTAL_TRIGGER:
-                    portalTriggers.push_back(creature->GetGUID());
-                    break;
-                case NPC_ALEXSTRASZA_BUNNY:
-                    alexstraszaBunnyGUID = creature->GetGUID();
-                    break;
-                case NPC_ALEXSTRASZAS_GIFT:
-                    giftBoxBunnyGUID = creature->GetGUID();
-                    break;
+            case NPC_VORTEX_TRIGGER:
+                vortexTriggers.push_back(creature->GetGUID());
+                break;
+            case NPC_MALYGOS:
+                malygosGUID = creature->GetGUID();
+                break;
+            case NPC_PORTAL_TRIGGER:
+                portalTriggers.push_back(creature->GetGUID());
+                break;
+            case NPC_ALEXSTRASZA_BUNNY:
+                alexstraszaBunnyGUID = creature->GetGUID();
+                break;
+            case NPC_ALEXSTRASZAS_GIFT:
+                giftBoxBunnyGUID = creature->GetGUID();
+                break;
             }
         }
 
@@ -231,15 +231,15 @@ public:
         {
             switch (data)
             {
-                case DATA_VORTEX_HANDLING:
-                    VortexHandling();
-                    break;
-                case DATA_POWER_SPARKS_HANDLING:
-                    PowerSparksHandling();
-                    break;
-                case DATA_RESPAWN_IRIS:
-                    SpawnGameObject(instance->GetDifficulty() == RAID_DIFFICULTY_10MAN_NORMAL ? GO_FOCUSING_IRIS_10 : GO_FOCUSING_IRIS_25, focusingIrisPosition);
-                    break;
+            case DATA_VORTEX_HANDLING:
+                VortexHandling();
+                break;
+            case DATA_POWER_SPARKS_HANDLING:
+                PowerSparksHandling();
+                break;
+            case DATA_RESPAWN_IRIS:
+                SpawnGameObject(instance->GetDifficulty() == RAID_DIFFICULTY_10MAN_NORMAL ? GO_FOCUSING_IRIS_10 : GO_FOCUSING_IRIS_25, focusingIrisPosition);
+                break;
             }
         }
 
@@ -247,20 +247,20 @@ public:
         {
             switch (data)
             {
-                case DATA_TRIGGER:
-                    return vortexTriggers.front();
-                case DATA_MALYGOS:
-                    return malygosGUID;
-                case DATA_PLATFORM:
-                    return platformGUID;
-                case DATA_ALEXSTRASZA_BUNNY_GUID:
-                    return alexstraszaBunnyGUID;
-                case DATA_HEART_OF_MAGIC_GUID:
-                    return heartOfMagicGUID;
-                case DATA_FOCUSING_IRIS_GUID:
-                    return irisGUID;
-                case DATA_GIFT_BOX_BUNNY_GUID:
-                    return giftBoxBunnyGUID;
+            case DATA_TRIGGER:
+                return vortexTriggers.front();
+            case DATA_MALYGOS:
+                return malygosGUID;
+            case DATA_PLATFORM:
+                return platformGUID;
+            case DATA_ALEXSTRASZA_BUNNY_GUID:
+                return alexstraszaBunnyGUID;
+            case DATA_HEART_OF_MAGIC_GUID:
+                return heartOfMagicGUID;
+            case DATA_FOCUSING_IRIS_GUID:
+                return irisGUID;
+            case DATA_GIFT_BOX_BUNNY_GUID:
+                return giftBoxBunnyGUID;
             }
 
             return ObjectGuid::Empty;

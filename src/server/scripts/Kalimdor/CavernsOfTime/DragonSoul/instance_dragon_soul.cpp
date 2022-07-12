@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -64,14 +64,14 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_YSERA_MADNESS_OF_DEATHWING:
-                case NPC_ALEXSTRASZA_MADNESS_OF_DEATHWING:
-                case NPC_NOZDORMU_MADNESS_OF_DEATHWING:
-                case NPC_KALECGOS_MADNESS_OF_DEATHWING:
-                    creature->setActive(true); // Ugly as fuck but the boss area is just too big...
-                    break;
-                default:
-                    break;
+            case NPC_YSERA_MADNESS_OF_DEATHWING:
+            case NPC_ALEXSTRASZA_MADNESS_OF_DEATHWING:
+            case NPC_NOZDORMU_MADNESS_OF_DEATHWING:
+            case NPC_KALECGOS_MADNESS_OF_DEATHWING:
+                creature->setActive(true); // Ugly as fuck but the boss area is just too big...
+                break;
+            default:
+                break;
             }
         }
 

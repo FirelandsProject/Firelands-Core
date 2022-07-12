@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,18 +21,18 @@
 
 enum BossSpells
 {
-    SPELL_BRUTAL_STRIKE       = 58460,
-    SPELL_DAGGER_THROW        = 67280,
-    SPELL_CRUSHING_LEAP       = 68506,
-    SPELL_RAGE                = 66776
+    SPELL_BRUTAL_STRIKE = 58460,
+    SPELL_DAGGER_THROW = 67280,
+    SPELL_CRUSHING_LEAP = 68506,
+    SPELL_RAGE = 66776
 };
 
 enum BossEvents
 {
-    EVENT_BRUTAL_STRIKE       = 1,
-    EVENT_DAGGER_THROW        = 2,
-    EVENT_CRUSHING_LEAP       = 3,
-    EVENT_CHECK_RANGE         = 4
+    EVENT_BRUTAL_STRIKE = 1,
+    EVENT_DAGGER_THROW = 2,
+    EVENT_CRUSHING_LEAP = 3,
+    EVENT_CHECK_RANGE = 4
 };
 
 class boss_ioc_horde_alliance : public CreatureScript
@@ -63,8 +63,8 @@ public:
         void JustEngagedWith(Unit* /*who*/) override
         {
             _events.ScheduleEvent(EVENT_BRUTAL_STRIKE, 5 * IN_MILLISECONDS);
-            _events.ScheduleEvent(EVENT_DAGGER_THROW,  7 * IN_MILLISECONDS);
-            _events.ScheduleEvent(EVENT_CHECK_RANGE,   1 * IN_MILLISECONDS);
+            _events.ScheduleEvent(EVENT_DAGGER_THROW, 7 * IN_MILLISECONDS);
+            _events.ScheduleEvent(EVENT_CHECK_RANGE, 1 * IN_MILLISECONDS);
             _events.ScheduleEvent(EVENT_CRUSHING_LEAP, 15 * IN_MILLISECONDS);
         }
 
@@ -88,28 +88,28 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_BRUTAL_STRIKE:
-                        DoCastVictim(SPELL_BRUTAL_STRIKE);
-                        _events.ScheduleEvent(EVENT_BRUTAL_STRIKE, 5 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_DAGGER_THROW:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1))
-                            DoCast(target, SPELL_DAGGER_THROW);
-                        _events.ScheduleEvent(EVENT_DAGGER_THROW, 7 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_CRUSHING_LEAP:
-                        DoCastVictim(SPELL_CRUSHING_LEAP);
-                        _events.ScheduleEvent(EVENT_CRUSHING_LEAP, 25 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_CHECK_RANGE:
-                        if (me->GetDistance(me->GetHomePosition()) > 25.0f)
-                            DoCast(me, SPELL_RAGE);
-                        else
-                            me->RemoveAurasDueToSpell(SPELL_RAGE);
-                        _events.ScheduleEvent(EVENT_CHECK_RANGE, 1 * IN_MILLISECONDS);
-                        break;
-                    default:
-                        break;
+                case EVENT_BRUTAL_STRIKE:
+                    DoCastVictim(SPELL_BRUTAL_STRIKE);
+                    _events.ScheduleEvent(EVENT_BRUTAL_STRIKE, 5 * IN_MILLISECONDS);
+                    break;
+                case EVENT_DAGGER_THROW:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1))
+                        DoCast(target, SPELL_DAGGER_THROW);
+                    _events.ScheduleEvent(EVENT_DAGGER_THROW, 7 * IN_MILLISECONDS);
+                    break;
+                case EVENT_CRUSHING_LEAP:
+                    DoCastVictim(SPELL_CRUSHING_LEAP);
+                    _events.ScheduleEvent(EVENT_CRUSHING_LEAP, 25 * IN_MILLISECONDS);
+                    break;
+                case EVENT_CHECK_RANGE:
+                    if (me->GetDistance(me->GetHomePosition()) > 25.0f)
+                        DoCast(me, SPELL_RAGE);
+                    else
+                        me->RemoveAurasDueToSpell(SPELL_RAGE);
+                    _events.ScheduleEvent(EVENT_CHECK_RANGE, 1 * IN_MILLISECONDS);
+                    break;
+                default:
+                    break;
                 }
             }
 

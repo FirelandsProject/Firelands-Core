@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_High_Inquisitor_Fairbanks
-SD%Complete: 100
-SDComment: @todo if this guy not involved in some special event, remove (and let ACID script)
-SDCategory: Scarlet Monastery
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_High_Inquisitor_Fairbanks
+ SD%Complete: 100
+ SDComment: @todo if this guy not involved in some special event, remove (and let ACID script)
+ SDCategory: Scarlet Monastery
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -29,12 +29,12 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_CURSEOFBLOOD              = 8282,
-    SPELL_DISPELMAGIC               = 15090,
-    SPELL_FEAR                      = 12096,
-    SPELL_HEAL                      = 12039,
-    SPELL_POWERWORDSHIELD           = 11647,
-    SPELL_SLEEP                     = 8399
+    SPELL_CURSEOFBLOOD = 8282,
+    SPELL_DISPELMAGIC = 15090,
+    SPELL_FEAR = 12096,
+    SPELL_HEAL = 12039,
+    SPELL_POWERWORDSHIELD = 11647,
+    SPELL_SLEEP = 8399
 };
 
 class boss_high_inquisitor_fairbanks : public CreatureScript

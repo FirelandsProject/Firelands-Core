@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,36 +28,36 @@ enum Spells
 
 class spell_mark_of_malice : public SpellScriptLoader
 {
-    public:
-        spell_mark_of_malice() : SpellScriptLoader("spell_mark_of_malice") { }
+public:
+    spell_mark_of_malice() : SpellScriptLoader("spell_mark_of_malice") { }
 
-        class spell_mark_of_malice_AuraScript : public AuraScript
+    class spell_mark_of_malice_AuraScript : public AuraScript
+    {
+        bool Validate(SpellInfo const* /*spellInfo*/) override
         {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo({ SPELL_MARK_OF_MALICE_TRIGGERED });
-            }
-
-            void HandleProc(AuraEffect const* aurEff, ProcEventInfo& /*eventInfo*/)
-            {
-                PreventDefaultAction();
-                // just drop charges
-                if (aurEff->GetBase()->GetCharges() > 1)
-                    return;
-
-                GetTarget()->CastSpell(GetTarget(), SPELL_MARK_OF_MALICE_TRIGGERED, aurEff);
-            }
-
-            void Register() override
-            {
-                OnEffectProc.Register(&spell_mark_of_malice_AuraScript::HandleProc, EFFECT_0, SPELL_AURA_DUMMY);
-            }
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_mark_of_malice_AuraScript();
+            return ValidateSpellInfo({ SPELL_MARK_OF_MALICE_TRIGGERED });
         }
+
+        void HandleProc(AuraEffect const* aurEff, ProcEventInfo& /*eventInfo*/)
+        {
+            PreventDefaultAction();
+            // just drop charges
+            if (aurEff->GetBase()->GetCharges() > 1)
+                return;
+
+            GetTarget()->CastSpell(GetTarget(), SPELL_MARK_OF_MALICE_TRIGGERED, aurEff);
+        }
+
+        void Register() override
+        {
+            OnEffectProc.Register(&spell_mark_of_malice_AuraScript::HandleProc, EFFECT_0, SPELL_AURA_DUMMY);
+        }
+    };
+
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_mark_of_malice_AuraScript();
+    }
 };
 
 void AddSC_shadow_labyrinth()

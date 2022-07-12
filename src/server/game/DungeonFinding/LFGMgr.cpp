@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -101,13 +101,13 @@ namespace lfg
         CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_LFG_DATA);
-        stmt->setUInt32(0, db_guid);
+        stmt->SetData(0, db_guid);
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_LFG_DATA);
-        stmt->setUInt32(0, db_guid);
-        stmt->setUInt32(1, GetDungeon(guid));
-        stmt->setUInt32(2, GetState(guid));
+        stmt->SetData(0, db_guid);
+        stmt->SetData(1, GetDungeon(guid));
+        stmt->SetData(2, GetState(guid));
         trans->Append(stmt);
 
         CharacterDatabase.CommitTransaction(trans);

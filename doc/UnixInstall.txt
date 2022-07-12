@@ -1,12 +1,12 @@
-= FirelandsCore -- Linux installation =
-Copyright (C) 2008-2018 FirelandsCore
+= Firelands Core -- Linux installation =
+Copyright (C) 2008-2018 Firelands Core
 
 =========================================================
 WARNING: THIS DOCUMENTATION IS NOT ALWAYS UP TO DATE.
-FOR MORE UP-TO-DATE INFORMATION, CHECK THE FirelandsCore WIKI.
+FOR MORE UP-TO-DATE INFORMATION, CHECK THE Firelands Core WIKI.
 =========================================================
 
-Installing FirelandsCore is fairly simple on a Linux machine, assuming you
+Installing Firelands Core is fairly simple on a Linux machine, assuming you
 have all required applications
 
 The most important ones are:
@@ -61,9 +61,9 @@ flags like
                         Release, MinSizeRel, RelWithDebInfo, Debug
 
 Of course, replace the paths in PREFIX, CONF_DIR and LIBSDIR with the
-directories you wish to install FirelandsCore to. The datadir is where maps,
+directories you wish to install Firelands Core to. The datadir is where maps,
 DBCs, and SQLs are stored. The sysconfdir is where configuration files are stored.
 
-Once FirelandsCore is installed you will need to apply database updates
+Once Firelands Core is installed you will need to apply database updates
 where necessary. Furthermore, you must configure your installation by
 editing the config files in the sysconfdir.

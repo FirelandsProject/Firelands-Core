@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2018 FirelandsCore <https://github.com/FirelandsProject>
+ * Copyright (C) 2008-2018 Firelands Core <https://github.com/FirelandsProject>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it

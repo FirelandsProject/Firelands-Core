@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -38,14 +38,14 @@ enum Events
 
 enum Yells
 {
-    SAY_JAINA_INTRO_1    = 0,
-    SAY_JAINA_INTRO_2    = 1,
-    SAY_JAINA_INTRO_3    = 2,
-    SAY_JAINA_INTRO_4    = 3,
-    SAY_JAINA_INTRO_5    = 4,
-    SAY_JAINA_INTRO_6    = 5,
-    SAY_JAINA_INTRO_7    = 6,
-    SAY_JAINA_INTRO_8    = 7,
+    SAY_JAINA_INTRO_1 = 0,
+    SAY_JAINA_INTRO_2 = 1,
+    SAY_JAINA_INTRO_3 = 2,
+    SAY_JAINA_INTRO_4 = 3,
+    SAY_JAINA_INTRO_5 = 4,
+    SAY_JAINA_INTRO_6 = 5,
+    SAY_JAINA_INTRO_7 = 6,
+    SAY_JAINA_INTRO_8 = 7,
 
     SAY_SYLVANAS_INTRO_1 = 0,
     SAY_SYLVANAS_INTRO_2 = 1,
@@ -58,9 +58,9 @@ enum Yells
 enum Misc
 {
     ACTION_INTRO,
-    MENU_ID_JAINA        = 10943,
-    MENU_ID_SYLVANAS     = 10971,
-    GOSSIP_OPTION_ID     = 0
+    MENU_ID_JAINA = 10943,
+    MENU_ID_SYLVANAS = 10971,
+    GOSSIP_OPTION_ID = 0
 };
 
 enum Phase
@@ -119,36 +119,36 @@ public:
                 events.Update(diff);
                 switch (events.ExecuteEvent())
                 {
-                    case EVENT_INTRO_1:
-                        Talk(SAY_SYLVANAS_INTRO_1);
-                        events.ScheduleEvent(EVENT_INTRO_2, 11500);
-                        break;
+                case EVENT_INTRO_1:
+                    Talk(SAY_SYLVANAS_INTRO_1);
+                    events.ScheduleEvent(EVENT_INTRO_2, 11500);
+                    break;
 
-                    case EVENT_INTRO_2:
-                        Talk(SAY_SYLVANAS_INTRO_2);
-                        events.ScheduleEvent(EVENT_INTRO_3, 10500);
-                        break;
+                case EVENT_INTRO_2:
+                    Talk(SAY_SYLVANAS_INTRO_2);
+                    events.ScheduleEvent(EVENT_INTRO_3, 10500);
+                    break;
 
-                    case EVENT_INTRO_3:
-                        Talk(SAY_SYLVANAS_INTRO_3);
-                        events.ScheduleEvent(EVENT_INTRO_4, 9500);
-                        break;
+                case EVENT_INTRO_3:
+                    Talk(SAY_SYLVANAS_INTRO_3);
+                    events.ScheduleEvent(EVENT_INTRO_4, 9500);
+                    break;
 
-                    case EVENT_INTRO_4:
-                        Talk(SAY_SYLVANAS_INTRO_4);
-                        events.ScheduleEvent(EVENT_INTRO_5, 10500);
-                        break;
+                case EVENT_INTRO_4:
+                    Talk(SAY_SYLVANAS_INTRO_4);
+                    events.ScheduleEvent(EVENT_INTRO_5, 10500);
+                    break;
 
-                    case EVENT_INTRO_5:
-                        Talk(SAY_SYLVANAS_INTRO_5);
-                        events.ScheduleEvent(EVENT_INTRO_6, 9500);
-                        break;
+                case EVENT_INTRO_5:
+                    Talk(SAY_SYLVANAS_INTRO_5);
+                    events.ScheduleEvent(EVENT_INTRO_6, 9500);
+                    break;
 
-                    case EVENT_INTRO_6:
-                        Talk(SAY_SYLVANAS_INTRO_6);
-                        // End of Intro
-                        phase = PHASE_NORMAL;
-                        break;
+                case EVENT_INTRO_6:
+                    Talk(SAY_SYLVANAS_INTRO_6);
+                    // End of Intro
+                    phase = PHASE_NORMAL;
+                    break;
                 }
             }
 
@@ -172,7 +172,7 @@ class npc_jaina_fos : public CreatureScript
 public:
     npc_jaina_fos() : CreatureScript("npc_jaina_fos") { }
 
-    struct npc_jaina_fosAI: public ScriptedAI
+    struct npc_jaina_fosAI : public ScriptedAI
     {
         npc_jaina_fosAI(Creature* creature) : ScriptedAI(creature)
         {
@@ -217,46 +217,46 @@ public:
                 events.Update(diff);
                 switch (events.ExecuteEvent())
                 {
-                    case EVENT_INTRO_1:
-                        Talk(SAY_JAINA_INTRO_1);
-                        events.ScheduleEvent(EVENT_INTRO_2, 8000);
-                        break;
+                case EVENT_INTRO_1:
+                    Talk(SAY_JAINA_INTRO_1);
+                    events.ScheduleEvent(EVENT_INTRO_2, 8000);
+                    break;
 
-                    case EVENT_INTRO_2:
-                        Talk(SAY_JAINA_INTRO_2);
-                        events.ScheduleEvent(EVENT_INTRO_3, 8500);
-                        break;
+                case EVENT_INTRO_2:
+                    Talk(SAY_JAINA_INTRO_2);
+                    events.ScheduleEvent(EVENT_INTRO_3, 8500);
+                    break;
 
-                    case EVENT_INTRO_3:
-                        Talk(SAY_JAINA_INTRO_3);
-                        events.ScheduleEvent(EVENT_INTRO_4, 8000);
-                        break;
+                case EVENT_INTRO_3:
+                    Talk(SAY_JAINA_INTRO_3);
+                    events.ScheduleEvent(EVENT_INTRO_4, 8000);
+                    break;
 
-                    case EVENT_INTRO_4:
-                        Talk(SAY_JAINA_INTRO_4);
-                        events.ScheduleEvent(EVENT_INTRO_5, 10000);
-                        break;
+                case EVENT_INTRO_4:
+                    Talk(SAY_JAINA_INTRO_4);
+                    events.ScheduleEvent(EVENT_INTRO_5, 10000);
+                    break;
 
-                    case EVENT_INTRO_5:
-                        Talk(SAY_JAINA_INTRO_5);
-                        events.ScheduleEvent(EVENT_INTRO_6, 8000);
-                        break;
+                case EVENT_INTRO_5:
+                    Talk(SAY_JAINA_INTRO_5);
+                    events.ScheduleEvent(EVENT_INTRO_6, 8000);
+                    break;
 
-                    case EVENT_INTRO_6:
-                        Talk(SAY_JAINA_INTRO_6);
-                        events.ScheduleEvent(EVENT_INTRO_7, 12000);
-                        break;
+                case EVENT_INTRO_6:
+                    Talk(SAY_JAINA_INTRO_6);
+                    events.ScheduleEvent(EVENT_INTRO_7, 12000);
+                    break;
 
-                    case EVENT_INTRO_7:
-                        Talk(SAY_JAINA_INTRO_7);
-                        events.ScheduleEvent(EVENT_INTRO_8, 8000);
-                        break;
+                case EVENT_INTRO_7:
+                    Talk(SAY_JAINA_INTRO_7);
+                    events.ScheduleEvent(EVENT_INTRO_8, 8000);
+                    break;
 
-                    case EVENT_INTRO_8:
-                        Talk(SAY_JAINA_INTRO_8);
-                        // End of Intro
-                        phase = PHASE_NORMAL;
-                        break;
+                case EVENT_INTRO_8:
+                    Talk(SAY_JAINA_INTRO_8);
+                    // End of Intro
+                    phase = PHASE_NORMAL;
+                    break;
                 }
             }
 

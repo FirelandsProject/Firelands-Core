@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,62 +27,62 @@
 
 enum Spells
 {
-    SPELL_BLESSING_OF_BLACKFATHOM                           = 8733,
-    SPELL_RAVAGE                                            = 8391,
-    SPELL_FROST_NOVA                                        = 865,
-    SPELL_FROST_BOLT_VOLLEY                                 = 8398,
-    SPELL_TELEPORT_DARNASSUS                                = 9268
+    SPELL_BLESSING_OF_BLACKFATHOM = 8733,
+    SPELL_RAVAGE = 8391,
+    SPELL_FROST_NOVA = 865,
+    SPELL_FROST_BOLT_VOLLEY = 8398,
+    SPELL_TELEPORT_DARNASSUS = 9268
 };
 
-const Position HomePosition = {-815.817f, -145.299f, -25.870f, 0};
+const Position HomePosition = { -815.817f, -145.299f, -25.870f, 0 };
 
 class go_blackfathom_altar : public GameObjectScript
 {
-    public:
-        go_blackfathom_altar() : GameObjectScript("go_blackfathom_altar") { }
+public:
+    go_blackfathom_altar() : GameObjectScript("go_blackfathom_altar") { }
 
-        struct go_blackfathom_altarAI : public GameObjectAI
+    struct go_blackfathom_altarAI : public GameObjectAI
+    {
+        go_blackfathom_altarAI(GameObject* go) : GameObjectAI(go) { }
+
+        bool GossipHello(Player* player) override
         {
-            go_blackfathom_altarAI(GameObject* go) : GameObjectAI(go) { }
-
-            bool GossipHello(Player* player) override
-            {
-                if (!player->HasAura(SPELL_BLESSING_OF_BLACKFATHOM))
-                    player->AddAura(SPELL_BLESSING_OF_BLACKFATHOM, player);
-                return true;
-            }
-        };
-
-        GameObjectAI* GetAI(GameObject* go) const override
-        {
-            return GetBlackfathomDeepsAI<go_blackfathom_altarAI>(go);
+            if (!player->HasAura(SPELL_BLESSING_OF_BLACKFATHOM))
+                player->AddAura(SPELL_BLESSING_OF_BLACKFATHOM, player);
+            return true;
         }
+    };
+
+    GameObjectAI* GetAI(GameObject* go) const override
+    {
+        return GetBlackfathomDeepsAI<go_blackfathom_altarAI>(go);
+    }
 };
 
 class go_blackfathom_fire : public GameObjectScript
 {
-    public:
-        go_blackfathom_fire() : GameObjectScript("go_blackfathom_fire") { }
+public:
+    go_blackfathom_fire() : GameObjectScript("go_blackfathom_fire") { }
 
-        struct go_blackfathom_fireAI : public GameObjectAI
+    struct go_blackfathom_fireAI : public GameObjectAI
+    {
+        go_blackfathom_fireAI(GameObject* go) : GameObjectAI(go), instance(go->GetInstanceScript()) { }
+
+        InstanceScript* instance;
+
+        bool GossipHello(Player* /*player*/) override
         {
-            go_blackfathom_fireAI(GameObject* go) : GameObjectAI(go), instance(go->GetInstanceScript()) { }
-
-            InstanceScript* instance;
-
-            bool GossipHello(Player* /*player*/) override
-            {
-                me->SetGoState(GO_STATE_ACTIVE);
-                me->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                instance->SetData(DATA_FIRE, instance->GetData(DATA_FIRE) + 1);
-                return true;
-            }
-        };
-
-        GameObjectAI* GetAI(GameObject* go) const override
-        {
-            return GetBlackfathomDeepsAI<go_blackfathom_fireAI>(go);
+            me->SetGoState(GO_STATE_ACTIVE);
+            me->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+            instance->SetData(DATA_FIRE, instance->GetData(DATA_FIRE) + 1);
+            return true;
         }
+    };
+
+    GameObjectAI* GetAI(GameObject* go) const override
+    {
+        return GetBlackfathomDeepsAI<go_blackfathom_fireAI>(go);
+    }
 };
 
 class npc_blackfathom_deeps_event : public CreatureScript
@@ -156,43 +156,44 @@ public:
 
             switch (me->GetEntry())
             {
-                case NPC_AKU_MAI_SNAPJAW:
+            case NPC_AKU_MAI_SNAPJAW:
+            {
+                if (ravageTimer <= diff)
                 {
-                    if (ravageTimer <= diff)
-                    {
-                        DoCastVictim(SPELL_RAVAGE);
-                        ravageTimer = urand(9000, 14000);
-                    } else ravageTimer -= diff;
-                    break;
+                    DoCastVictim(SPELL_RAVAGE);
+                    ravageTimer = urand(9000, 14000);
                 }
-                case NPC_MURKSHALLOW_SOFTSHELL:
-                case NPC_BARBED_CRUSTACEAN:
+                else ravageTimer -= diff;
+                break;
+            }
+            case NPC_MURKSHALLOW_SOFTSHELL:
+            case NPC_BARBED_CRUSTACEAN:
+            {
+                if (!Flee && HealthBelowPct(15))
                 {
-                    if (!Flee && HealthBelowPct(15))
-                    {
-                        Flee = true;
-                        me->DoFleeToGetAssistance();
-                    }
-                    break;
+                    Flee = true;
+                    me->DoFleeToGetAssistance();
                 }
-                case NPC_AKU_MAI_SERVANT:
+                break;
+            }
+            case NPC_AKU_MAI_SERVANT:
+            {
+                if (frostBoltVolleyTimer <= diff)
                 {
-                    if (frostBoltVolleyTimer <= diff)
-                    {
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                            DoCast(target, SPELL_FROST_BOLT_VOLLEY);
-                        frostBoltVolleyTimer = urand(5000, 8000);
-                    }
-                    else frostBoltVolleyTimer -= diff;
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                        DoCast(target, SPELL_FROST_BOLT_VOLLEY);
+                    frostBoltVolleyTimer = urand(5000, 8000);
+                }
+                else frostBoltVolleyTimer -= diff;
 
-                    if (frostNovaTimer <= diff)
-                    {
-                        DoCastAOE(SPELL_FROST_NOVA, false);
-                        frostNovaTimer = urand(25000, 30000);
-                    }
-                    else frostNovaTimer -= diff;
-                    break;
+                if (frostNovaTimer <= diff)
+                {
+                    DoCastAOE(SPELL_FROST_NOVA, false);
+                    frostNovaTimer = urand(25000, 30000);
                 }
+                else frostNovaTimer -= diff;
+                break;
+            }
             }
 
             DoMeleeAttackIfReady();
@@ -235,12 +236,12 @@ public:
         {
             switch (waypointId)
             {
-                case 4:
-                    SetEscortPaused(true);
-                    me->SetFacingTo(1.775791f);
-                    me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                    Talk(SAY_MORRIDUNE_2);
-                    break;
+            case 4:
+                SetEscortPaused(true);
+                me->SetFacingTo(1.775791f);
+                me->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                Talk(SAY_MORRIDUNE_2);
+                break;
             }
         }
 

@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -31,44 +31,44 @@
 enum Spells
 {
     // Drahga
-   SPELL_BURNING_SHADOWBOLT                 = 75245,
-   SPELL_BURNING_SHADOWBOLT_DUMMY           = 75246,
-   SPELL_INVOCATION_OF_FLAME_SUMMON         = 75218,
-   SPELL_TWILIGHT_PROTECTION                = 76303,
-   SPELL_RIDE_VEHICLE                       = 43671,
-   SPELL_WEAR_CHRISTMAS_HAT_GREEN_SELF_DND  = 61401,
+    SPELL_BURNING_SHADOWBOLT = 75245,
+    SPELL_BURNING_SHADOWBOLT_DUMMY = 75246,
+    SPELL_INVOCATION_OF_FLAME_SUMMON = 75218,
+    SPELL_TWILIGHT_PROTECTION = 76303,
+    SPELL_RIDE_VEHICLE = 43671,
+    SPELL_WEAR_CHRISTMAS_HAT_GREEN_SELF_DND = 61401,
 
-   // Invoked Flaming Spirit
-   SPELL_FLAMING_FIXATE                     = 82850,
-   SPELL_QUIETE_SUICIDE                     = 3617,
+    // Invoked Flaming Spirit
+    SPELL_FLAMING_FIXATE = 82850,
+    SPELL_QUIETE_SUICIDE = 3617,
 
-   // Valiona
-   SPELL_TWILIGHT_SHIFT                     = 75328,
-   SPELL_SHREDDING_SWIPE                    = 75271,
-   SPELL_DEVOURING_FLAMES_AOE               = 90945,
-   SPELL_DEVOURING_FLAMES                   = 90950,
-   SPELL_VALIONAS_FLAME                     = 75321,
+    // Valiona
+    SPELL_TWILIGHT_SHIFT = 75328,
+    SPELL_SHREDDING_SWIPE = 75271,
+    SPELL_DEVOURING_FLAMES_AOE = 90945,
+    SPELL_DEVOURING_FLAMES = 90950,
+    SPELL_VALIONAS_FLAME = 75321,
 
     // Battered Dragon
-    SPELL_ENGULFING_FLAMES                  = 74040,
-    SPELL_ENGULFING_FLAMES_HC               = 90904
+    SPELL_ENGULFING_FLAMES = 74040,
+    SPELL_ENGULFING_FLAMES_HC = 90904
 };
 
 enum Texts
 {
     // Drahga
-    SAY_INTRO                           = 0,
-    SAY_AGGRO                           = 1,
-    SAY_ANNOUNCE_INVOCATION_OF_FLAME    = 2,
-    SAY_INVOCATION_OF_FLAME             = 3,
-    SAY_VALIONA_INTRO                   = 4,
-    SAY_SLAY                            = 5,
-    SAY_DEATH                           = 6,
+    SAY_INTRO = 0,
+    SAY_AGGRO = 1,
+    SAY_ANNOUNCE_INVOCATION_OF_FLAME = 2,
+    SAY_INVOCATION_OF_FLAME = 3,
+    SAY_VALIONA_INTRO = 4,
+    SAY_SLAY = 5,
+    SAY_DEATH = 6,
 
     // Valiona
-    SAY_VALIONA_AGGRO                   = 0,
-    SAY_ANNOUNCE_DEVOURING_FLAMES       = 1,
-    SAY_VALIONA_FLEE                    = 2,
+    SAY_VALIONA_AGGRO = 0,
+    SAY_ANNOUNCE_DEVOURING_FLAMES = 1,
+    SAY_VALIONA_FLEE = 2,
 };
 
 enum Events
@@ -97,11 +97,11 @@ enum Phases
 enum Actions
 {
     // Drahga Shadowburner
-    ACTION_SCHEDULE_EVENTS      = 0,
-    ACTION_ENTER_PHASE_THREE    = 1,
+    ACTION_SCHEDULE_EVENTS = 0,
+    ACTION_ENTER_PHASE_THREE = 1,
 
     // Valiona
-    ACTION_DESPAWN              = 0
+    ACTION_DESPAWN = 0
 };
 
 enum Points
@@ -119,12 +119,12 @@ enum Misc
     GAME_EVENT_WINTER_VEIL = 2
 };
 
-Position const DrahgaPos        = { -402.139f, -668.642f, 266.1214f };
+Position const DrahgaPos = { -402.139f, -668.642f, 266.1214f };
 Position const ValionaSummonPos = { -377.974f, -668.2292f, 195.078f, 0.3316126f };
-Position const ValionaPos1      = { -376.5573f, -662.6962f, 263.1957f };
-Position const ValionaPos2      = { -438.9549f, -697.1077f, 284.6884f };
-Position const LandingPos       = { -434.099f, -702.906f, 268.767f };
-Position const FleePos          = { -364.273f, -646.503f, 286.193f };
+Position const ValionaPos1 = { -376.5573f, -662.6962f, 263.1957f };
+Position const ValionaPos2 = { -438.9549f, -697.1077f, 284.6884f };
+Position const LandingPos = { -434.099f, -702.906f, 268.767f };
+Position const FleePos = { -364.273f, -646.503f, 286.193f };
 
 struct boss_drahga_shadowburner : public BossAI
 {
@@ -224,13 +224,13 @@ struct boss_drahga_shadowburner : public BossAI
 
         switch (point)
         {
-            case POINT_DRAHGA_BORDER:
-                Talk(SAY_VALIONA_INTRO);
-                if (Creature* valiona = instance->GetCreature(DATA_VALIONA))
-                    DoCast(valiona, SPELL_RIDE_VEHICLE);
-                break;
-            default:
-                break;
+        case POINT_DRAHGA_BORDER:
+            Talk(SAY_VALIONA_INTRO);
+            if (Creature* valiona = instance->GetCreature(DATA_VALIONA))
+                DoCast(valiona, SPELL_RIDE_VEHICLE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -238,15 +238,15 @@ struct boss_drahga_shadowburner : public BossAI
     {
         switch (action)
         {
-            case ACTION_SCHEDULE_EVENTS:
-                events.ScheduleEvent(EVENT_INVOCATION_OF_FLAME, 1ms);
-                events.ScheduleEvent(EVENT_BURNING_SHADOWBOLT, 1ms);
-                break;
-            case ACTION_ENTER_PHASE_THREE:
-                events.SetPhase(PHASE_THREE);
-                break;
-            default:
-                break;
+        case ACTION_SCHEDULE_EVENTS:
+            events.ScheduleEvent(EVENT_INVOCATION_OF_FLAME, 1ms);
+            events.ScheduleEvent(EVENT_BURNING_SHADOWBOLT, 1ms);
+            break;
+        case ACTION_ENTER_PHASE_THREE:
+            events.SetPhase(PHASE_THREE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -261,18 +261,18 @@ struct boss_drahga_shadowburner : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_BURNING_SHADOWBOLT:
-                    DoCastAOE(SPELL_BURNING_SHADOWBOLT);
-                    events.Repeat(2s + 500ms);
-                    break;
-                case EVENT_INVOCATION_OF_FLAME:
-                    Talk(SAY_ANNOUNCE_INVOCATION_OF_FLAME);
-                    Talk(SAY_INVOCATION_OF_FLAME);
-                    DoCast(SPELL_INVOCATION_OF_FLAME_SUMMON);
-                    events.Repeat(29s);
-                    break;
-                default:
-                    break;
+            case EVENT_BURNING_SHADOWBOLT:
+                DoCastAOE(SPELL_BURNING_SHADOWBOLT);
+                events.Repeat(2s + 500ms);
+                break;
+            case EVENT_INVOCATION_OF_FLAME:
+                Talk(SAY_ANNOUNCE_INVOCATION_OF_FLAME);
+                Talk(SAY_INVOCATION_OF_FLAME);
+                DoCast(SPELL_INVOCATION_OF_FLAME_SUMMON);
+                events.Repeat(29s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -318,37 +318,37 @@ struct npc_drahga_valiona : public ScriptedAI
 
         switch (point)
         {
-            case POINT_INTRO_1:
-                DoZoneInCombat();
-                _instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me, 1);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                me->GetMotionMaster()->MovePoint(POINT_INTRO_2, ValionaPos2);
-                break;
-            case POINT_INTRO_2:
-                me->GetMotionMaster()->MoveLand(POINT_LAND, LandingPos, me->GetSpeed(MOVE_RUN) * 1.75f);
-                break;
-            case POINT_LAND:
-                me->SetDisableGravity(false);
-                me->SetHover(false);
-                me->SetReactState(REACT_AGGRESSIVE);
-                DoZoneInCombat();
+        case POINT_INTRO_1:
+            DoZoneInCombat();
+            _instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me, 1);
+            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+            me->GetMotionMaster()->MovePoint(POINT_INTRO_2, ValionaPos2);
+            break;
+        case POINT_INTRO_2:
+            me->GetMotionMaster()->MoveLand(POINT_LAND, LandingPos, me->GetSpeed(MOVE_RUN) * 1.75f);
+            break;
+        case POINT_LAND:
+            me->SetDisableGravity(false);
+            me->SetHover(false);
+            me->SetReactState(REACT_AGGRESSIVE);
+            DoZoneInCombat();
 
-                if (Creature* drahga = _instance->GetCreature(DATA_DRAHGA_SHADOWBURNER))
-                    if (drahga->IsAIEnabled())
-                        drahga->AI()->DoAction(ACTION_SCHEDULE_EVENTS);
+            if (Creature* drahga = _instance->GetCreature(DATA_DRAHGA_SHADOWBURNER))
+                if (drahga->IsAIEnabled())
+                    drahga->AI()->DoAction(ACTION_SCHEDULE_EVENTS);
 
-                _events.ScheduleEvent(EVENT_SHREDDING_SWIPE, 1s);
-                _events.ScheduleEvent(EVENT_DEVOURING_FLAMES, 15s + 500ms);
-                break;
-            case POINT_TAKEOFF:
-                me->GetMotionMaster()->MovePoint(POINT_FLEE, FleePos);
-                break;
-            case POINT_FLEE:
-                _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
-                me->DespawnOrUnsummon();
-                break;
-            default:
-                break;
+            _events.ScheduleEvent(EVENT_SHREDDING_SWIPE, 1s);
+            _events.ScheduleEvent(EVENT_DEVOURING_FLAMES, 15s + 500ms);
+            break;
+        case POINT_TAKEOFF:
+            me->GetMotionMaster()->MovePoint(POINT_FLEE, FleePos);
+            break;
+        case POINT_FLEE:
+            _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
+            me->DespawnOrUnsummon();
+            break;
+        default:
+            break;
         }
     }
 
@@ -392,13 +392,13 @@ struct npc_drahga_valiona : public ScriptedAI
     {
         switch (action)
         {
-            case ACTION_DESPAWN:
-                _summons.DespawnAll();
-                _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
-                me->DespawnOrUnsummon(100);
-                break;
-            default:
-                break;
+        case ACTION_DESPAWN:
+            _summons.DespawnAll();
+            _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
+            me->DespawnOrUnsummon(100);
+            break;
+        default:
+            break;
         }
     }
 
@@ -415,24 +415,24 @@ struct npc_drahga_valiona : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_MOVE_INTRO:
-                    Talk(SAY_VALIONA_AGGRO);
-                    me->GetMotionMaster()->MovePoint(POINT_INTRO_1, ValionaPos1);
-                    break;
-                case EVENT_SHREDDING_SWIPE:
-                    DoCastVictim(SPELL_SHREDDING_SWIPE);
-                    _events.Repeat(25s);
-                    break;
-                case EVENT_DEVOURING_FLAMES:
-                    if (IsHeroic())
-                        DoCast(SPELL_DEVOURING_FLAMES_AOE);
-                    else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                        DoCast(target, SPELL_VALIONAS_FLAME);
+            case EVENT_MOVE_INTRO:
+                Talk(SAY_VALIONA_AGGRO);
+                me->GetMotionMaster()->MovePoint(POINT_INTRO_1, ValionaPos1);
+                break;
+            case EVENT_SHREDDING_SWIPE:
+                DoCastVictim(SPELL_SHREDDING_SWIPE);
+                _events.Repeat(25s);
+                break;
+            case EVENT_DEVOURING_FLAMES:
+                if (IsHeroic())
+                    DoCast(SPELL_DEVOURING_FLAMES_AOE);
+                else if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                    DoCast(target, SPELL_VALIONAS_FLAME);
 
-                    _events.Repeat(25s);
-                    break;
-                default:
-                    break;
+                _events.Repeat(25s);
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();
@@ -476,21 +476,21 @@ struct npc_drahga_invoked_flaming_spirit : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_CHASE_PLAYER:
-                    me->SetReactState(REACT_AGGRESSIVE);
+            case EVENT_CHASE_PLAYER:
+                me->SetReactState(REACT_AGGRESSIVE);
 
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                    {
-                        DoCast(target, SPELL_FLAMING_FIXATE);
-                        me->EngageWithTarget(target);
-                        AddThreat(target, 1500000.0f); // Todo: this should be handled by serverside spell 95207
-                        me->GetThreatManager().FixateTarget(target);
-                        me->ClearUnitState(UNIT_STATE_CASTING);
-                        me->GetMotionMaster()->MoveChase(target, 0.f, 0.f);
-                    }
-                    break;
-                default:
-                    break;
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                {
+                    DoCast(target, SPELL_FLAMING_FIXATE);
+                    me->EngageWithTarget(target);
+                    AddThreat(target, 1500000.0f); // Todo: this should be handled by serverside spell 95207
+                    me->GetThreatManager().FixateTarget(target);
+                    me->ClearUnitState(UNIT_STATE_CASTING);
+                    me->GetMotionMaster()->MoveChase(target, 0.f, 0.f);
+                }
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();

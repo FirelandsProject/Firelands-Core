@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,54 +28,54 @@
 
 enum Says
 {
-    SAY_INTRO      = 0,
-    SAY_AGGRO      = 1,
-    SAY_SLAY       = 2,
+    SAY_INTRO = 0,
+    SAY_AGGRO = 1,
+    SAY_SLAY = 2,
     SAY_INCINERATE = 3,
-    SAY_BLOSSOM    = 4,
-    SAY_CRUSHING   = 5,
-    SAY_DEATH      = 6
+    SAY_BLOSSOM = 4,
+    SAY_CRUSHING = 5,
+    SAY_DEATH = 6
 };
 
 enum Spells
 {
     //Teron
-    SPELL_INCINERATE                 = 40239,
-    SPELL_CRUSHING_SHADOWS           = 40243,
-    SPELL_SHADOW_OF_DEATH            = 40251,
-    SPELL_SHADOW_OF_DEATH_REMOVE     = 41999,
-    SPELL_BERSERK                    = 45078,
-    SPELL_SUMMON_DOOM_BLOSSOM        = 40188,
+    SPELL_INCINERATE = 40239,
+    SPELL_CRUSHING_SHADOWS = 40243,
+    SPELL_SHADOW_OF_DEATH = 40251,
+    SPELL_SHADOW_OF_DEATH_REMOVE = 41999,
+    SPELL_BERSERK = 45078,
+    SPELL_SUMMON_DOOM_BLOSSOM = 40188,
 
     //Doom Blossom
     SPELL_SUMMON_BLOSSOM_MOVE_TARGET = 40186,
-    SPELL_SHADOWBOLT                 = 40185,
+    SPELL_SHADOWBOLT = 40185,
 
     //Shadow Construct
-    SPELL_ATROPHY                    = 40327,
+    SPELL_ATROPHY = 40327,
 
     //Player
-    SPELL_SUMMON_SPIRIT              = 40266,
-    SPELL_SPIRITUAL_VENGEANCE        = 40268,
-    SPELL_POSSESS_SPIRIT_IMMUNE      = 40282,
-    SPELL_SUMMON_SKELETRON_1         = 40270,
-    SPELL_SUMMON_SKELETRON_2         = 41948,
-    SPELL_SUMMON_SKELETRON_3         = 41949,
-    SPELL_SUMMON_SKELETRON_4         = 41950,
+    SPELL_SUMMON_SPIRIT = 40266,
+    SPELL_SPIRITUAL_VENGEANCE = 40268,
+    SPELL_POSSESS_SPIRIT_IMMUNE = 40282,
+    SPELL_SUMMON_SKELETRON_1 = 40270,
+    SPELL_SUMMON_SKELETRON_2 = 41948,
+    SPELL_SUMMON_SKELETRON_3 = 41949,
+    SPELL_SUMMON_SKELETRON_4 = 41950,
 
     //Vengeful Spirit
-    SPELL_SPIRIT_STRIKE              = 40325,
-    SPELL_SPIRIT_CHAINS              = 40175,
-    SPELL_SPIRIT_VOLLEY              = 40314,
-    SPELL_SPIRIT_SHIELD              = 40322,
-    SPELL_SPIRIT_LANCE               = 40157
+    SPELL_SPIRIT_STRIKE = 40325,
+    SPELL_SPIRIT_CHAINS = 40175,
+    SPELL_SPIRIT_VOLLEY = 40314,
+    SPELL_SPIRIT_SHIELD = 40322,
+    SPELL_SPIRIT_LANCE = 40157
 };
 
 enum Npcs
 {
-    NPC_DOOM_BLOSSOM      = 23123,
+    NPC_DOOM_BLOSSOM = 23123,
     NPC_SHADOWY_CONSTRUCT = 23111,
-    NPC_VENGEFUL_SPIRIT   = 23109 //Npc controlled by player
+    NPC_VENGEFUL_SPIRIT = 23109 //Npc controlled by player
 };
 
 enum Events
@@ -178,36 +178,36 @@ struct boss_teron_gorefiend : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_ENRAGE:
-                    DoCast(SPELL_BERSERK);
-                    break;
-                case EVENT_INCINERATE:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                        DoCast(target, SPELL_INCINERATE);
-                    Talk(SAY_INCINERATE);
-                    events.Repeat(Seconds(12), Seconds(20));
-                    break;
-                case EVENT_SUMMON_DOOM_BLOSSOM:
-                    DoCastSelf(SPELL_SUMMON_DOOM_BLOSSOM, true);
-                    Talk(SAY_BLOSSOM);
-                    events.Repeat(Seconds(30), Seconds(40));
-                    break;
-                case EVENT_SHADOW_DEATH:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, 100.0f, true, true, -SPELL_SPIRITUAL_VENGEANCE))
-                        DoCast(target, SPELL_SHADOW_OF_DEATH);
-                    events.Repeat(Seconds(30), Seconds(35));
-                    break;
-                case EVENT_CRUSHING_SHADOWS:
-                    DoCastSelf(SPELL_CRUSHING_SHADOWS, { SPELLVALUE_MAX_TARGETS, 5 });
-                    Talk(SAY_CRUSHING);
-                    events.Repeat(Seconds(18), Seconds(30));
-                    break;
-                case EVENT_FINISH_INTRO:
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    break;
-                default:
-                    break;
+            case EVENT_ENRAGE:
+                DoCast(SPELL_BERSERK);
+                break;
+            case EVENT_INCINERATE:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_INCINERATE);
+                Talk(SAY_INCINERATE);
+                events.Repeat(Seconds(12), Seconds(20));
+                break;
+            case EVENT_SUMMON_DOOM_BLOSSOM:
+                DoCastSelf(SPELL_SUMMON_DOOM_BLOSSOM, true);
+                Talk(SAY_BLOSSOM);
+                events.Repeat(Seconds(30), Seconds(40));
+                break;
+            case EVENT_SHADOW_DEATH:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, 100.0f, true, true, -SPELL_SPIRITUAL_VENGEANCE))
+                    DoCast(target, SPELL_SHADOW_OF_DEATH);
+                events.Repeat(Seconds(30), Seconds(35));
+                break;
+            case EVENT_CRUSHING_SHADOWS:
+                DoCastSelf(SPELL_CRUSHING_SHADOWS, { SPELLVALUE_MAX_TARGETS, 5 });
+                Talk(SAY_CRUSHING);
+                events.Repeat(Seconds(18), Seconds(30));
+                break;
+            case EVENT_FINISH_INTRO:
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
+                me->SetReactState(REACT_AGGRESSIVE);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -234,12 +234,12 @@ struct npc_doom_blossom : public NullCreatureAI
         _scheduler.CancelAll();
         DoZoneInCombat();
         _scheduler.Schedule(Seconds(12), [this](TaskContext shadowBolt)
-        {
-            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                DoCast(target, SPELL_SHADOWBOLT);
+            {
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_SHADOWBOLT);
 
-            shadowBolt.Repeat(Seconds(2));
-        });
+                shadowBolt.Repeat(Seconds(2));
+            });
     }
 
     void UpdateAI(uint32 diff) override
@@ -275,22 +275,22 @@ struct npc_shadowy_construct : public ScriptedAI
         targetGUID.Clear();
         _scheduler.CancelAll();
         _scheduler.Schedule(Seconds(12), [this](TaskContext atrophy)
-        {
-            DoCastVictim(SPELL_ATROPHY);
-            atrophy.Repeat(Seconds(10), Seconds(12));
-        });
-        _scheduler.Schedule(Milliseconds(200), [this](TaskContext checkPlayer)
-        {
-            if (Unit* target = ObjectAccessor::GetUnit(*me, targetGUID))
             {
-                if (!target->IsAlive() || !me->CanCreatureAttack(target))
+                DoCastVictim(SPELL_ATROPHY);
+                atrophy.Repeat(Seconds(10), Seconds(12));
+            });
+        _scheduler.Schedule(Milliseconds(200), [this](TaskContext checkPlayer)
+            {
+                if (Unit* target = ObjectAccessor::GetUnit(*me, targetGUID))
+                {
+                    if (!target->IsAlive() || !me->CanCreatureAttack(target))
+                        SelectNewTarget();
+                }
+                else
                     SelectNewTarget();
-            }
-            else
-                SelectNewTarget();
 
-            checkPlayer.Repeat(Seconds(1));
-        });
+                checkPlayer.Repeat(Seconds(1));
+            });
 
         if (Creature* teron = _instance->GetCreature(DATA_TERON_GOREFIEND))
             teron->AI()->JustSummoned(me);
@@ -304,9 +304,9 @@ struct npc_shadowy_construct : public ScriptedAI
             return;
 
         _scheduler.Update(diff, [this]
-        {
-            DoMeleeAttackIfReady();
-        });
+            {
+                DoMeleeAttackIfReady();
+            });
     }
 
     void SelectNewTarget()
@@ -340,15 +340,15 @@ class spell_teron_gorefiend_shadow_of_death : public AuraScript
     bool Validate(SpellInfo const* /*spell*/) override
     {
         return ValidateSpellInfo(
-        {
-            SPELL_SUMMON_SPIRIT,
-            SPELL_POSSESS_SPIRIT_IMMUNE,
-            SPELL_SPIRITUAL_VENGEANCE,
-            SPELL_SUMMON_SKELETRON_1,
-            SPELL_SUMMON_SKELETRON_2,
-            SPELL_SUMMON_SKELETRON_3,
-            SPELL_SUMMON_SKELETRON_4
-        });
+            {
+                SPELL_SUMMON_SPIRIT,
+                SPELL_POSSESS_SPIRIT_IMMUNE,
+                SPELL_SPIRITUAL_VENGEANCE,
+                SPELL_SUMMON_SKELETRON_1,
+                SPELL_SUMMON_SKELETRON_2,
+                SPELL_SUMMON_SKELETRON_3,
+                SPELL_SUMMON_SKELETRON_4
+            });
     }
 
     void Absorb(AuraEffect* /*aurEff*/, DamageInfo& /*dmgInfo*/, uint32& /*absorbAmount*/)
@@ -398,11 +398,11 @@ class spell_teron_gorefiend_shadow_of_death_remove : public SpellScript
     bool Validate(SpellInfo const* /*spell*/) override
     {
         return ValidateSpellInfo(
-        {
-            SPELL_SHADOW_OF_DEATH,
-            SPELL_POSSESS_SPIRIT_IMMUNE,
-            SPELL_SPIRITUAL_VENGEANCE
-        });
+            {
+                SPELL_SHADOW_OF_DEATH,
+                SPELL_POSSESS_SPIRIT_IMMUNE,
+                SPELL_SPIRITUAL_VENGEANCE
+            });
     }
 
     void RemoveAuras()

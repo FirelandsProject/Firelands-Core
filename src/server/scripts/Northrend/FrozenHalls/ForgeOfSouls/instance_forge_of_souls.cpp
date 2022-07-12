@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -32,102 +32,102 @@ BossBoundaryData const boundaries =
 
 class instance_forge_of_souls : public InstanceMapScript
 {
-    public:
-        instance_forge_of_souls() : InstanceMapScript(FoSScriptName, 632) { }
+public:
+    instance_forge_of_souls() : InstanceMapScript(FoSScriptName, 632) { }
 
-        struct instance_forge_of_souls_InstanceScript : public InstanceScript
+    struct instance_forge_of_souls_InstanceScript : public InstanceScript
+    {
+        instance_forge_of_souls_InstanceScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_forge_of_souls_InstanceScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadBossBoundaries(boundaries);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadBossBoundaries(boundaries);
 
-                teamInInstance = 0;
-            }
-
-            void OnPlayerEnter(Player* player) override
-            {
-                if (!teamInInstance)
-                    teamInInstance = player->GetTeam();
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                switch (creature->GetEntry())
-                {
-                    case NPC_BRONJAHM:
-                        bronjahm = creature->GetGUID();
-                        break;
-                    case NPC_DEVOURER:
-                        devourerOfSouls = creature->GetGUID();
-                        break;
-                }
-            }
-
-            uint32 GetCreatureEntry(ObjectGuid::LowType /*guidLow*/, CreatureData const* data) override
-            {
-                if (!teamInInstance)
-                {
-                    Map::PlayerList const& players = instance->GetPlayers();
-                    if (!players.isEmpty())
-                        if (Player* player = players.begin()->GetSource())
-                            teamInInstance = player->GetTeam();
-                }
-
-                uint32 entry = data->id;
-                switch (entry)
-                {
-                    case NPC_SYLVANAS_PART1:
-                        return teamInInstance == ALLIANCE ? NPC_JAINA_PART1 : NPC_SYLVANAS_PART1;
-                    case NPC_LORALEN:
-                        return teamInInstance == ALLIANCE ? NPC_ELANDRA : NPC_LORALEN;
-                    case NPC_KALIRA:
-                        return teamInInstance == ALLIANCE ? NPC_KORELN : NPC_KALIRA;
-                    default:
-                        return entry;
-                }
-            }
-
-            uint32 GetData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_TEAM_IN_INSTANCE:
-                        return teamInInstance;
-                    default:
-                        break;
-                }
-
-                return 0;
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_BRONJAHM:
-                        return bronjahm;
-                    case DATA_DEVOURER_OF_SOULS:
-                        return devourerOfSouls;
-                    default:
-                        break;
-                }
-
-                return ObjectGuid::Empty;
-            }
-
-        private:
-            ObjectGuid bronjahm;
-            ObjectGuid devourerOfSouls;
-
-            uint32 teamInInstance;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_forge_of_souls_InstanceScript(map);
+            teamInInstance = 0;
         }
+
+        void OnPlayerEnter(Player* player) override
+        {
+            if (!teamInInstance)
+                teamInInstance = player->GetTeam();
+        }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            switch (creature->GetEntry())
+            {
+            case NPC_BRONJAHM:
+                bronjahm = creature->GetGUID();
+                break;
+            case NPC_DEVOURER:
+                devourerOfSouls = creature->GetGUID();
+                break;
+            }
+        }
+
+        uint32 GetCreatureEntry(ObjectGuid::LowType /*guidLow*/, CreatureData const* data) override
+        {
+            if (!teamInInstance)
+            {
+                Map::PlayerList const& players = instance->GetPlayers();
+                if (!players.isEmpty())
+                    if (Player* player = players.begin()->GetSource())
+                        teamInInstance = player->GetTeam();
+            }
+
+            uint32 entry = data->id;
+            switch (entry)
+            {
+            case NPC_SYLVANAS_PART1:
+                return teamInInstance == ALLIANCE ? NPC_JAINA_PART1 : NPC_SYLVANAS_PART1;
+            case NPC_LORALEN:
+                return teamInInstance == ALLIANCE ? NPC_ELANDRA : NPC_LORALEN;
+            case NPC_KALIRA:
+                return teamInInstance == ALLIANCE ? NPC_KORELN : NPC_KALIRA;
+            default:
+                return entry;
+            }
+        }
+
+        uint32 GetData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_TEAM_IN_INSTANCE:
+                return teamInInstance;
+            default:
+                break;
+            }
+
+            return 0;
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_BRONJAHM:
+                return bronjahm;
+            case DATA_DEVOURER_OF_SOULS:
+                return devourerOfSouls;
+            default:
+                break;
+            }
+
+            return ObjectGuid::Empty;
+        }
+
+    private:
+        ObjectGuid bronjahm;
+        ObjectGuid devourerOfSouls;
+
+        uint32 teamInInstance;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_forge_of_souls_InstanceScript(map);
+    }
 };
 
 void AddSC_instance_forge_of_souls()

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -58,54 +58,54 @@ ObjectData const gameObjectData[] =
 
 class instance_utgarde_pinnacle : public InstanceMapScript
 {
-    public:
-        instance_utgarde_pinnacle() : InstanceMapScript(UPScriptName, 575) { }
+public:
+    instance_utgarde_pinnacle() : InstanceMapScript(UPScriptName, 575) { }
 
-        struct instance_utgarde_pinnacle_InstanceMapScript : public InstanceScript
+    struct instance_utgarde_pinnacle_InstanceMapScript : public InstanceScript
+    {
+        instance_utgarde_pinnacle_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_utgarde_pinnacle_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadBossBoundaries(boundaries);
-                LoadDoorData(doorData);
-                LoadObjectData(creatureData, gameObjectData);
-            }
-
-
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                InstanceScript::OnGameObjectCreate(go);
-
-                if (go->GetEntry() == GO_GORTOK_PALEHOOF_SPHERE)
-                    if (GetBossState(DATA_GORTOK_PALEHOOF) == DONE)
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-            }
-
-            void SetGuidData(uint32 type, ObjectGuid data) override
-            {
-                if (type == DATA_SACRIFICED_PLAYER)
-                    SacrificedPlayerGUID = data;
-
-                InstanceScript::SetGuidData(type, data);
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                if (type == DATA_SACRIFICED_PLAYER)
-                    return SacrificedPlayerGUID;
-
-                return InstanceScript::GetGuidData(type);
-            }
-
-        protected:
-            ObjectGuid SacrificedPlayerGUID;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_utgarde_pinnacle_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadBossBoundaries(boundaries);
+            LoadDoorData(doorData);
+            LoadObjectData(creatureData, gameObjectData);
         }
+
+
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+
+            if (go->GetEntry() == GO_GORTOK_PALEHOOF_SPHERE)
+                if (GetBossState(DATA_GORTOK_PALEHOOF) == DONE)
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+        }
+
+        void SetGuidData(uint32 type, ObjectGuid data) override
+        {
+            if (type == DATA_SACRIFICED_PLAYER)
+                SacrificedPlayerGUID = data;
+
+            InstanceScript::SetGuidData(type, data);
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            if (type == DATA_SACRIFICED_PLAYER)
+                return SacrificedPlayerGUID;
+
+            return InstanceScript::GetGuidData(type);
+        }
+
+    protected:
+        ObjectGuid SacrificedPlayerGUID;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_utgarde_pinnacle_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_utgarde_pinnacle()

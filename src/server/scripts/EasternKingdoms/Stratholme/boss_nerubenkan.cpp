@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Nerubenkan
-SD%Complete: 70
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Nerubenkan
+ SD%Complete: 70
+ SDComment:
+ SDCategory: Stratholme
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -29,10 +29,10 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_ENCASINGWEBS          = 4962,
-    SPELL_PIERCEARMOR           = 6016,
-    SPELL_CRYPT_SCARABS         = 31602,
-    SPELL_RAISEUNDEADSCARAB     = 17235
+    SPELL_ENCASINGWEBS = 4962,
+    SPELL_PIERCEARMOR = 6016,
+    SPELL_CRYPT_SCARABS = 31602,
+    SPELL_RAISEUNDEADSCARAB = 17235
 };
 
 class boss_nerubenkan : public CreatureScript
@@ -94,7 +94,8 @@ public:
             {
                 DoCastVictim(SPELL_ENCASINGWEBS);
                 EncasingWebs_Timer = 30000;
-            } else EncasingWebs_Timer -= diff;
+            }
+            else EncasingWebs_Timer -= diff;
 
             //PierceArmor
             if (PierceArmor_Timer <= diff)
@@ -102,21 +103,24 @@ public:
                 if (urand(0, 3) < 2)
                     DoCastVictim(SPELL_PIERCEARMOR);
                 PierceArmor_Timer = 35000;
-            } else PierceArmor_Timer -= diff;
+            }
+            else PierceArmor_Timer -= diff;
 
             //CryptScarabs_Timer
             if (CryptScarabs_Timer <= diff)
             {
                 DoCastVictim(SPELL_CRYPT_SCARABS);
                 CryptScarabs_Timer = 20000;
-            } else CryptScarabs_Timer -= diff;
+            }
+            else CryptScarabs_Timer -= diff;
 
             //RaiseUndeadScarab
             if (RaiseUndeadScarab_Timer <= diff)
             {
                 RaiseUndeadScarab(me->GetVictim());
                 RaiseUndeadScarab_Timer = 16000;
-            } else RaiseUndeadScarab_Timer -= diff;
+            }
+            else RaiseUndeadScarab_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

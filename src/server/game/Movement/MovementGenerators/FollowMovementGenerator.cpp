@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,7 +28,7 @@
 #include "Util.h"
 #include <optional>
 
-// Helpers
+ // Helpers
 inline UnitMoveType SelectSpeedType(uint32 moveFlags)
 {
     if (moveFlags & MOVEMENTFLAG_FLYING)
@@ -250,26 +250,26 @@ bool FollowMovementGenerator::Update(Unit* owner, uint32 diff)
     {
         switch (eventId)
         {
-            case EVENT_ALLIGN_TO_TARGET:
-            {
-                Position pos = target->GetPosition();
-                target->MovePositionToFirstCollision(pos, _distance, _angle);
+        case EVENT_ALLIGN_TO_TARGET:
+        {
+            Position pos = target->GetPosition();
+            target->MovePositionToFirstCollision(pos, _distance, _angle);
 
-                Movement::MoveSplineInit init (owner);
-                if (_faceTarget)
-                    init.SetFacing(target);
-                init.MoveTo(pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ());
-                uint32 duration = std::max<uint32>(1, init.Launch());
+            Movement::MoveSplineInit init(owner);
+            if (_faceTarget)
+                init.SetFacing(target);
+            init.MoveTo(pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ());
+            uint32 duration = std::max<uint32>(1, init.Launch());
 
-                if (!_faceTarget)
-                    _events.ScheduleEvent(EVENT_ALLIGN_TO_FACING_DIRECTION, Milliseconds(duration + FOLLOW_MOVEMENT_INTERVAL));
-                break;
-            }
-            case EVENT_ALLIGN_TO_FACING_DIRECTION:
-                owner->SetFacingTo(target->GetOrientation());
-                break;
-            default:
-                break;
+            if (!_faceTarget)
+                _events.ScheduleEvent(EVENT_ALLIGN_TO_FACING_DIRECTION, Milliseconds(duration + FOLLOW_MOVEMENT_INTERVAL));
+            break;
+        }
+        case EVENT_ALLIGN_TO_FACING_DIRECTION:
+            owner->SetFacingTo(target->GetOrientation());
+            break;
+        default:
+            break;
         }
     }
 

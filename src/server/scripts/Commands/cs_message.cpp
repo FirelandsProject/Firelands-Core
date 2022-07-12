@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -106,8 +106,8 @@ public:
             if (channel)
                 channel->SetOwnership(true);
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL_OWNERSHIP);
-            stmt->setUInt8(0, 1);
-            stmt->setString(1, channelStr);
+            stmt->SetData(0, 1);
+            stmt->SetData(1, channelStr);
             CharacterDatabase.Execute(stmt);
             handler->PSendSysMessage(LANG_CHANNEL_ENABLE_OWNERSHIP, channelStr);
         }
@@ -116,8 +116,8 @@ public:
             if (channel)
                 channel->SetOwnership(false);
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL_OWNERSHIP);
-            stmt->setUInt8(0, 0);
-            stmt->setString(1, channelStr);
+            stmt->SetData(0, 0);
+            stmt->SetData(1, channelStr);
             CharacterDatabase.Execute(stmt);
             handler->PSendSysMessage(LANG_CHANNEL_DISABLE_OWNERSHIP, channelStr);
         }

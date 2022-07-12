@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -167,8 +167,8 @@ void AuctionHouseMgr::SendAuctionWonMail(AuctionEntry* auction, CharacterDatabas
         // set owner to bidder (to prevent delete item with sender char deleting)
         // owner in `data` will set at mail receive and item extracting
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ITEM_OWNER);
-        stmt->setUInt32(0, auction->bidder);
-        stmt->setUInt32(1, pItem->GetGUID().GetCounter());
+        stmt->SetData(0, auction->bidder);
+        stmt->SetData(1, pItem->GetGUID().GetCounter());
         trans->Append(stmt);
 
         if (bidder)
@@ -877,27 +877,27 @@ void AuctionEntry::DeleteFromDB(CharacterDatabaseTransaction& trans) const
     CharacterDatabasePreparedStatement* stmt;
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_AUCTION);
-    stmt->setUInt32(0, Id);
+    stmt->SetData(0, Id);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_AUCTION_BIDDERS);
-    stmt->setUInt32(0, Id);
+    stmt->SetData(0, Id);
     trans->Append(stmt);
 }
 
 void AuctionEntry::SaveToDB(CharacterDatabaseTransaction& trans) const
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_AUCTION);
-    stmt->setUInt32(0, Id);
-    stmt->setUInt8(1, houseId);
-    stmt->setUInt32(2, itemGUIDLow);
-    stmt->setUInt32(3, owner);
-    stmt->setUInt64(4, buyout);
-    stmt->setUInt32(5, uint32(expire_time));
-    stmt->setUInt32(6, bidder);
-    stmt->setUInt64(7, bid);
-    stmt->setUInt64(8, startbid);
-    stmt->setUInt64(9, deposit);
+    stmt->SetData(0, Id);
+    stmt->SetData(1, houseId);
+    stmt->SetData(2, itemGUIDLow);
+    stmt->SetData(3, owner);
+    stmt->SetData(4, buyout);
+    stmt->SetData(5, uint32(expire_time));
+    stmt->SetData(6, bidder);
+    stmt->SetData(7, bid);
+    stmt->SetData(8, startbid);
+    stmt->SetData(9, deposit);
     trans->Append(stmt);
 }
 

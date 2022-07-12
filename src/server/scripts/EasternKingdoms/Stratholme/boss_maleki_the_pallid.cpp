@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: boss_maleki_the_pallid
-SD%Complete: 100
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: boss_maleki_the_pallid
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Stratholme
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -29,18 +29,18 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_FROSTBOLT     = 17503,
-    SPELL_DRAINLIFE     = 20743,
-    SPELL_DRAIN_MANA    = 17243,
-    SPELL_ICETOMB       = 16869
+    SPELL_FROSTBOLT = 17503,
+    SPELL_DRAINLIFE = 20743,
+    SPELL_DRAIN_MANA = 17243,
+    SPELL_ICETOMB = 16869
 };
 
 enum MalekiEvents
 {
-    EVENT_FROSTBOLT     = 1,
-    EVENT_DRAINLIFE     = 2,
-    EVENT_DRAIN_MANA    = 3,
-    EVENT_ICETOMB       = 4
+    EVENT_FROSTBOLT = 1,
+    EVENT_DRAINLIFE = 2,
+    EVENT_DRAIN_MANA = 3,
+    EVENT_ICETOMB = 4
 };
 
 class boss_maleki_the_pallid : public CreatureScript
@@ -62,8 +62,8 @@ public:
 
         void JustEngagedWith(Unit* /*who*/) override
         {
-            _events.ScheduleEvent(EVENT_FROSTBOLT,  1 * IN_MILLISECONDS);
-            _events.ScheduleEvent(EVENT_ICETOMB,   16 * IN_MILLISECONDS);
+            _events.ScheduleEvent(EVENT_FROSTBOLT, 1 * IN_MILLISECONDS);
+            _events.ScheduleEvent(EVENT_ICETOMB, 16 * IN_MILLISECONDS);
             _events.ScheduleEvent(EVENT_DRAINLIFE, 31 * IN_MILLISECONDS);
         }
 
@@ -87,23 +87,23 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_FROSTBOLT:
-                        if (rand32() % 90)
-                            DoCastVictim(SPELL_FROSTBOLT);
-                        _events.ScheduleEvent(EVENT_FROSTBOLT, 3.5 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_ICETOMB:
-                        if (rand32() % 65)
-                            DoCastVictim(SPELL_ICETOMB);
-                        _events.ScheduleEvent(EVENT_ICETOMB, 28 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_DRAINLIFE:
-                        if (rand32() % 55)
-                            DoCastVictim(SPELL_DRAINLIFE);
-                        _events.ScheduleEvent(EVENT_DRAINLIFE, 31 * IN_MILLISECONDS);
-                        break;
-                    default:
-                        break;
+                case EVENT_FROSTBOLT:
+                    if (rand32() % 90)
+                        DoCastVictim(SPELL_FROSTBOLT);
+                    _events.ScheduleEvent(EVENT_FROSTBOLT, 3.5 * IN_MILLISECONDS);
+                    break;
+                case EVENT_ICETOMB:
+                    if (rand32() % 65)
+                        DoCastVictim(SPELL_ICETOMB);
+                    _events.ScheduleEvent(EVENT_ICETOMB, 28 * IN_MILLISECONDS);
+                    break;
+                case EVENT_DRAINLIFE:
+                    if (rand32() % 55)
+                        DoCastVictim(SPELL_DRAINLIFE);
+                    _events.ScheduleEvent(EVENT_DRAINLIFE, 31 * IN_MILLISECONDS);
+                    break;
+                default:
+                    break;
                 }
             }
 

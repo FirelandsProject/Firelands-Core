@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,18 +25,18 @@
 #include "TemporarySummon.h"
 #include "naxxramas.h"
 
-/*
-    According to sniffs there are multiple spawn groups (5 to be precise) since Living Poisons with the same initial spline
-    destination are only getting spawned in 31 seconds intervals. For the sake of readability we will stick
-    with one and increase the interval.
+ /*
+     According to sniffs there are multiple spawn groups (5 to be precise) since Living Poisons with the same initial spline
+     destination are only getting spawned in 31 seconds intervals. For the sake of readability we will stick
+     with one and increase the interval.
 
-    Here are some values:
-    - The "Frogger" spawner spawns the same group in 31 second intervals. Since we are lazy and wanna keep the values readable
-      we stick with one timer set at 6s.
-    - The slime moves with a spline velocity of 2.5f which equals the walk speed of it.
-    - If a slime explodes it will despawn 8.5s after its death.
-    - If a slime reaches its final spline destination it will despawn after 500 milliseconds -+ 100 depending on Blizzard's packet interval
-*/
+     Here are some values:
+     - The "Frogger" spawner spawns the same group in 31 second intervals. Since we are lazy and wanna keep the values readable
+       we stick with one timer set at 6s.
+     - The slime moves with a spline velocity of 2.5f which equals the walk speed of it.
+     - If a slime explodes it will despawn 8.5s after its death.
+     - If a slime reaches its final spline destination it will despawn after 500 milliseconds -+ 100 depending on Blizzard's packet interval
+ */
 
 enum Events
 {
@@ -89,13 +89,13 @@ struct npc_frogger_trigger_naxx : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_SUMMON_LIVING_POISON:
-                    for (uint8 i = 0; i < MaxLivingPoisons; ++i)
+            case EVENT_SUMMON_LIVING_POISON:
+                for (uint8 i = 0; i < MaxLivingPoisons; ++i)
+                {
+                    if (Creature* slime = DoSummon(NPC_LIVING_POISON, LivingPoisonSpawnPositions[i], 8500/*8s + 500ms*/, TEMPSUMMON_CORPSE_TIMED_DESPAWN))
                     {
-                        if (Creature* slime = DoSummon(NPC_LIVING_POISON, LivingPoisonSpawnPositions[i], 8500/*8s + 500ms*/, TEMPSUMMON_CORPSE_TIMED_DESPAWN))
-                        {
-                            LaunchSpline(slime, LivingPoisonInitialSplineDestinations[i]);
-                            slime->m_Events.AddEventAtOffset([i, slime, this]()
+                        LaunchSpline(slime, LivingPoisonInitialSplineDestinations[i]);
+                        slime->m_Events.AddEventAtOffset([i, slime, this]()
                             {
                                 if (slime->isDead())
                                     return;
@@ -105,12 +105,12 @@ struct npc_frogger_trigger_naxx : public NullCreatureAI
                                     slime->DespawnOrUnsummon(Milliseconds(slime->movespline->Duration()) + 500ms);
 
                             }, LivingPoisonNextSplineTimer[i]);
-                        }
                     }
-                    _events.Repeat(6s);
-                    break;
-                default:
-                    break;
+                }
+                _events.Repeat(6s);
+                break;
+            default:
+                break;
             }
         }
     }

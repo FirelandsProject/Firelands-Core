@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,16 +21,16 @@
 
 enum Say
 {
-    SAY_AGGRO               = 0,
-    SAY_SLAY                = 1,
-    SAY_HP50                = 2,
-    SAY_HP15                = 3
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_HP50 = 2,
+    SAY_HP15 = 3
 };
 
 enum Spells
 {
-    SPELL_DISEASE_CLOUD     = 12627,
-    SPELL_FRENZY            = 12795
+    SPELL_DISEASE_CLOUD = 12627,
+    SPELL_FRENZY = 12795
 };
 
 class boss_glutton : public CreatureScript

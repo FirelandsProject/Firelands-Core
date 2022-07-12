@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,10 +28,10 @@ uint32 const EncounterCount = 4;
 enum MTDataTypes
 {
     // Encounter States/Boss GUIDs
-    DATA_PANDEMONIUS            = 0,
-    DATA_TAVAROK                = 1,
-    DATA_NEXUSPRINCE_SHAFFAR    = 2,
-    DATA_YOR                    = 3
+    DATA_PANDEMONIUS = 0,
+    DATA_TAVAROK = 1,
+    DATA_NEXUSPRINCE_SHAFFAR = 2,
+    DATA_YOR = 3
 };
 
 template <class AI, class T>

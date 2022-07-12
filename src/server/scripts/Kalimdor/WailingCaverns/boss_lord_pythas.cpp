@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,17 +27,17 @@ enum Texts
 enum Spells
 {
     SPELL_LIGHTNING_BOLT = 20805,
-    SPELL_HEALING_TOUCH  = 11431,
-    SPELL_THUNDERCLAP    = 8147,
-    SPELL_DRUID_SLUMBER  = 8040,
+    SPELL_HEALING_TOUCH = 11431,
+    SPELL_THUNDERCLAP = 8147,
+    SPELL_DRUID_SLUMBER = 8040,
 };
 
 enum Events
 {
     EVENT_LIGHTNING_BOLT = 1,
-    EVENT_HEALING_TOUCH  = 2,
-    EVENT_THUNDERCLAP    = 3,
-    EVENT_DRUID_SLUMBER  = 4
+    EVENT_HEALING_TOUCH = 2,
+    EVENT_THUNDERCLAP = 3,
+    EVENT_DRUID_SLUMBER = 4
 };
 
 class boss_lord_pythas : public CreatureScript
@@ -74,25 +74,25 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_LIGHTNING_BOLT:
-                        DoCastVictim(SPELL_LIGHTNING_BOLT);
-                        events.Repeat(Seconds(11));
-                        break;
-                    case EVENT_THUNDERCLAP:
-                        DoCastAOE(SPELL_THUNDERCLAP);
-                        events.Repeat(Seconds(33));
-                        break;
-                    case EVENT_HEALING_TOUCH:
-                        DoCastSelf(SPELL_HEALING_TOUCH);
-                        events.Repeat(Seconds(31));
-                        break;
-                    case EVENT_DRUID_SLUMBER:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                            DoCast(target, SPELL_DRUID_SLUMBER);
-                        events.Repeat(Seconds(19));
-                        break;
-                    default:
-                        break;
+                case EVENT_LIGHTNING_BOLT:
+                    DoCastVictim(SPELL_LIGHTNING_BOLT);
+                    events.Repeat(Seconds(11));
+                    break;
+                case EVENT_THUNDERCLAP:
+                    DoCastAOE(SPELL_THUNDERCLAP);
+                    events.Repeat(Seconds(33));
+                    break;
+                case EVENT_HEALING_TOUCH:
+                    DoCastSelf(SPELL_HEALING_TOUCH);
+                    events.Repeat(Seconds(31));
+                    break;
+                case EVENT_DRUID_SLUMBER:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                        DoCast(target, SPELL_DRUID_SLUMBER);
+                    events.Repeat(Seconds(19));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

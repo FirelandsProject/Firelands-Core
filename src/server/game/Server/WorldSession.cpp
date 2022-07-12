@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -582,8 +582,8 @@ void WorldSession::LogoutPlayer(bool save)
                 if (_player->IsInvitedForBattlegroundQueueType(bgQueueTypeId) && sWorld->getBoolConfig(CONFIG_BATTLEGROUND_TRACK_DESERTERS))
                 {
                     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_DESERTER_TRACK);
-                    stmt->setUInt32(0, _player->GetGUID().GetCounter());
-                    stmt->setUInt8(1, BG_DESERTION_TYPE_INVITE_LOGOUT);
+                    stmt->SetData(0, _player->GetGUID().GetCounter());
+                    stmt->SetData(1, BG_DESERTION_TYPE_INVITE_LOGOUT);
                     CharacterDatabase.Execute(stmt);
                 }
 
@@ -674,7 +674,7 @@ void WorldSession::LogoutPlayer(bool save)
 
         //! Since each account can only have one online character at any given time, ensure all characters for active account are marked as offline
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ACCOUNT_ONLINE);
-        stmt->setUInt32(0, GetAccountId());
+        stmt->SetData(0, GetAccountId());
         CharacterDatabase.Execute(stmt);
     }
 
@@ -849,10 +849,10 @@ void WorldSession::SetAccountData(AccountDataType type, time_t tm, std::string c
     }
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(index);
-    stmt->setUInt32(0, id);
-    stmt->setUInt8(1, type);
-    stmt->setUInt32(2, uint32(tm));
-    stmt->setString(3, data);
+    stmt->SetData(0, id);
+    stmt->SetData(1, type);
+    stmt->SetData(2, uint32(tm));
+    stmt->SetData(3, data);
     CharacterDatabase.Execute(stmt);
 
     m_accountData[type].Time = tm;
@@ -901,8 +901,8 @@ void WorldSession::SaveTutorialsData(CharacterDatabaseTransaction& trans)
     bool const hasTutorialsInDB = (m_TutorialsChanged & TUTORIALS_FLAG_LOADED_FROM_DB) != 0;
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(hasTutorialsInDB ? CHAR_UPD_TUTORIALS : CHAR_INS_TUTORIALS);
     for (uint8 i = 0; i < MAX_ACCOUNT_TUTORIAL_VALUES; ++i)
-        stmt->setUInt32(i, m_Tutorials[i]);
-    stmt->setUInt32(MAX_ACCOUNT_TUTORIAL_VALUES, GetAccountId());
+        stmt->SetData(i, m_Tutorials[i]);
+    stmt->SetData(MAX_ACCOUNT_TUTORIAL_VALUES, GetAccountId());
     trans->Append(stmt);
 
     // now has, set flag so next save uses update query
@@ -1205,11 +1205,11 @@ public:
         bool ok = true;
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ACCOUNT_DATA);
-        stmt->setUInt32(0, accountId);
+        stmt->SetData(0, accountId);
         ok = SetPreparedQuery(GLOBAL_ACCOUNT_DATA, stmt) && ok;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_TUTORIALS);
-        stmt->setUInt32(0, accountId);
+        stmt->SetData(0, accountId);
         ok = SetPreparedQuery(TUTORIALS, stmt) && ok;
 
         return ok;

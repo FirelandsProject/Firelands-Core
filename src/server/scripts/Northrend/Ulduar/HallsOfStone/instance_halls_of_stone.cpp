@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -31,174 +31,174 @@ DoorData const doorData[] =
 
 class instance_halls_of_stone : public InstanceMapScript
 {
-    public:
-        instance_halls_of_stone() : InstanceMapScript(HoSScriptName, 599) { }
+public:
+    instance_halls_of_stone() : InstanceMapScript(HoSScriptName, 599) { }
 
-        struct instance_halls_of_stone_InstanceMapScript : public InstanceScript
+    struct instance_halls_of_stone_InstanceMapScript : public InstanceScript
+    {
+        instance_halls_of_stone_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_halls_of_stone_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadDoorData(doorData);
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                switch (creature->GetEntry())
-                {
-                    case NPC_KRYSTALLUS:
-                        KrystallusGUID = creature->GetGUID();
-                        break;
-                    case NPC_MAIDEN:
-                        MaidenOfGriefGUID = creature->GetGUID();
-                        break;
-                    case NPC_SJONNIR:
-                        SjonnirGUID = creature->GetGUID();
-                        break;
-                    case NPC_MARNAK:
-                        MarnakGUID = creature->GetGUID();
-                        break;
-                    case NPC_KADDRAK:
-                        KaddrakGUID = creature->GetGUID();
-                        break;
-                    case NPC_ABEDNEUM:
-                        AbedneumGUID = creature->GetGUID();
-                        break;
-                    case NPC_BRANN:
-                        BrannGUID = creature->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                InstanceScript::OnGameObjectCreate(go);
-
-                switch (go->GetEntry())
-                {
-                    case GO_ABEDNEUM:
-                        AbedneumGoGUID = go->GetGUID();
-                        break;
-                    case GO_MARNAK:
-                        MarnakGoGUID = go->GetGUID();
-                        break;
-                    case GO_KADDRAK:
-                        KaddrakGoGUID = go->GetGUID();
-                        break;
-                    case GO_TRIBUNAL_CONSOLE:
-                        TribunalConsoleGUID = go->GetGUID();
-                        break;
-                    case GO_TRIBUNAL_CHEST:
-                    case GO_TRIBUNAL_CHEST_HERO:
-                        TribunalChestGUID = go->GetGUID();
-                        if (GetBossState(DATA_TRIBUNAL_OF_AGES) == DONE)
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    case GO_TRIBUNAL_SKY_FLOOR:
-                        TribunalSkyFloorGUID = go->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_MAIDEN_OF_GRIEF:
-                        return MaidenOfGriefGUID;
-                    case DATA_KRYSTALLUS:
-                        return KrystallusGUID;
-                    case DATA_SJONNIR:
-                        return SjonnirGUID;
-                    case DATA_KADDRAK:
-                        return KaddrakGUID;
-                    case DATA_MARNAK:
-                        return MarnakGUID;
-                    case DATA_ABEDNEUM:
-                        return AbedneumGUID;
-                    case DATA_GO_TRIBUNAL_CONSOLE:
-                        return TribunalConsoleGUID;
-                    case DATA_GO_KADDRAK:
-                        return KaddrakGoGUID;
-                    case DATA_GO_ABEDNEUM:
-                        return AbedneumGoGUID;
-                    case DATA_GO_MARNAK:
-                        return MarnakGoGUID;
-                    case DATA_GO_SKY_FLOOR:
-                        return TribunalSkyFloorGUID;
-                    default:
-                        break;
-                }
-
-                return ObjectGuid::Empty;
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_TRIBUNAL_OF_AGES:
-                        if (state == DONE)
-                        {
-                            if (GameObject* go = instance->GetGameObject(TribunalChestGUID))
-                                go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-
-            bool CheckRequiredBosses(uint32 bossId, Player const* player = nullptr) const override
-            {
-                if (_SkipCheckRequiredBosses(player))
-                    return true;
-
-                switch (bossId)
-                {
-                    case DATA_SJONNIR:
-                        if (GetBossState(DATA_TRIBUNAL_OF_AGES) != DONE)
-                            return false;
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-
-        protected:
-            ObjectGuid KrystallusGUID;
-            ObjectGuid MaidenOfGriefGUID;
-            ObjectGuid SjonnirGUID;
-
-            ObjectGuid KaddrakGUID;
-            ObjectGuid AbedneumGUID;
-            ObjectGuid MarnakGUID;
-            ObjectGuid BrannGUID;
-
-            ObjectGuid TribunalConsoleGUID;
-            ObjectGuid TribunalChestGUID;
-            ObjectGuid TribunalSkyFloorGUID;
-            ObjectGuid KaddrakGoGUID;
-            ObjectGuid AbedneumGoGUID;
-            ObjectGuid MarnakGoGUID;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_halls_of_stone_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadDoorData(doorData);
         }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            switch (creature->GetEntry())
+            {
+            case NPC_KRYSTALLUS:
+                KrystallusGUID = creature->GetGUID();
+                break;
+            case NPC_MAIDEN:
+                MaidenOfGriefGUID = creature->GetGUID();
+                break;
+            case NPC_SJONNIR:
+                SjonnirGUID = creature->GetGUID();
+                break;
+            case NPC_MARNAK:
+                MarnakGUID = creature->GetGUID();
+                break;
+            case NPC_KADDRAK:
+                KaddrakGUID = creature->GetGUID();
+                break;
+            case NPC_ABEDNEUM:
+                AbedneumGUID = creature->GetGUID();
+                break;
+            case NPC_BRANN:
+                BrannGUID = creature->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+
+            switch (go->GetEntry())
+            {
+            case GO_ABEDNEUM:
+                AbedneumGoGUID = go->GetGUID();
+                break;
+            case GO_MARNAK:
+                MarnakGoGUID = go->GetGUID();
+                break;
+            case GO_KADDRAK:
+                KaddrakGoGUID = go->GetGUID();
+                break;
+            case GO_TRIBUNAL_CONSOLE:
+                TribunalConsoleGUID = go->GetGUID();
+                break;
+            case GO_TRIBUNAL_CHEST:
+            case GO_TRIBUNAL_CHEST_HERO:
+                TribunalChestGUID = go->GetGUID();
+                if (GetBossState(DATA_TRIBUNAL_OF_AGES) == DONE)
+                    go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_TRIBUNAL_SKY_FLOOR:
+                TribunalSkyFloorGUID = go->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_MAIDEN_OF_GRIEF:
+                return MaidenOfGriefGUID;
+            case DATA_KRYSTALLUS:
+                return KrystallusGUID;
+            case DATA_SJONNIR:
+                return SjonnirGUID;
+            case DATA_KADDRAK:
+                return KaddrakGUID;
+            case DATA_MARNAK:
+                return MarnakGUID;
+            case DATA_ABEDNEUM:
+                return AbedneumGUID;
+            case DATA_GO_TRIBUNAL_CONSOLE:
+                return TribunalConsoleGUID;
+            case DATA_GO_KADDRAK:
+                return KaddrakGoGUID;
+            case DATA_GO_ABEDNEUM:
+                return AbedneumGoGUID;
+            case DATA_GO_MARNAK:
+                return MarnakGoGUID;
+            case DATA_GO_SKY_FLOOR:
+                return TribunalSkyFloorGUID;
+            default:
+                break;
+            }
+
+            return ObjectGuid::Empty;
+        }
+
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
+            {
+            case DATA_TRIBUNAL_OF_AGES:
+                if (state == DONE)
+                {
+                    if (GameObject* go = instance->GetGameObject(TribunalChestGUID))
+                        go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                }
+                break;
+            default:
+                break;
+            }
+
+            return true;
+        }
+
+        bool CheckRequiredBosses(uint32 bossId, Player const* player = nullptr) const override
+        {
+            if (_SkipCheckRequiredBosses(player))
+                return true;
+
+            switch (bossId)
+            {
+            case DATA_SJONNIR:
+                if (GetBossState(DATA_TRIBUNAL_OF_AGES) != DONE)
+                    return false;
+                break;
+            default:
+                break;
+            }
+
+            return true;
+        }
+
+    protected:
+        ObjectGuid KrystallusGUID;
+        ObjectGuid MaidenOfGriefGUID;
+        ObjectGuid SjonnirGUID;
+
+        ObjectGuid KaddrakGUID;
+        ObjectGuid AbedneumGUID;
+        ObjectGuid MarnakGUID;
+        ObjectGuid BrannGUID;
+
+        ObjectGuid TribunalConsoleGUID;
+        ObjectGuid TribunalChestGUID;
+        ObjectGuid TribunalSkyFloorGUID;
+        ObjectGuid KaddrakGoGUID;
+        ObjectGuid AbedneumGoGUID;
+        ObjectGuid MarnakGoGUID;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_halls_of_stone_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_halls_of_stone()

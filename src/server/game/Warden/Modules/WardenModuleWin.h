@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -18,13 +18,13 @@
 #ifndef _WARDEN_MODULE_WIN_H
 #define _WARDEN_MODULE_WIN_H
 
-/*
-Seed: 4D808D2C77D905C41A6380EC08586AFE (0x05 packet)
-Hash: 568C054C781A972A6037A2290C22B52571A06F4E (0x04 packet)
-Module MD5: 79C0768D657977D697E10BAD956CCED1
-New Client Key: 7F 96 EE FD A5 B6 3D 20 A4 DF 8E 00 CB F4 83 04
-New Cerver Key: C2 B7 AD ED FC CC A9 C2 BF B3 F8 56 02 BA 80 9B
-*/
+ /*
+ Seed: 4D808D2C77D905C41A6380EC08586AFE (0x05 packet)
+ Hash: 568C054C781A972A6037A2290C22B52571A06F4E (0x04 packet)
+ Module MD5: 79C0768D657977D697E10BAD956CCED1
+ New Client Key: 7F 96 EE FD A5 B6 3D 20 A4 DF 8E 00 CB F4 83 04
+ New Cerver Key: C2 B7 AD ED FC CC A9 C2 BF B3 F8 56 02 BA 80 9B
+ */
 
 struct Module_79C0768D657977D697E10BAD956CCED1
 {

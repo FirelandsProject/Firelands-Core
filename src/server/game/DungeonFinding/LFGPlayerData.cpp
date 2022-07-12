@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,21 +20,21 @@
 namespace lfg
 {
 
-LfgPlayerData::LfgPlayerData(): m_State(LFG_STATE_NONE), m_OldState(LFG_STATE_NONE),
-    m_Team(0), m_Group(), m_Roles(0), m_Comment(""), m_EnligibleForShortageRewards(false)
-{ }
+    LfgPlayerData::LfgPlayerData() : m_State(LFG_STATE_NONE), m_OldState(LFG_STATE_NONE),
+        m_Team(0), m_Group(), m_Roles(0), m_Comment(""), m_EnligibleForShortageRewards(false)
+    { }
 
-LfgPlayerData::~LfgPlayerData() { }
+    LfgPlayerData::~LfgPlayerData() { }
 
-void LfgPlayerData::SetTicket(WorldPackets::LFG::RideTicket const& ticket)
-{
-    m_Ticket = ticket;
-}
-
-void LfgPlayerData::SetState(LfgState state)
-{
-    switch (state)
+    void LfgPlayerData::SetTicket(WorldPackets::LFG::RideTicket const& ticket)
     {
+        m_Ticket = ticket;
+    }
+
+    void LfgPlayerData::SetState(LfgState state)
+    {
+        switch (state)
+        {
         case LFG_STATE_NONE:
         case LFG_STATE_FINISHED_DUNGEON:
             m_Roles = 0;
@@ -46,92 +46,92 @@ void LfgPlayerData::SetState(LfgState state)
             [[fallthrough]];
         default:
             m_State = state;
+        }
     }
-}
 
-void LfgPlayerData::RestoreState()
-{
-    if (m_OldState == LFG_STATE_NONE)
+    void LfgPlayerData::RestoreState()
     {
-        m_SelectedDungeons.clear();
-        m_Roles = 0;
+        if (m_OldState == LFG_STATE_NONE)
+        {
+            m_SelectedDungeons.clear();
+            m_Roles = 0;
+        }
+        m_State = m_OldState;
     }
-    m_State = m_OldState;
-}
 
-void LfgPlayerData::SetTeam(uint8 team)
-{
-    m_Team = team;
-}
+    void LfgPlayerData::SetTeam(uint8 team)
+    {
+        m_Team = team;
+    }
 
-void LfgPlayerData::SetGroup(ObjectGuid group)
-{
-    m_Group = group;
-}
+    void LfgPlayerData::SetGroup(ObjectGuid group)
+    {
+        m_Group = group;
+    }
 
-void LfgPlayerData::SetRoles(uint8 roles)
-{
-    m_Roles = roles;
-}
+    void LfgPlayerData::SetRoles(uint8 roles)
+    {
+        m_Roles = roles;
+    }
 
-void LfgPlayerData::SetComment(std::string const& comment)
-{
-    m_Comment = comment;
-}
+    void LfgPlayerData::SetComment(std::string const& comment)
+    {
+        m_Comment = comment;
+    }
 
-void LfgPlayerData::SetSelectedDungeons(LfgDungeonSet const& dungeons)
-{
-    m_SelectedDungeons = dungeons;
-}
+    void LfgPlayerData::SetSelectedDungeons(LfgDungeonSet const& dungeons)
+    {
+        m_SelectedDungeons = dungeons;
+    }
 
-void LfgPlayerData::SetEnligibleForShortageRewards(bool apply)
-{
-    m_EnligibleForShortageRewards = apply;
-}
+    void LfgPlayerData::SetEnligibleForShortageRewards(bool apply)
+    {
+        m_EnligibleForShortageRewards = apply;
+    }
 
-WorldPackets::LFG::RideTicket const& LfgPlayerData::GetTicket() const
-{
-    return m_Ticket;
-}
+    WorldPackets::LFG::RideTicket const& LfgPlayerData::GetTicket() const
+    {
+        return m_Ticket;
+    }
 
-LfgState LfgPlayerData::GetState() const
-{
-    return m_State;
-}
+    LfgState LfgPlayerData::GetState() const
+    {
+        return m_State;
+    }
 
-LfgState LfgPlayerData::GetOldState() const
-{
-    return m_OldState;
-}
+    LfgState LfgPlayerData::GetOldState() const
+    {
+        return m_OldState;
+    }
 
-uint8 LfgPlayerData::GetTeam() const
-{
-    return m_Team;
-}
+    uint8 LfgPlayerData::GetTeam() const
+    {
+        return m_Team;
+    }
 
-ObjectGuid LfgPlayerData::GetGroup() const
-{
-    return m_Group;
-}
+    ObjectGuid LfgPlayerData::GetGroup() const
+    {
+        return m_Group;
+    }
 
-uint8 LfgPlayerData::GetRoles() const
-{
-    return m_Roles;
-}
+    uint8 LfgPlayerData::GetRoles() const
+    {
+        return m_Roles;
+    }
 
-std::string const& LfgPlayerData::GetComment() const
-{
-    return m_Comment;
-}
+    std::string const& LfgPlayerData::GetComment() const
+    {
+        return m_Comment;
+    }
 
-LfgDungeonSet const& LfgPlayerData::GetSelectedDungeons() const
-{
-    return m_SelectedDungeons;
-}
+    LfgDungeonSet const& LfgPlayerData::GetSelectedDungeons() const
+    {
+        return m_SelectedDungeons;
+    }
 
-bool LfgPlayerData::IsEnligibleForShortageRewards() const
-{
-    return m_EnligibleForShortageRewards;
-}
+    bool LfgPlayerData::IsEnligibleForShortageRewards() const
+    {
+        return m_EnligibleForShortageRewards;
+    }
 
 } // namespace lfg

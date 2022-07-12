@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,22 +20,22 @@
 
 enum Spells
 {
-    SPELL_WHIRLWIND                               = 15589,
-    SPELL_WHIRLWIND2                              = 13736,
-    SPELL_KNOCKDOWN                               = 19128,
-    SPELL_FRENZY                                  = 8269,
-    SPELL_SWEEPING_STRIKES                        = 18765, // not sure
-    SPELL_CLEAVE                                  = 20677, // not sure
-    SPELL_WINDFURY                                = 35886, // not sure
-    SPELL_STORMPIKE                               = 51876  // not sure
+    SPELL_WHIRLWIND = 15589,
+    SPELL_WHIRLWIND2 = 13736,
+    SPELL_KNOCKDOWN = 19128,
+    SPELL_FRENZY = 8269,
+    SPELL_SWEEPING_STRIKES = 18765, // not sure
+    SPELL_CLEAVE = 20677, // not sure
+    SPELL_WINDFURY = 35886, // not sure
+    SPELL_STORMPIKE = 51876  // not sure
 };
 
 enum Texts
 {
-    SAY_AGGRO                                    = 0,
-    SAY_EVADE                                    = 1,
-    SAY_RESPAWN                                  = 2,
-    SAY_RANDOM                                   = 3
+    SAY_AGGRO = 0,
+    SAY_EVADE = 1,
+    SAY_RESPAWN = 2,
+    SAY_RANDOM = 3
 };
 
 enum Events
@@ -103,28 +103,28 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_WHIRLWIND:
-                        DoCastVictim(SPELL_WHIRLWIND);
-                        events.ScheduleEvent(EVENT_WHIRLWIND, urand(8 * IN_MILLISECONDS, 18 * IN_MILLISECONDS));
-                        break;
-                    case EVENT_WHIRLWIND2:
-                        DoCastVictim(SPELL_WHIRLWIND2);
-                        events.ScheduleEvent(EVENT_WHIRLWIND2, urand(7 * IN_MILLISECONDS, 25 * IN_MILLISECONDS));
-                        break;
-                    case EVENT_KNOCKDOWN:
-                        DoCastVictim(SPELL_KNOCKDOWN);
-                        events.ScheduleEvent(EVENT_KNOCKDOWN, urand(10 * IN_MILLISECONDS, 15 * IN_MILLISECONDS));
-                        break;
-                    case EVENT_FRENZY:
-                        DoCastVictim(SPELL_FRENZY);
-                        events.ScheduleEvent(EVENT_FRENZY, urand(20 * IN_MILLISECONDS, 30 * IN_MILLISECONDS));
-                        break;
-                    case EVENT_RANDOM_YELL:
-                        Talk(SAY_RANDOM);
-                        events.ScheduleEvent(EVENT_RANDOM_YELL, urand(20 * IN_MILLISECONDS, 30 * IN_MILLISECONDS));
-                        break;
-                    default:
-                        break;
+                case EVENT_WHIRLWIND:
+                    DoCastVictim(SPELL_WHIRLWIND);
+                    events.ScheduleEvent(EVENT_WHIRLWIND, urand(8 * IN_MILLISECONDS, 18 * IN_MILLISECONDS));
+                    break;
+                case EVENT_WHIRLWIND2:
+                    DoCastVictim(SPELL_WHIRLWIND2);
+                    events.ScheduleEvent(EVENT_WHIRLWIND2, urand(7 * IN_MILLISECONDS, 25 * IN_MILLISECONDS));
+                    break;
+                case EVENT_KNOCKDOWN:
+                    DoCastVictim(SPELL_KNOCKDOWN);
+                    events.ScheduleEvent(EVENT_KNOCKDOWN, urand(10 * IN_MILLISECONDS, 15 * IN_MILLISECONDS));
+                    break;
+                case EVENT_FRENZY:
+                    DoCastVictim(SPELL_FRENZY);
+                    events.ScheduleEvent(EVENT_FRENZY, urand(20 * IN_MILLISECONDS, 30 * IN_MILLISECONDS));
+                    break;
+                case EVENT_RANDOM_YELL:
+                    Talk(SAY_RANDOM);
+                    events.ScheduleEvent(EVENT_RANDOM_YELL, urand(20 * IN_MILLISECONDS, 30 * IN_MILLISECONDS));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -134,8 +134,8 @@ public:
             DoMeleeAttackIfReady();
         }
 
-        private:
-            EventMap events;
+    private:
+        EventMap events;
     };
 
     CreatureAI* GetAI(Creature* creature) const override

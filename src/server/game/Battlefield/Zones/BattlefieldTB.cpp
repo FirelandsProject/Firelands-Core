@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -90,18 +90,18 @@ Position const TBQuestInfantrySpawnData[TB_QUEST_INFANTRY_MAX] =
 uint8 const TB_GUARDS_MAX = 8;
 Position const GuardNPCSpawns[TB_GUARDS_MAX] =
 {
-//  { -837.3768f, 1196.082f, 114.2994f, 3.036873f },
-//  { -762.118f,  1195.259f, 107.2007f, 3.036873f },
-//  { -837.809f,  1179.842f, 114.1356f, 3.159046f },
-//  { -762.5504f, 1179.019f, 107.2137f, 3.159046f },
-    { -1272.951f, 964.8854f, 119.5782f, 3.193953f },
-    { -1274.394f, 997.6511f, 119.5743f, 3.193953f },
-    { -1248.226f, 1018.476f, 119.8113f, 1.605703f },
-    { -1218.948f, 943.5695f, 119.5994f, 4.625123f },
-    { -1195.417f, 965.5364f, 119.8113f, 0.0f },
-    { -1220.832f, 1018.497f, 119.8113f, 1.605703f },
-    { -1196.151f, 999.5121f, 119.5966f, 0.0f },
-    { -1249.304f, 942.9063f, 119.5782f, 4.625123f },
+    //  { -837.3768f, 1196.082f, 114.2994f, 3.036873f },
+    //  { -762.118f,  1195.259f, 107.2007f, 3.036873f },
+    //  { -837.809f,  1179.842f, 114.1356f, 3.159046f },
+    //  { -762.5504f, 1179.019f, 107.2137f, 3.159046f },
+        { -1272.951f, 964.8854f, 119.5782f, 3.193953f },
+        { -1274.394f, 997.6511f, 119.5743f, 3.193953f },
+        { -1248.226f, 1018.476f, 119.8113f, 1.605703f },
+        { -1218.948f, 943.5695f, 119.5994f, 4.625123f },
+        { -1195.417f, 965.5364f, 119.8113f, 0.0f },
+        { -1220.832f, 1018.497f, 119.8113f, 1.605703f },
+        { -1196.151f, 999.5121f, 119.5966f, 0.0f },
+        { -1249.304f, 942.9063f, 119.5782f, 4.625123f },
 };
 
 struct TBFactionNPCInfo
@@ -239,7 +239,7 @@ uint8 const TB_PORTAL_MAX = 2;
 TBPortalData const TBPortals[TB_PORTAL_MAX] =
 {
     { { -598.7656f, 1377.974f, 21.91898f, 0.0f }, { 0.f, 0.f, 0.00000000f, 1.00000000f } },
-	{ { -1257.729f, 1060.365f, 106.9938f, 5.462882f }, { 0.f, 0.f, 0.39874841f, -0.91706036f } },
+    { { -1257.729f, 1060.365f, 106.9938f, 5.462882f }, { 0.f, 0.f, 0.39874841f, -0.91706036f } },
 };
 
 struct TBGraveyardInfo
@@ -477,20 +477,20 @@ void BattlefieldTB::FillInitialWorldStates(WorldPackets::WorldState::InitWorldSt
         uint8 i = TB_BASE_COUNT;
         switch (itr->second->GetCapturePointEntry())
         {
-            case GO_CAPTURE_POINT_NORTH_A_DEFENDING:
-            case GO_CAPTURE_POINT_NORTH_H_DEFENDING:
-                i = TB_BASE_IRONCLAD_GARRISON;
-                break;
-            case GO_CAPTURE_POINT_EAST_A_DEFENDING:
-            case GO_CAPTURE_POINT_EAST_H_DEFENDING:
-                i = TB_BASE_SLAGWORKS;
-                break;
-            case GO_CAPTURE_POINT_WEST_A_DEFENDING:
-            case GO_CAPTURE_POINT_WEST_H_DEFENDING:
-                i = TB_BASE_WARDENS_VIGIL;
-                break;
-            default:
-                continue;
+        case GO_CAPTURE_POINT_NORTH_A_DEFENDING:
+        case GO_CAPTURE_POINT_NORTH_H_DEFENDING:
+            i = TB_BASE_IRONCLAD_GARRISON;
+            break;
+        case GO_CAPTURE_POINT_EAST_A_DEFENDING:
+        case GO_CAPTURE_POINT_EAST_H_DEFENDING:
+            i = TB_BASE_SLAGWORKS;
+            break;
+        case GO_CAPTURE_POINT_WEST_A_DEFENDING:
+        case GO_CAPTURE_POINT_WEST_H_DEFENDING:
+            i = TB_BASE_WARDENS_VIGIL;
+            break;
+        default:
+            continue;
         }
 
         TeamId team = TEAM_NEUTRAL;
@@ -499,24 +499,24 @@ void BattlefieldTB::FillInitialWorldStates(WorldPackets::WorldState::InitWorldSt
 
         switch (itr->second->GetObjectiveState())
         {
-            case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE:
-            case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE:
-                controlled = true;
-                team = itr->second->GetTeamId();
-                break;
-            case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
-            case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
-                team = TEAM_ALLIANCE;
-                capturing = true;
-                break;
-            case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
-            case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
-                team = TEAM_HORDE;
-                capturing = true;
-                break;
-            default:
-                team = TEAM_NEUTRAL;
-                break;
+        case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE:
+        case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE:
+            controlled = true;
+            team = itr->second->GetTeamId();
+            break;
+        case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
+        case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
+            team = TEAM_ALLIANCE;
+            capturing = true;
+            break;
+        case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
+        case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
+            team = TEAM_HORDE;
+            capturing = true;
+            break;
+        default:
+            team = TEAM_NEUTRAL;
+            break;
         }
 
         data.Worldstates.emplace_back(uint32(TBCapturePoints[i].wsControlled[TEAM_ALLIANCE]), int32(team == TEAM_ALLIANCE && controlled ? 1 : 0));
@@ -760,7 +760,7 @@ void BattlefieldTB::UpdateNPCsAndGameObjects()
 
         for (uint8 i = 0; i < TB_QUEST_INFANTRY_MAX; i++)
         {
-            uint32 entry = TB_QUEST_INFANTRY[GetDefenderTeam()][urand(0,3)];
+            uint32 entry = TB_QUEST_INFANTRY[GetDefenderTeam()][urand(0, 3)];
             if (Creature* creature = SpawnCreature(entry, TBQuestInfantrySpawnData[i]))
                 TemporaryNPCs.insert(creature->GetGUID());
         }
@@ -818,55 +818,55 @@ void BattlefieldTB::OnCreatureCreate(Creature* creature)
     switch (creature->GetEntry())
     {
         // Store NPCs that need visibility toggling
-        case NPC_TOLBARAD_CAPTIVE_SPIRIT:
-        case NPC_TOLBARAD_CELLBLOCK_OOZE:
-        case NPC_TOLBARAD_ARCHMAGE_GALUS:
-        case NPC_TOLBARAD_GHASTLY_CONVICT:
-        case NPC_TOLBARAD_SHIVARRA_DESTROYER:
-        case NPC_TOLBARAD_CELL_WATCHER:
-        case NPC_TOLBARAD_SVARNOS:
-        case NPC_TOLBARAD_JAILED_WRATHGUARD:
-        case NPC_TOLBARAD_IMPRISONED_IMP:
-        case NPC_TOLBARAD_WARDEN_SILVA:
-        case NPC_TOLBARAD_WARDEN_GUARD:
-        case NPC_TOLBARAD_IMPRISONED_WORKER:
-        case NPC_TOLBARAD_EXILED_MAGE:
-        case NPC_CROCOLISK:
-        case NPC_PROBLIM:
-            BattleInactiveNPCs.insert(creature->GetGUID());
-            if (GetState() == BATTLEFIELD_WARMUP) // If battle is about to start, we must hide these.
-                HideNpc(creature);
-            break;
-        case NPC_ABANDONED_SIEGE_ENGINE:
-            creature->SetFaction(TBFactions[GetDefenderTeam()]);
-            creature->CastSpell(creature, SPELL_THICK_LAYER_OF_RUST, true);
-            break;
-        case NPC_SIEGE_ENGINE_TURRET:
-            if (Unit* vehiclebase = creature->GetCharmerOrOwner()->GetVehicleBase())
-                creature->EnterVehicle(vehiclebase);
-            break;
-        case NPC_TOWER_RANGE_FINDER:
-            creature->CastSpell(creature, SPELL_TOWER_RANGE_FINDER_PERIODIC, true);
-            break;
-        case NPC_TB_GY_SPIRIT_BARADIN_HOLD_A:
-        case NPC_TB_GY_SPIRIT_BARADIN_HOLD_H:
-        case NPC_TB_GY_SPIRIT_IRONCLAD_GARRISON_A:
-        case NPC_TB_GY_SPIRIT_WARDENS_VIGIL_A:
-        case NPC_TB_GY_SPIRIT_EAST_SPIRE_A:
-        case NPC_TB_GY_SPIRIT_SOUTH_SPIRE_A:
-        case NPC_TB_GY_SPIRIT_WEST_SPIRE_A:
-        case NPC_TB_GY_SPIRIT_SLAGWORKS_A:
-        case NPC_TB_GY_SPIRIT_IRONCLAD_GARRISON_H:
-        case NPC_TB_GY_SPIRIT_WARDENS_VIGIL_H:
-        case NPC_TB_GY_SPIRIT_SLAGWORKS_H:
-        case NPC_TB_GY_SPIRIT_WEST_SPIRE_H:
-        case NPC_TB_GY_SPIRIT_EAST_SPIRE_H:
-        case NPC_TB_GY_SPIRIT_SOUTH_SPIRE_H:
-            creature->CastSpell(creature, SPELL_TB_SPIRITUAL_IMMUNITY, true);
-            creature->CastSpell(creature, SPELL_TB_SPIRIT_HEAL_CHANNEL, true);
-            break;
-        default:
-            break;
+    case NPC_TOLBARAD_CAPTIVE_SPIRIT:
+    case NPC_TOLBARAD_CELLBLOCK_OOZE:
+    case NPC_TOLBARAD_ARCHMAGE_GALUS:
+    case NPC_TOLBARAD_GHASTLY_CONVICT:
+    case NPC_TOLBARAD_SHIVARRA_DESTROYER:
+    case NPC_TOLBARAD_CELL_WATCHER:
+    case NPC_TOLBARAD_SVARNOS:
+    case NPC_TOLBARAD_JAILED_WRATHGUARD:
+    case NPC_TOLBARAD_IMPRISONED_IMP:
+    case NPC_TOLBARAD_WARDEN_SILVA:
+    case NPC_TOLBARAD_WARDEN_GUARD:
+    case NPC_TOLBARAD_IMPRISONED_WORKER:
+    case NPC_TOLBARAD_EXILED_MAGE:
+    case NPC_CROCOLISK:
+    case NPC_PROBLIM:
+        BattleInactiveNPCs.insert(creature->GetGUID());
+        if (GetState() == BATTLEFIELD_WARMUP) // If battle is about to start, we must hide these.
+            HideNpc(creature);
+        break;
+    case NPC_ABANDONED_SIEGE_ENGINE:
+        creature->SetFaction(TBFactions[GetDefenderTeam()]);
+        creature->CastSpell(creature, SPELL_THICK_LAYER_OF_RUST, true);
+        break;
+    case NPC_SIEGE_ENGINE_TURRET:
+        if (Unit* vehiclebase = creature->GetCharmerOrOwner()->GetVehicleBase())
+            creature->EnterVehicle(vehiclebase);
+        break;
+    case NPC_TOWER_RANGE_FINDER:
+        creature->CastSpell(creature, SPELL_TOWER_RANGE_FINDER_PERIODIC, true);
+        break;
+    case NPC_TB_GY_SPIRIT_BARADIN_HOLD_A:
+    case NPC_TB_GY_SPIRIT_BARADIN_HOLD_H:
+    case NPC_TB_GY_SPIRIT_IRONCLAD_GARRISON_A:
+    case NPC_TB_GY_SPIRIT_WARDENS_VIGIL_A:
+    case NPC_TB_GY_SPIRIT_EAST_SPIRE_A:
+    case NPC_TB_GY_SPIRIT_SOUTH_SPIRE_A:
+    case NPC_TB_GY_SPIRIT_WEST_SPIRE_A:
+    case NPC_TB_GY_SPIRIT_SLAGWORKS_A:
+    case NPC_TB_GY_SPIRIT_IRONCLAD_GARRISON_H:
+    case NPC_TB_GY_SPIRIT_WARDENS_VIGIL_H:
+    case NPC_TB_GY_SPIRIT_SLAGWORKS_H:
+    case NPC_TB_GY_SPIRIT_WEST_SPIRE_H:
+    case NPC_TB_GY_SPIRIT_EAST_SPIRE_H:
+    case NPC_TB_GY_SPIRIT_SOUTH_SPIRE_H:
+        creature->CastSpell(creature, SPELL_TB_SPIRITUAL_IMMUNITY, true);
+        creature->CastSpell(creature, SPELL_TB_SPIRIT_HEAL_CHANNEL, true);
+        break;
+    default:
+        break;
     }
 };
 
@@ -874,40 +874,40 @@ void BattlefieldTB::OnGameObjectCreate(GameObject* go)
 {
     switch (go->GetEntry())
     {
-        case GO_TOLBARAD_GATES:
-            TBGatesGUID = go->GetGUID();
-            go->SetGoState(GetState() == BATTLEFIELD_WARMUP ? GO_STATE_READY : GO_STATE_ACTIVE);
-            break;
-        case GO_TOLBARAD_DOOR:
-            TBDoorGUID = go->GetGUID();
-            go->SetGoState(GetState() == BATTLEFIELD_INACTIVE ? GO_STATE_ACTIVE : GO_STATE_READY);
-            break;
-        case GO_GATE_TO_THE_HOLE:
-            m_gateToTheHoleGUID = go->GetGUID();
-            go->SetGoState(m_iCellblockRandom == CELLBLOCK_THE_HOLE ? GO_STATE_ACTIVE : GO_STATE_READY);
-            break;
-        case GO_GATE_D_BLOCK:
-            m_gateDBlockGUID = go->GetGUID();
-            go->SetGoState(m_iCellblockRandom == CELLBLOCK_D_BLOCK ? GO_STATE_ACTIVE : GO_STATE_READY);
-            break;
-        case GO_CURSED_DEPTHS_GATE:
-            m_gateCursedDepthsGUID = go->GetGUID();
-            go->SetGoState(m_iCellblockRandom == CELLBLOCK_CURSED_DEPTHS ? GO_STATE_ACTIVE : GO_STATE_READY);
-            break;
-        case GO_CRATE_OF_CELLBLOCK_RATIONS:
-        case GO_CURSED_SHACKLES:
-        case GO_DUSTY_PRISON_JOURNAL:
-        case GO_TB_MEETING_STONE:
-        case GO_TB_INSTANCE_VISUAL_1:
-        case GO_TB_INSTANCE_VISUAL_2:
-        case GO_TB_INSTANCE_VISUAL_3:
-        case GO_TB_INSTANCE_VISUAL_4:
-            BattleInactiveGOs.insert(go->GetGUID());
-            if (GetState() == BATTLEFIELD_WARMUP) // If battle is about to start, we must hide these.
-                go->SetRespawnTime(RESPAWN_ONE_DAY);
-            break;
-        default:
-            break;
+    case GO_TOLBARAD_GATES:
+        TBGatesGUID = go->GetGUID();
+        go->SetGoState(GetState() == BATTLEFIELD_WARMUP ? GO_STATE_READY : GO_STATE_ACTIVE);
+        break;
+    case GO_TOLBARAD_DOOR:
+        TBDoorGUID = go->GetGUID();
+        go->SetGoState(GetState() == BATTLEFIELD_INACTIVE ? GO_STATE_ACTIVE : GO_STATE_READY);
+        break;
+    case GO_GATE_TO_THE_HOLE:
+        m_gateToTheHoleGUID = go->GetGUID();
+        go->SetGoState(m_iCellblockRandom == CELLBLOCK_THE_HOLE ? GO_STATE_ACTIVE : GO_STATE_READY);
+        break;
+    case GO_GATE_D_BLOCK:
+        m_gateDBlockGUID = go->GetGUID();
+        go->SetGoState(m_iCellblockRandom == CELLBLOCK_D_BLOCK ? GO_STATE_ACTIVE : GO_STATE_READY);
+        break;
+    case GO_CURSED_DEPTHS_GATE:
+        m_gateCursedDepthsGUID = go->GetGUID();
+        go->SetGoState(m_iCellblockRandom == CELLBLOCK_CURSED_DEPTHS ? GO_STATE_ACTIVE : GO_STATE_READY);
+        break;
+    case GO_CRATE_OF_CELLBLOCK_RATIONS:
+    case GO_CURSED_SHACKLES:
+    case GO_DUSTY_PRISON_JOURNAL:
+    case GO_TB_MEETING_STONE:
+    case GO_TB_INSTANCE_VISUAL_1:
+    case GO_TB_INSTANCE_VISUAL_2:
+    case GO_TB_INSTANCE_VISUAL_3:
+    case GO_TB_INSTANCE_VISUAL_4:
+        BattleInactiveGOs.insert(go->GetGUID());
+        if (GetState() == BATTLEFIELD_WARMUP) // If battle is about to start, we must hide these.
+            go->SetRespawnTime(RESPAWN_ONE_DAY);
+        break;
+    default:
+        break;
     }
 };
 
@@ -932,17 +932,17 @@ void BattlefieldTB::ProcessEvent(WorldObject* obj, uint32 eventId, WorldObject* 
     TBTowerId towerId;
     switch (go->GetEntry())
     {
-        case GO_WEST_SPIRE:
-            towerId = TB_TOWER_WEST_SPIRE;
-            break;
-        case GO_EAST_SPIRE:
-            towerId = TB_TOWER_EAST_SPIRE;
-            break;
-        case GO_SOUTH_SPIRE:
-            towerId = TB_TOWER_SOUTH_SPIRE;
-            break;
-        default:
-            return;
+    case GO_WEST_SPIRE:
+        towerId = TB_TOWER_WEST_SPIRE;
+        break;
+    case GO_EAST_SPIRE:
+        towerId = TB_TOWER_EAST_SPIRE;
+        break;
+    case GO_SOUTH_SPIRE:
+        towerId = TB_TOWER_SOUTH_SPIRE;
+        break;
+    default:
+        return;
     }
 
     if (go->GetDestructibleState() == GO_DESTRUCTIBLE_DAMAGED)
@@ -1058,47 +1058,47 @@ void TolBaradCapturePoint::ChangeTeam(TeamId /*oldTeam*/)
     // Turn off previous world state icon
     switch (m_OldState)
     {
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE:
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE:
-            SendUpdateWorldState(TBCapturePoints[iBase].wsControlled[GetTeamId()], uint32(0));
-            break;
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
-            SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_ALLIANCE], uint32(0));
-            break;
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
-            SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_HORDE], uint32(0));
-            break;
-        default:
-            break;
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE:
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE:
+        SendUpdateWorldState(TBCapturePoints[iBase].wsControlled[GetTeamId()], uint32(0));
+        break;
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
+        SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_ALLIANCE], uint32(0));
+        break;
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
+        SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_HORDE], uint32(0));
+        break;
+    default:
+        break;
     }
 
     // Turn on new world state icon and send warning
     switch (m_State)
     {
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE:
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE:
-            m_Bf->SendWarning(TBCapturePoints[iBase].textGained[GetTeamId()]);
-            SendUpdateWorldState(TBCapturePoints[iBase].wsControlled[GetTeamId()], uint32(1));
-            GetCapturePointGo()->SetGoArtKit(GetTeamId() == TEAM_ALLIANCE ? TB_GO_ARTKIT_FLAG_ALLIANCE : TB_GO_ARTKIT_FLAG_HORDE);
-            break;
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
-            m_Bf->SendWarning(TBCapturePoints[iBase].textLost[TEAM_HORDE]);
-            [[fallthrough]];
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
-            SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_ALLIANCE], uint32(1));
-            GetCapturePointGo()->SetGoArtKit(TB_GO_ARTKIT_FLAG_NONE);
-            break;
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
-            m_Bf->SendWarning(TBCapturePoints[iBase].textLost[TEAM_ALLIANCE]);
-            [[fallthrough]];
-        case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
-            SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_HORDE], uint32(1));
-            GetCapturePointGo()->SetGoArtKit(TB_GO_ARTKIT_FLAG_NONE);
-            break;
-        default:
-            break;
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE:
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE:
+        m_Bf->SendWarning(TBCapturePoints[iBase].textGained[GetTeamId()]);
+        SendUpdateWorldState(TBCapturePoints[iBase].wsControlled[GetTeamId()], uint32(1));
+        GetCapturePointGo()->SetGoArtKit(GetTeamId() == TEAM_ALLIANCE ? TB_GO_ARTKIT_FLAG_ALLIANCE : TB_GO_ARTKIT_FLAG_HORDE);
+        break;
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_HORDE_ALLIANCE_CHALLENGE:
+        m_Bf->SendWarning(TBCapturePoints[iBase].textLost[TEAM_HORDE]);
+        [[fallthrough]];
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
+        SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_ALLIANCE], uint32(1));
+        GetCapturePointGo()->SetGoArtKit(TB_GO_ARTKIT_FLAG_NONE);
+        break;
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_ALLIANCE_HORDE_CHALLENGE:
+        m_Bf->SendWarning(TBCapturePoints[iBase].textLost[TEAM_ALLIANCE]);
+        [[fallthrough]];
+    case BF_CAPTUREPOINT_OBJECTIVESTATE_NEUTRAL_HORDE_CHALLENGE:
+        SendUpdateWorldState(TBCapturePoints[iBase].wsCapturing[TEAM_HORDE], uint32(1));
+        GetCapturePointGo()->SetGoArtKit(TB_GO_ARTKIT_FLAG_NONE);
+        break;
+    default:
+        break;
     }
 
     // Update counter

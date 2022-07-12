@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -110,7 +110,7 @@ public:
             if (isNumeric(searchString.c_str()))
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_DEL_INFO_BY_GUID);
-                stmt->setUInt32(0, uint32(atoi(searchString.c_str())));
+                stmt->SetData(0, uint32(atoi(searchString.c_str())));
                 result = CharacterDatabase.Query(stmt);
             }
             // search by name
@@ -120,7 +120,7 @@ public:
                     return false;
 
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_DEL_INFO_BY_NAME);
-                stmt->setString(0, searchString);
+                stmt->SetData(0, searchString);
                 result = CharacterDatabase.Query(stmt);
             }
         }
@@ -222,13 +222,13 @@ public:
         }
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_RESTORE_DELETE_INFO);
-        stmt->setString(0, delInfo.name);
-        stmt->setUInt32(1, delInfo.accountId);
-        stmt->setUInt32(2, delInfo.guid.GetCounter());
+        stmt->SetData(0, delInfo.name);
+        stmt->SetData(1, delInfo.accountId);
+        stmt->SetData(2, delInfo.guid.GetCounter());
         CharacterDatabase.Execute(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARACTER_NAME_DATA);
-        stmt->setUInt32(0, delInfo.guid.GetCounter());
+        stmt->SetData(0, delInfo.guid.GetCounter());
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
             sCharacterCache->AddCharacterCacheEntry(delInfo.guid, delInfo.accountId, delInfo.name, (*result)[2].GetUInt8(), (*result)[0].GetUInt8(), (*result)[1].GetUInt8(), (*result)[3].GetUInt8());
     }
@@ -255,8 +255,8 @@ public:
         {
             // Update level and reset XP, everything else will be updated at login
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_LEVEL);
-            stmt->setUInt8(0, uint8(newLevel));
-            stmt->setUInt32(1, playerGuid.GetCounter());
+            stmt->SetData(0, uint8(newLevel));
+            stmt->SetData(1, playerGuid.GetCounter());
             CharacterDatabase.Execute(stmt);
         }
     }
@@ -359,7 +359,7 @@ public:
             }
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHECK_NAME);
-            stmt->setString(0, newName);
+            stmt->SetData(0, newName);
             PreparedQueryResult result = CharacterDatabase.Query(stmt);
             if (result)
             {
@@ -370,7 +370,7 @@ public:
 
             // Remove declined name from db
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_DECLINED_NAME);
-            stmt->setUInt32(0, targetGuid.GetCounter());
+            stmt->SetData(0, targetGuid.GetCounter());
             CharacterDatabase.Execute(stmt);
 
             if (target)
@@ -383,8 +383,8 @@ public:
             else
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_NAME_BY_GUID);
-                stmt->setString(0, newName);
-                stmt->setUInt32(1, targetGuid.GetCounter());
+                stmt->SetData(0, newName);
+                stmt->SetData(1, targetGuid.GetCounter());
                 CharacterDatabase.Execute(stmt);
             }
 
@@ -421,8 +421,8 @@ public:
                 handler->PSendSysMessage(LANG_RENAME_PLAYER_GUID, oldNameLink.c_str(), targetGuid.GetCounter());
 
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-                stmt->setUInt16(0, uint16(AT_LOGIN_RENAME));
-                stmt->setUInt32(1, targetGuid.GetCounter());
+                stmt->SetData(0, uint16(AT_LOGIN_RENAME));
+                stmt->SetData(1, targetGuid.GetCounter());
                 CharacterDatabase.Execute(stmt);
             }
         }
@@ -480,17 +480,17 @@ public:
             return false;
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CUSTOMIZE));
+        stmt->SetData(0, uint16(AT_LOGIN_CUSTOMIZE));
         if (target)
         {
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-            stmt->setUInt32(1, target->GetGUID().GetCounter());
+            stmt->SetData(1, target->GetGUID().GetCounter());
         }
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
-            stmt->setUInt32(1, targetGuid.GetCounter());
+            stmt->SetData(1, targetGuid.GetCounter());
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), targetGuid.GetCounter());
         }
         CharacterDatabase.Execute(stmt);
@@ -508,18 +508,18 @@ public:
             return false;
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_FACTION));
+        stmt->SetData(0, uint16(AT_LOGIN_CHANGE_FACTION));
         if (target)
         {
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-            stmt->setUInt32(1, target->GetGUID().GetCounter());
+            stmt->SetData(1, target->GetGUID().GetCounter());
         }
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), targetGuid.GetCounter());
-            stmt->setUInt32(1, targetGuid.GetCounter());
+            stmt->SetData(1, targetGuid.GetCounter());
         }
         CharacterDatabase.Execute(stmt);
 
@@ -535,20 +535,20 @@ public:
             return false;
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_RACE));
+        stmt->SetData(0, uint16(AT_LOGIN_CHANGE_RACE));
         if (target)
         {
             /// @todo add text into database
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
-            stmt->setUInt32(1, target->GetGUID().GetCounter());
+            stmt->SetData(1, target->GetGUID().GetCounter());
         }
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
             /// @todo add text into database
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), targetGuid.GetCounter());
-            stmt->setUInt32(1, targetGuid.GetCounter());
+            stmt->SetData(1, targetGuid.GetCounter());
         }
         CharacterDatabase.Execute(stmt);
 
@@ -588,7 +588,7 @@ public:
         }
 
         LoginDatabasePreparedStatement* loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_ID_BY_NAME);
-        loginStmt->setString(0, accountName);
+        loginStmt->SetData(0, accountName);
         if (PreparedQueryResult result = LoginDatabase.Query(loginStmt))
             newAccountId = (*result)[0].GetUInt32();
         else
@@ -613,8 +613,8 @@ public:
         }
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ACCOUNT_BY_GUID);
-        stmt->setUInt32(0, newAccountId);
-        stmt->setUInt32(1, targetGuid.GetCounter());
+        stmt->SetData(0, newAccountId);
+        stmt->SetData(1, targetGuid.GetCounter());
         CharacterDatabase.DirectExecute(stmt);
 
         sWorld->UpdateRealmCharCount(oldAccountId);

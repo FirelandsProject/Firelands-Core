@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -131,10 +131,10 @@ namespace rbac
     void RBACData::SavePermission(uint32 permission, bool granted, int32 realmId)
     {
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_RBAC_ACCOUNT_PERMISSION);
-        stmt->setUInt32(0, GetId());
-        stmt->setUInt32(1, permission);
-        stmt->setBool(2, granted);
-        stmt->setInt32(3, realmId);
+        stmt->SetData(0, GetId());
+        stmt->SetData(1, permission);
+        stmt->SetData(2, granted);
+        stmt->SetData(3, realmId);
         LoginDatabase.Execute(stmt);
     }
 
@@ -157,9 +157,9 @@ namespace rbac
             LOG_TRACE("rbac", "RBACData::RevokePermission [Id: %u Name: %s] (Permission %u, RealmId %d). Ok and DB updated",
                 GetId(), GetName().c_str(), permissionId, realmId);
             LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_RBAC_ACCOUNT_PERMISSION);
-            stmt->setUInt32(0, GetId());
-            stmt->setUInt32(1, permissionId);
-            stmt->setInt32(2, realmId);
+            stmt->SetData(0, GetId());
+            stmt->SetData(1, permissionId);
+            stmt->SetData(2, realmId);
             LoginDatabase.Execute(stmt);
 
             CalculateNewPermissions();
@@ -178,8 +178,8 @@ namespace rbac
         LOG_DEBUG("rbac", "RBACData::LoadFromDB [Id: %u Name: %s]: Loading permissions", GetId(), GetName().c_str());
         // Load account permissions (granted and denied) that affect current realm
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_RBAC_ACCOUNT_PERMISSIONS);
-        stmt->setUInt32(0, GetId());
-        stmt->setInt32(1, GetRealmId());
+        stmt->SetData(0, GetId());
+        stmt->SetData(1, GetRealmId());
 
         LoadFromDBCallback(LoginDatabase.Query(stmt));
     }
@@ -191,8 +191,8 @@ namespace rbac
         LOG_DEBUG("rbac", "RBACData::LoadFromDB [Id: %u Name: %s]: Loading permissions", GetId(), GetName().c_str());
         // Load account permissions (granted and denied) that affect current realm
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_RBAC_ACCOUNT_PERMISSIONS);
-        stmt->setUInt32(0, GetId());
-        stmt->setInt32(1, GetRealmId());
+        stmt->SetData(0, GetId());
+        stmt->SetData(1, GetRealmId());
 
         return LoginDatabase.AsyncQuery(stmt);
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,20 +23,20 @@
 
 enum Says
 {
-    SAY_AGGRO               = 0,
-    SAY_HEALTH_BELOW_75     = 1,
-    SAY_HEALTH_BELOW_25     = 2,
-    SAY_KILL                = 3
+    SAY_AGGRO = 0,
+    SAY_HEALTH_BELOW_75 = 1,
+    SAY_HEALTH_BELOW_25 = 2,
+    SAY_KILL = 3
 };
 
 enum Spells
 {
-    SPELL_SHADOW_WORD_PAIN  = 14032
+    SPELL_SHADOW_WORD_PAIN = 14032
 };
 
 enum Events
 {
-    EVENT_SHADOW_WORD_PAIN  = 1
+    EVENT_SHADOW_WORD_PAIN = 1
 };
 
 struct boss_interrogator_vishas : public BossAI
@@ -89,13 +89,13 @@ struct boss_interrogator_vishas : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_SHADOW_WORD_PAIN:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, true, true, -SPELL_SHADOW_WORD_PAIN))
-                        DoCast(target, SPELL_SHADOW_WORD_PAIN);
-                    events.Repeat(7s, 11s);
-                    break;
-                default:
-                    break;
+            case EVENT_SHADOW_WORD_PAIN:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, true, true, -SPELL_SHADOW_WORD_PAIN))
+                    DoCast(target, SPELL_SHADOW_WORD_PAIN);
+                events.Repeat(7s, 11s);
+                break;
+            default:
+                break;
             }
         }
 

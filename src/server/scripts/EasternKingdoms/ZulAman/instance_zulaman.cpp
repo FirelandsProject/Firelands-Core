@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -55,8 +55,8 @@ enum HexlordMalacrassTriggerTexts
     SAY_SPEEDRUN_STARTED = 0
 };
 
-Position const AmanishiGuardianDistanceCheckPos = { 120.223f, 1585.766f, 43.43f  };
-Position const AmanishiSavageDistanceCheckPos   = { 122.176f, 1528.203f, 21.233f };
+Position const AmanishiGuardianDistanceCheckPos = { 120.223f, 1585.766f, 43.43f };
+Position const AmanishiSavageDistanceCheckPos = { 122.176f, 1528.203f, 21.233f };
 
 class instance_zulaman : public InstanceMapScript
 {
@@ -95,21 +95,21 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_AMANISHI_GUARDIAN:
-                    if (creature->GetExactDist2d(AmanishiGuardianDistanceCheckPos) < 30.0f)
-                        _amanishiGuardianGUIDs.push_back(creature->GetGUID());
-                    break;
-                case NPC_AMANISHI_SAVAGE:
-                    if (creature->GetExactDist2d(AmanishiSavageDistanceCheckPos) < 100.0f)
-                        _amanishiSavageGUIDs.push_back(creature->GetGUID());
-                    break;
-                case NPC_AMANI_DRAGONHAWK_HATCHLING:
-                    if (Creature* janalai = GetCreature(DATA_JANALAI))
-                        if (janalai->IsAIEnabled())
-                            janalai->AI()->JustSummoned(creature);
-                    break;
-                default:
-                    break;
+            case NPC_AMANISHI_GUARDIAN:
+                if (creature->GetExactDist2d(AmanishiGuardianDistanceCheckPos) < 30.0f)
+                    _amanishiGuardianGUIDs.push_back(creature->GetGUID());
+                break;
+            case NPC_AMANISHI_SAVAGE:
+                if (creature->GetExactDist2d(AmanishiSavageDistanceCheckPos) < 100.0f)
+                    _amanishiSavageGUIDs.push_back(creature->GetGUID());
+                break;
+            case NPC_AMANI_DRAGONHAWK_HATCHLING:
+                if (Creature* janalai = GetCreature(DATA_JANALAI))
+                    if (janalai->IsAIEnabled())
+                        janalai->AI()->JustSummoned(creature);
+                break;
+            default:
+                break;
             }
         }
 
@@ -119,12 +119,12 @@ public:
 
             switch (go->GetEntry())
             {
-                case GO_MASSIVE_GATE:
-                    if (_speedRunState != NOT_STARTED)
-                        go->SetGoState(GO_STATE_ACTIVE);
-                    break;
-                default:
-                    break;
+            case GO_MASSIVE_GATE:
+                if (_speedRunState != NOT_STARTED)
+                    go->SetGoState(GO_STATE_ACTIVE);
+                break;
+            default:
+                break;
             }
         }
 
@@ -132,42 +132,42 @@ public:
         {
             switch (type)
             {
-                case DATA_ZULAMAN_SPEEDRUN_STATE:
-                    if (data == IN_PROGRESS)
-                    {
-                        _remainingSpeedRunTime = 15;
-                        _speedRunState = IN_PROGRESS;
+            case DATA_ZULAMAN_SPEEDRUN_STATE:
+                if (data == IN_PROGRESS)
+                {
+                    _remainingSpeedRunTime = 15;
+                    _speedRunState = IN_PROGRESS;
 
-                        if (Creature* trigger = GetCreature(DATA_HEXLORD_MALACRASS_TRIGGER))
-                            if (trigger->IsAIEnabled())
-                                trigger->AI()->Talk(SAY_SPEEDRUN_STARTED);
+                    if (Creature* trigger = GetCreature(DATA_HEXLORD_MALACRASS_TRIGGER))
+                        if (trigger->IsAIEnabled())
+                            trigger->AI()->Talk(SAY_SPEEDRUN_STARTED);
 
-                        DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER_ENABLED, 1);
-                        DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER, _remainingSpeedRunTime);
-                        events.ScheduleEvent(EVENT_UPDATE_SPEED_RUN_TIMER, 1min);
-                        SaveToDB();
-                    }
-                    break;
-                case DATA_TRIGGER_AMANISHI_GUARDIANS:
-                    for (ObjectGuid guid : _amanishiGuardianGUIDs)
-                    {
-                        if (Creature* guardian = instance->GetCreature(guid))
-                            if (guardian->IsAIEnabled())
-                                guardian->AI()->DoAction(ACTION_ALERT_AMANISHI_GUARDIANS);
-                    }
-                    break;
-                case DATA_TRIGGER_AMANISHI_SAVAGES:
-                    if (_savagesAtGateTriggered)
-                        return;
-                    for (ObjectGuid guid : _amanishiSavageGUIDs)
-                    {
-                        if (Creature* savage = instance->GetCreature(guid))
-                            savage->GetMotionMaster()->MovePath(savage->GetSpawnId() * 10, false);
-                    }
-                    _savagesAtGateTriggered = true;
-                    break;
-                default:
-                    break;
+                    DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER_ENABLED, 1);
+                    DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER, _remainingSpeedRunTime);
+                    events.ScheduleEvent(EVENT_UPDATE_SPEED_RUN_TIMER, 1min);
+                    SaveToDB();
+                }
+                break;
+            case DATA_TRIGGER_AMANISHI_GUARDIANS:
+                for (ObjectGuid guid : _amanishiGuardianGUIDs)
+                {
+                    if (Creature* guardian = instance->GetCreature(guid))
+                        if (guardian->IsAIEnabled())
+                            guardian->AI()->DoAction(ACTION_ALERT_AMANISHI_GUARDIANS);
+                }
+                break;
+            case DATA_TRIGGER_AMANISHI_SAVAGES:
+                if (_savagesAtGateTriggered)
+                    return;
+                for (ObjectGuid guid : _amanishiSavageGUIDs)
+                {
+                    if (Creature* savage = instance->GetCreature(guid))
+                        savage->GetMotionMaster()->MovePath(savage->GetSpawnId() * 10, false);
+                }
+                _savagesAtGateTriggered = true;
+                break;
+            default:
+                break;
             }
         }
 
@@ -175,10 +175,10 @@ public:
         {
             switch (type)
             {
-                case DATA_ZULAMAN_SPEEDRUN_STATE:
-                    return _speedRunState;
-                default:
-                    break;
+            case DATA_ZULAMAN_SPEEDRUN_STATE:
+                return _speedRunState;
+            default:
+                break;
             }
 
             return 0;
@@ -200,13 +200,13 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_RIUAL_OF_POWER:
-                    if (Creature* voljin = GetCreature(DATA_VOLJIN))
-                        if (voljin->IsAIEnabled())
-                            voljin->AI()->DoAction(ACTION_OPEN_MASSIVE_GATES);
-                    break;
-                default:
-                    break;
+            case EVENT_RIUAL_OF_POWER:
+                if (Creature* voljin = GetCreature(DATA_VOLJIN))
+                    if (voljin->IsAIEnabled())
+                        voljin->AI()->DoAction(ACTION_OPEN_MASSIVE_GATES);
+                break;
+            default:
+                break;
             }
         }
 
@@ -221,20 +221,20 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_UPDATE_SPEED_RUN_TIMER:
-                        _remainingSpeedRunTime--;
-                        DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER, _remainingSpeedRunTime);
-                        if (_remainingSpeedRunTime)
-                            events.Repeat(1min);
-                        else
-                        {
-                            DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER_ENABLED, 0);
-                            _remainingSpeedRunTime = FAIL;
-                        }
-                        SaveToDB();
-                        break;
-                    default:
-                        break;
+                case EVENT_UPDATE_SPEED_RUN_TIMER:
+                    _remainingSpeedRunTime--;
+                    DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER, _remainingSpeedRunTime);
+                    if (_remainingSpeedRunTime)
+                        events.Repeat(1min);
+                    else
+                    {
+                        DoUpdateWorldState(WORLD_STATE_ZULAMAN_TIMER_ENABLED, 0);
+                        _remainingSpeedRunTime = FAIL;
+                    }
+                    SaveToDB();
+                    break;
+                default:
+                    break;
                 }
             }
         }

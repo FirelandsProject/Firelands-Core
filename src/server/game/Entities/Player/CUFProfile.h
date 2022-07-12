@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,7 +22,7 @@
 #include <bitset>
 #include <string>
 
-/// Maximum number of CompactUnitFrames profiles
+ /// Maximum number of CompactUnitFrames profiles
 #define MAX_CUF_PROFILES 5
 
 /// Bit index used in the many bool options of CompactUnitFrames
@@ -66,32 +66,32 @@ struct CUFProfile
 {
     CUFProfile() : ProfileName(), BoolOptions() // might want to change default value for options
     {
-        FrameHeight     = 0;
-        FrameWidth      = 0;
-        SortBy          = 0;
-        HealthText      = 0;
-        TopPoint        = 0;
-        BottomPoint     = 0;
-        LeftPoint       = 0;
-        TopOffset       = 0;
-        BottomOffset    = 0;
-        LeftOffset      = 0;
+        FrameHeight = 0;
+        FrameWidth = 0;
+        SortBy = 0;
+        HealthText = 0;
+        TopPoint = 0;
+        BottomPoint = 0;
+        LeftPoint = 0;
+        TopOffset = 0;
+        BottomOffset = 0;
+        LeftOffset = 0;
     }
 
     CUFProfile(std::string const& name, uint16 frameHeight, uint16 frameWidth, uint8 sortBy, uint8 healthText, uint32 boolOptions,
         uint8 topPoint, uint8 bottomPoint, uint8 leftPoint, uint16 topOffset, uint16 bottomOffset, uint16 leftOffset)
         : ProfileName(name), BoolOptions((int)boolOptions)
     {
-        FrameHeight     = frameHeight;
-        FrameWidth      = frameWidth;
-        SortBy          = sortBy;
-        HealthText      = healthText;
-        TopPoint        = topPoint;
-        BottomPoint     = bottomPoint;
-        LeftPoint       = leftPoint;
-        TopOffset       = topOffset;
-        BottomOffset    = bottomOffset;
-        LeftOffset      = leftOffset;
+        FrameHeight = frameHeight;
+        FrameWidth = frameWidth;
+        SortBy = sortBy;
+        HealthText = healthText;
+        TopPoint = topPoint;
+        BottomPoint = bottomPoint;
+        LeftPoint = leftPoint;
+        TopOffset = topOffset;
+        BottomOffset = bottomOffset;
+        LeftOffset = leftOffset;
     }
 
     std::string ProfileName;

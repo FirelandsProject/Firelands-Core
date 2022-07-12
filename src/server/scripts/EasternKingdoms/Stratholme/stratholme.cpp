@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,19 +15,19 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Stratholme
-SD%Complete: 100
-SDComment: Misc mobs for instance. go-script to apply aura and start event for quest 8945
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: Stratholme
+ SD%Complete: 100
+ SDComment: Misc mobs for instance. go-script to apply aura and start event for quest 8945
+ SDCategory: Stratholme
+ EndScriptData */
 
-/* ContentData
-go_gauntlet_gate
-npc_freed_soul
-npc_restless_soul
-npc_spectral_ghostly_citizen
-EndContentData */
+ /* ContentData
+ go_gauntlet_gate
+ npc_freed_soul
+ npc_restless_soul
+ npc_spectral_ghostly_citizen
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "GameObject.h"
@@ -42,9 +42,9 @@ EndContentData */
 #include "SpellScript.h"
 #include "stratholme.h"
 
-/*######
-## go_gauntlet_gate (this is the _first_ of the gauntlet gates, two exist)
-######*/
+ /*######
+ ## go_gauntlet_gate (this is the _first_ of the gauntlet gates, two exist)
+ ######*/
 
 class go_gauntlet_gate : public GameObjectScript
 {
@@ -102,15 +102,15 @@ public:
 enum RestlessSoul
 {
     // Spells
-    SPELL_EGAN_BLASTER      = 17368,
-    SPELL_SOUL_FREED        = 17370,
+    SPELL_EGAN_BLASTER = 17368,
+    SPELL_SOUL_FREED = 17370,
 
     // Quest
-    QUEST_RESTLESS_SOUL     = 5282,
+    QUEST_RESTLESS_SOUL = 5282,
 
     // Creatures
-    NPC_RESTLESS            = 11122,
-    NPC_FREED               = 11136
+    NPC_RESTLESS = 11122,
+    NPC_FREED = 11136
 };
 
 class npc_restless_soul : public CreatureScript
@@ -202,8 +202,8 @@ public:
 
 enum GhostlyCitizenSpells
 {
-    SPELL_HAUNTING_PHANTOM  = 16336,
-    SPELL_SLAP              = 6754
+    SPELL_HAUNTING_PHANTOM = 16336,
+    SPELL_SLAP = 6754
 };
 
 class npc_spectral_ghostly_citizen : public CreatureScript
@@ -251,9 +251,9 @@ public:
             {
                 for (uint32 i = 1; i <= 4; ++i)
                 {
-                     //100%, 50%, 33%, 25% chance to spawn
-                     if (urand(1, i) == 1)
-                         DoSummon(NPC_RESTLESS, me, 20.0f, 600000);
+                    //100%, 50%, 33%, 25% chance to spawn
+                    if (urand(1, i) == 1)
+                        DoSummon(NPC_RESTLESS, me, 20.0f, 600000);
                 }
             }
         }
@@ -277,24 +277,24 @@ public:
         {
             switch (emote)
             {
-                case TEXT_EMOTE_DANCE:
-                    EnterEvadeMode();
-                    break;
-                case TEXT_EMOTE_RUDE:
-                    if (me->IsWithinDistInMap(player, 5))
-                        DoCast(player, SPELL_SLAP, false);
-                    else
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
-                    break;
-                case TEXT_EMOTE_WAVE:
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_WAVE);
-                    break;
-                case TEXT_EMOTE_BOW:
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_BOW);
-                    break;
-                case TEXT_EMOTE_KISS:
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
-                    break;
+            case TEXT_EMOTE_DANCE:
+                EnterEvadeMode();
+                break;
+            case TEXT_EMOTE_RUDE:
+                if (me->IsWithinDistInMap(player, 5))
+                    DoCast(player, SPELL_SLAP, false);
+                else
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
+                break;
+            case TEXT_EMOTE_WAVE:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_WAVE);
+                break;
+            case TEXT_EMOTE_BOW:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_BOW);
+                break;
+            case TEXT_EMOTE_KISS:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
+                break;
             }
         }
     };
@@ -311,9 +311,9 @@ class spell_ysida_saved_credit : public SpellScript
     void FilterTargets(std::list<WorldObject*>& targets)
     {
         targets.remove_if([](WorldObject* obj)
-        {
-            return obj->GetTypeId() != TYPEID_PLAYER;
-        });
+            {
+                return obj->GetTypeId() != TYPEID_PLAYER;
+            });
     }
 
     void HandleScript(SpellEffIndex /*effIndex*/)

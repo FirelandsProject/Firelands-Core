@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-Name: Boss_Temporus
-%Complete: 75
-Comment: More abilities need to be implemented
-Category: Caverns of Time, The Black Morass
-*/
+ /*
+ Name: Boss_Temporus
+ %Complete: 75
+ Comment: More abilities need to be implemented
+ Category: Caverns of Time, The Black Morass
+ */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -29,25 +29,25 @@ Category: Caverns of Time, The Black Morass
 
 enum Enums
 {
-    SAY_ENTER               = 0,
-    SAY_AGGRO               = 1,
-    SAY_BANISH              = 2,
-    SAY_SLAY                = 3,
-    SAY_DEATH               = 4,
+    SAY_ENTER = 0,
+    SAY_AGGRO = 1,
+    SAY_BANISH = 2,
+    SAY_SLAY = 3,
+    SAY_DEATH = 4,
 
-    SPELL_HASTE             = 31458,
-    SPELL_MORTAL_WOUND      = 31464,
-    SPELL_WING_BUFFET       = 31475,
-    H_SPELL_WING_BUFFET     = 38593,
-    SPELL_REFLECT           = 38592                       //Not Implemented (Heroic mod)
+    SPELL_HASTE = 31458,
+    SPELL_MORTAL_WOUND = 31464,
+    SPELL_WING_BUFFET = 31475,
+    H_SPELL_WING_BUFFET = 38593,
+    SPELL_REFLECT = 38592                       //Not Implemented (Heroic mod)
 };
 
 enum Events
 {
-    EVENT_HASTE             = 1,
-    EVENT_MORTAL_WOUND      = 2,
-    EVENT_WING_BUFFET       = 3,
-    EVENT_SPELL_REFLECTION  = 4
+    EVENT_HASTE = 1,
+    EVENT_MORTAL_WOUND = 2,
+    EVENT_WING_BUFFET = 3,
+    EVENT_SPELL_REFLECTION = 4
 };
 
 class boss_temporus : public CreatureScript
@@ -116,24 +116,24 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_HASTE:
-                        DoCast(me, SPELL_HASTE);
-                        events.ScheduleEvent(EVENT_HASTE, urand(20000, 25000));
-                        break;
-                    case EVENT_MORTAL_WOUND:
-                        DoCast(me, SPELL_MORTAL_WOUND);
-                        events.ScheduleEvent(EVENT_MORTAL_WOUND, urand(10000, 20000));
-                        break;
-                    case EVENT_WING_BUFFET:
-                         DoCast(me, SPELL_WING_BUFFET);
-                        events.ScheduleEvent(EVENT_WING_BUFFET, urand(20000, 30000));
-                        break;
-                    case EVENT_SPELL_REFLECTION: // Only in Heroic
-                        DoCast(me, SPELL_REFLECT);
-                        events.ScheduleEvent(EVENT_SPELL_REFLECTION, urand(25000, 35000));
-                        break;
-                    default:
-                        break;
+                case EVENT_HASTE:
+                    DoCast(me, SPELL_HASTE);
+                    events.ScheduleEvent(EVENT_HASTE, urand(20000, 25000));
+                    break;
+                case EVENT_MORTAL_WOUND:
+                    DoCast(me, SPELL_MORTAL_WOUND);
+                    events.ScheduleEvent(EVENT_MORTAL_WOUND, urand(10000, 20000));
+                    break;
+                case EVENT_WING_BUFFET:
+                    DoCast(me, SPELL_WING_BUFFET);
+                    events.ScheduleEvent(EVENT_WING_BUFFET, urand(20000, 30000));
+                    break;
+                case EVENT_SPELL_REFLECTION: // Only in Heroic
+                    DoCast(me, SPELL_REFLECT);
+                    events.ScheduleEvent(EVENT_SPELL_REFLECTION, urand(25000, 35000));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

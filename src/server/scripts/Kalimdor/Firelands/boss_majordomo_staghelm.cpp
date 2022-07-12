@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,31 +27,31 @@
 enum Spells
 {
     // Majordomo Staghelm
-    SPELL_ZERO_ENERGY_ZERO_REGEN    = 72242,
-    SPELL_FORM_CONTROLLER           = 98386,
-    SPELL_CONCENTRATION             = 98256,
-    SPELL_CLUMP_CHECK               = 98399,
-    SPELL_SCORPION_FORM             = 98379,
-    SPELL_CAT_FORM                  = 98374,
-    SPELL_FURY                      = 97235,
-    SPELL_ADRENALINE                = 97238,
-    SPELL_FLAME_SCYTHE              = 98474,
-    SPELL_LEAPING_FLAMES_TARGETING  = 101165,
-    SPELL_LEAPING_FLAMES_SUMMON     = 101222,
-    SPELL_FIERY_CYCLONE             = 98443,
-    SPELL_SEARING_SEEDS             = 98450,
-    SPELL_BURNING_ORBS              = 98451,
-    SPELL_BURNING_ORBS_SUMMON       = 98565,
+    SPELL_ZERO_ENERGY_ZERO_REGEN = 72242,
+    SPELL_FORM_CONTROLLER = 98386,
+    SPELL_CONCENTRATION = 98256,
+    SPELL_CLUMP_CHECK = 98399,
+    SPELL_SCORPION_FORM = 98379,
+    SPELL_CAT_FORM = 98374,
+    SPELL_FURY = 97235,
+    SPELL_ADRENALINE = 97238,
+    SPELL_FLAME_SCYTHE = 98474,
+    SPELL_LEAPING_FLAMES_TARGETING = 101165,
+    SPELL_LEAPING_FLAMES_SUMMON = 101222,
+    SPELL_FIERY_CYCLONE = 98443,
+    SPELL_SEARING_SEEDS = 98450,
+    SPELL_BURNING_ORBS = 98451,
+    SPELL_BURNING_ORBS_SUMMON = 98565,
 
     // Spirit of the Flame
-    SPELL_STUN_AND_HATE             = 101224,
+    SPELL_STUN_AND_HATE = 101224,
 
     // Player
-    SPELL_SEARING_SEED              = 98620,
-    SPELL_UNCOMMON_CONCENTRTATION   = 98254,
-    SPELL_RARE_CONCENTRTATION       = 98253,
-    SPELL_EPIC_CONCENTRTATION       = 98252,
-    SPELL_LEGENDARY_CONCENTRATION   = 98245
+    SPELL_SEARING_SEED = 98620,
+    SPELL_UNCOMMON_CONCENTRTATION = 98254,
+    SPELL_RARE_CONCENTRTATION = 98253,
+    SPELL_EPIC_CONCENTRTATION = 98252,
+    SPELL_LEGENDARY_CONCENTRATION = 98245
 };
 
 enum Events
@@ -66,35 +66,35 @@ enum Events
 
 enum Actions
 {
-    ACTION_PLAYERS_CLUSTERED        = 0,
-    ACTION_PLAYERS_SPLIT            = 1,
-    ACTION_BALEROC_DIED             = 2,
-    ACTION_DRUID_OF_THE_FLAME_DIED  = 3
+    ACTION_PLAYERS_CLUSTERED = 0,
+    ACTION_PLAYERS_SPLIT = 1,
+    ACTION_BALEROC_DIED = 2,
+    ACTION_DRUID_OF_THE_FLAME_DIED = 3
 };
 
 enum Phases
 {
-    PHASE_INTRO     = 1,
-    PHASE_COMBAT    = 2
+    PHASE_INTRO = 1,
+    PHASE_COMBAT = 2
 };
 
 enum Texts
 {
     // Majordomo Staghelm
-    SAY_INTRO                   = 0,
-    SAY_SCORPION_FORM           = 1,
-    SAY_ANNOUNCE_SCORPION_FORM  = 2,
-    SAY_CAT_FORM                = 3,
-    SAY_ANNOUNCE_CAT_FORM       = 4,
-    SAY_SEARING_SEEDS           = 5,
-    SAY_ANNOUNCE_SEARING_SEEDS  = 6,
-    SAY_BURNING_ORBS            = 7,
-    SAY_ANNOUNCE_BURNING_ORBS   = 8,
-    SAY_SLAY                    = 9,
-    SAY_DEATH                   = 10,
-    SAY_BALEROC_DIED_1          = 11,
-    SAY_BALEROC_DIED_2          = 12,
-    SAY_BALEROC_DIED_3          = 13
+    SAY_INTRO = 0,
+    SAY_SCORPION_FORM = 1,
+    SAY_ANNOUNCE_SCORPION_FORM = 2,
+    SAY_CAT_FORM = 3,
+    SAY_ANNOUNCE_CAT_FORM = 4,
+    SAY_SEARING_SEEDS = 5,
+    SAY_ANNOUNCE_SEARING_SEEDS = 6,
+    SAY_BURNING_ORBS = 7,
+    SAY_ANNOUNCE_BURNING_ORBS = 8,
+    SAY_SLAY = 9,
+    SAY_DEATH = 10,
+    SAY_BALEROC_DIED_1 = 11,
+    SAY_BALEROC_DIED_2 = 12,
+    SAY_BALEROC_DIED_3 = 13
 };
 
 enum Points
@@ -105,9 +105,9 @@ enum Points
 
 enum class Forms
 {
-    Druid       = 0,
-    Cat         = 1,
-    Scorpion    = 2
+    Druid = 0,
+    Cat = 1,
+    Scorpion = 2
 };
 
 Position const MajordomoStaghelmMovePosition = { 523.4965f, -61.987846f, 83.94701f };
@@ -182,20 +182,20 @@ struct boss_majordomo_staghelm : public BossAI
 
         switch (summon->GetEntry())
         {
-            case NPC_SPIRIT_OF_THE_FLAME:
-                summon->CastSpell(summon, SPELL_STUN_AND_HATE);
-                summon->SetCorpseDelay(0);
-                summon->m_Events.AddEventAtOffset([summon]()
+        case NPC_SPIRIT_OF_THE_FLAME:
+            summon->CastSpell(summon, SPELL_STUN_AND_HATE);
+            summon->SetCorpseDelay(0);
+            summon->m_Events.AddEventAtOffset([summon]()
                 {
                     if (summon->IsAIEnabled())
                         summon->AI()->DoZoneInCombat();
                 }, 1s);
-                break;
-            case NPC_BURNING_ORB:
-                summon->SetCorpseDelay(0);
-                break;
-            default:
-                break;
+            break;
+        case NPC_BURNING_ORB:
+            summon->SetCorpseDelay(0);
+            break;
+        default:
+            break;
         }
     }
 
@@ -203,30 +203,30 @@ struct boss_majordomo_staghelm : public BossAI
     {
         switch (action)
         {
-            case ACTION_PLAYERS_CLUSTERED:
-                ++_clusteredPlayersTicks;
-                _splitPlayersTicks = 0;
-                break;
-            case ACTION_PLAYERS_SPLIT:
-                ++_splitPlayersTicks;
-                _clusteredPlayersTicks = 0;
-                break;
-            case ACTION_BALEROC_DIED:
-                me->setActive(true);
+        case ACTION_PLAYERS_CLUSTERED:
+            ++_clusteredPlayersTicks;
+            _splitPlayersTicks = 0;
+            break;
+        case ACTION_PLAYERS_SPLIT:
+            ++_splitPlayersTicks;
+            _clusteredPlayersTicks = 0;
+            break;
+        case ACTION_BALEROC_DIED:
+            me->setActive(true);
+            events.SetPhase(PHASE_INTRO);
+            events.ScheduleEvent(EVENT_BALEROC_DIED_1, 10s);
+            break;
+        case ACTION_DRUID_OF_THE_FLAME_DIED:
+            ++_killedDruidsOfTheFlameCount;
+            if (_killedDruidsOfTheFlameCount >= (Is25ManRaid() ? 6 : 3))
+            {
                 events.SetPhase(PHASE_INTRO);
-                events.ScheduleEvent(EVENT_BALEROC_DIED_1, 10s);
-                break;
-            case ACTION_DRUID_OF_THE_FLAME_DIED:
-                ++_killedDruidsOfTheFlameCount;
-                if (_killedDruidsOfTheFlameCount >= (Is25ManRaid() ? 6 : 3))
-                {
-                    events.SetPhase(PHASE_INTRO);
-                    Talk(SAY_INTRO);
-                    me->GetMotionMaster()->MovePoint(POINT_INTRO, MajordomoStaghelmMovePosition, true, 5.f);
-                }
-                break;
-            default:
-                break;
+                Talk(SAY_INTRO);
+                me->GetMotionMaster()->MovePoint(POINT_INTRO, MajordomoStaghelmMovePosition, true, 5.f);
+            }
+            break;
+        default:
+            break;
         }
 
         if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -295,35 +295,35 @@ struct boss_majordomo_staghelm : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_ALLOW_COMBAT:
-                    DoCastSelf(SPELL_ZERO_ENERGY_ZERO_REGEN);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
-                    break;
-                case EVENT_FORM_ABILITY:
-                    if (me->GetPower(POWER_ENERGY) == me->GetMaxPower(POWER_ENERGY))
-                    {
-                        if (_currentForm == Forms::Scorpion)
-                            DoCastVictim(SPELL_FLAME_SCYTHE);
-                        else if (_currentForm == Forms::Cat)
-                            DoCastAOE(SPELL_LEAPING_FLAMES_TARGETING, CastSpellExtraArgs().AddSpellMod(SPELLVALUE_MAX_TARGETS, 1));
-                    }
-                    events.Repeat(400ms);
-                    break;
-                case EVENT_BALEROC_DIED_1:
-                    Talk(SAY_BALEROC_DIED_1);
-                    events.ScheduleEvent(EVENT_BALEROC_DIED_2, 11s);
-                    break;
-                case EVENT_BALEROC_DIED_2:
-                    Talk(SAY_BALEROC_DIED_2);
-                    events.ScheduleEvent(EVENT_BALEROC_DIED_3, 11s);
-                    break;
-                case EVENT_BALEROC_DIED_3:
-                    Talk(SAY_BALEROC_DIED_3);
-                    if (!me->IsEngaged())
-                        me->setActive(false);
-                    break;
-                default:
-                    break;
+            case EVENT_ALLOW_COMBAT:
+                DoCastSelf(SPELL_ZERO_ENERGY_ZERO_REGEN);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+                break;
+            case EVENT_FORM_ABILITY:
+                if (me->GetPower(POWER_ENERGY) == me->GetMaxPower(POWER_ENERGY))
+                {
+                    if (_currentForm == Forms::Scorpion)
+                        DoCastVictim(SPELL_FLAME_SCYTHE);
+                    else if (_currentForm == Forms::Cat)
+                        DoCastAOE(SPELL_LEAPING_FLAMES_TARGETING, CastSpellExtraArgs().AddSpellMod(SPELLVALUE_MAX_TARGETS, 1));
+                }
+                events.Repeat(400ms);
+                break;
+            case EVENT_BALEROC_DIED_1:
+                Talk(SAY_BALEROC_DIED_1);
+                events.ScheduleEvent(EVENT_BALEROC_DIED_2, 11s);
+                break;
+            case EVENT_BALEROC_DIED_2:
+                Talk(SAY_BALEROC_DIED_2);
+                events.ScheduleEvent(EVENT_BALEROC_DIED_3, 11s);
+                break;
+            case EVENT_BALEROC_DIED_3:
+                Talk(SAY_BALEROC_DIED_3);
+                if (!me->IsEngaged())
+                    me->setActive(false);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -412,9 +412,9 @@ class spell_majordomo_staghelm_leaping_flames_targeting : public SpellScript
 
         std::list<WorldObject*> targetsCopy = targets;
         targets.remove_if([&](WorldObject const* target)
-        {
-            return target == GetCaster()->GetVictim();
-        });
+            {
+                return target == GetCaster()->GetVictim();
+            });
 
         // We only have the tank left fightning the caster so we use im
         if (targets.empty())

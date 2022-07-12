@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,21 +15,21 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Celebras_the_Cursed
-SD%Complete: 100
-SDComment:
-SDCategory: Maraudon
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Celebras_the_Cursed
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Maraudon
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 
 enum Spells
 {
-    SPELL_WRATH                 = 21807,
-    SPELL_ENTANGLINGROOTS       = 12747,
-    SPELL_CORRUPT_FORCES        = 21968
+    SPELL_WRATH = 21807,
+    SPELL_ENTANGLINGROOTS = 12747,
+    SPELL_CORRUPT_FORCES = 21968
 };
 
 class celebras_the_cursed : public CreatureScript

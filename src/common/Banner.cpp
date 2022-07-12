@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,7 +30,8 @@ void Firelands::Banner::Show(char const* applicationName, void(*log)(char const*
     log("|   _]  |  | |    \\ |   [_ |     ||  _  ||  |  ||     /  \\ |    /   \\_ |     ||    \\ |   [_ ");
     log("|  |    |  | |  .  \\|     ||     ||  |  ||  |  ||     \\    |    \\     ||     ||  .  \\|     |");
     log("|__|   |____||__|\\_||_____||_____||__|__||__|__||_____|\\___|     \\____| \\___/ |__|\\_||_____|");
-    log("https://github.com/seobryn/Firelands-Core                                                  \n");
+    log("                                                                                                    \n");
+    log("https://github.com/FirelandsProject/Firelands-Core                                                  \n");
 
     if (logExtraInfo)
         logExtraInfo();

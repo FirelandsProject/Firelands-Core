@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,26 +27,26 @@
 
 enum Texts
 {
-    SAY_AGGRO                   = 0,
-    SAY_SLAY                    = 1,
-    SAY_CHAINS_OF_WOE           = 2,
-    SAY_DEATH                   = 3,
-    SAY_EMOTE_CALL_FOR_HELP     = 4,
-    SAY_ANNOUNCE_SKULLCRACKER   = 5
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_CHAINS_OF_WOE = 2,
+    SAY_DEATH = 3,
+    SAY_EMOTE_CALL_FOR_HELP = 4,
+    SAY_ANNOUNCE_SKULLCRACKER = 5
 };
 
 enum Spells
 {
     // Rom'Ogg Bonecrusher
-    SPELL_CALL_FOR_HELP             = 82137,
-    SPELL_CHAINS_OF_WOE             = 75539,
-    SPELL_QUAKE                     = 75272,
-    SPELL_THE_SKULLCRACKER          = 75543,
-    SPELL_WOUNDING_STRIKE           = 75571,
+    SPELL_CALL_FOR_HELP = 82137,
+    SPELL_CHAINS_OF_WOE = 75539,
+    SPELL_QUAKE = 75272,
+    SPELL_THE_SKULLCRACKER = 75543,
+    SPELL_WOUNDING_STRIKE = 75571,
 
     // Chains of Woe
-    SPELL_CHAINS_OF_WOE_TELEPORT    = 75437,
-    SPELL_CHAINS_OF_WOE_CHANNELED   = 75441,
+    SPELL_CHAINS_OF_WOE_TELEPORT = 75437,
+    SPELL_CHAINS_OF_WOE_CHANNELED = 75441,
 };
 
 enum Events
@@ -65,19 +65,19 @@ enum Data
 
 class AttackStartEvent : public BasicEvent
 {
-    public:
-        AttackStartEvent(Creature* owner) :  _owner(owner) { }
+public:
+    AttackStartEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            _owner->SetReactState(REACT_AGGRESSIVE);
-            if (_owner->IsAIEnabled())
-                _owner->AI()->DoZoneInCombat();
-            return true;
-        }
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        _owner->SetReactState(REACT_AGGRESSIVE);
+        if (_owner->IsAIEnabled())
+            _owner->AI()->DoZoneInCombat();
+        return true;
+    }
 
-    private:
-        Creature* _owner;
+private:
+    Creature* _owner;
 };
 
 struct boss_romogg_bonecrusher : public BossAI
@@ -170,29 +170,29 @@ struct boss_romogg_bonecrusher : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_CHAINS_OF_WOE:
-                    Talk(SAY_CHAINS_OF_WOE);
-                    me->AttackStop();
-                    me->SetReactState(REACT_PASSIVE);
-                    DoCast(me, SPELL_CHAINS_OF_WOE);
-                    events.ScheduleEvent(EVENT_SKULLCRACKER, 3s);
-                    events.Repeat(35s);
-                    break;
-                case EVENT_SKULLCRACKER:
-                    Talk(SAY_ANNOUNCE_SKULLCRACKER);
-                    DoCast(me, SPELL_THE_SKULLCRACKER);
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    break;
-                case EVENT_QUAKE:
-                    DoCast(me, SPELL_QUAKE);
-                    events.ScheduleEvent(EVENT_QUAKE, 24s);
-                    break;
-                case EVENT_WOUNDING_STRIKE:
-                    DoCastVictim(SPELL_WOUNDING_STRIKE);
-                    events.ScheduleEvent(EVENT_WOUNDING_STRIKE, 13s, 14s);
-                    break;
-                default:
-                    break;
+            case EVENT_CHAINS_OF_WOE:
+                Talk(SAY_CHAINS_OF_WOE);
+                me->AttackStop();
+                me->SetReactState(REACT_PASSIVE);
+                DoCast(me, SPELL_CHAINS_OF_WOE);
+                events.ScheduleEvent(EVENT_SKULLCRACKER, 3s);
+                events.Repeat(35s);
+                break;
+            case EVENT_SKULLCRACKER:
+                Talk(SAY_ANNOUNCE_SKULLCRACKER);
+                DoCast(me, SPELL_THE_SKULLCRACKER);
+                me->SetReactState(REACT_AGGRESSIVE);
+                break;
+            case EVENT_QUAKE:
+                DoCast(me, SPELL_QUAKE);
+                events.ScheduleEvent(EVENT_QUAKE, 24s);
+                break;
+            case EVENT_WOUNDING_STRIKE:
+                DoCastVictim(SPELL_WOUNDING_STRIKE);
+                events.ScheduleEvent(EVENT_WOUNDING_STRIKE, 13s, 14s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -310,19 +310,19 @@ class spell_romogg_call_for_help : public SpellScript
 
 class achievement_crushing_bones_and_cracking_skulls : public AchievementCriteriaScript
 {
-    public:
-        achievement_crushing_bones_and_cracking_skulls() : AchievementCriteriaScript("achievement_crushing_bones_and_cracking_skulls") { }
+public:
+    achievement_crushing_bones_and_cracking_skulls() : AchievementCriteriaScript("achievement_crushing_bones_and_cracking_skulls") { }
 
-        bool OnCheck(Player* /*source*/, Unit* target) override
-        {
-            if (!target)
-                return false;
-
-            if (target->IsAIEnabled())
-                return target->GetAI()->GetData(DATA_CRUSHING_BONES_AND_CRACKING_SKULLS);
-
+    bool OnCheck(Player* /*source*/, Unit* target) override
+    {
+        if (!target)
             return false;
-        }
+
+        if (target->IsAIEnabled())
+            return target->GetAI()->GetData(DATA_CRUSHING_BONES_AND_CRACKING_SKULLS);
+
+        return false;
+    }
 };
 
 void AddSC_boss_romogg_bonecrusher()

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,11 +22,11 @@
 enum Spells
 {
     // Balnazzar
-    SPELL_MINDBLAST                 = 80750,
-    SPELL_PSYCHIC_SCREAM            = 13704,
-    SPELL_SLEEP                     = 66290,
-    SPELL_DOMINATION                = 17405,
-    SPELL_SHADOW_SHOCK              = 17399
+    SPELL_MINDBLAST = 80750,
+    SPELL_PSYCHIC_SCREAM = 13704,
+    SPELL_SLEEP = 66290,
+    SPELL_DOMINATION = 17405,
+    SPELL_SHADOW_SHOCK = 17399
 };
 
 enum Events
@@ -85,33 +85,33 @@ struct boss_balnazzar : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_MIND_BLAST:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, false, false))
-                        DoCast(target, SPELL_MINDBLAST);
-                    else
-                        DoCastVictim(SPELL_MINDBLAST);
-                    events.Repeat(7s);
-                    break;
-                case EVENT_SLEEP:
-                    DoCastVictim(SPELL_SLEEP);
-                    events.Repeat(11s);
-                    break;
-                case EVENT_PSYCHIC_SCREAM:
-                    DoCastAOE(SPELL_PSYCHIC_SCREAM);
-                    events.RescheduleEvent(EVENT_MIND_BLAST, 6s);
-                    events.Repeat(27s);
-                    break;
-                case EVENT_DOMINATION:
-                    if (SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, false, false))
-                        DoCastVictim(SPELL_DOMINATION);
-                    events.Repeat(12s);
-                    break;
-                case EVENT_SHADOW_SHOCK:
-                    DoCastAOE(SPELL_SHADOW_SHOCK);
-                    // @TODO: need repeat timer
-                    break;
-                default:
-                    break;
+            case EVENT_MIND_BLAST:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, false, false))
+                    DoCast(target, SPELL_MINDBLAST);
+                else
+                    DoCastVictim(SPELL_MINDBLAST);
+                events.Repeat(7s);
+                break;
+            case EVENT_SLEEP:
+                DoCastVictim(SPELL_SLEEP);
+                events.Repeat(11s);
+                break;
+            case EVENT_PSYCHIC_SCREAM:
+                DoCastAOE(SPELL_PSYCHIC_SCREAM);
+                events.RescheduleEvent(EVENT_MIND_BLAST, 6s);
+                events.Repeat(27s);
+                break;
+            case EVENT_DOMINATION:
+                if (SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, false, false))
+                    DoCastVictim(SPELL_DOMINATION);
+                events.Repeat(12s);
+                break;
+            case EVENT_SHADOW_SHOCK:
+                DoCastAOE(SPELL_SHADOW_SHOCK);
+                // @TODO: need repeat timer
+                break;
+            default:
+                break;
             }
         }
 

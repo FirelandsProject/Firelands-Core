@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -23,8 +23,8 @@
 
 enum Texts
 {
-    SAY_AGGRO       = 0,
-    SAY_SMOKE_BOMB  = 1
+    SAY_AGGRO = 0,
+    SAY_SMOKE_BOMB = 1
 };
 
 enum Events
@@ -35,85 +35,85 @@ enum Events
 
 enum Spells
 {
-    SPELL_SMOKE_BOMB                    = 84768,
-    SPELL_GENERIC_EJECT_ALL_PASSENGERS  = 79737,
-    SPELL_RIDE_VEHICLE                  = 93970,
-    SPELL_SLIPSTREAM                    = 85016
+    SPELL_SMOKE_BOMB = 84768,
+    SPELL_GENERIC_EJECT_ALL_PASSENGERS = 79737,
+    SPELL_RIDE_VEHICLE = 93970,
+    SPELL_SLIPSTREAM = 85016
 };
 
 class npc_lct_augh : public CreatureScript
 {
-    public:
-        npc_lct_augh() : CreatureScript("npc_lct_augh") { }
+public:
+    npc_lct_augh() : CreatureScript("npc_lct_augh") { }
 
-        struct npc_lct_aughAI : public ScriptedAI
+    struct npc_lct_aughAI : public ScriptedAI
+    {
+        npc_lct_aughAI(Creature* creature) : ScriptedAI(creature)
         {
-            npc_lct_aughAI(Creature* creature) : ScriptedAI(creature)
-            {
-                Initialize();
-            }
-
-            void Initialize()
-            {
-                _finishedPreFight = false;
-            }
-
-            void JustEngagedWith(Unit* /*who*/) override
-            {
-                Talk(SAY_AGGRO);
-            }
-
-            void DamageTaken(Unit* /*attacker*/, uint32& damage) override
-            {
-                if (me->HealthBelowPctDamaged(50, damage) && !_finishedPreFight)
-                {
-                    me->AttackStop();
-                    me->SetReactState(REACT_PASSIVE);
-                    me->RemoveAllAuras();
-                    DoCastSelf(SPELL_SMOKE_BOMB, true);
-                    Talk(SAY_SMOKE_BOMB);
-                    _events.ScheduleEvent(EVENT_SMOKE_BOMB, Milliseconds(800));
-                    _finishedPreFight = true;
-                }
-
-                // Do not allow Augh to die
-                if (damage > me->GetHealth())
-                    damage = me->GetHealth() - 1;
-            }
-
-            void UpdateAI(uint32 diff) override
-            {
-                if (!UpdateVictim() && !_finishedPreFight)
-                    return;
-
-                _events.Update(diff);
-
-                while (uint32 eventId = _events.ExecuteEvent())
-                {
-                    switch (eventId)
-                    {
-                        case EVENT_SMOKE_BOMB:
-                            DoCastSelf(SPELL_SMOKE_BOMB);
-                            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
-                            me->DespawnOrUnsummon(Seconds(1) + Milliseconds(200));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                DoMeleeAttackIfReady();
-            }
-
-        private:
-            EventMap _events;
-            bool _finishedPreFight;
-        };
-
-        CreatureAI* GetAI(Creature* creature) const
-        {
-            return GetLostCityOfTheTolvirAI<npc_lct_aughAI>(creature);
+            Initialize();
         }
+
+        void Initialize()
+        {
+            _finishedPreFight = false;
+        }
+
+        void JustEngagedWith(Unit* /*who*/) override
+        {
+            Talk(SAY_AGGRO);
+        }
+
+        void DamageTaken(Unit* /*attacker*/, uint32& damage) override
+        {
+            if (me->HealthBelowPctDamaged(50, damage) && !_finishedPreFight)
+            {
+                me->AttackStop();
+                me->SetReactState(REACT_PASSIVE);
+                me->RemoveAllAuras();
+                DoCastSelf(SPELL_SMOKE_BOMB, true);
+                Talk(SAY_SMOKE_BOMB);
+                _events.ScheduleEvent(EVENT_SMOKE_BOMB, Milliseconds(800));
+                _finishedPreFight = true;
+            }
+
+            // Do not allow Augh to die
+            if (damage > me->GetHealth())
+                damage = me->GetHealth() - 1;
+        }
+
+        void UpdateAI(uint32 diff) override
+        {
+            if (!UpdateVictim() && !_finishedPreFight)
+                return;
+
+            _events.Update(diff);
+
+            while (uint32 eventId = _events.ExecuteEvent())
+            {
+                switch (eventId)
+                {
+                case EVENT_SMOKE_BOMB:
+                    DoCastSelf(SPELL_SMOKE_BOMB);
+                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+                    me->DespawnOrUnsummon(Seconds(1) + Milliseconds(200));
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            DoMeleeAttackIfReady();
+        }
+
+    private:
+        EventMap _events;
+        bool _finishedPreFight;
+    };
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return GetLostCityOfTheTolvirAI<npc_lct_aughAI>(creature);
+    }
 };
 
 struct npc_lct_wind_tunnel_landing_zone : public ScriptedAI
@@ -146,11 +146,11 @@ struct npc_lct_wind_tunnel_landing_zone : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_EJECT_ALL_PASSENGERS:
-                    DoCast(me, SPELL_GENERIC_EJECT_ALL_PASSENGERS);
-                    break;
-                default:
-                    break;
+            case EVENT_EJECT_ALL_PASSENGERS:
+                DoCast(me, SPELL_GENERIC_EJECT_ALL_PASSENGERS);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -161,18 +161,18 @@ private:
 
 class SlipstreamEvent : public BasicEvent
 {
-    public:
-        SlipstreamEvent(Unit* owner, ObjectGuid windtunnelGuid) : _owner(owner), _windTunnelGUID(windtunnelGuid) { }
+public:
+    SlipstreamEvent(Unit* owner, ObjectGuid windtunnelGuid) : _owner(owner), _windTunnelGUID(windtunnelGuid) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            if (Creature* windtunnel = ObjectAccessor::GetCreature(*_owner, _windTunnelGUID))
-                windtunnel->CastSpell(_owner, SPELL_SLIPSTREAM);
-            return true;
-        }
-    private:
-        Unit* _owner;
-        ObjectGuid _windTunnelGUID;
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        if (Creature* windtunnel = ObjectAccessor::GetCreature(*_owner, _windTunnelGUID))
+            windtunnel->CastSpell(_owner, SPELL_SLIPSTREAM);
+        return true;
+    }
+private:
+    Unit* _owner;
+    ObjectGuid _windTunnelGUID;
 };
 
 struct npc_lct_wind_tunnel : public ScriptedAI

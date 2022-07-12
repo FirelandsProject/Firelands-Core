@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -154,7 +154,7 @@ void QuestPoolMgr::LoadFromDB()
             for (uint32 poolId : unknownPoolIds)
             {
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_POOL_QUEST_SAVE);
-                stmt->setUInt32(0, poolId);
+                stmt->SetData(0, poolId);
                 trans->Append(stmt);
             }
             CharacterDatabase.CommitTransaction(trans);

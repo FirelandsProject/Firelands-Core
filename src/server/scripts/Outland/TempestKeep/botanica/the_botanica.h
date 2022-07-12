@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,20 +27,20 @@ uint32 const EncounterCount = 5;
 
 enum BCDataTypes
 {
-    DATA_COMMANDER_SARANNIS             = 0,
-    DATA_HIGH_BOTANIST_FREYWINN         = 1,
-    DATA_THORNGRIN_THE_TENDER           = 2,
-    DATA_LAJ                            = 3,
-    DATA_WARP_SPLINTER                  = 4
+    DATA_COMMANDER_SARANNIS = 0,
+    DATA_HIGH_BOTANIST_FREYWINN = 1,
+    DATA_THORNGRIN_THE_TENDER = 2,
+    DATA_LAJ = 3,
+    DATA_WARP_SPLINTER = 4
 };
 
 enum BCCreatureIds
 {
-    NPC_COMMANDER_SARANNIS              = 17976,
-    NPC_HIGH_BOTANIST_FREYWINN          = 17975,
-    NPC_THORNGRIN_THE_TENDER            = 17978,
-    NPC_LAJ                             = 17980,
-    NPC_WARP_SPLINTER                   = 17977
+    NPC_COMMANDER_SARANNIS = 17976,
+    NPC_HIGH_BOTANIST_FREYWINN = 17975,
+    NPC_THORNGRIN_THE_TENDER = 17978,
+    NPC_LAJ = 17980,
+    NPC_WARP_SPLINTER = 17977
 };
 
 template <class AI, class T>

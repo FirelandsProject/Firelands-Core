@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,17 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Desolace
-SD%Complete: 100
-SDComment: Quest support: 5561, 5581
-SDCategory: Desolace
-EndScriptData */
+ /* ScriptData
+ SDName: Desolace
+ SD%Complete: 100
+ SDComment: Quest support: 5561, 5581
+ SDCategory: Desolace
+ EndScriptData */
 
-/* ContentData
-npc_aged_dying_ancient_kodo
-go_demon_portal
-EndContentData */
+ /* ContentData
+ npc_aged_dying_ancient_kodo
+ go_demon_portal
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "MotionMaster.h"
@@ -36,20 +36,20 @@ EndContentData */
 
 enum DyingKodo
 {
-    SAY_SMEED_HOME                  = 0,
+    SAY_SMEED_HOME = 0,
 
-    QUEST_KODO                      = 5561,
+    QUEST_KODO = 5561,
 
-    NPC_SMEED                       = 11596,
-    NPC_AGED_KODO                   = 4700,
-    NPC_DYING_KODO                  = 4701,
-    NPC_ANCIENT_KODO                = 4702,
-    NPC_TAMED_KODO                  = 11627,
+    NPC_SMEED = 11596,
+    NPC_AGED_KODO = 4700,
+    NPC_DYING_KODO = 4701,
+    NPC_ANCIENT_KODO = 4702,
+    NPC_TAMED_KODO = 11627,
 
-    SPELL_KODO_KOMBO_ITEM           = 18153,
-    SPELL_KODO_KOMBO_PLAYER_BUFF    = 18172,
-    SPELL_KODO_KOMBO_DESPAWN_BUFF   = 18377,
-    SPELL_KODO_KOMBO_GOSSIP         = 18362
+    SPELL_KODO_KOMBO_ITEM = 18153,
+    SPELL_KODO_KOMBO_PLAYER_BUFF = 18172,
+    SPELL_KODO_KOMBO_DESPAWN_BUFF = 18377,
+    SPELL_KODO_KOMBO_GOSSIP = 18362
 
 };
 

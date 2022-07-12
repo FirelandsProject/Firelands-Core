@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -40,7 +40,7 @@ static void threadIdCallback(CRYPTO_THREADID* id)
 void OpenSSLCrypto::threadsSetup()
 {
     cryptoLocks.resize(CRYPTO_num_locks());
-    for(int i = 0 ; i < CRYPTO_num_locks(); ++i)
+    for (int i = 0; i < CRYPTO_num_locks(); ++i)
     {
         cryptoLocks[i] = new std::mutex();
     }
@@ -56,7 +56,7 @@ void OpenSSLCrypto::threadsCleanup()
 {
     CRYPTO_set_locking_callback(nullptr);
     CRYPTO_THREADID_set_callback(nullptr);
-    for(int i = 0 ; i < CRYPTO_num_locks(); ++i)
+    for (int i = 0; i < CRYPTO_num_locks(); ++i)
     {
         delete cryptoLocks[i];
     }

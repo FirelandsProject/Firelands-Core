@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -33,25 +33,25 @@ WorldPackets::Character::EnumCharactersResult::CharacterInfo::CharacterInfo(Fiel
     //    23                     24               25
     //    character_banned.guid, characters.slot, character_declinedname.genitive
 
-    Guid              = ObjectGuid::Create<HighGuid::Player>(fields[0].GetUInt32());
-    Name              = fields[1].GetString();
-    RaceID            = fields[2].GetUInt8();
-    ClassID           = fields[3].GetUInt8();
-    SexID             = fields[4].GetUInt8();
-    SkinID            = fields[5].GetUInt8();
-    FaceID            = fields[6].GetUInt8();
-    HairStyle         = fields[7].GetUInt8();
-    HairColor         = fields[8].GetUInt8();
-    FacialHair        = fields[9].GetUInt8();
-    ExperienceLevel   = fields[10].GetUInt8();
-    ZoneID            = int32(fields[11].GetUInt16());
-    MapID             = int32(fields[12].GetUInt16());
-    PreloadPos        = Position(fields[13].GetFloat(), fields[14].GetFloat(), fields[15].GetFloat());
+    Guid = ObjectGuid::Create<HighGuid::Player>(fields[0].GetUInt32());
+    Name = fields[1].GetString();
+    RaceID = fields[2].GetUInt8();
+    ClassID = fields[3].GetUInt8();
+    SexID = fields[4].GetUInt8();
+    SkinID = fields[5].GetUInt8();
+    FaceID = fields[6].GetUInt8();
+    HairStyle = fields[7].GetUInt8();
+    HairColor = fields[8].GetUInt8();
+    FacialHair = fields[9].GetUInt8();
+    ExperienceLevel = fields[10].GetUInt8();
+    ZoneID = int32(fields[11].GetUInt16());
+    MapID = int32(fields[12].GetUInt16());
+    PreloadPos = Position(fields[13].GetFloat(), fields[14].GetFloat(), fields[15].GetFloat());
 
     if (ObjectGuid::LowType guildId = fields[16].GetUInt32())
         GuildGUID = ObjectGuid::Create<HighGuid::Guild>(guildId);
 
-    uint32 playerFlags  = fields[17].GetUInt32();
+    uint32 playerFlags = fields[17].GetUInt32();
     uint32 atLoginFlags = fields[18].GetUInt16();
 
     if (atLoginFlags & AT_LOGIN_RESURRECT)

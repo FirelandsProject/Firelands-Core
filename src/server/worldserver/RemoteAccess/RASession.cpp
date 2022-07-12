@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -125,7 +125,7 @@ bool RASession::CheckAccessLevel(const std::string& user)
     Utf8ToUpperOnlyLatin(safeUser);
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_ACCESS);
-    stmt->setString(0, safeUser);
+    stmt->SetData(0, safeUser);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (!result)
@@ -162,8 +162,8 @@ bool RASession::CheckPassword(const std::string& user, const std::string& pass)
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_CHECK_PASSWORD_BY_NAME);
 
-    stmt->setString(0, safe_user);
-    stmt->setString(1, hash);
+    stmt->SetData(0, safe_user);
+    stmt->SetData(1, hash);
 
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "npc_pet_mag_".
- */
+ /*
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "npc_pet_mag_".
+  */
 
 #include "ScriptMgr.h"
 #include "CellImpl.h"
@@ -31,23 +31,23 @@
 
 enum Spells
 {
-    SPELL_INHERIT_MASTERS_THREAT_LIST   = 58838,
-    SPELL_PET_HEALTH_SCALING            = 61679,
-    SPELL_CLONE_ME                      = 45204,
-    SPELL_COPY_OFFHAND_WEAPON           = 45206,
-    SPELL_COPY_WEAPON                   = 41055,
-    SPELL_INITIALIZE_IMAGES             = 58836,
+    SPELL_INHERIT_MASTERS_THREAT_LIST = 58838,
+    SPELL_PET_HEALTH_SCALING = 61679,
+    SPELL_CLONE_ME = 45204,
+    SPELL_COPY_OFFHAND_WEAPON = 45206,
+    SPELL_COPY_WEAPON = 41055,
+    SPELL_INITIALIZE_IMAGES = 58836,
 
-    SPELL_FIREBALL                      = 88082,
-    SPELL_FROST_BOLT                    = 59638,
-    SPELL_ARCANE_BLAST                  = 88084
+    SPELL_FIREBALL = 88082,
+    SPELL_FROST_BOLT = 59638,
+    SPELL_ARCANE_BLAST = 88084
 };
 
 enum CreatureIds
 {
-    NPC_MIRROR_IMAGE_FIRE   = 47244,
+    NPC_MIRROR_IMAGE_FIRE = 47244,
     NPC_MIRROR_IMAGE_ARCANE = 47243,
-    NPC_MIRROR_IMAGE_FROST  = 31216
+    NPC_MIRROR_IMAGE_FROST = 31216
 };
 
 enum Events
@@ -116,18 +116,18 @@ struct npc_pet_mage_mirror_image : ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_CAST_ABILITY:
-                    if (me->GetEntry() == NPC_MIRROR_IMAGE_FROST)
-                        DoCastVictim(SPELL_FROST_BOLT);
-                    if (me->GetEntry() == NPC_MIRROR_IMAGE_FIRE)
-                        DoCastVictim(SPELL_FIREBALL);
-                    else if (me->GetEntry() == NPC_MIRROR_IMAGE_ARCANE)
-                        DoCastVictim(SPELL_ARCANE_BLAST);
+            case EVENT_CAST_ABILITY:
+                if (me->GetEntry() == NPC_MIRROR_IMAGE_FROST)
+                    DoCastVictim(SPELL_FROST_BOLT);
+                if (me->GetEntry() == NPC_MIRROR_IMAGE_FIRE)
+                    DoCastVictim(SPELL_FIREBALL);
+                else if (me->GetEntry() == NPC_MIRROR_IMAGE_ARCANE)
+                    DoCastVictim(SPELL_ARCANE_BLAST);
 
-                    _events.Repeat(3s);
-                    break;
-                default:
-                    break;
+                _events.Repeat(3s);
+                break;
+            default:
+                break;
             }
         }
     }

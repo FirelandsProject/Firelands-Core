@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -104,16 +104,16 @@ namespace WorldPackets
 
         enum class LoginFailureReason : uint8
         {
-            Failed             = 0,
-            NoWorld            = 1,
+            Failed = 0,
+            NoWorld = 1,
             DuplicateCharacter = 2,
-            NoInstances        = 3,
-            Disabled           = 4,
-            NoCharacter        = 5,
-            LockedForTransfer  = 6,
-            LockedByBilling    = 7,
-            LockedByMobileAH   = 8,
-            TemporaryGMLock    = 9
+            NoInstances = 3,
+            Disabled = 4,
+            NoCharacter = 5,
+            LockedForTransfer = 6,
+            LockedByBilling = 7,
+            LockedByMobileAH = 8,
+            TemporaryGMLock = 9
         };
 
         class CharacterLoginFailed final : public ServerPacket

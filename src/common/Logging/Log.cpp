@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -213,12 +213,12 @@ void Log::RegisterAppender(uint8 index, AppenderCreatorFn appenderCreateFn)
     appenderFactory[index] = appenderCreateFn;
 }
 
-void Log::outMessage(std::string const& filter, LogLevel level, std::string&& message)
+void Log::_outMessage(std::string const& filter, LogLevel level, std::string&& message)
 {
     write(Firelands::make_unique<LogMessage>(level, filter, std::move(message)));
 }
 
-void Log::outCommand(std::string&& message, std::string&& param1)
+void Log::_outCommand(std::string&& message, std::string&& param1)
 {
     write(Firelands::make_unique<LogMessage>(LOG_LEVEL_INFO, "commands.gm", std::move(message), std::move(param1)));
 }

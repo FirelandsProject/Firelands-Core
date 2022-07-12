@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2018 FirelandsCore <https://github.com/FirelandsProject>
+ * Copyright (C) 2008-2018 Firelands Core <https://github.com/FirelandsProject>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the

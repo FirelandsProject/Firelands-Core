@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,13 +21,13 @@
 
 enum Spells
 {
-    SPELL_POISON_CLOUD     = 3815,
-    SPELL_FRENZIED_RAGE    = 3490
+    SPELL_POISON_CLOUD = 3815,
+    SPELL_FRENZIED_RAGE = 3490
 };
 
 enum Events
 {
-    EVENT_POISON_CLOUD     = 1,
+    EVENT_POISON_CLOUD = 1,
     EVENT_FRENZIED_RAGE
 };
 
@@ -60,7 +60,7 @@ public:
             events.ScheduleEvent(EVENT_POISON_CLOUD, urand(5000, 9000));
         }
 
-        void DamageTaken(Unit* /*atacker*/, uint32 &damage) override
+        void DamageTaken(Unit* /*atacker*/, uint32& damage) override
         {
             if (!IsEnraged && me->HealthBelowPctDamaged(30, damage))
             {
@@ -73,17 +73,17 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_POISON_CLOUD:
-                    DoCastVictim(SPELL_POISON_CLOUD);
-                    events.ScheduleEvent(EVENT_POISON_CLOUD, urand(25000, 50000));
-                    break;
-                default:
-                    break;
+            case EVENT_POISON_CLOUD:
+                DoCastVictim(SPELL_POISON_CLOUD);
+                events.ScheduleEvent(EVENT_POISON_CLOUD, urand(25000, 50000));
+                break;
+            default:
+                break;
             }
         }
 
-        private:
-            bool IsEnraged;
+    private:
+        bool IsEnraged;
     };
 
     CreatureAI* GetAI(Creature* creature) const override

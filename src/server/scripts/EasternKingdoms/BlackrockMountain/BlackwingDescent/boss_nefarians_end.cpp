@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -40,94 +40,94 @@
 enum Spells
 {
     // Nefarian
-    SPELL_INTRO_2_STALKER_TRANSFORM                     = 78750,
-    SPELL_INTRO_3_SHRINK_AURA                           = 78753,
-    SPELL_INTRO_4_LIFT_OFF_ANIM_KIT                     = 78692,
-    SPELL_INTRO_5A_START_FIGHT_PROC                     = 78730,
-    SPELL_ELECTRICAL_CHARGE_NEFARIAN                    = 95793,
-    SPELL_SHADOW_OF_COWARDICE                           = 79355,
-    SPELL_CHILDREN_OF_DEATHWING_NEFARIAN                = 80787,
-    SPELL_HAIL_OF_BONES                                 = 78679,
-    SPELL_NEFARIAN_PHASE_2_HEALTH_AURA                  = 81582,
-    SPELL_SHADOWFLAME_BARRAGE                           = 78621,
-    SPELL_BRUSHFIRE_PRE_START_PERIODIC                  = 94630,
-    SPELL_BRUSHFIRE_START                               = 79813,
-    SPELL_DOMINION_DUMMY                                = 94211,
-    SPELL_DOMINION_OVERRIDE_ACTION_BAR                  = 79318,
-    SPELL_EXPLOSIVE_CINDERS                             = 79339,
-    SPELL_EXPLOSIVE_CINDERS_EXPLOSION                   = 79347,
-    SPELL_BERSERK                                       = 26662,
+    SPELL_INTRO_2_STALKER_TRANSFORM = 78750,
+    SPELL_INTRO_3_SHRINK_AURA = 78753,
+    SPELL_INTRO_4_LIFT_OFF_ANIM_KIT = 78692,
+    SPELL_INTRO_5A_START_FIGHT_PROC = 78730,
+    SPELL_ELECTRICAL_CHARGE_NEFARIAN = 95793,
+    SPELL_SHADOW_OF_COWARDICE = 79355,
+    SPELL_CHILDREN_OF_DEATHWING_NEFARIAN = 80787,
+    SPELL_HAIL_OF_BONES = 78679,
+    SPELL_NEFARIAN_PHASE_2_HEALTH_AURA = 81582,
+    SPELL_SHADOWFLAME_BARRAGE = 78621,
+    SPELL_BRUSHFIRE_PRE_START_PERIODIC = 94630,
+    SPELL_BRUSHFIRE_START = 79813,
+    SPELL_DOMINION_DUMMY = 94211,
+    SPELL_DOMINION_OVERRIDE_ACTION_BAR = 79318,
+    SPELL_EXPLOSIVE_CINDERS = 79339,
+    SPELL_EXPLOSIVE_CINDERS_EXPLOSION = 79347,
+    SPELL_BERSERK = 26662,
 
     // Onyxia
-    SPELL_PERMANENT_FEIGN_DEATH_1                       = 29266,
-    SPELL_ONYXIA_START_FIGHT_1_PERIODIC                 = 81516,
-    SPELL_ELECTRICAL_CHARGE_ONYXIA                      = 78949,
-    SPELL_ELECTRICAL_OVERLOAD                           = 78999,
-    SPELL_LIGHTNING_DISCHARGE                           = 78090,
-    SPELL_LIGHTNING_DISCHARGE_VISUAL_LEFT_1             = 81435,
-    SPELL_LIGHTNING_DISCHARGE_VISUAL_LEFT_2             = 81436,
-    SPELL_LIGHTNING_DISCHARGE_VISUAL_RIGHT_1            = 81437,
-    SPELL_LIGHTNING_DISCHARGE_VISUAL_RIGHT_2            = 81438,
-    SPELL_LIGHTNING_DISCHARGE_CONE_BACK                 = 77833,
-    SPELL_LIGHTNING_DISCHARGE_CONE_FRONT                = 77836,
-    SPELL_LIGHTNING_DISCHARGE_DAMAGE                    = 77943,
-    SPELL_CHILDREN_OF_DEATHWING_ONYXIA                  = 80785,
+    SPELL_PERMANENT_FEIGN_DEATH_1 = 29266,
+    SPELL_ONYXIA_START_FIGHT_1_PERIODIC = 81516,
+    SPELL_ELECTRICAL_CHARGE_ONYXIA = 78949,
+    SPELL_ELECTRICAL_OVERLOAD = 78999,
+    SPELL_LIGHTNING_DISCHARGE = 78090,
+    SPELL_LIGHTNING_DISCHARGE_VISUAL_LEFT_1 = 81435,
+    SPELL_LIGHTNING_DISCHARGE_VISUAL_LEFT_2 = 81436,
+    SPELL_LIGHTNING_DISCHARGE_VISUAL_RIGHT_1 = 81437,
+    SPELL_LIGHTNING_DISCHARGE_VISUAL_RIGHT_2 = 81438,
+    SPELL_LIGHTNING_DISCHARGE_CONE_BACK = 77833,
+    SPELL_LIGHTNING_DISCHARGE_CONE_FRONT = 77836,
+    SPELL_LIGHTNING_DISCHARGE_DAMAGE = 77943,
+    SPELL_CHILDREN_OF_DEATHWING_ONYXIA = 80785,
 
     // Nefarian and Onyxia
-    SPELL_TAIL_LASH                                     = 77827,
-    SPELL_SHADOWFLAME_BREATH                            = 77826,
-    SPELL_SHADOW_OF_COWARDICE_DAMAGE                    = 79353,
-    SPELL_SHADOW_OF_COWARDICE_DUMMY                     = 80963,
+    SPELL_TAIL_LASH = 77827,
+    SPELL_SHADOWFLAME_BREATH = 77826,
+    SPELL_SHADOW_OF_COWARDICE_DAMAGE = 79353,
+    SPELL_SHADOW_OF_COWARDICE_DUMMY = 80963,
 
     // Nefarian's Lightning Machine
-    SPELL_ELECTROCUTE                                   = 81198,
-    SPELL_ELECTROCUTE_DAMAGE                            = 81272,
+    SPELL_ELECTROCUTE = 81198,
+    SPELL_ELECTROCUTE_DAMAGE = 81272,
 
     // Animated Bone Warrior
-    SPELL_FULL_POWER_NO_REGEN                           = 78120,
-    SPELL_ANIMATE_BONES                                 = 78122,
-    SPELL_PERMANENT_FEIGN_DEATH_2                       = 70628,
-    SPELL_CLEAR_ALL_DEBUFFS                             = 34098,
-    SPELL_EMPOWER                                       = 79330,
+    SPELL_FULL_POWER_NO_REGEN = 78120,
+    SPELL_ANIMATE_BONES = 78122,
+    SPELL_PERMANENT_FEIGN_DEATH_2 = 70628,
+    SPELL_CLEAR_ALL_DEBUFFS = 34098,
+    SPELL_EMPOWER = 79330,
 
     // Chromatic Prototype
-    SPELL_JUMP_DOWN_TO_PLATFORM                         = 79205,
-    SPELL_READY_UNARMED                                 = 94610,
-    SPELL_DUMMY_NUKE                                    = 80776,
-    SPELL_BLAST_NOVA                                    = 80734,
+    SPELL_JUMP_DOWN_TO_PLATFORM = 79205,
+    SPELL_READY_UNARMED = 94610,
+    SPELL_DUMMY_NUKE = 80776,
+    SPELL_BLAST_NOVA = 80734,
 
     // Invisible Stalker (Cataclysm Boss, Ignore Combat, Floating)
-    SPELL_INTRO_1_TRANSFORM_VISUAL                      = 78205,
-    SPELL_CHAINS_A_STEEL                                = 81159,
-    SPELL_CHAINS_B_STEEL                                = 81174,
-    SPELL_CHAINS_C_STEEL                                = 81176,
-    SPELL_CHAINS_A_LIGHTNING                            = 81158,
-    SPELL_CHAINS_B_LIGHTNING                            = 81175,
-    SPELL_CHAINS_C_LIGHTNING                            = 81177,
+    SPELL_INTRO_1_TRANSFORM_VISUAL = 78205,
+    SPELL_CHAINS_A_STEEL = 81159,
+    SPELL_CHAINS_B_STEEL = 81174,
+    SPELL_CHAINS_C_STEEL = 81176,
+    SPELL_CHAINS_A_LIGHTNING = 81158,
+    SPELL_CHAINS_B_LIGHTNING = 81175,
+    SPELL_CHAINS_C_LIGHTNING = 81177,
 
     // Controller Stalker
-    SPELL_PET_HACK_1                                    = 95278, // Todo: we don't need this (yet). This is going to disable pathfinding for pets.
+    SPELL_PET_HACK_1 = 95278, // Todo: we don't need this (yet). This is going to disable pathfinding for pets.
 
     // Shadowblase Flashpoint / Shadowblaze
-    SPELL_BRUSHFIRE_FLASHPOINT_CONTROL                  = 79392,
-    SPELL_BRUSHFIRE_GROWTH                              = 79393,
-    SPELL_BRUSHFIRE_BURN_AURA                           = 79396,
-    SPELL_BRUSHFIRE_SUMMON                              = 79405,
-    SPELL_BRUSHFIRE_CHECK_VALID_LOCATION                = 79401,
+    SPELL_BRUSHFIRE_FLASHPOINT_CONTROL = 79392,
+    SPELL_BRUSHFIRE_GROWTH = 79393,
+    SPELL_BRUSHFIRE_BURN_AURA = 79396,
+    SPELL_BRUSHFIRE_SUMMON = 79405,
+    SPELL_BRUSHFIRE_CHECK_VALID_LOCATION = 79401,
 
     // Dominion Stalker
-    SPELL_DOMINION_DETERMINE_FARTHEST_PORTAL_STALKER    = 81664,
-    SPELL_DOMINION_PORTAL_TRIGGER                       = 81752,
-    SPELL_DOMINION_PORTAL_BEAM                          = 81709,
+    SPELL_DOMINION_DETERMINE_FARTHEST_PORTAL_STALKER = 81664,
+    SPELL_DOMINION_PORTAL_TRIGGER = 81752,
+    SPELL_DOMINION_PORTAL_BEAM = 81709,
 
     // Players
-    SPELL_DOMINION_IMMUNITY                             = 95900,
-    SPELL_SUMMON_DOMINION_STALKER_NORTH                 = 81665,
-    SPELL_SUMMON_DOMINION_STALKER_EAST                  = 81745,
-    SPELL_SUMMON_DOMINION_STALKER_SOUTH                 = 81746,
-    SPELL_SUMMON_DOMINION_STALKER_WEST                  = 81747,
-    SPELL_STOLEN_POWER                                  = 80627,
-    SPELL_INSTAKILL_SELF                                = 29878
+    SPELL_DOMINION_IMMUNITY = 95900,
+    SPELL_SUMMON_DOMINION_STALKER_NORTH = 81665,
+    SPELL_SUMMON_DOMINION_STALKER_EAST = 81745,
+    SPELL_SUMMON_DOMINION_STALKER_SOUTH = 81746,
+    SPELL_SUMMON_DOMINION_STALKER_WEST = 81747,
+    SPELL_STOLEN_POWER = 80627,
+    SPELL_INSTAKILL_SELF = 29878
 };
 
 static constexpr uint8 const DominionStalkerSpellCount = 4;
@@ -142,24 +142,24 @@ uint32 const DominionStalkerSummonSpells[DominionStalkerSpellCount] =
 enum Texts
 {
     // Nefarian
-    SAY_ANNOUNCE_AIR_CRACKLES   = 0,
-    SAY_HAIL_OF_BONES           = 1,
-    SAY_ONYXIA_DIED             = 2,
-    SAY_MOLTEN_LAVA             = 3,
-    SAY_LAND_PHASE_THREE        = 4,
-    SAY_SHADOWBLAZE_SPARK       = 5,
-    SAY_SLAY                    = 6,
-    SAY_DEATH                   = 7,
-    SAY_DOMINION                = 8,
+    SAY_ANNOUNCE_AIR_CRACKLES = 0,
+    SAY_HAIL_OF_BONES = 1,
+    SAY_ONYXIA_DIED = 2,
+    SAY_MOLTEN_LAVA = 3,
+    SAY_LAND_PHASE_THREE = 4,
+    SAY_SHADOWBLAZE_SPARK = 5,
+    SAY_SLAY = 6,
+    SAY_DEATH = 7,
+    SAY_DOMINION = 8,
 
     // Onyxia
-    SAY_ANNOUNCE_WARNING_1      = 0,
-    SAY_ANNOUNCE_WARNING_2      = 1,
+    SAY_ANNOUNCE_WARNING_1 = 0,
+    SAY_ANNOUNCE_WARNING_2 = 1,
 
     // Lord Victor Nefarius
-    SAY_INTRO_1                 = 0,
-    SAY_INTRO_2                 = 1,
-    SAY_INTRO_3                 = 2
+    SAY_INTRO_1 = 0,
+    SAY_INTRO_2 = 1,
+    SAY_INTRO_3 = 2
 };
 
 enum Events
@@ -216,63 +216,63 @@ enum Events
 
 enum Phases
 {
-    PHASE_ONE   = 1,
-    PHASE_TWO   = 2,
+    PHASE_ONE = 1,
+    PHASE_TWO = 2,
     PHASE_THREE = 3
 };
 
 enum Actions
 {
     // Lord Victor Nefarius
-    ACTION_START_INTRO              = 1,
+    ACTION_START_INTRO = 1,
 
     // Nefarian
-    ACTION_ONYXIA_ENGAGED           = 1,
-    ACTION_ONYXIA_DIED              = 2,
+    ACTION_ONYXIA_ENGAGED = 1,
+    ACTION_ONYXIA_DIED = 2,
 
     // Onyxia
-    ACTION_REANIMATED               = 1,
+    ACTION_REANIMATED = 1,
     ACTION_UPDATE_ELECTRICAL_CHARGE = 2,
-    ACTION_NEFARIAN_LANDED          = 3,
+    ACTION_NEFARIAN_LANDED = 3,
 
     // Chromatic Prototype
-    ACTION_DISENGAGE_PLAYERS        = 1,
+    ACTION_DISENGAGE_PLAYERS = 1,
 
     // Shadowblaze Flashpoint / Shadowblaze
-    ACTION_DESPAWN_FLAMES           = 1,
-    ACTION_SPREAD_FLAMES            = 2
+    ACTION_DESPAWN_FLAMES = 1,
+    ACTION_SPREAD_FLAMES = 2
 };
 
 enum TransportStopFrames
 {
-    TRANSPORT_STOP_FRAME_LOWERED    = 0,
-    TRANSPORT_STOP_FRAME_RAISED     = 1
+    TRANSPORT_STOP_FRAME_LOWERED = 0,
+    TRANSPORT_STOP_FRAME_RAISED = 1
 };
 
 enum SummonGroups
 {
-    SUMMON_GROUP_ELEVATOR           = 0,
+    SUMMON_GROUP_ELEVATOR = 0,
     SUMMON_GROUP_CONTROLLER_STALKER = 1
 };
 
 enum MovePoints
 {
     // Nefarian
-    POINT_NONE              = 0,
-    POINT_LIFTOFF           = 1,
-    POINT_PREPARE_LANDING   = 2,
-    POINT_LAND              = 3,
-    POINT_ELEVATOR_CENTER   = 4,
+    POINT_NONE = 0,
+    POINT_LIFTOFF = 1,
+    POINT_PREPARE_LANDING = 2,
+    POINT_LAND = 3,
+    POINT_ELEVATOR_CENTER = 4,
 
     // Chromatic Prototype
-    POINT_JUMP_DOWN         = 1
+    POINT_JUMP_DOWN = 1
 };
 
 enum EncounterFrames
 {
     FRAME_INDEX_CHROMATIC_PROTOTYPE = 1,
-    FRAME_INDEX_ONYXIA              = 2,
-    FRAME_INDEX_NEFARIAN            = 3
+    FRAME_INDEX_ONYXIA = 2,
+    FRAME_INDEX_NEFARIAN = 3
 };
 
 struct OnyxiaChainData
@@ -294,14 +294,14 @@ enum Misc
     SOUND_ID_ROAR = 7274
 };
 
-Position const NefarianSummonPosition                           = { -166.655f,    -224.602f,    40.48163f, 0.0f };
-Position const NefarianLiftOffPosition                          = { -162.076f,    -224.604f,    57.9262f   };
-Position const NefarianElevatorPrepareLandPositionPhaseOne      = { -107.255753f, -223.944778f, 17.38522f  };
-Position const NefarianElevatorLandPhaseOnePosition             = { -106.899124f, -225.162415f, 6.488089f  };
-Position const NefarianElevatorCenterPosition                   = { -106.209747f, -224.530594f, 6.488089f  };
-Position const NefarianElevatorLiftOffPosition                  = { -107.205688f, -224.597412f, 35.630280f };
-Position const NefarianElevatorPrepareLandPositionPhaseThree    = { -107.238045f, -224.599579f, 17.629690f };
-Position const NefarianElevatorLandPhaseThreePosition           = { -107.238045f, -224.599579f, 6.488089f  };
+Position const NefarianSummonPosition = { -166.655f,    -224.602f,    40.48163f, 0.0f };
+Position const NefarianLiftOffPosition = { -162.076f,    -224.604f,    57.9262f };
+Position const NefarianElevatorPrepareLandPositionPhaseOne = { -107.255753f, -223.944778f, 17.38522f };
+Position const NefarianElevatorLandPhaseOnePosition = { -106.899124f, -225.162415f, 6.488089f };
+Position const NefarianElevatorCenterPosition = { -106.209747f, -224.530594f, 6.488089f };
+Position const NefarianElevatorLiftOffPosition = { -107.205688f, -224.597412f, 35.630280f };
+Position const NefarianElevatorPrepareLandPositionPhaseThree = { -107.238045f, -224.599579f, 17.629690f };
+Position const NefarianElevatorLandPhaseThreePosition = { -107.238045f, -224.599579f, 6.488089f };
 
 static constexpr uint32 const CyclicPathPoints = 17;
 Position const NefarianCyclicPath[CyclicPathPoints] =
@@ -466,11 +466,11 @@ struct boss_nefarians_end : public BossAI
 
         switch (summon->GetEntry())
         {
-            case NPC_DOMINION_STALKER:
-                summon->CastSpell(summon, SPELL_DOMINION_DETERMINE_FARTHEST_PORTAL_STALKER);
-                break;
-            default:
-                break;
+        case NPC_DOMINION_STALKER:
+            summon->CastSpell(summon, SPELL_DOMINION_DETERMINE_FARTHEST_PORTAL_STALKER);
+            break;
+        default:
+            break;
         }
     }
 
@@ -481,52 +481,52 @@ struct boss_nefarians_end : public BossAI
 
         switch (id)
         {
-            case POINT_LIFTOFF:
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC);
-                DoCastSelf(SPELL_INTRO_5A_START_FIGHT_PROC);
-                me->GetMotionMaster()->MoveCyclicPath(NefarianCyclicPath, CyclicPathPoints, false, true, 14.0f);
+        case POINT_LIFTOFF:
+            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC);
+            DoCastSelf(SPELL_INTRO_5A_START_FIGHT_PROC);
+            me->GetMotionMaster()->MoveCyclicPath(NefarianCyclicPath, CyclicPathPoints, false, true, 14.0f);
 
-                if (Creature* machine = instance->GetCreature(DATA_NEFARIANS_LIGHTNING_MACHINE))
-                    machine->CastSpell(machine, SPELL_ELECTROCUTE);
+            if (Creature* machine = instance->GetCreature(DATA_NEFARIANS_LIGHTNING_MACHINE))
+                machine->CastSpell(machine, SPELL_ELECTROCUTE);
 
-                if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
-                    if (onyxia->IsAIEnabled())
-                        onyxia->AI()->DoAction(ACTION_REANIMATED);
+            if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
+                if (onyxia->IsAIEnabled())
+                    onyxia->AI()->DoAction(ACTION_REANIMATED);
 
-                SetupTransportSpawns(SUMMON_GROUP_CONTROLLER_STALKER);
+            SetupTransportSpawns(SUMMON_GROUP_CONTROLLER_STALKER);
 
-                for (ObjectGuid guid : summons)
+            for (ObjectGuid guid : summons)
+            {
+                if (Creature* stalker = instance->instance->GetCreature(guid))
                 {
-                    if (Creature* stalker = instance->instance->GetCreature(guid))
+                    if (stalker->GetEntry() == NPC_INVISIBLE_STALKER_CATACLYSM_BOSS)
                     {
-                        if (stalker->GetEntry() == NPC_INVISIBLE_STALKER_CATACLYSM_BOSS)
+                        for (OnyxiaChainData const& data : OnyxiaChainInfo)
                         {
-                            for (OnyxiaChainData const& data : OnyxiaChainInfo)
+                            if (stalker->GetExactDist2d(data.ComparisonPosition) < 1.0f)
                             {
-                                if (stalker->GetExactDist2d(data.ComparisonPosition) < 1.0f)
-                                {
-                                    stalker->InterruptNonMeleeSpells(true);
-                                    stalker->CastSpell(stalker, data.LightningSpellId);
-                                }
+                                stalker->InterruptNonMeleeSpells(true);
+                                stalker->CastSpell(stalker, data.LightningSpellId);
                             }
                         }
                     }
                 }
-                break;
-            case POINT_PREPARE_LANDING:
-                if (events.IsInPhase(PHASE_ONE))
-                    events.ScheduleEvent(EVENT_LAND_PHASE_ONE, 200ms, 0, PHASE_ONE);
-                else if (events.IsInPhase(PHASE_THREE))
-                    events.ScheduleEvent(EVENT_LAND_PHASE_THREE, 200ms, 0, PHASE_THREE);
-                break;
-            case POINT_LAND:
-                events.ScheduleEvent(EVENT_LANDED, 400ms);
-                break;
-            case POINT_ELEVATOR_CENTER:
-                events.ScheduleEvent(EVENT_LIFTOFF_PHASE_TWO, 1s, 0, PHASE_TWO);
-                break;
-            default:
-                break;
+            }
+            break;
+        case POINT_PREPARE_LANDING:
+            if (events.IsInPhase(PHASE_ONE))
+                events.ScheduleEvent(EVENT_LAND_PHASE_ONE, 200ms, 0, PHASE_ONE);
+            else if (events.IsInPhase(PHASE_THREE))
+                events.ScheduleEvent(EVENT_LAND_PHASE_THREE, 200ms, 0, PHASE_THREE);
+            break;
+        case POINT_LAND:
+            events.ScheduleEvent(EVENT_LANDED, 400ms);
+            break;
+        case POINT_ELEVATOR_CENTER:
+            events.ScheduleEvent(EVENT_LIFTOFF_PHASE_TWO, 1s, 0, PHASE_TWO);
+            break;
+        default:
+            break;
         }
     }
 
@@ -554,14 +554,14 @@ struct boss_nefarians_end : public BossAI
 
         switch (spell->Id)
         {
-            case SPELL_BRUSHFIRE_START:
-                Talk(SAY_SHADOWBLAZE_SPARK);
-                break;
-            case SPELL_DOMINION_OVERRIDE_ACTION_BAR:
-                Talk(SAY_DOMINION);
-                break;
-            default:
-                break;
+        case SPELL_BRUSHFIRE_START:
+            Talk(SAY_SHADOWBLAZE_SPARK);
+            break;
+        case SPELL_DOMINION_OVERRIDE_ACTION_BAR:
+            Talk(SAY_DOMINION);
+            break;
+        default:
+            break;
         }
     }
 
@@ -569,18 +569,18 @@ struct boss_nefarians_end : public BossAI
     {
         switch (action)
         {
-            case ACTION_ONYXIA_ENGAGED:
-                Talk(SAY_HAIL_OF_BONES);
-                DoCastSelf(SPELL_ELECTRICAL_CHARGE_NEFARIAN);
-                DoCastSelf(SPELL_HAIL_OF_BONES);
-                events.ScheduleEvent(EVENT_PREPARE_LANDING, 24s, 0, PHASE_ONE);
-                events.ScheduleEvent(EVENT_BERSERK, 10min + 30s);
-                break;
-            case ACTION_ONYXIA_DIED:
-                events.ScheduleEvent(EVENT_SAY_ONYXIA_DEAD, 1ms, 0, PHASE_ONE);
-                break;
-            default:
-                break;
+        case ACTION_ONYXIA_ENGAGED:
+            Talk(SAY_HAIL_OF_BONES);
+            DoCastSelf(SPELL_ELECTRICAL_CHARGE_NEFARIAN);
+            DoCastSelf(SPELL_HAIL_OF_BONES);
+            events.ScheduleEvent(EVENT_PREPARE_LANDING, 24s, 0, PHASE_ONE);
+            events.ScheduleEvent(EVENT_BERSERK, 10min + 30s);
+            break;
+        case ACTION_ONYXIA_DIED:
+            events.ScheduleEvent(EVENT_SAY_ONYXIA_DEAD, 1ms, 0, PHASE_ONE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -588,19 +588,19 @@ struct boss_nefarians_end : public BossAI
     {
         switch (summon->GetEntry())
         {
-            case NPC_CHROMATIC_PROTOTYPE:
-                // Nefarian enters phase three when the first Chromatic Prototype has died on heroic difficulty
-                if (IsHeroic())
+        case NPC_CHROMATIC_PROTOTYPE:
+            // Nefarian enters phase three when the first Chromatic Prototype has died on heroic difficulty
+            if (IsHeroic())
+                events.ScheduleEvent(EVENT_ENTER_PHASE_THREE, 1ms, 0, PHASE_TWO);
+            else
+            {
+                _deadChromaticPrototypes++;
+                if (_deadChromaticPrototypes == 3)
                     events.ScheduleEvent(EVENT_ENTER_PHASE_THREE, 1ms, 0, PHASE_TWO);
-                else
-                {
-                    _deadChromaticPrototypes++;
-                    if (_deadChromaticPrototypes == 3)
-                        events.ScheduleEvent(EVENT_ENTER_PHASE_THREE, 1ms, 0, PHASE_TWO);
-                }
-                break;
-            default:
-                break;
+            }
+            break;
+        default:
+            break;
         }
     }
 
@@ -618,203 +618,203 @@ struct boss_nefarians_end : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_CHAIN_ONYXIA:
-                    for (ObjectGuid guid : summons)
-                    {
-                        if (Creature* stalker = ObjectAccessor::GetCreature(*me, guid))
-                            if (stalker->GetEntry() == NPC_INVISIBLE_STALKER_CATACLYSM_BOSS)
-                                for (OnyxiaChainData const& data : OnyxiaChainInfo)
-                                    if (stalker->GetExactDist2d(data.ComparisonPosition) < 1.0f)
-                                        stalker->CastSpell(stalker, data.ChainSpellId);
-                    }
-                    break;
-                case EVENT_REMOVE_TRANSFORM_AURA:
-                    me->RemoveAurasDueToSpell(SPELL_INTRO_2_STALKER_TRANSFORM);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                    me->SetDisableGravity(true);
-                    me->SendSetPlayHoverAnim(true);
-                    events.ScheduleEvent(EVENT_LIFT_OFF, 2s, 0, PHASE_ONE);
-                    break;
-                case EVENT_LIFT_OFF:
-                    DoCastSelf(SPELL_INTRO_4_LIFT_OFF_ANIM_KIT);
-                    me->RemoveAurasDueToSpell(SPELL_INTRO_3_SHRINK_AURA);
-                    events.ScheduleEvent(EVENT_ANNOUNCE_AIR_CRACKLES, 8s + 500ms, 0, PHASE_ONE);
-                    break;
-                case EVENT_ANNOUNCE_AIR_CRACKLES:
-                    Talk(SAY_ANNOUNCE_AIR_CRACKLES);
-                    me->GetMotionMaster()->MovePoint(POINT_LIFTOFF, NefarianLiftOffPosition, false);
-                    break;
-                case EVENT_PREPARE_LANDING:
+            case EVENT_CHAIN_ONYXIA:
+                for (ObjectGuid guid : summons)
                 {
-                    Position pos = events.IsInPhase(PHASE_ONE) ? NefarianElevatorPrepareLandPositionPhaseOne : NefarianElevatorPrepareLandPositionPhaseThree;
-                    me->GetMotionMaster()->MovePoint(POINT_PREPARE_LANDING, pos, false);
-                    break;
+                    if (Creature* stalker = ObjectAccessor::GetCreature(*me, guid))
+                        if (stalker->GetEntry() == NPC_INVISIBLE_STALKER_CATACLYSM_BOSS)
+                            for (OnyxiaChainData const& data : OnyxiaChainInfo)
+                                if (stalker->GetExactDist2d(data.ComparisonPosition) < 1.0f)
+                                    stalker->CastSpell(stalker, data.ChainSpellId);
                 }
-                case EVENT_LAND_PHASE_ONE:
-                    if (GameObject* elevator = GetElevator())
+                break;
+            case EVENT_REMOVE_TRANSFORM_AURA:
+                me->RemoveAurasDueToSpell(SPELL_INTRO_2_STALKER_TRANSFORM);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                me->SetDisableGravity(true);
+                me->SendSetPlayHoverAnim(true);
+                events.ScheduleEvent(EVENT_LIFT_OFF, 2s, 0, PHASE_ONE);
+                break;
+            case EVENT_LIFT_OFF:
+                DoCastSelf(SPELL_INTRO_4_LIFT_OFF_ANIM_KIT);
+                me->RemoveAurasDueToSpell(SPELL_INTRO_3_SHRINK_AURA);
+                events.ScheduleEvent(EVENT_ANNOUNCE_AIR_CRACKLES, 8s + 500ms, 0, PHASE_ONE);
+                break;
+            case EVENT_ANNOUNCE_AIR_CRACKLES:
+                Talk(SAY_ANNOUNCE_AIR_CRACKLES);
+                me->GetMotionMaster()->MovePoint(POINT_LIFTOFF, NefarianLiftOffPosition, false);
+                break;
+            case EVENT_PREPARE_LANDING:
+            {
+                Position pos = events.IsInPhase(PHASE_ONE) ? NefarianElevatorPrepareLandPositionPhaseOne : NefarianElevatorPrepareLandPositionPhaseThree;
+                me->GetMotionMaster()->MovePoint(POINT_PREPARE_LANDING, pos, false);
+                break;
+            }
+            case EVENT_LAND_PHASE_ONE:
+                if (GameObject* elevator = GetElevator())
+                {
+                    if (TransportBase* transport = elevator->ToTransportBase())
                     {
-                        if (TransportBase* transport = elevator->ToTransportBase())
-                        {
-                            transport->AddPassenger(me);
-                            transport->UpdatePassengerPosition(me->GetMap(), me, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), true);
-                        }
+                        transport->AddPassenger(me);
+                        transport->UpdatePassengerPosition(me->GetMap(), me, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), true);
                     }
+                }
 
-                    me->GetMotionMaster()->MoveLand(POINT_LAND, NefarianElevatorLandPhaseOnePosition);
-                    break;
-                case EVENT_LANDED:
-                    me->SetDisableGravity(false);
-                    me->SendSetPlayHoverAnim(false);
+                me->GetMotionMaster()->MoveLand(POINT_LAND, NefarianElevatorLandPhaseOnePosition);
+                break;
+            case EVENT_LANDED:
+                me->SetDisableGravity(false);
+                me->SendSetPlayHoverAnim(false);
 
-                    if (events.IsInPhase(PHASE_ONE))
-                    {
-                        DoCastSelf(SPELL_SHADOW_OF_COWARDICE);
-                        DoZoneInCombat();
-                        instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me, FRAME_INDEX_NEFARIAN);
-                        events.ScheduleEvent(EVENT_ENGAGE_PLAYERS, 2s, 0, PHASE_ONE);
-                        if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
-                            if (onyxia->IsAIEnabled())
-                                onyxia->AI()->DoAction(ACTION_NEFARIAN_LANDED);
-                    }
-                    else if (events.IsInPhase(PHASE_THREE))
-                        events.ScheduleEvent(EVENT_ENGAGE_PLAYERS, 2s, 0, PHASE_THREE);
-                    break;
-                case EVENT_ENGAGE_PLAYERS:
-                    me->SetReactState(REACT_AGGRESSIVE);
+                if (events.IsInPhase(PHASE_ONE))
+                {
+                    DoCastSelf(SPELL_SHADOW_OF_COWARDICE);
+                    DoZoneInCombat();
+                    instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me, FRAME_INDEX_NEFARIAN);
+                    events.ScheduleEvent(EVENT_ENGAGE_PLAYERS, 2s, 0, PHASE_ONE);
+                    if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
+                        if (onyxia->IsAIEnabled())
+                            onyxia->AI()->DoAction(ACTION_NEFARIAN_LANDED);
+                }
+                else if (events.IsInPhase(PHASE_THREE))
+                    events.ScheduleEvent(EVENT_ENGAGE_PLAYERS, 2s, 0, PHASE_THREE);
+                break;
+            case EVENT_ENGAGE_PLAYERS:
+                me->SetReactState(REACT_AGGRESSIVE);
 
-                    if (events.IsInPhase(PHASE_ONE))
-                    {
-                        DoCastSelf(SPELL_CHILDREN_OF_DEATHWING_NEFARIAN);
-                        if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
-                            onyxia->CastSpell(onyxia, SPELL_CHILDREN_OF_DEATHWING_ONYXIA, true);
+                if (events.IsInPhase(PHASE_ONE))
+                {
+                    DoCastSelf(SPELL_CHILDREN_OF_DEATHWING_NEFARIAN);
+                    if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
+                        onyxia->CastSpell(onyxia, SPELL_CHILDREN_OF_DEATHWING_ONYXIA, true);
 
-                        events.ScheduleEvent(EVENT_TAIL_LASH, 18s, 0, PHASE_ONE);
-                        events.ScheduleEvent(EVENT_SHADOWFLAME_BREATH, 9s, 10s, 0, PHASE_ONE);
-
-                        if (IsHeroic())
-                            events.ScheduleEvent(EVENT_DOMINION, 13s, 0, PHASE_ONE);
-                    }
-                    else if (events.IsInPhase(PHASE_THREE))
-                    {
-                        DoCastSelf(SPELL_SHADOW_OF_COWARDICE);
-                        DoCastSelf(SPELL_BRUSHFIRE_PRE_START_PERIODIC);
-                        events.ScheduleEvent(EVENT_SHADOWFLAME_BREATH, 9s, 0, PHASE_THREE);
-                        events.ScheduleEvent(EVENT_TAIL_LASH, 1s, 0, PHASE_THREE);
-                    }
-                    break;
-                case EVENT_TAIL_LASH:
-                    DoCastSelf(SPELL_TAIL_LASH);
-                    if (events.IsInPhase(PHASE_ONE))
-                        events.Repeat(5s);
-                    else if (events.IsInPhase(PHASE_THREE))
-                        events.Repeat(15s, 22s);
-                    break;
-                case EVENT_SHADOWFLAME_BREATH:
-                    DoCastVictim(SPELL_SHADOWFLAME_BREATH);
-
-                    if (events.IsInPhase(PHASE_ONE))
-                        events.Repeat(9s, 14s);
-                    else if (events.IsInPhase(PHASE_THREE))
-                        events.Repeat(17s, 22s);
-                    break;
-                case EVENT_SAY_ONYXIA_DEAD:
-                    me->AttackStop();
-                    me->SetReactState(REACT_PASSIVE);
-                    me->RemoveAurasDueToSpell(SPELL_CHILDREN_OF_DEATHWING_NEFARIAN);
-                    me->RemoveAurasDueToSpell(SPELL_ELECTRICAL_CHARGE_NEFARIAN);
-                    me->RemoveAurasDueToSpell(SPELL_SHADOW_OF_COWARDICE);
-                    Talk(SAY_ONYXIA_DIED);
-                    events.SetPhase(PHASE_TWO);
-                    events.ScheduleEvent(EVENT_MOVE_TO_CENTER, 2s, 0, PHASE_TWO);
-                    break;
-                case EVENT_MOVE_TO_CENTER:
-                    me->GetMotionMaster()->MovePoint(POINT_ELEVATOR_CENTER, NefarianElevatorCenterPosition);
-                    break;
-                case EVENT_LIFTOFF_PHASE_TWO:
-                    DoCastSelf(SPELL_NEFARIAN_PHASE_2_HEALTH_AURA);
-                    me->SetDisableGravity(true);
-                    me->SendSetPlayHoverAnim(true);
-                    me->GetMotionMaster()->MovePoint(POINT_NONE, NefarianElevatorLiftOffPosition);
-                    events.ScheduleEvent(EVENT_SUMMON_CHROMATIC_PROTOTYPES, 400ms, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_LOWER_ELEVATOR, 800ms, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_SAY_PHASE_TWO, 4s + 800ms, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_ENTER_PHASE_THREE, 2min + 30s, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_SHADOWFLAME_BARRAGE, 2s + 500ms, 0, PHASE_TWO);
+                    events.ScheduleEvent(EVENT_TAIL_LASH, 18s, 0, PHASE_ONE);
+                    events.ScheduleEvent(EVENT_SHADOWFLAME_BREATH, 9s, 10s, 0, PHASE_ONE);
 
                     if (IsHeroic())
-                        events.ScheduleEvent(EVENT_EXPLOSIVE_CINDERS, 2s, 0, PHASE_TWO);
-                    break;
-                case EVENT_SUMMON_CHROMATIC_PROTOTYPES:
-                    for (uint8 i = 0; i < MaxChromaticPrototypes; i++)
+                        events.ScheduleEvent(EVENT_DOMINION, 13s, 0, PHASE_ONE);
+                }
+                else if (events.IsInPhase(PHASE_THREE))
+                {
+                    DoCastSelf(SPELL_SHADOW_OF_COWARDICE);
+                    DoCastSelf(SPELL_BRUSHFIRE_PRE_START_PERIODIC);
+                    events.ScheduleEvent(EVENT_SHADOWFLAME_BREATH, 9s, 0, PHASE_THREE);
+                    events.ScheduleEvent(EVENT_TAIL_LASH, 1s, 0, PHASE_THREE);
+                }
+                break;
+            case EVENT_TAIL_LASH:
+                DoCastSelf(SPELL_TAIL_LASH);
+                if (events.IsInPhase(PHASE_ONE))
+                    events.Repeat(5s);
+                else if (events.IsInPhase(PHASE_THREE))
+                    events.Repeat(15s, 22s);
+                break;
+            case EVENT_SHADOWFLAME_BREATH:
+                DoCastVictim(SPELL_SHADOWFLAME_BREATH);
+
+                if (events.IsInPhase(PHASE_ONE))
+                    events.Repeat(9s, 14s);
+                else if (events.IsInPhase(PHASE_THREE))
+                    events.Repeat(17s, 22s);
+                break;
+            case EVENT_SAY_ONYXIA_DEAD:
+                me->AttackStop();
+                me->SetReactState(REACT_PASSIVE);
+                me->RemoveAurasDueToSpell(SPELL_CHILDREN_OF_DEATHWING_NEFARIAN);
+                me->RemoveAurasDueToSpell(SPELL_ELECTRICAL_CHARGE_NEFARIAN);
+                me->RemoveAurasDueToSpell(SPELL_SHADOW_OF_COWARDICE);
+                Talk(SAY_ONYXIA_DIED);
+                events.SetPhase(PHASE_TWO);
+                events.ScheduleEvent(EVENT_MOVE_TO_CENTER, 2s, 0, PHASE_TWO);
+                break;
+            case EVENT_MOVE_TO_CENTER:
+                me->GetMotionMaster()->MovePoint(POINT_ELEVATOR_CENTER, NefarianElevatorCenterPosition);
+                break;
+            case EVENT_LIFTOFF_PHASE_TWO:
+                DoCastSelf(SPELL_NEFARIAN_PHASE_2_HEALTH_AURA);
+                me->SetDisableGravity(true);
+                me->SendSetPlayHoverAnim(true);
+                me->GetMotionMaster()->MovePoint(POINT_NONE, NefarianElevatorLiftOffPosition);
+                events.ScheduleEvent(EVENT_SUMMON_CHROMATIC_PROTOTYPES, 400ms, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_LOWER_ELEVATOR, 800ms, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_SAY_PHASE_TWO, 4s + 800ms, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_ENTER_PHASE_THREE, 2min + 30s, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_SHADOWFLAME_BARRAGE, 2s + 500ms, 0, PHASE_TWO);
+
+                if (IsHeroic())
+                    events.ScheduleEvent(EVENT_EXPLOSIVE_CINDERS, 2s, 0, PHASE_TWO);
+                break;
+            case EVENT_SUMMON_CHROMATIC_PROTOTYPES:
+                for (uint8 i = 0; i < MaxChromaticPrototypes; i++)
+                {
+                    if (Creature* prototype = DoSummon(NPC_CHROMATIC_PROTOTYPE, ChromaticPrototypeSummonPositions[i], 4000))
                     {
-                        if (Creature* prototype = DoSummon(NPC_CHROMATIC_PROTOTYPE, ChromaticPrototypeSummonPositions[i], 4000))
-                        {
-                            Position point = ChromaticPrototypeMovePositions[i];
-                            prototype->m_Events.AddEventAtOffset([prototype, point]()
+                        Position point = ChromaticPrototypeMovePositions[i];
+                        prototype->m_Events.AddEventAtOffset([prototype, point]()
                             {
                                 prototype->GetMotionMaster()->MovePoint(POINT_JUMP_DOWN, point);
                             }, 800ms);
-                        }
                     }
+                }
+                break;
+            case EVENT_LOWER_ELEVATOR:
+                if (GameObject* transport = GetElevator())
+                    transport->SetGoState(GO_STATE_TRANSPORT_ACTIVE);
+                events.ScheduleEvent(EVENT_ELEVATOR_LOWERED, 9s, 0, PHASE_TWO);
+                break;
+            case EVENT_ELEVATOR_LOWERED:
+                _elevatorLowered = true;
+                break;
+            case EVENT_SHADOWFLAME_BARRAGE:
+                DoCastAOE(SPELL_SHADOWFLAME_BARRAGE);
+                events.Repeat(2s + 500ms);
+                break;
+            case EVENT_SAY_PHASE_TWO:
+                Talk(SAY_MOLTEN_LAVA);
+                break;
+            case EVENT_ENTER_PHASE_THREE:
+                if (!_elevatorLowered)
+                {
+                    events.Repeat(1s);
                     break;
-                case EVENT_LOWER_ELEVATOR:
-                    if (GameObject* transport = GetElevator())
-                        transport->SetGoState(GO_STATE_TRANSPORT_ACTIVE);
-                    events.ScheduleEvent(EVENT_ELEVATOR_LOWERED, 9s, 0, PHASE_TWO);
-                    break;
-                case EVENT_ELEVATOR_LOWERED:
-                    _elevatorLowered = true;
-                    break;
-                case EVENT_SHADOWFLAME_BARRAGE:
-                    DoCastAOE(SPELL_SHADOWFLAME_BARRAGE);
-                    events.Repeat(2s + 500ms);
-                    break;
-                case EVENT_SAY_PHASE_TWO:
-                    Talk(SAY_MOLTEN_LAVA);
-                    break;
-                case EVENT_ENTER_PHASE_THREE:
-                    if (!_elevatorLowered)
-                    {
-                        events.Repeat(1s);
-                        break;
-                    }
-                    EnterPhaseThree();
-                    break;
-                case EVENT_SAY_PHASE_THREE:
-                    Talk(SAY_LAND_PHASE_THREE);
-                    break;
-                case EVENT_LAND_PHASE_THREE:
-                    if (me->GetHealthPct() > 50.f)
-                        instance->instance->SetWorldState(WORLD_STATE_ID_KEEPING_IT_IN_THE_FAMILY, 0);
+                }
+                EnterPhaseThree();
+                break;
+            case EVENT_SAY_PHASE_THREE:
+                Talk(SAY_LAND_PHASE_THREE);
+                break;
+            case EVENT_LAND_PHASE_THREE:
+                if (me->GetHealthPct() > 50.f)
+                    instance->instance->SetWorldState(WORLD_STATE_ID_KEEPING_IT_IN_THE_FAMILY, 0);
 
-                    me->RemoveAurasDueToSpell(SPELL_NEFARIAN_PHASE_2_HEALTH_AURA);
-                    me->SendSetPlayHoverAnim(true);
-                    me->GetMotionMaster()->MoveLand(POINT_LAND, NefarianElevatorLandPhaseThreePosition);
-                    break;
-                case EVENT_ELECTROCUTE:
-                    if (Creature* machine = instance->GetCreature(DATA_NEFARIANS_LIGHTNING_MACHINE))
-                    {
-                        machine->CastSpell(machine, SPELL_ELECTROCUTE);
-                        machine->CastSpell(machine, SPELL_ELECTROCUTE_DAMAGE);
-                    }
+                me->RemoveAurasDueToSpell(SPELL_NEFARIAN_PHASE_2_HEALTH_AURA);
+                me->SendSetPlayHoverAnim(true);
+                me->GetMotionMaster()->MoveLand(POINT_LAND, NefarianElevatorLandPhaseThreePosition);
+                break;
+            case EVENT_ELECTROCUTE:
+                if (Creature* machine = instance->GetCreature(DATA_NEFARIANS_LIGHTNING_MACHINE))
+                {
+                    machine->CastSpell(machine, SPELL_ELECTROCUTE);
+                    machine->CastSpell(machine, SPELL_ELECTROCUTE_DAMAGE);
+                }
 
-                    if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
-                        if (Aura* charge = onyxia->GetAura(SPELL_ELECTRICAL_CHARGE_ONYXIA))
-                            charge->ModStackAmount(17, AuraRemoveFlags::ByDefault | AuraRemoveFlags::DontResetPeriodicTimer);
-                    break;
-                case EVENT_DOMINION:
-                    DoCastAOE(SPELL_DOMINION_DUMMY);
-                    events.Repeat(15s);
-                    break;
-                case EVENT_EXPLOSIVE_CINDERS:
-                    DoCastAOE(SPELL_EXPLOSIVE_CINDERS);
-                    events.Repeat(15s);
-                    break;
-                case EVENT_BERSERK:
-                    DoCastSelf(SPELL_BERSERK, true);
-                    break;
-                default:
-                    break;
+                if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
+                    if (Aura* charge = onyxia->GetAura(SPELL_ELECTRICAL_CHARGE_ONYXIA))
+                        charge->ModStackAmount(17, AuraRemoveFlags::ByDefault | AuraRemoveFlags::DontResetPeriodicTimer);
+                break;
+            case EVENT_DOMINION:
+                DoCastAOE(SPELL_DOMINION_DUMMY);
+                events.Repeat(15s);
+                break;
+            case EVENT_EXPLOSIVE_CINDERS:
+                DoCastAOE(SPELL_EXPLOSIVE_CINDERS);
+                events.Repeat(15s);
+                break;
+            case EVENT_BERSERK:
+                DoCastSelf(SPELL_BERSERK, true);
+                break;
+            default:
+                break;
             }
         }
 
@@ -896,7 +896,7 @@ private:
         for (ObjectGuid guid : summons)
         {
             if (Creature* creature = ObjectAccessor::GetCreature(*me, guid))
-                if (creature->GetEntry() == NPC_CHROMATIC_PROTOTYPE &&  creature->IsAlive() && creature->IsAIEnabled())
+                if (creature->GetEntry() == NPC_CHROMATIC_PROTOTYPE && creature->IsAlive() && creature->IsAIEnabled())
                     creature->AI()->DoAction(ACTION_DISENGAGE_PLAYERS);
         }
     }
@@ -973,45 +973,45 @@ struct npc_nefarians_end_onyxia : public ScriptedAI
     {
         switch (action)
         {
-            case ACTION_REANIMATED:
-                me->RemoveAurasDueToSpell(SPELL_PERMANENT_FEIGN_DEATH_1);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
-                me->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
-                me->PlayDirectSound(SOUND_ID_ROAR);
-                me->SetReactState(REACT_AGGRESSIVE);
-                DoCastSelf(SPELL_ONYXIA_START_FIGHT_1_PERIODIC);
-                break;
-            case ACTION_UPDATE_ELECTRICAL_CHARGE:
-                if (Aura* chargeAura = me->GetAura(SPELL_ELECTRICAL_CHARGE_ONYXIA))
+        case ACTION_REANIMATED:
+            me->RemoveAurasDueToSpell(SPELL_PERMANENT_FEIGN_DEATH_1);
+            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+            me->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
+            me->PlayDirectSound(SOUND_ID_ROAR);
+            me->SetReactState(REACT_AGGRESSIVE);
+            DoCastSelf(SPELL_ONYXIA_START_FIGHT_1_PERIODIC);
+            break;
+        case ACTION_UPDATE_ELECTRICAL_CHARGE:
+            if (Aura* chargeAura = me->GetAura(SPELL_ELECTRICAL_CHARGE_ONYXIA))
+            {
+                uint8 stacks = chargeAura->GetStackAmount();
+                if (stacks == chargeAura->GetSpellInfo()->StackAmount)
                 {
-                    uint8 stacks = chargeAura->GetStackAmount();
-                    if (stacks == chargeAura->GetSpellInfo()->StackAmount)
-                    {
-                        DoCastAOE(SPELL_ELECTRICAL_OVERLOAD);
-                        stacks = 1;
-                        _chargeWarningLevel = 0;
-                        chargeAura->SetStackAmount(stacks);
-                    }
-
-                    if (stacks >= 50 && _chargeWarningLevel == 0)
-                    {
-                        Talk(SAY_ANNOUNCE_WARNING_1);
-                        _chargeWarningLevel = 1;
-                    }
-                    else if (stacks >= 80 && _chargeWarningLevel != 2)
-                    {
-                        Talk(SAY_ANNOUNCE_WARNING_2);
-                        _chargeWarningLevel = 2;
-                    }
-
-                    me->SetPower(POWER_ALTERNATE_POWER, stacks - 1);
+                    DoCastAOE(SPELL_ELECTRICAL_OVERLOAD);
+                    stacks = 1;
+                    _chargeWarningLevel = 0;
+                    chargeAura->SetStackAmount(stacks);
                 }
-                break;
-            case ACTION_NEFARIAN_LANDED:
-                _allowDeath = true;
-                break;
-            default:
-                break;
+
+                if (stacks >= 50 && _chargeWarningLevel == 0)
+                {
+                    Talk(SAY_ANNOUNCE_WARNING_1);
+                    _chargeWarningLevel = 1;
+                }
+                else if (stacks >= 80 && _chargeWarningLevel != 2)
+                {
+                    Talk(SAY_ANNOUNCE_WARNING_2);
+                    _chargeWarningLevel = 2;
+                }
+
+                me->SetPower(POWER_ALTERNATE_POWER, stacks - 1);
+            }
+            break;
+        case ACTION_NEFARIAN_LANDED:
+            _allowDeath = true;
+            break;
+        default:
+            break;
         }
     }
 
@@ -1026,11 +1026,11 @@ struct npc_nefarians_end_onyxia : public ScriptedAI
     {
         switch (spell->Id)
         {
-            case SPELL_LIGHTNING_DISCHARGE_CONE_FRONT:
-                DoCastAOE(SPELL_LIGHTNING_DISCHARGE_DAMAGE);
-                break;
-            default:
-                break;
+        case SPELL_LIGHTNING_DISCHARGE_CONE_FRONT:
+            DoCastAOE(SPELL_LIGHTNING_DISCHARGE_DAMAGE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -1048,20 +1048,20 @@ struct npc_nefarians_end_onyxia : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_TAIL_LASH:
-                    DoCastSelf(SPELL_TAIL_LASH);
-                    _events.Repeat(17s, 18s);
-                    break;
-                case EVENT_SHADOWFLAME_BREATH:
-                    DoCastVictim(SPELL_SHADOWFLAME_BREATH);
-                    _events.Repeat(13s, 17s);
-                    break;
-                case EVENT_LIGHTNING_DISCHARGE:
-                    DoCastSelf(SPELL_LIGHTNING_DISCHARGE);
-                    _events.Repeat(22s);
-                    break;
-                default:
-                    break;
+            case EVENT_TAIL_LASH:
+                DoCastSelf(SPELL_TAIL_LASH);
+                _events.Repeat(17s, 18s);
+                break;
+            case EVENT_SHADOWFLAME_BREATH:
+                DoCastVictim(SPELL_SHADOWFLAME_BREATH);
+                _events.Repeat(13s, 17s);
+                break;
+            case EVENT_LIGHTNING_DISCHARGE:
+                DoCastSelf(SPELL_LIGHTNING_DISCHARGE);
+                _events.Repeat(22s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -1077,25 +1077,25 @@ private:
 
 struct npc_nefarians_end_lord_victor_nefarius : public PassiveAI
 {
-    npc_nefarians_end_lord_victor_nefarius(Creature* creature) : PassiveAI(creature), _instance(me->GetInstanceScript()), _started(false){ }
+    npc_nefarians_end_lord_victor_nefarius(Creature* creature) : PassiveAI(creature), _instance(me->GetInstanceScript()), _started(false) { }
 
     void DoAction(int32 action) override
     {
         switch (action)
         {
-            case ACTION_START_INTRO:
-                if (!_started)
-                {
-                    Talk(SAY_INTRO_1);
-                    DoSummon(BOSS_NEFARIAN, NefarianSummonPosition, 0, TEMPSUMMON_MANUAL_DESPAWN);
-                    _events.ScheduleEvent(EVENT_TALK_INTRO_2, 22s);
-                    _events.ScheduleEvent(EVENT_RAISE_ELEVATOR, 20s + 500ms);
-                    _events.ScheduleEvent(EVENT_CAST_TRANSFORM_VISUAL, 26s + 700ms);
-                    _started = true;
-                }
-                break;
-            default:
-                break;
+        case ACTION_START_INTRO:
+            if (!_started)
+            {
+                Talk(SAY_INTRO_1);
+                DoSummon(BOSS_NEFARIAN, NefarianSummonPosition, 0, TEMPSUMMON_MANUAL_DESPAWN);
+                _events.ScheduleEvent(EVENT_TALK_INTRO_2, 22s);
+                _events.ScheduleEvent(EVENT_RAISE_ELEVATOR, 20s + 500ms);
+                _events.ScheduleEvent(EVENT_CAST_TRANSFORM_VISUAL, 26s + 700ms);
+                _started = true;
+            }
+            break;
+        default:
+            break;
         }
     }
 
@@ -1107,28 +1107,28 @@ struct npc_nefarians_end_lord_victor_nefarius : public PassiveAI
         {
             switch (eventId)
             {
-                case EVENT_TALK_INTRO_2:
-                    Talk(SAY_INTRO_2);
-                    _events.ScheduleEvent(EVENT_TALK_INTRO_3, 11s);
-                    break;
-                case EVENT_TALK_INTRO_3:
-                    Talk(SAY_INTRO_3);
-                    _instance->SetData(DATA_NEFARIANS_END_INTRO_DONE, 1);
-                    me->DespawnOrUnsummon();
-                    break;
-                case EVENT_RAISE_ELEVATOR:
-                    if (GameObject* elevator = _instance->GetGameObject(DATA_BLACKWING_ELEVATOR_ONYXIA))
-                        elevator->SetGoState(GOState(GO_STATE_TRANSPORT_ACTIVE + TRANSPORT_STOP_FRAME_RAISED));
-                    break;
-                case EVENT_CAST_TRANSFORM_VISUAL:
-                    if (Creature* stalker = me->FindNearestCreature(NPC_INVISIBLE_STALKER_CATACLYSM_BOSS, 1.0f))
-                    {
-                        stalker->CastSpell(stalker, SPELL_INTRO_1_TRANSFORM_VISUAL);
-                        stalker->DespawnOrUnsummon(2s + 400ms);
-                    }
-                    break;
-                default:
-                    break;
+            case EVENT_TALK_INTRO_2:
+                Talk(SAY_INTRO_2);
+                _events.ScheduleEvent(EVENT_TALK_INTRO_3, 11s);
+                break;
+            case EVENT_TALK_INTRO_3:
+                Talk(SAY_INTRO_3);
+                _instance->SetData(DATA_NEFARIANS_END_INTRO_DONE, 1);
+                me->DespawnOrUnsummon();
+                break;
+            case EVENT_RAISE_ELEVATOR:
+                if (GameObject* elevator = _instance->GetGameObject(DATA_BLACKWING_ELEVATOR_ONYXIA))
+                    elevator->SetGoState(GOState(GO_STATE_TRANSPORT_ACTIVE + TRANSPORT_STOP_FRAME_RAISED));
+                break;
+            case EVENT_CAST_TRANSFORM_VISUAL:
+                if (Creature* stalker = me->FindNearestCreature(NPC_INVISIBLE_STALKER_CATACLYSM_BOSS, 1.0f))
+                {
+                    stalker->CastSpell(stalker, SPELL_INTRO_1_TRANSFORM_VISUAL);
+                    stalker->DespawnOrUnsummon(2s + 400ms);
+                }
+                break;
+            default:
+                break;
             }
         }
     }
@@ -1164,11 +1164,11 @@ struct npc_nefarians_end_animated_bone_warrior : public ScriptedAI
         me->UpdatePositionData();
 
         me->m_Events.AddEventAtOffset([this]()
-        {
-            me->SetReactState(REACT_AGGRESSIVE);
-            if (me->IsAIEnabled())
-                DoZoneInCombat();
-        }, 800ms);
+            {
+                me->SetReactState(REACT_AGGRESSIVE);
+                if (me->IsAIEnabled())
+                    DoZoneInCombat();
+            }, 800ms);
     }
 
     void JustDied(Unit* /*killer*/) override
@@ -1202,11 +1202,11 @@ struct npc_nefarians_end_chromatic_prototype : public PassiveAI
 
         switch (id)
         {
-            case POINT_JUMP_DOWN:
-                _events.ScheduleEvent(EVENT_JUMP_DOWN_TO_PLATFORM, 1s + 200ms);
-                break;
-            default:
-                break;
+        case POINT_JUMP_DOWN:
+            _events.ScheduleEvent(EVENT_JUMP_DOWN_TO_PLATFORM, 1s + 200ms);
+            break;
+        default:
+            break;
         }
     }
 
@@ -1219,16 +1219,16 @@ struct npc_nefarians_end_chromatic_prototype : public PassiveAI
     {
         switch (action)
         {
-            case ACTION_DISENGAGE_PLAYERS:
-                me->InterruptNonMeleeSpells(true);
-                me->SetHomePosition(me->GetPosition());
-                me->GetThreatManager().ClearAllThreat();
-                me->CombatStop();
-                _events.Reset();
-                _events.ScheduleEvent(EVENT_DISENGAGE_PLAYERS, 3s + 700ms);
-                break;
-            default:
-                break;
+        case ACTION_DISENGAGE_PLAYERS:
+            me->InterruptNonMeleeSpells(true);
+            me->SetHomePosition(me->GetPosition());
+            me->GetThreatManager().ClearAllThreat();
+            me->CombatStop();
+            _events.Reset();
+            _events.ScheduleEvent(EVENT_DISENGAGE_PLAYERS, 3s + 700ms);
+            break;
+        default:
+            break;
         }
     }
 
@@ -1243,42 +1243,42 @@ struct npc_nefarians_end_chromatic_prototype : public PassiveAI
         {
             switch (eventId)
             {
-                case EVENT_JUMP_DOWN_TO_PLATFORM:
-                    if (GameObject* elevator = _instance->GetGameObject(DATA_BLACKWING_ELEVATOR_ONYXIA))
+            case EVENT_JUMP_DOWN_TO_PLATFORM:
+                if (GameObject* elevator = _instance->GetGameObject(DATA_BLACKWING_ELEVATOR_ONYXIA))
+                {
+                    if (TransportBase* transport = elevator->ToTransportBase())
                     {
-                        if (TransportBase* transport = elevator->ToTransportBase())
-                        {
-                            transport->AddPassenger(me);
-                            transport->UpdatePassengerPosition(me->GetMap(), me, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), true);
-                            DoCastAOE(SPELL_JUMP_DOWN_TO_PLATFORM);
-                        }
+                        transport->AddPassenger(me);
+                        transport->UpdatePassengerPosition(me->GetMap(), me, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), true);
+                        DoCastAOE(SPELL_JUMP_DOWN_TO_PLATFORM);
                     }
-                    _events.ScheduleEvent(EVENT_READY_PROTOTYPE, 5s);
-                    break;
-                case EVENT_READY_PROTOTYPE:
-                    DoZoneInCombat();
-                    _instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me, FRAME_INDEX_CHROMATIC_PROTOTYPE);
-                    DoCastSelf(SPELL_READY_UNARMED);
-                    for (uint8 i = 0; i < 3; i++) // no idea what Blizzard was thinking here...
-                        DoCastSelf(SPELL_DUMMY_NUKE);
-
-                    _events.ScheduleEvent(EVENT_DUMMY_NUKE, 1s);
-                    _events.ScheduleEvent(EVENT_BLAST_NOVA, 3s + 500ms);
-                    break;
-                case EVENT_DUMMY_NUKE:
+                }
+                _events.ScheduleEvent(EVENT_READY_PROTOTYPE, 5s);
+                break;
+            case EVENT_READY_PROTOTYPE:
+                DoZoneInCombat();
+                _instance->SendEncounterUnit(ENCOUNTER_FRAME_ENGAGE, me, FRAME_INDEX_CHROMATIC_PROTOTYPE);
+                DoCastSelf(SPELL_READY_UNARMED);
+                for (uint8 i = 0; i < 3; i++) // no idea what Blizzard was thinking here...
                     DoCastSelf(SPELL_DUMMY_NUKE);
-                    _events.Repeat(1s);
-                    break;
-                case EVENT_BLAST_NOVA:
-                    DoCastAOE(SPELL_BLAST_NOVA);
-                    _events.Repeat(13s);
-                    break;
-                case EVENT_DISENGAGE_PLAYERS:
-                    _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
-                    me->DespawnOrUnsummon(5s);
-                    break;
-                default:
-                    break;
+
+                _events.ScheduleEvent(EVENT_DUMMY_NUKE, 1s);
+                _events.ScheduleEvent(EVENT_BLAST_NOVA, 3s + 500ms);
+                break;
+            case EVENT_DUMMY_NUKE:
+                DoCastSelf(SPELL_DUMMY_NUKE);
+                _events.Repeat(1s);
+                break;
+            case EVENT_BLAST_NOVA:
+                DoCastAOE(SPELL_BLAST_NOVA);
+                _events.Repeat(13s);
+                break;
+            case EVENT_DISENGAGE_PLAYERS:
+                _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
+                me->DespawnOrUnsummon(5s);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -1317,11 +1317,11 @@ struct npc_nefarians_end_shadowblaze : public NullCreatureAI
     {
         switch (spell->Id)
         {
-            case SPELL_BRUSHFIRE_CHECK_VALID_LOCATION:
-                _controllerStalkerPosition = target->GetPosition();
-                break;
-            default:
-                break;
+        case SPELL_BRUSHFIRE_CHECK_VALID_LOCATION:
+            _controllerStalkerPosition = target->GetPosition();
+            break;
+        default:
+            break;
         }
     }
 
@@ -1329,58 +1329,58 @@ struct npc_nefarians_end_shadowblaze : public NullCreatureAI
     {
         switch (action)
         {
-            case ACTION_SPREAD_FLAMES:
+        case ACTION_SPREAD_FLAMES:
+        {
+            float z = me->GetPositionZ();
+            if (z >= 13.f) // tempfix to avoid flames spawn in the air when a controller gets spawned on a pillar
+                z = 8.472f;
+
+            if (!_summonedByController && me->GetEntry() != NPC_SHADOWBLAZE_FLASHPOINT)
             {
-                float z = me->GetPositionZ();
-                if (z >= 13.f) // tempfix to avoid flames spawn in the air when a controller gets spawned on a pillar
-                    z = 8.472f;
+                // Select a destination that will serve as our offset selection helper
+                float angle = me->GetAngle(_controllerStalkerPosition) - float(M_PI / 2.5f);
+                float compareX = me->GetPositionX() + std::cos(angle) * 20.f;
+                float compareY = me->GetPositionY() + std::sin(angle) * 20.f;
+                Position comparePos = Position(compareX, compareY);
 
-                if (!_summonedByController && me->GetEntry() != NPC_SHADOWBLAZE_FLASHPOINT)
+                Position summonPos = me->GetPosition();
+                // Select the closest nearby location for summoning
+                float offsets[3] = { -5.f, 0.f, 5.f };
+
+                for (uint8 i = 0; i < 3; i++)
                 {
-                    // Select a destination that will serve as our offset selection helper
-                    float angle = me->GetAngle(_controllerStalkerPosition) - float(M_PI / 2.5f);
-                    float compareX = me->GetPositionX() + std::cos(angle) * 20.f;
-                    float compareY = me->GetPositionY() + std::sin(angle) * 20.f;
-                    Position comparePos = Position(compareX, compareY);
-
-                    Position summonPos = me->GetPosition();
-                    // Select the closest nearby location for summoning
-                    float offsets[3] = { -5.f, 0.f, 5.f };
-
-                    for (uint8 i = 0; i < 3; i++)
+                    float x = me->GetPositionX() + offsets[i];
+                    for (uint8 u = 0; u < 3; u++)
                     {
-                        float x = me->GetPositionX() + offsets[i];
-                        for (uint8 u = 0; u < 3; u++)
-                        {
-                            float y = me->GetPositionY() + offsets[u];
-                            if (Position(x, y).GetExactDist2d(comparePos) < summonPos.GetExactDist2d(comparePos))
-                                summonPos = Position(x, y);
-                        }
-                    }
-
-                    me->CastSpell({ summonPos.GetPositionX(), summonPos.GetPositionY(), z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
-                }
-                else
-                {
-                    if (me->GetEntry() == NPC_SHADOWBLAZE_FLASHPOINT)
-                    {
-                        me->CastSpell({ me->GetPositionX() - 5.f, me->GetPositionY(), z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
-                        me->CastSpell({ me->GetPositionX(), me->GetPositionY() + 5.f, z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
-                    }
-                    else if (_summonedByController)
-                    {
-                        for (uint8 i = 0; i < 2; i++)
-                        {
-                            float x = me->GetPositionX() + 5.f;
-                            float y = me->GetPositionY() + 5.f;
-                            me->CastSpell({ x, y, z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
-                        }
+                        float y = me->GetPositionY() + offsets[u];
+                        if (Position(x, y).GetExactDist2d(comparePos) < summonPos.GetExactDist2d(comparePos))
+                            summonPos = Position(x, y);
                     }
                 }
-                break;
+
+                me->CastSpell({ summonPos.GetPositionX(), summonPos.GetPositionY(), z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
             }
-            default:
-                break;
+            else
+            {
+                if (me->GetEntry() == NPC_SHADOWBLAZE_FLASHPOINT)
+                {
+                    me->CastSpell({ me->GetPositionX() - 5.f, me->GetPositionY(), z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
+                    me->CastSpell({ me->GetPositionX(), me->GetPositionY() + 5.f, z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
+                }
+                else if (_summonedByController)
+                {
+                    for (uint8 i = 0; i < 2; i++)
+                    {
+                        float x = me->GetPositionX() + 5.f;
+                        float y = me->GetPositionY() + 5.f;
+                        me->CastSpell({ x, y, z, 0.f }, SPELL_BRUSHFIRE_SUMMON, true);
+                    }
+                }
+            }
+            break;
+        }
+        default:
+            break;
         }
     }
 
@@ -1406,23 +1406,23 @@ class spell_nefarians_end_electrical_charge : public AuraScript
 
         switch (target->GetEntry())
         {
-            case BOSS_NEFARIAN:
-                if (target->GetReactState() == REACT_AGGRESSIVE)
+        case BOSS_NEFARIAN:
+            if (target->GetReactState() == REACT_AGGRESSIVE)
+            {
+                if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
                 {
-                    if (Creature* onyxia = instance->GetCreature(DATA_ONYXIA))
-                    {
-                        if (Aura* charge = onyxia->GetAura(SPELL_ELECTRICAL_CHARGE_ONYXIA))
-                            charge->ModStackAmount(1, AuraRemoveFlags::Expired | AuraRemoveFlags::DontResetPeriodicTimer);
-                    }
+                    if (Aura* charge = onyxia->GetAura(SPELL_ELECTRICAL_CHARGE_ONYXIA))
+                        charge->ModStackAmount(1, AuraRemoveFlags::Expired | AuraRemoveFlags::DontResetPeriodicTimer);
                 }
-                break;
-            case NPC_ONYXIA:
-                ModStackAmount(1);
-                if (target->IsAIEnabled())
-                    target->AI()->DoAction(ACTION_UPDATE_ELECTRICAL_CHARGE);
-                break;
-            default:
-                break;
+            }
+            break;
+        case NPC_ONYXIA:
+            ModStackAmount(1);
+            if (target->IsAIEnabled())
+                target->AI()->DoAction(ACTION_UPDATE_ELECTRICAL_CHARGE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -1484,9 +1484,9 @@ class spell_nefarians_end_lightning_discharge_cone : public SpellScript
         target->ApplySpellImmune(0, IMMUNITY_ID, spellId, true);
 
         target->m_Events.AddEventAtOffset([spellId, target]()
-        {
-            target->ApplySpellImmune(0, IMMUNITY_ID, spellId, false);
-        }, 500ms);
+            {
+                target->ApplySpellImmune(0, IMMUNITY_ID, spellId, false);
+            }, 500ms);
     }
 
     void Register() override
@@ -1503,10 +1503,10 @@ class spell_nefarians_end_lightning_discharge_damage : public SpellScript
         Unit* caster = GetCaster();
 
         targets.remove_if([spell, caster](WorldObject const* obj)->bool
-        {
-            Unit const* target = obj->ToUnit();
-            return !target || target->IsImmunedToSpell(spell, caster);
-        });
+            {
+                Unit const* target = obj->ToUnit();
+                return !target || target->IsImmunedToSpell(spell, caster);
+            });
     }
 
     void Register() override
@@ -1698,9 +1698,9 @@ class spell_nefarians_end_onyxia_start_fight_2_effect : public SpellScript
     void FilterTargets(std::list<WorldObject*>& targets)
     {
         targets.remove_if([](WorldObject const* target)->bool
-        {
-            return !target->GetTransGUID();
-        });
+            {
+                return !target->GetTransGUID();
+            });
     }
 
     void HandleHit(SpellEffIndex /*effIndex*/)
@@ -1974,13 +1974,13 @@ class spell_nefarians_end_dominion_portal_trigger : public SpellScript
             init.SetVelocity(3.5f);
             init.MoveTo(caster->GetPositionX(), caster->GetPositionY(), caster->GetPositionZ(), false); // Todo: enable pathfinding when mmaps for transports have arrived
             target->m_Events.AddEventAtOffset([target, caster]()
-            {
-                if (target->HasAura(SPELL_DOMINION_OVERRIDE_ACTION_BAR))
-                    target->CastSpell(target, SPELL_INSTAKILL_SELF, true);
+                {
+                    if (target->HasAura(SPELL_DOMINION_OVERRIDE_ACTION_BAR))
+                        target->CastSpell(target, SPELL_INSTAKILL_SELF, true);
 
-                if (Creature* creature = caster->ToCreature())
-                    creature->DespawnOrUnsummon();
-            }, Milliseconds(init.Launch()));
+                    if (Creature* creature = caster->ToCreature())
+                        creature->DespawnOrUnsummon();
+                }, Milliseconds(init.Launch()));
         }
     }
 

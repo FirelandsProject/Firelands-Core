@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -1640,7 +1640,7 @@ public:
 
             // Query informations from the DB
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_PINFO);
-            stmt->setUInt32(0, lowguid);
+            stmt->SetData(0, lowguid);
             PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
             if (!result)
@@ -1667,8 +1667,8 @@ public:
 
         // Query the prepared statement for login data
         LoginDatabasePreparedStatement* stmt2 = LoginDatabase.GetPreparedStatement(LOGIN_SEL_PINFO);
-        stmt2->setInt32(0, int32(realm.Id.Realm));
-        stmt2->setUInt32(1, accId);
+        stmt2->SetData(0, int32(realm.Id.Realm));
+        stmt2->SetData(1, accId);
         PreparedQueryResult result = LoginDatabase.Query(stmt2);
 
         if (result)
@@ -1713,13 +1713,13 @@ public:
 
         // Returns banType, banTime, bannedBy, banreason
         stmt2 = LoginDatabase.GetPreparedStatement(LOGIN_SEL_PINFO_BANS);
-        stmt2->setUInt32(0, accId);
+        stmt2->SetData(0, accId);
         PreparedQueryResult result2 = LoginDatabase.Query(stmt2);
         if (!result2)
         {
             banType = handler->GetFirelandsString(LANG_CHARACTER);
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PINFO_BANS);
-            stmt->setUInt32(0, lowguid);
+            stmt->SetData(0, lowguid);
             result2 = CharacterDatabase.Query(stmt);
         }
 
@@ -1735,7 +1735,7 @@ public:
 
         // Can be used to query data from Characters database
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PINFO_XP);
-        stmt->setUInt32(0, lowguid);
+        stmt->SetData(0, lowguid);
         PreparedQueryResult result4 = CharacterDatabase.Query(stmt);
 
         if (result4)
@@ -1749,7 +1749,7 @@ public:
             {
                 // Guild Data - an own query, because it may not happen.
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_MEMBER_EXTENDED);
-                stmt->setUInt32(0, lowguid);
+                stmt->SetData(0, lowguid);
                 PreparedQueryResult result5 = CharacterDatabase.Query(stmt);
                 if (result5)
                 {
@@ -1853,7 +1853,7 @@ public:
         // Mail Data - an own query, because it may or may not be useful.
         // SQL: "SELECT SUM(CASE WHEN (checked & 1) THEN 1 ELSE 0 END) AS 'readmail', COUNT(*) AS 'totalmail' FROM mail WHERE `receiver` = ?"
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PINFO_MAILS);
-        stmt->setUInt32(0, lowguid);
+        stmt->SetData(0, lowguid);
         PreparedQueryResult result6 = CharacterDatabase.Query(stmt);
         if (result6)
         {
@@ -1953,7 +1953,7 @@ public:
             // Target is online, mute will be in effect right away.
             int64 muteTime = GameTime::GetGameTime() + notSpeakTime * MINUTE;
             target->GetSession()->m_muteTime = muteTime;
-            stmt->setInt64(0, muteTime);
+            stmt->SetData(0, muteTime);
             std::string nameLink = handler->playerLink(targetName);
 
             if (sWorld->getBoolConfig(CONFIG_SHOW_MUTE_IN_WORLD))
@@ -1965,18 +1965,18 @@ public:
         {
             // Target is offline, mute will be in effect starting from the next login.
             int32 muteTime = -int32(notSpeakTime * MINUTE);
-            stmt->setInt64(0, muteTime);
+            stmt->SetData(0, muteTime);
         }
 
-        stmt->setString(1, muteReasonStr);
-        stmt->setString(2, muteBy);
-        stmt->setUInt32(3, accountId);
+        stmt->SetData(1, muteReasonStr);
+        stmt->SetData(2, muteBy);
+        stmt->SetData(3, accountId);
         LoginDatabase.Execute(stmt);
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_MUTE);
-        stmt->setUInt32(0, accountId);
-        stmt->setUInt32(1, notSpeakTime);
-        stmt->setString(2, muteBy);
-        stmt->setString(3, muteReasonStr);
+        stmt->SetData(0, accountId);
+        stmt->SetData(1, notSpeakTime);
+        stmt->SetData(2, muteBy);
+        stmt->SetData(3, muteReasonStr);
         LoginDatabase.Execute(stmt);
         std::string nameLink = handler->playerLink(targetName);
 
@@ -2021,10 +2021,10 @@ public:
         }
 
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_MUTE_TIME);
-        stmt->setInt64(0, 0);
-        stmt->setString(1, "");
-        stmt->setString(2, "");
-        stmt->setUInt32(3, accountId);
+        stmt->SetData(0, 0);
+        stmt->SetData(1, "");
+        stmt->SetData(2, "");
+        stmt->SetData(3, accountId);
         LoginDatabase.Execute(stmt);
 
         if (target)
@@ -2069,7 +2069,7 @@ public:
     static bool HandleMuteInfoHelper(uint32 accountId, char const* accountName, ChatHandler* handler)
     {
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_MUTE_INFO);
-        stmt->setUInt32(0, accountId);
+        stmt->SetData(0, accountId);
         PreparedQueryResult result = LoginDatabase.Query(stmt);
 
         if (!result)
@@ -2546,7 +2546,7 @@ public:
 
                 // If player found: delete his freeze aura
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_AURA_FROZEN);
-                stmt->setUInt32(0, guid.GetCounter());
+                stmt->SetData(0, guid.GetCounter());
                 CharacterDatabase.Execute(stmt);
 
                 handler->PSendSysMessage(LANG_COMMAND_UNFREEZE, name.c_str());

@@ -1,9 +1,9 @@
 # output generic information about the core and buildtype chosen
 message("")
-message("* FirelandsCore revision   : ${rev_hash} ${rev_date} (${rev_branch} branch)")
+message("* Firelands Core revision   : ${rev_hash} ${rev_date} (${rev_branch} branch)")
 
 if(UNIX)
-    message("* FirelandsCore buildtype  : ${CMAKE_BUILD_TYPE}")
+    message("* Firelands Core buildtype  : ${CMAKE_BUILD_TYPE}")
 endif()
 
 message("")
@@ -22,9 +22,9 @@ message("")
 
 # Show infomation about the options selected during configuration
 if(SERVERS)
-    message("* Build world/bnetserver       : Yes (default)")
+    message("* Build world/authserver       : Yes (default)")
 else()
-    message("* Build world/bnetserver : No")
+    message("* Build world/authserver       : No")
 endif()
 
 if(SCRIPTS AND(NOT SCRIPTS STREQUAL "none"))

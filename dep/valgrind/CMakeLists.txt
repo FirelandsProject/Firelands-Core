@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -12,4 +12,4 @@ add_library(valgrind INTERFACE)
 
 target_include_directories(valgrind
   INTERFACE
-    "${VALGRIND_INCLUDE_DIR}")
+  "${VALGRIND_INCLUDE_DIR}")

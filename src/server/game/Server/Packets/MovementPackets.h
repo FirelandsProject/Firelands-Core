@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -189,17 +189,17 @@ namespace WorldPackets
 
         struct MovementSpline
         {
-            uint32 Flags                = 0;    // Spline flags
-            uint8 Face                  = 0;    // Movement direction (see MonsterMoveType enum)
-            uint32 MoveTime             = 0;
+            uint32 Flags = 0;    // Spline flags
+            uint8 Face = 0;    // Movement direction (see MonsterMoveType enum)
+            uint32 MoveTime = 0;
             std::vector<TaggedPosition<Position::XYZ>> Points;   // Spline path
-            int8 VehicleExitVoluntary   = 0;
+            int8 VehicleExitVoluntary = 0;
             ObjectGuid TransportGUID;
-            int8 VehicleSeat            = -1;
+            int8 VehicleSeat = -1;
             std::vector<TaggedPosition<Position::PackedXYZ>> PackedDeltas;
             Optional<MonsterSplineJumpExtraData> JumpExtraData;
             Optional<MonsterSplineAnimationExtraData> Animation;
-            float FaceDirection         = 0.0f;
+            float FaceDirection = 0.0f;
             ObjectGuid FaceGUID;
             TaggedPosition<Position::XYZ> FaceSpot;
         };

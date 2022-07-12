@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -23,24 +23,24 @@
 
 class MapUpdateRequest
 {
-    private:
+private:
 
-        Map& m_map;
-        MapUpdater& m_updater;
-        uint32 m_diff;
+    Map& m_map;
+    MapUpdater& m_updater;
+    uint32 m_diff;
 
-    public:
+public:
 
-        MapUpdateRequest(Map& m, MapUpdater& u, uint32 d)
-            : m_map(m), m_updater(u), m_diff(d)
-        {
-        }
+    MapUpdateRequest(Map& m, MapUpdater& u, uint32 d)
+        : m_map(m), m_updater(u), m_diff(d)
+    {
+    }
 
-        void call()
-        {
-            m_map.Update (m_diff);
-            m_updater.update_finished();
-        }
+    void call()
+    {
+        m_map.Update(m_diff);
+        m_updater.update_finished();
+    }
 };
 
 void MapUpdater::activate(size_t num_threads)

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,7 +27,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-    WMORoot::WMORoot(std::string const& filename)
+WMORoot::WMORoot(std::string const& filename)
     : filename(filename), color(0), nTextures(0), nGroups(0), nPortals(0), nLights(0),
     nDoodadNames(0), nDoodadDefs(0), nDoodadSets(0), RootWMOID(0), flags(0)
 {
@@ -40,7 +40,7 @@ extern HANDLE WorldMpq;
 bool WMORoot::open()
 {
     MPQFile f(WorldMpq, filename.c_str());
-    if (f.isEof ())
+    if (f.isEof())
     {
         printf("No such file.\n");
         return false;
@@ -183,7 +183,7 @@ bool WMOGroup::open(WMORoot* rootWMO)
         f.read(fourcc, 4);
         f.read(&size, 4);
         flipcc(fourcc);
-        if (!strcmp(fourcc,"MOGP")) //size specified in MOGP chunk is all the other chunks combined, adjust to read MOGP-only
+        if (!strcmp(fourcc, "MOGP")) //size specified in MOGP chunk is all the other chunks combined, adjust to read MOGP-only
             size = 68;
 
         size_t nextpos = f.getPos() + size;
@@ -484,11 +484,11 @@ uint32 WMOGroup::GetLiquidTypeId(uint32 liquidTypeId)
     {
         switch (((static_cast<uint8>(liquidTypeId) - 1) & 3))
         {
-            case 0: return ((mogpFlags & 0x80000) != 0) + 13;
-            case 1: return 14;
-            case 2: return 19;
-            case 3: return 20;
-            default: break;
+        case 0: return ((mogpFlags & 0x80000) != 0) + 13;
+        case 1: return 14;
+        case 2: return 19;
+        case 3: return 20;
+        default: break;
         }
     }
     return liquidTypeId;

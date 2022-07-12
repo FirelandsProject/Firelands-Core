@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -73,8 +73,8 @@ Channel::Channel(std::string const& name, uint32 team /*= 0*/) :
     if (sWorld->getBoolConfig(CONFIG_PRESERVE_CUSTOM_CHANNELS))
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHANNEL);
-        stmt->setString(0, name);
-        stmt->setUInt32(1, _channelTeam);
+        stmt->SetData(0, name);
+        stmt->SetData(1, _channelTeam);
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt)) // load
         {
             Field* fields = result->Fetch();
@@ -101,8 +101,8 @@ Channel::Channel(std::string const& name, uint32 team /*= 0*/) :
         else // save
         {
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHANNEL);
-            stmt->setString(0, name);
-            stmt->setUInt32(1, _channelTeam);
+            stmt->SetData(0, name);
+            stmt->SetData(1, _channelTeam);
             CharacterDatabase.Execute(stmt);
             LOG_DEBUG("chat.system", "Channel(%s) saved in database", name.c_str());
         }
@@ -147,12 +147,12 @@ void Channel::UpdateChannelInDB() const
         std::string banListStr = banlist.str();
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL);
-        stmt->setBool(0, _announceEnabled);
-        stmt->setBool(1, _ownershipEnabled);
-        stmt->setString(2, _channelPassword);
-        stmt->setString(3, banListStr);
-        stmt->setString(4, _channelName);
-        stmt->setUInt32(5, _channelTeam);
+        stmt->SetData(0, _announceEnabled);
+        stmt->SetData(1, _ownershipEnabled);
+        stmt->SetData(2, _channelPassword);
+        stmt->SetData(3, banListStr);
+        stmt->SetData(4, _channelName);
+        stmt->SetData(5, _channelTeam);
         CharacterDatabase.Execute(stmt);
 
         LOG_DEBUG("chat.system", "Channel(%s) updated in database", _channelName.c_str());
@@ -162,8 +162,8 @@ void Channel::UpdateChannelInDB() const
 void Channel::UpdateChannelUseageInDB() const
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL_USAGE);
-    stmt->setString(0, _channelName);
-    stmt->setUInt32(1, _channelTeam);
+    stmt->SetData(0, _channelName);
+    stmt->SetData(1, _channelTeam);
     CharacterDatabase.Execute(stmt);
 }
 
@@ -172,7 +172,7 @@ void Channel::CleanOldChannelsInDB()
     if (sWorld->getIntConfig(CONFIG_PRESERVE_CUSTOM_CHANNEL_DURATION) > 0)
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_OLD_CHANNELS);
-        stmt->setUInt32(0, sWorld->getIntConfig(CONFIG_PRESERVE_CUSTOM_CHANNEL_DURATION) * DAY);
+        stmt->SetData(0, sWorld->getIntConfig(CONFIG_PRESERVE_CUSTOM_CHANNEL_DURATION) * DAY);
         CharacterDatabase.Execute(stmt);
 
         LOG_DEBUG("chat.system", "Cleaned out unused custom chat channels.");

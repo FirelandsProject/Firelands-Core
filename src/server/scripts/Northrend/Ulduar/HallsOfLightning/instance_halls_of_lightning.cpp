@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -32,103 +32,103 @@ DoorData const doorData[] =
 
 class instance_halls_of_lightning : public InstanceMapScript
 {
-    public:
-        instance_halls_of_lightning() : InstanceMapScript(HoLScriptName, 602) { }
+public:
+    instance_halls_of_lightning() : InstanceMapScript(HoLScriptName, 602) { }
 
-        struct instance_halls_of_lightning_InstanceMapScript : public InstanceScript
+    struct instance_halls_of_lightning_InstanceMapScript : public InstanceScript
+    {
+        instance_halls_of_lightning_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_halls_of_lightning_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadDoorData(doorData);
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                switch (creature->GetEntry())
-                {
-                    case NPC_BJARNGRIM:
-                        GeneralBjarngrimGUID = creature->GetGUID();
-                        break;
-                    case NPC_VOLKHAN:
-                        VolkhanGUID = creature->GetGUID();
-                        break;
-                    case NPC_IONAR:
-                        IonarGUID = creature->GetGUID();
-                        break;
-                    case NPC_LOKEN:
-                        LokenGUID = creature->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                InstanceScript::OnGameObjectCreate(go);
-
-                switch (go->GetEntry())
-                {
-                    case GO_LOKEN_THRONE:
-                        LokenGlobeGUID = go->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_LOKEN:
-                        if (state == DONE)
-                            if (GameObject* globe = instance->GetGameObject(LokenGlobeGUID))
-                                globe->SendCustomAnim(0);
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_BJARNGRIM:
-                        return GeneralBjarngrimGUID;
-                    case DATA_VOLKHAN:
-                        return VolkhanGUID;
-                    case DATA_IONAR:
-                        return IonarGUID;
-                    case DATA_LOKEN:
-                        return LokenGUID;
-                    default:
-                        break;
-                }
-                return ObjectGuid::Empty;
-            }
-
-        protected:
-            ObjectGuid GeneralBjarngrimGUID;
-            ObjectGuid VolkhanGUID;
-            ObjectGuid IonarGUID;
-            ObjectGuid LokenGUID;
-
-            ObjectGuid LokenGlobeGUID;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_halls_of_lightning_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadDoorData(doorData);
         }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            switch (creature->GetEntry())
+            {
+            case NPC_BJARNGRIM:
+                GeneralBjarngrimGUID = creature->GetGUID();
+                break;
+            case NPC_VOLKHAN:
+                VolkhanGUID = creature->GetGUID();
+                break;
+            case NPC_IONAR:
+                IonarGUID = creature->GetGUID();
+                break;
+            case NPC_LOKEN:
+                LokenGUID = creature->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+
+            switch (go->GetEntry())
+            {
+            case GO_LOKEN_THRONE:
+                LokenGlobeGUID = go->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
+            {
+            case DATA_LOKEN:
+                if (state == DONE)
+                    if (GameObject* globe = instance->GetGameObject(LokenGlobeGUID))
+                        globe->SendCustomAnim(0);
+                break;
+            default:
+                break;
+            }
+
+            return true;
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_BJARNGRIM:
+                return GeneralBjarngrimGUID;
+            case DATA_VOLKHAN:
+                return VolkhanGUID;
+            case DATA_IONAR:
+                return IonarGUID;
+            case DATA_LOKEN:
+                return LokenGUID;
+            default:
+                break;
+            }
+            return ObjectGuid::Empty;
+        }
+
+    protected:
+        ObjectGuid GeneralBjarngrimGUID;
+        ObjectGuid VolkhanGUID;
+        ObjectGuid IonarGUID;
+        ObjectGuid LokenGUID;
+
+        ObjectGuid LokenGlobeGUID;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_halls_of_lightning_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_halls_of_lightning()

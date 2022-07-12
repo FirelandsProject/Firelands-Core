@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,8 +26,8 @@ class Player;
 
 class GroupRefManager : public RefManager<Group, Player>
 {
-    public:
-        GroupReference* getFirst() { return ((GroupReference*)RefManager<Group, Player>::getFirst()); }
-        GroupReference const* getFirst() const { return ((GroupReference const*)RefManager<Group, Player>::getFirst()); }
+public:
+    GroupReference* getFirst() { return ((GroupReference*)RefManager<Group, Player>::getFirst()); }
+    GroupReference const* getFirst() const { return ((GroupReference const*)RefManager<Group, Player>::getFirst()); }
 };
 #endif

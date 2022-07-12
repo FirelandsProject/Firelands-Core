@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,17 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: boss_cannon_master_willey
-SD%Complete: 100
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: boss_cannon_master_willey
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Stratholme
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 
-//front, left
+ //front, left
 #define ADD_1X 3553.851807f
 #define ADD_1Y -2945.885986f
 #define ADD_1Z 125.001015f
@@ -73,9 +73,9 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_KNOCKAWAY                 = 10101,
-    SPELL_PUMMEL                    = 15615,
-    SPELL_SHOOT                     = 16496
+    SPELL_KNOCKAWAY = 10101,
+    SPELL_PUMMEL = 15615,
+    SPELL_SHOOT = 16496
     //SPELL_SUMMONCRIMSONRIFLEMAN     = 17279
 };
 
@@ -145,7 +145,8 @@ public:
                 }
                 //12 seconds until we should cast this again
                 Pummel_Timer = 12000;
-            } else Pummel_Timer -= diff;
+            }
+            else Pummel_Timer -= diff;
 
             //KnockAway
             if (KnockAway_Timer <= diff)
@@ -157,7 +158,8 @@ public:
                 }
                 //14 seconds until we should cast this again
                 KnockAway_Timer = 14000;
-            } else KnockAway_Timer -= diff;
+            }
+            else KnockAway_Timer -= diff;
 
             //Shoot
             if (Shoot_Timer <= diff)
@@ -166,7 +168,8 @@ public:
                 DoCastVictim(SPELL_SHOOT);
                 //1 seconds until we should cast this again
                 Shoot_Timer = 1000;
-            } else Shoot_Timer -= diff;
+            }
+            else Shoot_Timer -= diff;
 
             //SummonRifleman
             if (SummonRifleman_Timer <= diff)
@@ -222,7 +225,8 @@ public:
                 }
                 //30 seconds until we should cast this again
                 SummonRifleman_Timer = 30000;
-            } else SummonRifleman_Timer -= diff;
+            }
+            else SummonRifleman_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

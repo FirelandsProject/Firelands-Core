@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,22 +21,22 @@
 
 class instance_mana_tombs : public InstanceMapScript
 {
-    public:
-        instance_mana_tombs() : InstanceMapScript(MTScriptName, 557) { }
+public:
+    instance_mana_tombs() : InstanceMapScript(MTScriptName, 557) { }
 
-        struct instance_mana_tombs_InstanceMapScript : public InstanceScript
+    struct instance_mana_tombs_InstanceMapScript : public InstanceScript
+    {
+        instance_mana_tombs_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_mana_tombs_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-            }
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_mana_tombs_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
         }
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_mana_tombs_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_mana_tombs()

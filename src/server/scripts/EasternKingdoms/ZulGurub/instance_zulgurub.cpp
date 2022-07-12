@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -55,178 +55,178 @@ BossBoundaryData const boundaries =
 
 class instance_zulgurub : public InstanceMapScript
 {
-    public:
-        instance_zulgurub() : InstanceMapScript(ZGScriptName, 859) { }
+public:
+    instance_zulgurub() : InstanceMapScript(ZGScriptName, 859) { }
 
-        struct instance_zulgurub_InstanceMapScript : public InstanceScript
+    struct instance_zulgurub_InstanceMapScript : public InstanceScript
+    {
+        instance_zulgurub_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_zulgurub_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadObjectData(creatureData, nullptr);
-                LoadDoorData(doorData);
-                LoadBossBoundaries(boundaries);
-                _defeatedBossesCount = 0;
-                _killedGurubashiSpiritWarriorMask = 0;
-            }
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadObjectData(creatureData, nullptr);
+            LoadDoorData(doorData);
+            LoadBossBoundaries(boundaries);
+            _defeatedBossesCount = 0;
+            _killedGurubashiSpiritWarriorMask = 0;
+        }
 
-            void OnCreatureCreate(Creature* creature) override
-            {
-                InstanceScript::OnCreatureCreate(creature);
+        void OnCreatureCreate(Creature* creature) override
+        {
+            InstanceScript::OnCreatureCreate(creature);
 
-                switch (creature->GetEntry())
+            switch (creature->GetEntry())
+            {
+            case NPC_VENOMOUS_EFFUSION:
+            case NPC_BLOODVENOM:
+                if (Creature* venoxis = GetCreature(DATA_HIGH_PRIEST_VENOXIS))
+                    venoxis->AI()->JustSummoned(creature);
+                break;
+            case NPC_DEVASTATING_SLAM:
+                if (Creature* mandokir = GetCreature(DATA_BLOODLORD_MANDOKIR))
+                    mandokir->AI()->JustSummoned(creature);
+                break;
+            case NPC_CAVE_IN_STALKER:
+                _caveInStalkerGUIDs.push_back(creature->GetGUID());
+                break;
+            case NPC_TOXIC_VENOMSPITTER:
+            case NPC_MUTATED_OVERGROWTH:
+                _poisonPlantGUIDs.push_back(creature->GetGUID());
+                if (GetBossState(DATA_HIGH_PRIEST_VENOXIS) != DONE)
+                    creature->CastSpell(creature, SPELL_POISON_CLOUD);
+                break;
+            case BOSS_JINDO_THE_GODBREAKER:
+                creature->setActive(true);
+
+                if (_defeatedBossesCount >= 2)
                 {
-                    case NPC_VENOMOUS_EFFUSION:
-                    case NPC_BLOODVENOM:
-                        if (Creature* venoxis = GetCreature(DATA_HIGH_PRIEST_VENOXIS))
-                            venoxis->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_DEVASTATING_SLAM:
-                        if (Creature* mandokir = GetCreature(DATA_BLOODLORD_MANDOKIR))
-                            mandokir->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_CAVE_IN_STALKER:
-                        _caveInStalkerGUIDs.push_back(creature->GetGUID());
-                        break;
-                    case NPC_TOXIC_VENOMSPITTER:
-                    case NPC_MUTATED_OVERGROWTH:
-                        _poisonPlantGUIDs.push_back(creature->GetGUID());
-                        if (GetBossState(DATA_HIGH_PRIEST_VENOXIS) != DONE)
-                            creature->CastSpell(creature, SPELL_POISON_CLOUD);
-                        break;
-                    case BOSS_JINDO_THE_GODBREAKER:
-                        creature->setActive(true);
-
-                        if (_defeatedBossesCount >= 2)
-                        {
-                            creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
-                            creature->RemoveAurasDueToSpell(SPELL_COSMETIC_ALPHA_STATE_25_PCT);
-                        }
-                        break;
-                    case NPC_JINDO_THE_GODBREAKER:
-                    case NPC_SPIRIT_OF_HAKKAR:
-                    case NPC_SHADOW_OF_HAKKAR:
-                    case NPC_HAKKARS_CHAINS:
-                    case NPC_TWISTED_SPIRIT:
-                    case NPC_TWISTED_SHADOW:
-                    case NPC_GURUBASHI_SPIRIT_WARRIOR:
-                    case NPC_GURUBASHI_SHADOW:
-                    case NPC_GURUBASHI_SPIRIT:
-                    case NPC_SPIRIT_PORTAL:
-                        if (Creature* jindo = GetCreature(DATA_JINDO_THE_GODBREAKER))
-                            jindo->AI()->JustSummoned(creature);
-                        break;
-                    default:
-                        break;
+                    creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+                    creature->RemoveAurasDueToSpell(SPELL_COSMETIC_ALPHA_STATE_25_PCT);
                 }
+                break;
+            case NPC_JINDO_THE_GODBREAKER:
+            case NPC_SPIRIT_OF_HAKKAR:
+            case NPC_SHADOW_OF_HAKKAR:
+            case NPC_HAKKARS_CHAINS:
+            case NPC_TWISTED_SPIRIT:
+            case NPC_TWISTED_SHADOW:
+            case NPC_GURUBASHI_SPIRIT_WARRIOR:
+            case NPC_GURUBASHI_SHADOW:
+            case NPC_GURUBASHI_SPIRIT:
+            case NPC_SPIRIT_PORTAL:
+                if (Creature* jindo = GetCreature(DATA_JINDO_THE_GODBREAKER))
+                    jindo->AI()->JustSummoned(creature);
+                break;
+            default:
+                break;
             }
+        }
 
-            void OnGameObjectCreate(GameObject* go) override
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+        }
+
+        void OnUnitDeath(Unit* unit) override
+        {
+            if (unit->GetTypeId() != TYPEID_UNIT)
+                return;
+
+            switch (unit->GetEntry())
             {
-                InstanceScript::OnGameObjectCreate(go);
+            case NPC_HAKKARS_CHAINS:
+                if (Creature* jindo = GetCreature(DATA_JINDO_THE_GODBREAKER))
+                    jindo->AI()->SummonedCreatureDies(unit->ToCreature(), nullptr);
+                break;
+            default:
+                break;
             }
+        }
 
-            void OnUnitDeath(Unit* unit) override
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
             {
-                if (unit->GetTypeId() != TYPEID_UNIT)
-                    return;
-
-                switch (unit->GetEntry())
-                {
-                    case NPC_HAKKARS_CHAINS:
-                        if (Creature* jindo = GetCreature(DATA_JINDO_THE_GODBREAKER))
-                            jindo->AI()->SummonedCreatureDies(unit->ToCreature(), nullptr);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_HIGH_PRIEST_VENOXIS:
-                        if (state == DONE)
-                            for (ObjectGuid guid : _poisonPlantGUIDs)
-                                if (Creature* plant = instance->GetCreature(guid))
-                                    plant->RemoveAurasDueToSpell(SPELL_POISON_CLOUD);
-                        break;
-                    default:
-                        break;
-                }
-
+            case DATA_HIGH_PRIEST_VENOXIS:
                 if (state == DONE)
-                {
-                    _defeatedBossesCount++;
-
-                    if (_defeatedBossesCount >= 2)
-                        if (Creature* jindo = GetCreature(DATA_JINDO_THE_GODBREAKER))
-                            jindo->AI()->DoAction(ACTION_TRIGGER_JINDO_INTRO);
-
-                    SaveToDB();
-                }
-
-                return true;
+                    for (ObjectGuid guid : _poisonPlantGUIDs)
+                        if (Creature* plant = instance->GetCreature(guid))
+                            plant->RemoveAurasDueToSpell(SPELL_POISON_CLOUD);
+                break;
+            default:
+                break;
             }
 
-            void SetData(uint32 type, uint32 data) override
+            if (state == DONE)
             {
-                switch (type)
-                {
-                    case DATA_CAST_CAVE_IN_VISUAL:
-                        for (ObjectGuid guid : _caveInStalkerGUIDs)
-                            if (Creature* stalker = instance->GetCreature(guid))
-                                stalker->CastSpell(stalker, SPELL_CAVE_IN_VISUAL, false);
-                        break;
-                    case DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS:
-                        _killedGurubashiSpiritWarriorMask = data;
-                        SaveToDB();
-                        break;
-                    default:
-                        break;
-                }
+                _defeatedBossesCount++;
+
+                if (_defeatedBossesCount >= 2)
+                    if (Creature* jindo = GetCreature(DATA_JINDO_THE_GODBREAKER))
+                        jindo->AI()->DoAction(ACTION_TRIGGER_JINDO_INTRO);
+
+                SaveToDB();
             }
 
-            uint32 GetData(uint32 type) const override
+            return true;
+        }
+
+        void SetData(uint32 type, uint32 data) override
+        {
+            switch (type)
             {
-                switch (type)
-                {
-                    case DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS:
-                        return _killedGurubashiSpiritWarriorMask;
-                    default:
-                        return 0;
-                }
+            case DATA_CAST_CAVE_IN_VISUAL:
+                for (ObjectGuid guid : _caveInStalkerGUIDs)
+                    if (Creature* stalker = instance->GetCreature(guid))
+                        stalker->CastSpell(stalker, SPELL_CAVE_IN_VISUAL, false);
+                break;
+            case DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS:
+                _killedGurubashiSpiritWarriorMask = data;
+                SaveToDB();
+                break;
+            default:
+                break;
+            }
+        }
+
+        uint32 GetData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS:
+                return _killedGurubashiSpiritWarriorMask;
+            default:
                 return 0;
             }
-
-            void WriteSaveDataMore(std::ostringstream& data) override
-            {
-                data << _defeatedBossesCount << ' '
-                    << _killedGurubashiSpiritWarriorMask;
-            }
-
-            void ReadSaveDataMore(std::istringstream& data) override
-            {
-                data >> _defeatedBossesCount;
-                data >> _killedGurubashiSpiritWarriorMask;
-            }
-
-        private:
-            GuidVector _caveInStalkerGUIDs;
-            GuidVector _poisonPlantGUIDs;
-            uint8 _defeatedBossesCount;
-            uint8 _killedGurubashiSpiritWarriorMask;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_zulgurub_InstanceMapScript(map);
+            return 0;
         }
+
+        void WriteSaveDataMore(std::ostringstream& data) override
+        {
+            data << _defeatedBossesCount << ' '
+                << _killedGurubashiSpiritWarriorMask;
+        }
+
+        void ReadSaveDataMore(std::istringstream& data) override
+        {
+            data >> _defeatedBossesCount;
+            data >> _killedGurubashiSpiritWarriorMask;
+        }
+
+    private:
+        GuidVector _caveInStalkerGUIDs;
+        GuidVector _poisonPlantGUIDs;
+        uint8 _defeatedBossesCount;
+        uint8 _killedGurubashiSpiritWarriorMask;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_zulgurub_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_zulgurub()

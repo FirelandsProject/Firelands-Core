@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -47,43 +47,43 @@ struct StoredLootItem
 
 class StoredLootContainer
 {
-    public:
-        typedef std::unordered_multimap<uint32 /*itemId*/, StoredLootItem> StoredLootItemContainer;
+public:
+    typedef std::unordered_multimap<uint32 /*itemId*/, StoredLootItem> StoredLootItemContainer;
 
-        explicit StoredLootContainer(uint32 containerId) : _containerId(containerId), _money(0) { }
+    explicit StoredLootContainer(uint32 containerId) : _containerId(containerId), _money(0) { }
 
-        void AddLootItem(LootItem const& lootItem, CharacterDatabaseTransaction& trans);
-        void AddMoney(uint32 money, CharacterDatabaseTransaction& trans);
+    void AddLootItem(LootItem const& lootItem, CharacterDatabaseTransaction& trans);
+    void AddMoney(uint32 money, CharacterDatabaseTransaction& trans);
 
-        void RemoveMoney();
-        void RemoveItem(uint32 itemId, uint32 count);
+    void RemoveMoney();
+    void RemoveItem(uint32 itemId, uint32 count);
 
-        uint32 GetContainer() const { return _containerId; }
-        uint32 GetMoney() const { return _money; }
-        StoredLootItemContainer const& GetLootItems() const { return _lootItems; }
+    uint32 GetContainer() const { return _containerId; }
+    uint32 GetMoney() const { return _money; }
+    StoredLootItemContainer const& GetLootItems() const { return _lootItems; }
 
-    private:
-        StoredLootItemContainer _lootItems;
-        uint32 const _containerId;
-        uint32 _money;
+private:
+    StoredLootItemContainer _lootItems;
+    uint32 const _containerId;
+    uint32 _money;
 };
 
 class LootItemStorage
 {
-    public:
-        static LootItemStorage* instance();
-        static std::shared_mutex* GetLock();
+public:
+    static LootItemStorage* instance();
+    static std::shared_mutex* GetLock();
 
-        void LoadStorageFromDB();
-        bool LoadStoredLoot(Item* item, Player* player);
-        void RemoveStoredMoneyForContainer(uint32 containerId);
-        void RemoveStoredLootForContainer(uint32 containerId);
-        void RemoveStoredLootItemForContainer(uint32 containerId, uint32 itemId, uint32 count);
-        void AddNewStoredLoot(Loot* loot, Player* player);
+    void LoadStorageFromDB();
+    bool LoadStoredLoot(Item* item, Player* player);
+    void RemoveStoredMoneyForContainer(uint32 containerId);
+    void RemoveStoredLootForContainer(uint32 containerId);
+    void RemoveStoredLootItemForContainer(uint32 containerId, uint32 itemId, uint32 count);
+    void AddNewStoredLoot(Loot* loot, Player* player);
 
-    private:
-        LootItemStorage() { }
-        ~LootItemStorage() { }
+private:
+    LootItemStorage() { }
+    ~LootItemStorage() { }
 };
 
 #define sLootItemStorage LootItemStorage::instance()

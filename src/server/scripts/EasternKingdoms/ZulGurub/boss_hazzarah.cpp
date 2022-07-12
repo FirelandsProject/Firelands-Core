@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -34,58 +34,58 @@ enum Events
 
 class boss_hazzarah : public CreatureScript
 {
-    public:
-        boss_hazzarah() : CreatureScript("boss_hazzarah") { }
+public:
+    boss_hazzarah() : CreatureScript("boss_hazzarah") { }
 
-        struct boss_hazzarahAI : public BossAI
+    struct boss_hazzarahAI : public BossAI
+    {
+        boss_hazzarahAI(Creature* creature) : BossAI(creature, DATA_HAZZARAH)
         {
-            boss_hazzarahAI(Creature* creature) : BossAI(creature, DATA_HAZZARAH)
-            {
-            }
+        }
 
-            void Reset() override
-            {
-            }
+        void Reset() override
+        {
+        }
 
-            void JustEngagedWith(Unit* /*who*/) override
-            {
-            }
+        void JustEngagedWith(Unit* /*who*/) override
+        {
+        }
 
-            void JustDied(Unit* /*killer*/) override
-            {
-            }
+        void JustDied(Unit* /*killer*/) override
+        {
+        }
 
-            void UpdateAI(uint32 diff) override
-            {
-                if (!UpdateVictim())
-                    return;
+        void UpdateAI(uint32 diff) override
+        {
+            if (!UpdateVictim())
+                return;
 
-                events.Update(diff);
+            events.Update(diff);
+
+            if (me->HasUnitState(UNIT_STATE_CASTING))
+                return;
+            /*
+            while (uint32 eventId = events.ExecuteEvent())
+            {
+                switch (eventId)
+                {
+                    default:
+                        break;
+                }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
-                /*
-                while (uint32 eventId = events.ExecuteEvent())
-                {
-                    switch (eventId)
-                    {
-                        default:
-                            break;
-                    }
-
-                    if (me->HasUnitState(UNIT_STATE_CASTING))
-                        return;
-                }
-                */
-
-                DoMeleeAttackIfReady();
             }
-        };
+            */
 
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new boss_hazzarahAI(creature);
+            DoMeleeAttackIfReady();
         }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new boss_hazzarahAI(creature);
+    }
 };
 
 void AddSC_boss_hazzarah()

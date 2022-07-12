@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,7 +20,23 @@
 
 #include "Define.h"
 #include "DatabaseEnvFwd.h"
+#include "Duration.h"
 #include <vector>
+
+namespace Firelands::Types
+{
+    template <typename T>
+    using is_chrono_v = std::enable_if_t<std::is_same_v<Milliseconds, T>
+        || std::is_same_v<Seconds, T>
+        || std::is_same_v<Minutes, T>
+        || std::is_same_v<Hours, T>
+        || std::is_same_v<Days, T>
+        || std::is_same_v<Weeks, T>
+        || std::is_same_v<Years, T>
+        || std::is_same_v<Months, T>, T>;
+}
+
+using Binary = std::vector<uint8>;
 
 enum class DatabaseFieldTypes : uint8
 {
@@ -86,6 +102,45 @@ public:
     Field();
     ~Field();
 
+    template<typename T>
+    inline std::enable_if_t<std::is_arithmetic_v<T>, T> Get() const
+    {
+        return GetData<T>();
+    }
+
+    template<typename T>
+    inline std::enable_if_t<std::is_same_v<std::string, T>, T> Get() const
+    {
+        return GetDataString();
+    }
+
+    template<typename T>
+    inline std::enable_if_t<std::is_same_v<std::string_view, T>, T> Get() const
+    {
+        return GetDataStringView();
+    }
+
+    template<typename T>
+    inline std::enable_if_t<std::is_same_v<Binary, T>, T> Get() const
+    {
+        return GetDataBinary();
+    }
+
+    template <typename T, size_t S>
+    inline std::enable_if_t<std::is_same_v<Binary, T>, std::array<uint8, S>> Get() const
+    {
+        std::array<uint8, S> buf = {};
+        GetBinarySizeChecked(buf.data(), S);
+        return buf;
+    }
+
+    template<typename T>
+    inline Firelands::Types::is_chrono_v<T> Get(bool convertToUin32 = true) const
+    {
+        return convertToUin32 ? T(GetData<uint32>()) : T(GetData<uint64>());
+    }
+
+
     bool GetBool() const // Wrapper, actually gets integer
     {
         return GetUInt8() == 1 ? true : false;
@@ -129,6 +184,14 @@ private:
     QueryResultFieldMetadata const* meta;
     void LogWrongType(char const* getter) const;
     void SetMetadata(QueryResultFieldMetadata const* fieldMeta);
+
+    template<typename T>
+    T GetData() const;
+
+    std::string GetDataString() const;
+    std::string_view GetDataStringView() const;
+    Binary GetDataBinary() const;
+    void GetBinarySizeChecked(uint8* buf, size_t size) const;
 };
 
 #endif

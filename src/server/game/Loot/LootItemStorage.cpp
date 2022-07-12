@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -207,11 +207,11 @@ void LootItemStorage::RemoveStoredLootForContainer(uint32 containerId)
 
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_ITEMS);
-    stmt->setUInt32(0, containerId);
+    stmt->SetData(0, containerId);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, containerId);
+    stmt->SetData(0, containerId);
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -254,7 +254,7 @@ void LootItemStorage::AddNewStoredLoot(Loot* loot, Player* player)
         container.AddMoney(loot->gold, trans);
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_ITEMS);
-    stmt->setUInt32(0, loot->containerID);
+    stmt->SetData(0, loot->containerID);
     trans->Append(stmt);
 
     for (LootItem const& li : loot->items)
@@ -293,18 +293,18 @@ void StoredLootContainer::AddLootItem(LootItem const& lootItem, CharacterDatabas
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ITEMCONTAINER_ITEMS);
 
     // container_id, item_id, item_count, follow_rules, ffa, blocked, counted, under_threshold, needs_quest, rnd_prop, rnd_suffix
-    stmt->setUInt32(0, _containerId);
-    stmt->setUInt32(1, lootItem.itemid);
-    stmt->setUInt32(2, lootItem.count);
-    stmt->setBool(3, lootItem.follow_loot_rules);
-    stmt->setBool(4, lootItem.freeforall);
-    stmt->setBool(5, lootItem.is_blocked);
-    stmt->setBool(6, lootItem.is_counted);
-    stmt->setBool(7, lootItem.is_underthreshold);
-    stmt->setBool(8, lootItem.needs_quest);
-    stmt->setUInt8(9, uint8(lootItem.randomPropertyId.Type));
-    stmt->setUInt32(10, lootItem.randomPropertyId.Id);
-    stmt->setUInt32(11, lootItem.randomSuffix);
+    stmt->SetData(0, _containerId);
+    stmt->SetData(1, lootItem.itemid);
+    stmt->SetData(2, lootItem.count);
+    stmt->SetData(3, lootItem.follow_loot_rules);
+    stmt->SetData(4, lootItem.freeforall);
+    stmt->SetData(5, lootItem.is_blocked);
+    stmt->SetData(6, lootItem.is_counted);
+    stmt->SetData(7, lootItem.is_underthreshold);
+    stmt->SetData(8, lootItem.needs_quest);
+    stmt->SetData(9, uint8(lootItem.randomPropertyId.Type));
+    stmt->SetData(10, lootItem.randomPropertyId.Id);
+    stmt->SetData(11, lootItem.randomSuffix);
     trans->Append(stmt);
 }
 
@@ -315,12 +315,12 @@ void StoredLootContainer::AddMoney(uint32 money, CharacterDatabaseTransaction& t
         return;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, _containerId);
+    stmt->SetData(0, _containerId);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, _containerId);
-    stmt->setUInt32(1, _money);
+    stmt->SetData(0, _containerId);
+    stmt->SetData(1, _money);
     trans->Append(stmt);
 }
 
@@ -329,7 +329,7 @@ void StoredLootContainer::RemoveMoney()
     _money = 0;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, _containerId);
+    stmt->SetData(0, _containerId);
     CharacterDatabase.Execute(stmt);
 }
 
@@ -347,8 +347,8 @@ void StoredLootContainer::RemoveItem(uint32 itemId, uint32 count)
 
     // Deletes a single item associated with an openable item from the DB
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_ITEM);
-    stmt->setUInt32(0, _containerId);
-    stmt->setUInt32(1, itemId);
-    stmt->setUInt32(2, count);
+    stmt->SetData(0, _containerId);
+    stmt->SetData(1, itemId);
+    stmt->SetData(2, count);
     CharacterDatabase.Execute(stmt);
 }

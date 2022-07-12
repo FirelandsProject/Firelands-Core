@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-Name: Boss_the_ravenian
-%Complete: 100
-Comment:
-Category: Scholomance
-*/
+ /*
+ Name: Boss_the_ravenian
+ %Complete: 100
+ Comment:
+ Category: Scholomance
+ */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
@@ -28,83 +28,83 @@ Category: Scholomance
 
 enum Spells
 {
-    SPELL_TRAMPLE                   = 15550,
-    SPELL_CLEAVE                    = 20691,
-    SPELL_SUNDERINCLEAVE            = 25174,
-    SPELL_KNOCKAWAY                 = 10101
+    SPELL_TRAMPLE = 15550,
+    SPELL_CLEAVE = 20691,
+    SPELL_SUNDERINCLEAVE = 25174,
+    SPELL_KNOCKAWAY = 10101
 };
 
 enum Events
 {
-    EVENT_TRAMPLE                   = 1,
-    EVENT_CLEAVE                    = 2,
-    EVENT_SUNDERINCLEAVE            = 3,
-    EVENT_KNOCKAWAY                 = 4
+    EVENT_TRAMPLE = 1,
+    EVENT_CLEAVE = 2,
+    EVENT_SUNDERINCLEAVE = 3,
+    EVENT_KNOCKAWAY = 4
 };
 
 class boss_the_ravenian : public CreatureScript
 {
-    public: boss_the_ravenian() : CreatureScript("boss_the_ravenian") { }
+public: boss_the_ravenian() : CreatureScript("boss_the_ravenian") { }
 
-        struct boss_theravenianAI : public BossAI
-        {
-            boss_theravenianAI(Creature* creature) : BossAI(creature, DATA_THERAVENIAN) { }
+      struct boss_theravenianAI : public BossAI
+      {
+          boss_theravenianAI(Creature* creature) : BossAI(creature, DATA_THERAVENIAN) { }
 
-            void JustEngagedWith(Unit* who) override
-            {
-                BossAI::JustEngagedWith(who);
-                events.ScheduleEvent(EVENT_TRAMPLE, 24000);
-                events.ScheduleEvent(EVENT_CLEAVE, 15000);
-                events.ScheduleEvent(EVENT_SUNDERINCLEAVE, 40000);
-                events.ScheduleEvent(EVENT_KNOCKAWAY, 32000);
-            }
+          void JustEngagedWith(Unit* who) override
+          {
+              BossAI::JustEngagedWith(who);
+              events.ScheduleEvent(EVENT_TRAMPLE, 24000);
+              events.ScheduleEvent(EVENT_CLEAVE, 15000);
+              events.ScheduleEvent(EVENT_SUNDERINCLEAVE, 40000);
+              events.ScheduleEvent(EVENT_KNOCKAWAY, 32000);
+          }
 
-            void UpdateAI(uint32 diff) override
-            {
-                if (!UpdateVictim())
-                    return;
+          void UpdateAI(uint32 diff) override
+          {
+              if (!UpdateVictim())
+                  return;
 
-                events.Update(diff);
+              events.Update(diff);
 
-                if (me->HasUnitState(UNIT_STATE_CASTING))
-                    return;
+              if (me->HasUnitState(UNIT_STATE_CASTING))
+                  return;
 
-                while (uint32 eventId = events.ExecuteEvent())
-                {
-                    switch (eventId)
-                    {
-                        case EVENT_TRAMPLE:
-                            DoCastVictim(SPELL_TRAMPLE, true);
-                            events.ScheduleEvent(EVENT_TRAMPLE, 10000);
-                            break;
-                        case EVENT_CLEAVE:
-                            DoCastVictim(SPELL_CLEAVE, true);
-                            events.ScheduleEvent(EVENT_CLEAVE, 7000);
-                            break;
-                        case EVENT_SUNDERINCLEAVE:
-                            DoCastVictim(SPELL_SUNDERINCLEAVE, true);
-                            events.ScheduleEvent(EVENT_SUNDERINCLEAVE, 20000);
-                            break;
-                        case EVENT_KNOCKAWAY:
-                            DoCastVictim(SPELL_KNOCKAWAY, true);
-                            events.ScheduleEvent(EVENT_KNOCKAWAY, 12000);
-                            break;
-                        default:
-                            break;
-                    }
+              while (uint32 eventId = events.ExecuteEvent())
+              {
+                  switch (eventId)
+                  {
+                  case EVENT_TRAMPLE:
+                      DoCastVictim(SPELL_TRAMPLE, true);
+                      events.ScheduleEvent(EVENT_TRAMPLE, 10000);
+                      break;
+                  case EVENT_CLEAVE:
+                      DoCastVictim(SPELL_CLEAVE, true);
+                      events.ScheduleEvent(EVENT_CLEAVE, 7000);
+                      break;
+                  case EVENT_SUNDERINCLEAVE:
+                      DoCastVictim(SPELL_SUNDERINCLEAVE, true);
+                      events.ScheduleEvent(EVENT_SUNDERINCLEAVE, 20000);
+                      break;
+                  case EVENT_KNOCKAWAY:
+                      DoCastVictim(SPELL_KNOCKAWAY, true);
+                      events.ScheduleEvent(EVENT_KNOCKAWAY, 12000);
+                      break;
+                  default:
+                      break;
+                  }
 
-                    if (me->HasUnitState(UNIT_STATE_CASTING))
-                        return;
-                }
+                  if (me->HasUnitState(UNIT_STATE_CASTING))
+                      return;
+              }
 
-                DoMeleeAttackIfReady();
-            }
-        };
+              DoMeleeAttackIfReady();
+          }
+      };
 
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new boss_theravenianAI(creature);
-        }
+      CreatureAI* GetAI(Creature* creature) const override
+      {
+          return new boss_theravenianAI(creature);
+      }
 };
 
 void AddSC_boss_theravenian()

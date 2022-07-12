@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -3167,10 +3167,10 @@ void Map::DeleteRespawnInfoFromDB(SpawnObjectType type, ObjectGuid::LowType spaw
 {
     // database
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_RESPAWN);
-    stmt->setUInt16(0, type);
-    stmt->setUInt32(1, spawnId);
-    stmt->setUInt16(2, GetId());
-    stmt->setUInt32(3, GetInstanceId());
+    stmt->SetData(0, type);
+    stmt->SetData(1, spawnId);
+    stmt->SetData(2, GetId());
+    stmt->SetData(3, GetInstanceId());
     CharacterDatabase.ExecuteOrAppend(dbTrans, stmt);
 }
 
@@ -3938,8 +3938,8 @@ void InstanceMap::CreateInstanceData(bool load)
     {
         /// @todo make a global storage for this
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_INSTANCE);
-        stmt->setUInt16(0, uint16(GetId()));
-        stmt->setUInt32(1, i_InstanceId);
+        stmt->SetData(0, uint16(GetId()));
+        stmt->SetData(1, i_InstanceId);
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -4175,7 +4175,7 @@ bool Map::GetEntrancePos(int32& mapid, float& x, float& y) const
 bool InstanceMap::HasPermBoundPlayers() const
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PERM_BIND_BY_INSTANCE);
-    stmt->setUInt16(0, GetInstanceId());
+    stmt->SetData(0, GetInstanceId());
     return !!CharacterDatabase.Query(stmt);
 }
 
@@ -4384,19 +4384,19 @@ void Map::SaveRespawnTime(SpawnObjectType type, ObjectGuid::LowType spawnId, uin
 void Map::SaveRespawnInfoDB(RespawnInfo const& info, CharacterDatabaseTransaction dbTrans)
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_REP_RESPAWN);
-    stmt->setUInt16(0, info.type);
-    stmt->setUInt32(1, info.spawnId);
-    stmt->setUInt64(2, uint64(info.respawnTime));
-    stmt->setUInt16(3, GetId());
-    stmt->setUInt32(4, GetInstanceId());
+    stmt->SetData(0, info.type);
+    stmt->SetData(1, info.spawnId);
+    stmt->SetData(2, uint64(info.respawnTime));
+    stmt->SetData(3, GetId());
+    stmt->SetData(4, GetInstanceId());
     CharacterDatabase.ExecuteOrAppend(dbTrans, stmt);
 }
 
 void Map::LoadRespawnTimes()
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_RESPAWNS);
-    stmt->setUInt16(0, GetId());
-    stmt->setUInt32(1, GetInstanceId());
+    stmt->SetData(0, GetId());
+    stmt->SetData(1, GetInstanceId());
     if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
     {
         do
@@ -4425,8 +4425,8 @@ void Map::LoadRespawnTimes()
 /*static*/ void Map::DeleteRespawnTimesInDB(uint16 mapId, uint32 instanceId)
 {
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ALL_RESPAWNS);
-    stmt->setUInt16(0, mapId);
-    stmt->setUInt32(1, instanceId);
+    stmt->SetData(0, mapId);
+    stmt->SetData(1, instanceId);
     CharacterDatabase.Execute(stmt);
 }
 
@@ -4451,8 +4451,8 @@ void Map::LoadCorpseData()
     std::unordered_map<ObjectGuid::LowType, std::unordered_set<uint32>> phases;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CORPSE_PHASES);
-    stmt->setUInt32(0, GetId());
-    stmt->setUInt32(1, GetInstanceId());
+    stmt->SetData(0, GetId());
+    stmt->SetData(1, GetInstanceId());
 
     //        0          1
     // SELECT OwnerGuid, PhaseId FROM corpse_phases cp LEFT JOIN corpse c ON cp.OwnerGuid = c.guid WHERE c.mapId = ? AND c.instanceId = ?
@@ -4470,8 +4470,8 @@ void Map::LoadCorpseData()
     }
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CORPSES);
-    stmt->setUInt32(0, GetId());
-    stmt->setUInt32(1, GetInstanceId());
+    stmt->SetData(0, GetId());
+    stmt->SetData(1, GetInstanceId());
 
     //        0     1     2     3            4      5          6          7       8       9      10        11    12          13          14
     // SELECT posX, posY, posZ, orientation, mapId, displayId, itemCache, bytes1, bytes2, flags, dynFlags, time, corpseType, instanceId, guid FROM corpse WHERE mapId = ? AND instanceId = ?
@@ -4508,8 +4508,8 @@ void Map::DeleteCorpseData()
 {
     // DELETE cp, c FROM corpse_phases cp INNER JOIN corpse c ON cp.OwnerGuid = c.guid WHERE c.mapId = ? AND c.instanceId = ?
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CORPSES_FROM_MAP);
-    stmt->setUInt32(0, GetId());
-    stmt->setUInt32(1, GetInstanceId());
+    stmt->SetData(0, GetId());
+    stmt->SetData(1, GetInstanceId());
     CharacterDatabase.Execute(stmt);
 }
 

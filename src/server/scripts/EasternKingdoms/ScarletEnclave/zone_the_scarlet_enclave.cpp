@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,18 +21,18 @@
 #include "Player.h"
 #include "TemporarySummon.h"
 
-/*####
-## npc_valkyr_battle_maiden
-####*/
+ /*####
+ ## npc_valkyr_battle_maiden
+ ####*/
 
 enum Spells_VBM
 {
-    SPELL_REVIVE                = 51918
+    SPELL_REVIVE = 51918
 };
 
 enum Says_VBM
 {
-    WHISPER_REVIVE              = 0
+    WHISPER_REVIVE = 0
 };
 
 class npc_valkyr_battle_maiden : public CreatureScript
@@ -95,43 +95,44 @@ public:
 
                 switch (phase)
                 {
-                    case 0:
-                        me->SetWalk(false);
-                        me->HandleEmoteCommand(EMOTE_STATE_FLYGRABCLOSED);
-                        FlyBackTimer = 500;
-                        break;
-                    case 1:
-                        player->GetClosePoint(x, y, z, me->GetCombatReach());
-                        z += 2.5f;
-                        x -= 2.0f;
-                        y -= 1.5f;
-                        me->GetMotionMaster()->MovePoint(0, x, y, z);
-                        me->SetTarget(player->GetGUID());
-                        me->SetVisible(true);
-                        FlyBackTimer = 4500;
-                        break;
-                    case 2:
-                        if (!player->IsResurrectRequested())
-                        {
-                            me->HandleEmoteCommand(EMOTE_ONESHOT_CUSTOM_SPELL_01);
-                            DoCast(player, SPELL_REVIVE, true);
-                            Talk(WHISPER_REVIVE, player);
-                        }
-                        FlyBackTimer = 5000;
-                        break;
-                    case 3:
-                        me->SetVisible(false);
-                        FlyBackTimer = 3000;
-                        break;
-                    case 4:
-                        me->DisappearAndDie();
-                        break;
-                    default:
-                        //Nothing To DO
-                        break;
+                case 0:
+                    me->SetWalk(false);
+                    me->HandleEmoteCommand(EMOTE_STATE_FLYGRABCLOSED);
+                    FlyBackTimer = 500;
+                    break;
+                case 1:
+                    player->GetClosePoint(x, y, z, me->GetCombatReach());
+                    z += 2.5f;
+                    x -= 2.0f;
+                    y -= 1.5f;
+                    me->GetMotionMaster()->MovePoint(0, x, y, z);
+                    me->SetTarget(player->GetGUID());
+                    me->SetVisible(true);
+                    FlyBackTimer = 4500;
+                    break;
+                case 2:
+                    if (!player->IsResurrectRequested())
+                    {
+                        me->HandleEmoteCommand(EMOTE_ONESHOT_CUSTOM_SPELL_01);
+                        DoCast(player, SPELL_REVIVE, true);
+                        Talk(WHISPER_REVIVE, player);
+                    }
+                    FlyBackTimer = 5000;
+                    break;
+                case 3:
+                    me->SetVisible(false);
+                    FlyBackTimer = 3000;
+                    break;
+                case 4:
+                    me->DisappearAndDie();
+                    break;
+                default:
+                    //Nothing To DO
+                    break;
                 }
                 ++phase;
-            } else FlyBackTimer-=diff;
+            }
+            else FlyBackTimer -= diff;
         }
     };
 
