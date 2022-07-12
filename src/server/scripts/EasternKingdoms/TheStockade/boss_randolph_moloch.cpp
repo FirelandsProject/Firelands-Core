@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,10 +25,10 @@
 enum Spells
 {
     // Randolph Moloch
-    SPELL_WILDLY_STABBING           = 86726,
-    SPELL_SWEEP                     = 86729,
-    SPELL_VANISH                    = 55964,
-    SPELL_SHADOWSTEP                = 55966
+    SPELL_WILDLY_STABBING = 86726,
+    SPELL_SWEEP = 86729,
+    SPELL_VANISH = 55964,
+    SPELL_SHADOWSTEP = 55966
 };
 
 enum Events
@@ -48,13 +48,13 @@ enum Events
 enum Says
 {
     // Randolph Moloch
-    SAY_AGGRO           = 0,
-    SAY_VANISH          = 1,
-    SAY_DEATH           = 2,
+    SAY_AGGRO = 0,
+    SAY_VANISH = 1,
+    SAY_DEATH = 2,
 
     // Mortimer Moloch
-    SAY_RANDOLPH_DIED   = 0,
-    SAY_HEART_ATTACK    = 1
+    SAY_RANDOLPH_DIED = 0,
+    SAY_HEART_ATTACK = 1
 };
 
 enum Points
@@ -115,28 +115,28 @@ struct boss_randolph_moloch : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_WILDLY_STABBING:
-                    DoCastVictim(SPELL_WILDLY_STABBING);
-                    events.Repeat(8s, 12s);
-                    break;
-                case EVENT_SWEEP:
-                    DoCastVictim(SPELL_SWEEP);
-                    events.ScheduleEvent(EVENT_SWEEP, 6s, 7s);
-                    break;
-                case EVENT_VANISH:
-                    Talk(SAY_VANISH);
-                    me->RemoveAllAuras();
-                    DoCastSelf(SPELL_VANISH);
-                    me->SetReactState(REACT_PASSIVE);
-                    events.ScheduleEvent(EVENT_JUST_VANISHED, 2s);
-                    break;
-                case EVENT_JUST_VANISHED:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                        DoCast(target, SPELL_SHADOWSTEP);
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    break;
-                default:
-                    break;
+            case EVENT_WILDLY_STABBING:
+                DoCastVictim(SPELL_WILDLY_STABBING);
+                events.Repeat(8s, 12s);
+                break;
+            case EVENT_SWEEP:
+                DoCastVictim(SPELL_SWEEP);
+                events.ScheduleEvent(EVENT_SWEEP, 6s, 7s);
+                break;
+            case EVENT_VANISH:
+                Talk(SAY_VANISH);
+                me->RemoveAllAuras();
+                DoCastSelf(SPELL_VANISH);
+                me->SetReactState(REACT_PASSIVE);
+                events.ScheduleEvent(EVENT_JUST_VANISHED, 2s);
+                break;
+            case EVENT_JUST_VANISHED:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                    DoCast(target, SPELL_SHADOWSTEP);
+                me->SetReactState(REACT_AGGRESSIVE);
+                break;
+            default:
+                break;
             }
         }
 
@@ -181,16 +181,16 @@ struct npc_mortimer_moloch : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_MORTIMER_MOLOCH_EMOTE:
-                    Talk(SAY_HEART_ATTACK);
-                    _events.ScheduleEvent(EVENT_MORTIMER_MOLOCH_DEATH, 3s);
-                    break;
-                case EVENT_MORTIMER_MOLOCH_DEATH:
-                    Talk(SAY_RANDOLPH_DIED);
-                    me->KillSelf();
-                    break;
-                default:
-                    break;
+            case EVENT_MORTIMER_MOLOCH_EMOTE:
+                Talk(SAY_HEART_ATTACK);
+                _events.ScheduleEvent(EVENT_MORTIMER_MOLOCH_DEATH, 3s);
+                break;
+            case EVENT_MORTIMER_MOLOCH_DEATH:
+                Talk(SAY_RANDOLPH_DIED);
+                me->KillSelf();
+                break;
+            default:
+                break;
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,14 +21,14 @@
 void BasicEvent::ScheduleAbort()
 {
     ASSERT(IsRunning()
-           && "Tried to scheduled the abortion of an event twice!");
+        && "Tried to scheduled the abortion of an event twice!");
     m_abortState = AbortState::STATE_ABORT_SCHEDULED;
 }
 
 void BasicEvent::SetAborted()
 {
     ASSERT(!IsAborted()
-           && "Tried to abort an already aborted event!");
+        && "Tried to abort an already aborted event!");
     m_abortState = AbortState::STATE_ABORTED;
 }
 

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,12 +26,12 @@ void PlayerTaxi::InitTaxiNodesForLevel(uint32 race, uint32 chrClass, uint8 level
     // class specific initial known nodes
     switch (chrClass)
     {
-        case CLASS_DEATH_KNIGHT:
-        {
-            for (uint8 i = 0; i < TaxiMaskSize; ++i)
-                m_taximask[i] |= sOldContinentsNodesMask[i];
-            break;
-        }
+    case CLASS_DEATH_KNIGHT:
+    {
+        for (uint8 i = 0; i < TaxiMaskSize; ++i)
+            m_taximask[i] |= sOldContinentsNodesMask[i];
+        break;
+    }
     }
 
     uint32 team = Player::TeamForRace(race);
@@ -55,20 +55,20 @@ void PlayerTaxi::InitTaxiNodesForLevel(uint32 race, uint32 chrClass, uint8 level
     // New continent starting masks (It will be accessible only at new map)
     switch (team)
     {
-        case ALLIANCE:
-            SetTaximaskNode(100); // Honor Hold
-            SetTaximaskNode(245); // Valiance Keep
-            break;
-        case HORDE:
-            SetTaximaskNode(99); // Thrallmar
-            SetTaximaskNode(257); // Warsong Hold
-            break;
-        default:
-            break;
+    case ALLIANCE:
+        SetTaximaskNode(100); // Honor Hold
+        SetTaximaskNode(245); // Valiance Keep
+        break;
+    case HORDE:
+        SetTaximaskNode(99); // Thrallmar
+        SetTaximaskNode(257); // Warsong Hold
+        break;
+    default:
+        break;
     }
 }
 
-void PlayerTaxi::LoadTaxiMask(std::string const &data)
+void PlayerTaxi::LoadTaxiMask(std::string const& data)
 {
     Tokenizer tokens(data, ' ');
 

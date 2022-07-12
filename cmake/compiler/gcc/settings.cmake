@@ -6,7 +6,7 @@ target_compile_definitions(firelands-compile-option-interface
 set(GCC_EXPECTED_VERSION 7.1.0)
 
 if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS GCC_EXPECTED_VERSION)
-  message(FATAL_ERROR "GCC: FirelandsCore requires version ${GCC_EXPECTED_VERSION} to build but found ${CMAKE_CXX_COMPILER_VERSION}")
+  message(FATAL_ERROR "GCC: Firelands Core requires version ${GCC_EXPECTED_VERSION} to build but found ${CMAKE_CXX_COMPILER_VERSION}")
 endif()
 
 if(PLATFORM EQUAL 32)

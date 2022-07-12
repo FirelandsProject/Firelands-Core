@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,15 +21,15 @@
 
 enum Spells
 {
-    SPELL_CRYSTALIZE                = 16104,
-    SPELL_MOTHERSMILK               = 16468,
-    SPELL_SUMMON_SPIRE_SPIDERLING   = 16103,
+    SPELL_CRYSTALIZE = 16104,
+    SPELL_MOTHERSMILK = 16468,
+    SPELL_SUMMON_SPIRE_SPIDERLING = 16103,
 };
 
 enum Events
 {
-    EVENT_CRYSTALIZE                = 1,
-    EVENT_MOTHERS_MILK              = 2,
+    EVENT_CRYSTALIZE = 1,
+    EVENT_MOTHERS_MILK = 2,
 };
 
 class boss_mother_smolderweb : public CreatureScript
@@ -54,7 +54,7 @@ public:
         void JustEngagedWith(Unit* who) override
         {
             BossAI::JustEngagedWith(who);
-            events.ScheduleEvent(EVENT_CRYSTALIZE,   20 * IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_CRYSTALIZE, 20 * IN_MILLISECONDS);
             events.ScheduleEvent(EVENT_MOTHERS_MILK, 10 * IN_MILLISECONDS);
         }
 
@@ -63,7 +63,7 @@ public:
             _JustDied();
         }
 
-        void DamageTaken(Unit* /*done_by*/, uint32 &damage) override
+        void DamageTaken(Unit* /*done_by*/, uint32& damage) override
         {
             if (me->GetHealth() <= damage)
                 DoCast(me, SPELL_SUMMON_SPIRE_SPIDERLING, true);
@@ -83,14 +83,14 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_CRYSTALIZE:
-                        DoCast(me, SPELL_CRYSTALIZE);
-                        events.ScheduleEvent(EVENT_CRYSTALIZE, 15 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_MOTHERS_MILK:
-                        DoCast(me, SPELL_MOTHERSMILK);
-                        events.ScheduleEvent(EVENT_MOTHERS_MILK, urand(5 * IN_MILLISECONDS, 12500));
-                        break;
+                case EVENT_CRYSTALIZE:
+                    DoCast(me, SPELL_CRYSTALIZE);
+                    events.ScheduleEvent(EVENT_CRYSTALIZE, 15 * IN_MILLISECONDS);
+                    break;
+                case EVENT_MOTHERS_MILK:
+                    DoCast(me, SPELL_MOTHERSMILK);
+                    events.ScheduleEvent(EVENT_MOTHERS_MILK, urand(5 * IN_MILLISECONDS, 12500));
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

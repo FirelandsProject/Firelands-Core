@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -141,9 +141,9 @@ bool ChaseMovementGenerator::Update(Unit* owner, uint32 diff)
         return true;
     }
 
-    bool  const mutualChase         = IsMutualChase(owner, target);
-    float const chaseRange          = GetChaseRange(owner, target);
-    float const rangeTolerance      = _range > 0.f ? _range : chaseRange;
+    bool  const mutualChase = IsMutualChase(owner, target);
+    float const chaseRange = GetChaseRange(owner, target);
+    float const rangeTolerance = _range > 0.f ? _range : chaseRange;
     Optional<ChaseAngle> chaseAngle = mutualChase ? Optional<ChaseAngle>() : _angle;
 
     // Update Movement

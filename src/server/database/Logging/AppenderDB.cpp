@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -32,11 +32,11 @@ void AppenderDB::_write(LogMessage const* message)
         return;
 
     LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_LOG);
-    stmt->setUInt64(0, message->mtime);
-    stmt->setUInt32(1, realmId);
-    stmt->setString(2, message->type);
-    stmt->setUInt8(3, uint8(message->level));
-    stmt->setString(4, message->text);
+    stmt->SetData(0, message->mtime);
+    stmt->SetData(1, realmId);
+    stmt->SetData(2, message->type);
+    stmt->SetData(3, uint8(message->level));
+    stmt->SetData(4, message->text);
     LoginDatabase.Execute(stmt);
 }
 

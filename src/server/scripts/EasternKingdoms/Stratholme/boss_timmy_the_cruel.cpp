@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,24 +15,24 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: boss_timmy_the_cruel
-SD%Complete: 100
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: boss_timmy_the_cruel
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Stratholme
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 
 enum Says
 {
-    SAY_SPAWN                   = 0
+    SAY_SPAWN = 0
 };
 
 enum Spells
 {
-    SPELL_RAVENOUSCLAW          = 17470
+    SPELL_RAVENOUSCLAW = 17470
 };
 
 class boss_timmy_the_cruel : public CreatureScript
@@ -88,7 +88,8 @@ public:
                 DoCastVictim(SPELL_RAVENOUSCLAW);
                 //15 seconds until we should cast this again
                 RavenousClaw_Timer = 15000;
-            } else RavenousClaw_Timer -= diff;
+            }
+            else RavenousClaw_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

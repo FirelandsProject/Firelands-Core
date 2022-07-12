@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,23 +26,23 @@ enum Texts
 
 enum Spells
 {
-    SPELL_LIGHTNING_BOLT       = 20805,
-    SPELL_DRUID_SLUMBER        = 8040,
+    SPELL_LIGHTNING_BOLT = 20805,
+    SPELL_DRUID_SLUMBER = 8040,
     SPELL_COBRAHN_SERPENT_FORM = 7965,
-    SPELL_POISON               = 744
+    SPELL_POISON = 744
 };
 
 enum Events
 {
-    EVENT_LIGHTNING_BOLT       = 1,
-    EVENT_DRUID_SLUMBER        = 2,
+    EVENT_LIGHTNING_BOLT = 1,
+    EVENT_DRUID_SLUMBER = 2,
     EVENT_COBRAHN_SERPENT_FORM = 3,
-    EVENT_POISON               = 4
+    EVENT_POISON = 4
 };
 
 enum Phases
 {
-    PHASE_NORMAL       = 1,
+    PHASE_NORMAL = 1,
     PHASE_SERPENT_FORM = 2
 };
 
@@ -79,24 +79,24 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_LIGHTNING_BOLT:
-                        DoCastVictim(SPELL_LIGHTNING_BOLT);
-                        events.ScheduleEvent(EVENT_LIGHTNING_BOLT, Seconds(1), 0, PHASE_NORMAL);
-                        break;
-                    case EVENT_DRUID_SLUMBER:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                            DoCast(target, SPELL_DRUID_SLUMBER);
-                        break;
-                    case EVENT_COBRAHN_SERPENT_FORM:
-                        events.SetPhase(PHASE_SERPENT_FORM);
-                        DoCastSelf(SPELL_COBRAHN_SERPENT_FORM);
-                        events.ScheduleEvent(EVENT_POISON, Seconds(13), PHASE_SERPENT_FORM);
-                        break;
-                    case EVENT_POISON:
-                        DoCastVictim(SPELL_POISON);
-                        break;
-                    default:
-                        break;
+                case EVENT_LIGHTNING_BOLT:
+                    DoCastVictim(SPELL_LIGHTNING_BOLT);
+                    events.ScheduleEvent(EVENT_LIGHTNING_BOLT, Seconds(1), 0, PHASE_NORMAL);
+                    break;
+                case EVENT_DRUID_SLUMBER:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                        DoCast(target, SPELL_DRUID_SLUMBER);
+                    break;
+                case EVENT_COBRAHN_SERPENT_FORM:
+                    events.SetPhase(PHASE_SERPENT_FORM);
+                    DoCastSelf(SPELL_COBRAHN_SERPENT_FORM);
+                    events.ScheduleEvent(EVENT_POISON, Seconds(13), PHASE_SERPENT_FORM);
+                    break;
+                case EVENT_POISON:
+                    DoCastVictim(SPELL_POISON);
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

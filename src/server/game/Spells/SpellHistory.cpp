@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -38,7 +38,7 @@ struct SpellHistory::PersistenceHelper<Player>
     static CharacterDatabaseStatements const CooldownsDeleteStatement = CHAR_DEL_CHAR_SPELL_COOLDOWNS;
     static CharacterDatabaseStatements const CooldownsInsertStatement = CHAR_INS_CHAR_SPELL_COOLDOWN;
 
-    static void SetIdentifier(PreparedStatementBase* stmt, uint8 index, Unit* owner) { stmt->setUInt32(index, owner->GetGUID().GetCounter()); }
+    static void SetIdentifier(PreparedStatementBase* stmt, uint8 index, Unit* owner) { stmt->SetData(index, owner->GetGUID().GetCounter()); }
 
     static bool ReadCooldown(Field* fields, uint32* spellId, CooldownEntry* cooldownEntry)
     {
@@ -56,11 +56,11 @@ struct SpellHistory::PersistenceHelper<Player>
 
     static void WriteCooldown(PreparedStatementBase* stmt, uint8& index, CooldownStorageType::value_type const& cooldown)
     {
-        stmt->setUInt32(index++, cooldown.first);
-        stmt->setUInt32(index++, cooldown.second.ItemId);
-        stmt->setUInt32(index++, uint32(Clock::to_time_t(cooldown.second.CooldownEnd)));
-        stmt->setUInt32(index++, cooldown.second.CategoryId);
-        stmt->setUInt32(index++, uint32(Clock::to_time_t(cooldown.second.CategoryEnd)));
+        stmt->SetData(index++, cooldown.first);
+        stmt->SetData(index++, cooldown.second.ItemId);
+        stmt->SetData(index++, uint32(Clock::to_time_t(cooldown.second.CooldownEnd)));
+        stmt->SetData(index++, cooldown.second.CategoryId);
+        stmt->SetData(index++, uint32(Clock::to_time_t(cooldown.second.CategoryEnd)));
     }
 };
 
@@ -70,7 +70,7 @@ struct SpellHistory::PersistenceHelper<Pet>
     static CharacterDatabaseStatements const CooldownsDeleteStatement = CHAR_DEL_PET_SPELL_COOLDOWNS;
     static CharacterDatabaseStatements const CooldownsInsertStatement = CHAR_INS_PET_SPELL_COOLDOWN;
 
-    static void SetIdentifier(PreparedStatementBase* stmt, uint8 index, Unit* owner) { stmt->setUInt32(index, owner->GetCharmInfo()->GetPetNumber()); }
+    static void SetIdentifier(PreparedStatementBase* stmt, uint8 index, Unit* owner) { stmt->SetData(index, owner->GetCharmInfo()->GetPetNumber()); }
 
     static bool ReadCooldown(Field* fields, uint32* spellId, CooldownEntry* cooldownEntry)
     {
@@ -88,10 +88,10 @@ struct SpellHistory::PersistenceHelper<Pet>
 
     static void WriteCooldown(PreparedStatementBase* stmt, uint8& index, CooldownStorageType::value_type const& cooldown)
     {
-        stmt->setUInt32(index++, cooldown.first);
-        stmt->setUInt32(index++, uint32(Clock::to_time_t(cooldown.second.CooldownEnd)));
-        stmt->setUInt32(index++, cooldown.second.CategoryId);
-        stmt->setUInt32(index++, uint32(Clock::to_time_t(cooldown.second.CategoryEnd)));
+        stmt->SetData(index++, cooldown.first);
+        stmt->SetData(index++, uint32(Clock::to_time_t(cooldown.second.CooldownEnd)));
+        stmt->SetData(index++, cooldown.second.CategoryId);
+        stmt->SetData(index++, uint32(Clock::to_time_t(cooldown.second.CategoryEnd)));
     }
 };
 

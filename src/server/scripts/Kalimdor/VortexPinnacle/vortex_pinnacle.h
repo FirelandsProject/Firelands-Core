@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -53,55 +53,55 @@ enum DataTypes
 enum VPCreatureIds
 {
     // Bosses
-    BOSS_GRAND_VIZIER_ERTAN         = 43878,
-    BOSS_ALTAIRUS                   = 43873,
-    BOSS_ASAAD                      = 43875,
+    BOSS_GRAND_VIZIER_ERTAN = 43878,
+    BOSS_ALTAIRUS = 43873,
+    BOSS_ASAAD = 43875,
 
     // Encounter Related Data
     /*Grandvizier Ertan*/
-    NPC_ERTANS_VORTEX               = 46007,
+    NPC_ERTANS_VORTEX = 46007,
 
     /*Altairus*/
-    NPC_INVISIBLE_STALKER           = 42844,
-    NPC_AIR_CURRENT                 = 47305,
-    NPC_TWISTER                     = 47342,
+    NPC_INVISIBLE_STALKER = 42844,
+    NPC_AIR_CURRENT = 47305,
+    NPC_TWISTER = 47342,
 
     /*Instance Events*/
-    NPC_SLIPSTREAM                  = 45455,
-    NPC_SLIPSTREAM_LANDING_ZONE     = 45504,
-    NPC_HOWLING_GALE                = 45572,
-    NPC_ZEPHYR                      = 45991,
-    NPC_SKYFALL                     = 45981,
-    NPC_GOLDEN_ORB                  = 51157,
+    NPC_SLIPSTREAM = 45455,
+    NPC_SLIPSTREAM_LANDING_ZONE = 45504,
+    NPC_HOWLING_GALE = 45572,
+    NPC_ZEPHYR = 45991,
+    NPC_SKYFALL = 45981,
+    NPC_GOLDEN_ORB = 51157,
 
     /*Asaad*/
-    NPC_STORM_TARGET                = 46387,
-    NPC_UNSTABLE_GROUNDING_FIELD    = 46492,
-    NPC_GROUNDING_FIELD_ASAAD       = 47000,
-    NPC_SKYFALL_STAR                = 52019,
+    NPC_STORM_TARGET = 46387,
+    NPC_UNSTABLE_GROUNDING_FIELD = 46492,
+    NPC_GROUNDING_FIELD_ASAAD = 47000,
+    NPC_SKYFALL_STAR = 52019,
 
     // Grounding Field
-    NPC_GROUNDING_FIELD             = 47085
+    NPC_GROUNDING_FIELD = 47085
 };
 
 enum VPSpells
 {
-    SPELL_BEAM_A                = 87721,
-    SPELL_BEAM_B                = 87722,
-    SPELL_BEAM_C                = 87723,
-    SPELL_ACHIEVEMENT_CHECK     = 94756
+    SPELL_BEAM_A = 87721,
+    SPELL_BEAM_B = 87722,
+    SPELL_BEAM_C = 87723,
+    SPELL_ACHIEVEMENT_CHECK = 94756
 };
 
 enum VPActions
 {
-    ACTION_GROUNDING_FIELD_TOP  = 1,
-    ACTION_SKYFALL_STAR_DEAD    = 2
+    ACTION_GROUNDING_FIELD_TOP = 1,
+    ACTION_SKYFALL_STAR_DEAD = 2
 };
 
 enum VPMisc
 {
-    PATH_ZEPHYR_SOUTH   = 4599100,
-    PATH_ZEPHYR_NORTH   = 4599101
+    PATH_ZEPHYR_SOUTH = 4599100,
+    PATH_ZEPHYR_NORTH = 4599101
 };
 
 enum VPWorldStates

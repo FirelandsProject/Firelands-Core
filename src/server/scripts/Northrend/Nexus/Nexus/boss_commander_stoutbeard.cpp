@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,24 +15,24 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Script Data Start
-SDName: Boss Commander Stoutbeard
-SDAuthor: LordVanMartin
-SD%Complete:
-SDComment:  Only Horde Heroic
-SDCategory:
-Script Data End */
+ /* Script Data Start
+ SDName: Boss Commander Stoutbeard
+ SDAuthor: LordVanMartin
+ SD%Complete:
+ SDComment:  Only Horde Heroic
+ SDCategory:
+ Script Data End */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 
 enum CommanderStoutbeard
 {
-    SPELL_BATTLE_SHOUT              = 31403,
-    SPELL_CHARGE                    = 60067,
-    SPELL_FRIGHTENING_SHOUT         = 19134,
-    SPELL_WHIRLWIND_1               = 38619,
-    SPELL_WHIRLWIND_2               = 38618
+    SPELL_BATTLE_SHOUT = 31403,
+    SPELL_CHARGE = 60067,
+    SPELL_FRIGHTENING_SHOUT = 19134,
+    SPELL_WHIRLWIND_1 = 38619,
+    SPELL_WHIRLWIND_2 = 38618
 };
 
 class boss_commander_stoutbeard : public CreatureScript

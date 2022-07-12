@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,21 +24,21 @@
 
 enum Spells
 {
-    SPELL_BANSHEEWAIL           = 16565,
-    SPELL_BANSHEECURSE          = 16867,
-    SPELL_SILENCE               = 18327,
-    SPELL_POSSESS               = 17244,    // the charm on player
-    SPELL_POSSESSED             = 17246,    // the damage debuff on player
-    SPELL_POSSESS_INV           = 17250     // baroness becomes invisible while possessing a target
+    SPELL_BANSHEEWAIL = 16565,
+    SPELL_BANSHEECURSE = 16867,
+    SPELL_SILENCE = 18327,
+    SPELL_POSSESS = 17244,    // the charm on player
+    SPELL_POSSESSED = 17246,    // the damage debuff on player
+    SPELL_POSSESS_INV = 17250     // baroness becomes invisible while possessing a target
 };
 
 enum BaronessAnastariEvents
 {
-    EVENT_SPELL_BANSHEEWAIL     = 1,
-    EVENT_SPELL_BANSHEECURSE    = 2,
-    EVENT_SPELL_SILENCE         = 3,
-    EVENT_SPELL_POSSESS         = 4,
-    EVENT_CHECK_POSSESSED       = 5
+    EVENT_SPELL_BANSHEEWAIL = 1,
+    EVENT_SPELL_BANSHEECURSE = 2,
+    EVENT_SPELL_SILENCE = 3,
+    EVENT_SPELL_POSSESS = 4,
+    EVENT_CHECK_POSSESSED = 5
 };
 
 struct boss_baroness_anastari : public BossAI
@@ -87,46 +87,46 @@ struct boss_baroness_anastari : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_SPELL_BANSHEEWAIL:
-                    DoCastVictim(SPELL_BANSHEEWAIL);
-                    events.Repeat(4s);
-                    break;
-                case EVENT_SPELL_BANSHEECURSE:
-                    DoCastVictim(SPELL_BANSHEECURSE);
-                    events.Repeat(18s);
-                    break;
-                case EVENT_SPELL_SILENCE:
-                    DoCastVictim(SPELL_SILENCE);
-                    events.Repeat(13s);
-                    break;
-                case EVENT_SPELL_POSSESS:
-                    if (Unit* possessTarget = SelectTarget(SELECT_TARGET_RANDOM, 1, 0, true, false))
+            case EVENT_SPELL_BANSHEEWAIL:
+                DoCastVictim(SPELL_BANSHEEWAIL);
+                events.Repeat(4s);
+                break;
+            case EVENT_SPELL_BANSHEECURSE:
+                DoCastVictim(SPELL_BANSHEECURSE);
+                events.Repeat(18s);
+                break;
+            case EVENT_SPELL_SILENCE:
+                DoCastVictim(SPELL_SILENCE);
+                events.Repeat(13s);
+                break;
+            case EVENT_SPELL_POSSESS:
+                if (Unit* possessTarget = SelectTarget(SELECT_TARGET_RANDOM, 1, 0, true, false))
+                {
+                    DoCast(possessTarget, SPELL_POSSESS, true);
+                    DoCast(possessTarget, SPELL_POSSESSED, true);
+                    DoCastSelf(SPELL_POSSESS_INV, true);
+                    _possessedTargetGuid = possessTarget->GetGUID();
+                    events.ScheduleEvent(EVENT_CHECK_POSSESSED, 0s);
+                }
+                else
+                    events.Repeat(20s, 30s);
+                break;
+            case EVENT_CHECK_POSSESSED:
+                if (Player* possessedTarget = ObjectAccessor::GetPlayer(*me, _possessedTargetGuid))
+                {
+                    if (!possessedTarget->HasAura(SPELL_POSSESSED) || possessedTarget->HealthBelowPct(50))
                     {
-                        DoCast(possessTarget, SPELL_POSSESS, true);
-                        DoCast(possessTarget, SPELL_POSSESSED, true);
-                        DoCastSelf(SPELL_POSSESS_INV, true);
-                        _possessedTargetGuid = possessTarget->GetGUID();
-                        events.ScheduleEvent(EVENT_CHECK_POSSESSED, 0s);
+                        possessedTarget->RemoveAurasDueToSpell(SPELL_POSSESS);
+                        possessedTarget->RemoveAurasDueToSpell(SPELL_POSSESSED);
+                        me->RemoveAurasDueToSpell(SPELL_POSSESS_INV);
+                        _possessedTargetGuid.Clear();
+                        events.ScheduleEvent(EVENT_SPELL_POSSESS, 20s, 30s);
+                        events.CancelEvent(EVENT_CHECK_POSSESSED);
                     }
                     else
-                        events.Repeat(20s, 30s);
-                    break;
-                case EVENT_CHECK_POSSESSED:
-                    if (Player* possessedTarget = ObjectAccessor::GetPlayer(*me, _possessedTargetGuid))
-                    {
-                        if (!possessedTarget->HasAura(SPELL_POSSESSED) || possessedTarget->HealthBelowPct(50))
-                        {
-                            possessedTarget->RemoveAurasDueToSpell(SPELL_POSSESS);
-                            possessedTarget->RemoveAurasDueToSpell(SPELL_POSSESSED);
-                            me->RemoveAurasDueToSpell(SPELL_POSSESS_INV);
-                            _possessedTargetGuid.Clear();
-                            events.ScheduleEvent(EVENT_SPELL_POSSESS, 20s, 30s);
-                            events.CancelEvent(EVENT_CHECK_POSSESSED);
-                        }
-                        else
-                            events.Repeat(1s);
-                    }
-                    break;
+                        events.Repeat(1s);
+                }
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))

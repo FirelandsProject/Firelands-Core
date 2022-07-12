@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-TODO List:
-- This whole rewinding process is one big mess at the moment. Need to check for more serverside spells to clean this up.
-- Distortion Bomb timers are quite inconsistent after two and more rewinds in sniffs. Need clearer data.
-*/
+ /*
+ TODO List:
+ - This whole rewinding process is one big mess at the moment. Need to check for more serverside spells to clean this up.
+ - Distortion Bomb timers are quite inconsistent after two and more rewinds in sniffs. Need clearer data.
+ */
 
 #include "end_time.h"
 #include "GameObject.h"
@@ -40,30 +40,30 @@ TODO List:
 enum Spells
 {
     // Murozond
-    SPELL_SANDS_OF_THE_HOURGLASS                = 102668,
-    SPELL_TEMPORAL_SNAPSHOT                     = 101592,
-    SPELL_TEMPORAL_BLAST                        = 102381,
-    SPELL_DISTORTION_BOMB_1                     = 101983,
-    SPELL_DISTORTION_BOMB_2                     = 102516,
-    SPELL_TAIL_SWEEP                            = 108589,
-    SPELL_DISTORTION_BOMB_REWIND_TIME           = 102652, // Casted when rewinding time.
-    SPELL_BLESSING_OF_THE_BRONZE_DRAGON_FLIGHT  = 102364,
-    SPELL_INFINITE_BREATH                       = 102569,
-    SPELL_ACHIEVEMENT_CREDIT                    = 110158, // Serverside Spell
-    SPELL_FADING                                = 107550,
+    SPELL_SANDS_OF_THE_HOURGLASS = 102668,
+    SPELL_TEMPORAL_SNAPSHOT = 101592,
+    SPELL_TEMPORAL_BLAST = 102381,
+    SPELL_DISTORTION_BOMB_1 = 101983,
+    SPELL_DISTORTION_BOMB_2 = 102516,
+    SPELL_TAIL_SWEEP = 108589,
+    SPELL_DISTORTION_BOMB_REWIND_TIME = 102652, // Casted when rewinding time.
+    SPELL_BLESSING_OF_THE_BRONZE_DRAGON_FLIGHT = 102364,
+    SPELL_INFINITE_BREATH = 102569,
+    SPELL_ACHIEVEMENT_CREDIT = 110158, // Serverside Spell
+    SPELL_FADING = 107550,
 
     // Mirror Image
-    SPELL_CLONE_ME                              = 45204,
-    SPELL_TRACK_MASTER_HELPFUL_AURAS            = 102541,
-    SPELL_CLONE_MASTER_HEALTH                   = 102571,
-    SPELL_COPY_OFFHAND_WEAPON                   = 45206,
-    SPELL_COPY_WEAPON                           = 41055,
-    SPELL_TELEPORT_TO_TARGET                    = 102818,
-    SPELL_MARK_MASTER_AS_SUMMONED               = 80927, // Todo: research
-    SPELL_MARK_MASTER_AS_DESUMMONED             = 80929, // Todo: research and when exactly to use.
-    SPELL_TEMPORAL_DISPLACEMENT                 = 80354,
-    SPELL_EXHAUSTION                            = 57723,
-    SPELL_SATED                                 = 57724
+    SPELL_CLONE_ME = 45204,
+    SPELL_TRACK_MASTER_HELPFUL_AURAS = 102541,
+    SPELL_CLONE_MASTER_HEALTH = 102571,
+    SPELL_COPY_OFFHAND_WEAPON = 45206,
+    SPELL_COPY_WEAPON = 41055,
+    SPELL_TELEPORT_TO_TARGET = 102818,
+    SPELL_MARK_MASTER_AS_SUMMONED = 80927, // Todo: research
+    SPELL_MARK_MASTER_AS_DESUMMONED = 80929, // Todo: research and when exactly to use.
+    SPELL_TEMPORAL_DISPLACEMENT = 80354,
+    SPELL_EXHAUSTION = 57723,
+    SPELL_SATED = 57724
 };
 
 enum Events
@@ -85,39 +85,39 @@ enum Events
 enum Actions
 {
     // Murozond and Mirror Image
-    ACTION_REWIND_TIME      = 1,
+    ACTION_REWIND_TIME = 1,
 
     // Nozdormu
-    ACTION_ENCOUNTER_INTRO  = 1,
-    ACTION_ENCOUNTER_OUTRO  = 2
+    ACTION_ENCOUNTER_INTRO = 1,
+    ACTION_ENCOUNTER_OUTRO = 2
 };
 
 enum Texts
 {
     // Murozond
-    SAY_INTRO_1             = 0,
-    SAY_INTRO_2             = 1,
-    SAY_AGGRO               = 2,
-    SAY_REWIND_TIME         = 3, // offset until group Id 7
-    SAY_DEATH               = 8
+    SAY_INTRO_1 = 0,
+    SAY_INTRO_2 = 1,
+    SAY_AGGRO = 2,
+    SAY_REWIND_TIME = 3, // offset until group Id 7
+    SAY_DEATH = 8
 };
 
 enum MovePoints
 {
     // Murozond
     POINT_ARENA = 1,
-    POINT_LAND  = 2
+    POINT_LAND = 2
 };
 
 enum Misc
 {
-    AI_ANIM_KIT_MIRROR_IMAGE            = 1552,
-    AI_ANIM_KIT_MUROZOND_DEATH          = 1034
+    AI_ANIM_KIT_MIRROR_IMAGE = 1552,
+    AI_ANIM_KIT_MUROZOND_DEATH = 1034
 };
 
-Position const ArenaFlightPosition                  = { 4181.117f, -420.21933f, 138.38057f };
-Position const ArenaLandPosition                    = { 4181.117f, -420.21933f, 119.77462f };
-constexpr float FlightPreFightOrientation           = 3.1066861f;
+Position const ArenaFlightPosition = { 4181.117f, -420.21933f, 138.38057f };
+Position const ArenaLandPosition = { 4181.117f, -420.21933f, 119.77462f };
+constexpr float FlightPreFightOrientation = 3.1066861f;
 
 std::array<Milliseconds, 4> DistortionBombIntervals =
 {
@@ -180,32 +180,32 @@ struct boss_murozond : public BossAI
 
         switch (pointId)
         {
-            case POINT_ARENA:
-                me->setActive(false);
-                me->SetFacingTo(FlightPreFightOrientation);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                break;
-            case POINT_LAND:
-                me->SetDisableGravity(false);
-                me->SetHover(false);
-                me->SetReactState(REACT_AGGRESSIVE);
-                events.ScheduleEvent(EVENT_TEMPORAL_BLAST, 5s);
-                events.ScheduleEvent(EVENT_INFINITE_BREATH, 8s + 500ms);
+        case POINT_ARENA:
+            me->setActive(false);
+            me->SetFacingTo(FlightPreFightOrientation);
+            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            break;
+        case POINT_LAND:
+            me->SetDisableGravity(false);
+            me->SetHover(false);
+            me->SetReactState(REACT_AGGRESSIVE);
+            events.ScheduleEvent(EVENT_TEMPORAL_BLAST, 5s);
+            events.ScheduleEvent(EVENT_INFINITE_BREATH, 8s + 500ms);
 
-                if (GameObject* hourglass = instance->GetGameObject(DATA_HOURGLASS_OF_TIME))
-                    hourglass->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+            if (GameObject* hourglass = instance->GetGameObject(DATA_HOURGLASS_OF_TIME))
+                hourglass->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
 
-                // Distortion bombs are being executed independently from events
-                scheduler.Schedule(1ms, [this](TaskContext task)
+            // Distortion bombs are being executed independently from events
+            scheduler.Schedule(1ms, [this](TaskContext task)
                 {
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.f, true))
                         me->CastSpell(target, SPELL_DISTORTION_BOMB_1, true); // No DoCast here because we have to bypass the casting state check.
 
                     task.Repeat(6s);
                 });
-                break;
-            default:
-                break;
+            break;
+        default:
+            break;
         }
     }
 
@@ -213,18 +213,18 @@ struct boss_murozond : public BossAI
     {
         switch (type)
         {
-            case DATA_MUROZOND_INTRO:
-                if (data == IN_PROGRESS)
-                    Talk(SAY_INTRO_1);
-                else if (data == DONE)
-                {
-                    Talk(SAY_INTRO_2);
-                    me->setActive(true);
-                    me->GetMotionMaster()->MovePoint(POINT_ARENA, ArenaFlightPosition, false);
-                }
-                break;
-            default:
-                break;
+        case DATA_MUROZOND_INTRO:
+            if (data == IN_PROGRESS)
+                Talk(SAY_INTRO_1);
+            else if (data == DONE)
+            {
+                Talk(SAY_INTRO_2);
+                me->setActive(true);
+                me->GetMotionMaster()->MovePoint(POINT_ARENA, ArenaFlightPosition, false);
+            }
+            break;
+        default:
+            break;
         }
     }
 
@@ -232,49 +232,49 @@ struct boss_murozond : public BossAI
     {
         switch (action)
         {
-            case ACTION_REWIND_TIME: // This whole action is triggered by a serverside spell so we have creative freedom here.
-                Talk(SAY_REWIND_TIME + _rewindTimeCount);
-                ++_rewindTimeCount;
+        case ACTION_REWIND_TIME: // This whole action is triggered by a serverside spell so we have creative freedom here.
+            Talk(SAY_REWIND_TIME + _rewindTimeCount);
+            ++_rewindTimeCount;
 
-                if (_rewindTimeCount == 5)
-                    if (GameObject* hourglass = instance->GetGameObject(DATA_HOURGLASS_OF_TIME))
-                        hourglass->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+            if (_rewindTimeCount == 5)
+                if (GameObject* hourglass = instance->GetGameObject(DATA_HOURGLASS_OF_TIME))
+                    hourglass->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
 
-                me->InterruptNonMeleeSpells(true);
-                me->AttackStop();
-                me->StopMoving();
-                me->SetReactState(REACT_PASSIVE);
-                me->CancelSpellMissiles(SPELL_DISTORTION_BOMB_1, true);
-                me->CancelSpellMissiles(SPELL_DISTORTION_BOMB_2, true);
-                me->RemoveAllDynObjects();
+            me->InterruptNonMeleeSpells(true);
+            me->AttackStop();
+            me->StopMoving();
+            me->SetReactState(REACT_PASSIVE);
+            me->CancelSpellMissiles(SPELL_DISTORTION_BOMB_1, true);
+            me->CancelSpellMissiles(SPELL_DISTORTION_BOMB_2, true);
+            me->RemoveAllDynObjects();
 
-                for (auto& itr : instance->instance->GetPlayers())
+            for (auto& itr : instance->instance->GetPlayers())
+            {
+                if (Player* player = itr.GetSource())
                 {
-                    if (Player* player = itr.GetSource())
+                    if (player->HasAura(SPELL_SANDS_OF_THE_HOURGLASS))
                     {
-                        if (player->HasAura(SPELL_SANDS_OF_THE_HOURGLASS))
-                        {
-                            if (player->isDead())
-                                player->ResurrectPlayer(100.f);
+                        if (player->isDead())
+                            player->ResurrectPlayer(100.f);
 
-                            player->SetPower(POWER_ALTERNATE_POWER, player->GetMaxPower(POWER_ALTERNATE_POWER) - _rewindTimeCount);
-                            player->GetSpellHistory()->ResetAllCooldowns(); // Todo: does this really reset ALL of them or just class specific spells? (thinking about profession cooldowns)
-                        }
+                        player->SetPower(POWER_ALTERNATE_POWER, player->GetMaxPower(POWER_ALTERNATE_POWER) - _rewindTimeCount);
+                        player->GetSpellHistory()->ResetAllCooldowns(); // Todo: does this really reset ALL of them or just class specific spells? (thinking about profession cooldowns)
                     }
                 }
+            }
 
-                instance->DoCastSpellOnPlayers(SPELL_BLESSING_OF_THE_BRONZE_DRAGON_FLIGHT);
-                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TEMPORAL_BLAST);
-                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_EXHAUSTION);
-                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_SATED);
-                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TEMPORAL_DISPLACEMENT);
+            instance->DoCastSpellOnPlayers(SPELL_BLESSING_OF_THE_BRONZE_DRAGON_FLIGHT);
+            instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TEMPORAL_BLAST);
+            instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_EXHAUSTION);
+            instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_SATED);
+            instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_TEMPORAL_DISPLACEMENT);
 
-                scheduler.CancelAll();
-                events.Reset();
-                events.ScheduleEvent(EVENT_REENGAGE_PLAYERS, 7s);
-                break;
-            default:
-                break;
+            scheduler.CancelAll();
+            events.Reset();
+            events.ScheduleEvent(EVENT_REENGAGE_PLAYERS, 7s);
+            break;
+        default:
+            break;
         }
     }
 
@@ -331,48 +331,48 @@ struct boss_murozond : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_LAND:
-                    me->GetMotionMaster()->MoveLand(POINT_LAND, ArenaLandPosition, 10.f);
-                    break;
-                case EVENT_TEMPORAL_SNAPSHOT:
-                    DoCastAOE(SPELL_TEMPORAL_SNAPSHOT);
-                    break;
-                case EVENT_TEMPORAL_BLAST:
-                    DoCastVictim(SPELL_TEMPORAL_BLAST);
-                    events.Repeat(12s);
-                    break;
-                case EVENT_INFINITE_BREATH:
-                    DoCastVictim(SPELL_INFINITE_BREATH);
-                    events.Repeat(23s);
-                    break;
-                case EVENT_REENGAGE_PLAYERS:
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    events.ScheduleEvent(EVENT_TEMPORAL_BLAST, 1s);
-                    events.ScheduleEvent(EVENT_INFINITE_BREATH, 10s);
+            case EVENT_LAND:
+                me->GetMotionMaster()->MoveLand(POINT_LAND, ArenaLandPosition, 10.f);
+                break;
+            case EVENT_TEMPORAL_SNAPSHOT:
+                DoCastAOE(SPELL_TEMPORAL_SNAPSHOT);
+                break;
+            case EVENT_TEMPORAL_BLAST:
+                DoCastVictim(SPELL_TEMPORAL_BLAST);
+                events.Repeat(12s);
+                break;
+            case EVENT_INFINITE_BREATH:
+                DoCastVictim(SPELL_INFINITE_BREATH);
+                events.Repeat(23s);
+                break;
+            case EVENT_REENGAGE_PLAYERS:
+                me->SetReactState(REACT_AGGRESSIVE);
+                events.ScheduleEvent(EVENT_TEMPORAL_BLAST, 1s);
+                events.ScheduleEvent(EVENT_INFINITE_BREATH, 10s);
 
-                    scheduler
-                        .Schedule(4s, [this](TaskContext task)
+                scheduler
+                    .Schedule(4s, [this](TaskContext task)
                         {
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.f, true))
                                 me->CastSpell(target, SPELL_DISTORTION_BOMB_1, true);
 
-                            
+
                             task.Repeat(6s);
                         })
-                        .Schedule(7s, [this](TaskContext task)
+                    .Schedule(7s, [this](TaskContext task)
                         {
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.f, true))
                                 me->CastSpell(target, SPELL_DISTORTION_BOMB_2, true);
 
                             task.Repeat(DistortionBombIntervals[_rewindTimeCount - 1]);
                         });
-                    break;
-                case EVENT_DESPAWN:
-                    instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
-                    me->DespawnOrUnsummon();
-                    break;
-                default:
-                    break;
+                        break;
+            case EVENT_DESPAWN:
+                instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
+                me->DespawnOrUnsummon();
+                break;
+            default:
+                break;
             }
         }
 
@@ -407,21 +407,21 @@ struct npc_murozond_mirror_image : public NullCreatureAI
     {
         switch (action)
         {
-            case ACTION_REWIND_TIME:
-            {
-                if (!_summon)
-                    break;
-
-                Unit* summoner = _summon->GetSummoner();
-                if (!summoner)
-                    break;
-
-                summoner->SetControlled(true, UNIT_STATE_ROOT);
-                _events.ScheduleEvent(EVENT_UNROOT_SUMMONER, 1s + 500ms);
+        case ACTION_REWIND_TIME:
+        {
+            if (!_summon)
                 break;
-            }
-            default:
+
+            Unit* summoner = _summon->GetSummoner();
+            if (!summoner)
                 break;
+
+            summoner->SetControlled(true, UNIT_STATE_ROOT);
+            _events.ScheduleEvent(EVENT_UNROOT_SUMMONER, 1s + 500ms);
+            break;
+        }
+        default:
+            break;
         }
     }
 
@@ -433,29 +433,29 @@ struct npc_murozond_mirror_image : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_UNROOT_SUMMONER:
-                    if (Unit* summoner = _summon->GetSummoner())
-                    {
-                        summoner->SetControlled(false, UNIT_STATE_ROOT);
-                        _events.ScheduleEvent(EVENT_MOVE_SUMMONER_BACK, 1s);
-                    }
-                    break;
-                case EVENT_MOVE_SUMMONER_BACK:
-                    if (Unit* summoner = _summon->GetSummoner())
-                    {
-                        Movement::MoveSplineInit init(summoner);
-                        init.MoveTo(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ());
-                        init.SetBackward();
-                        init.SetVelocity(40.f);
-                        _events.ScheduleEvent(EVENT_TELEPORT_SUMMONER, init.Launch());
-                    }
-                    break;
-                case EVENT_TELEPORT_SUMMONER:
-                    if (Unit* summoner = _summon->GetSummoner())
-                        summoner->CastSpell(me, SPELL_TELEPORT_TO_TARGET);
-                    break;
-                default:
-                    break;
+            case EVENT_UNROOT_SUMMONER:
+                if (Unit* summoner = _summon->GetSummoner())
+                {
+                    summoner->SetControlled(false, UNIT_STATE_ROOT);
+                    _events.ScheduleEvent(EVENT_MOVE_SUMMONER_BACK, 1s);
+                }
+                break;
+            case EVENT_MOVE_SUMMONER_BACK:
+                if (Unit* summoner = _summon->GetSummoner())
+                {
+                    Movement::MoveSplineInit init(summoner);
+                    init.MoveTo(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ());
+                    init.SetBackward();
+                    init.SetVelocity(40.f);
+                    _events.ScheduleEvent(EVENT_TELEPORT_SUMMONER, init.Launch());
+                }
+                break;
+            case EVENT_TELEPORT_SUMMONER:
+                if (Unit* summoner = _summon->GetSummoner())
+                    summoner->CastSpell(me, SPELL_TELEPORT_TO_TARGET);
+                break;
+            default:
+                break;
             }
         }
     }

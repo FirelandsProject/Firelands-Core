@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: boss_the_lurker_below
-SD%Complete: 80
-SDComment: Coilfang Frenzy, find out how could we fishing in the strangepool
-SDCategory: The Lurker Below
-EndScriptData */
+ /* ScriptData
+ SDName: boss_the_lurker_below
+ SD%Complete: 80
+ SDComment: Coilfang Frenzy, find out how could we fishing in the strangepool
+ SDCategory: The Lurker Below
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "GameObject.h"
@@ -36,35 +36,35 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_SPOUT             = 37433,
-    SPELL_SPOUT_ANIM        = 42835,
-    SPELL_SPOUT_BREATH      = 37431,
-    SPELL_KNOCKBACK         = 19813,
-    SPELL_GEYSER            = 37478,
-    SPELL_WHIRL             = 37660,
-    SPELL_WATERBOLT         = 37138,
-    SPELL_SUBMERGE          = 37550,
-    SPELL_EMERGE            = 20568,
+    SPELL_SPOUT = 37433,
+    SPELL_SPOUT_ANIM = 42835,
+    SPELL_SPOUT_BREATH = 37431,
+    SPELL_KNOCKBACK = 19813,
+    SPELL_GEYSER = 37478,
+    SPELL_WHIRL = 37660,
+    SPELL_WATERBOLT = 37138,
+    SPELL_SUBMERGE = 37550,
+    SPELL_EMERGE = 20568,
 
 
     // Ambusher spells
-    SPELL_SPREAD_SHOT       = 37790,
-    SPELL_SHOOT             = 37770,
+    SPELL_SPREAD_SHOT = 37790,
+    SPELL_SHOOT = 37770,
     // Guardian spells
-    SPELL_ARCINGSMASH       = 38761, // Wrong SpellId. Can't find the right one.
-    SPELL_HAMSTRING         = 26211
+    SPELL_ARCINGSMASH = 38761, // Wrong SpellId. Can't find the right one.
+    SPELL_HAMSTRING = 26211
 };
 
 enum Misc
 {
-    EMOTE_SPOUT             = 0,     // "The Lurker Below takes a deep breath."
-    SPOUT_DIST              = 100
+    EMOTE_SPOUT = 0,     // "The Lurker Below takes a deep breath."
+    SPOUT_DIST = 100
 };
 
 enum Creatures
 {
-    NPC_COILFANG_GUARDIAN   = 21873,
-    NPC_COILFANG_AMBUSHER   = 21865
+    NPC_COILFANG_GUARDIAN = 21873,
+    NPC_COILFANG_AMBUSHER = 21865
 };
 
 float AddPos[9][3] =
@@ -289,7 +289,7 @@ public:
                     Map::PlayerList const& PlayerList = me->GetMap()->GetPlayers();
                     for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
                     {
-                        if (i->GetSource() && i->GetSource()->IsAlive() && me->HasInArc(diff/20000.f*float(M_PI)*2.f, i->GetSource()) && me->IsWithinDist(i->GetSource(), SPOUT_DIST) && !i->GetSource()->IsInWater())
+                        if (i->GetSource() && i->GetSource()->IsAlive() && me->HasInArc(diff / 20000.f * float(M_PI) * 2.f, i->GetSource()) && me->IsWithinDist(i->GetSource(), SPOUT_DIST) && !i->GetSource()->IsInWater())
                             DoCast(i->GetSource(), SPELL_SPOUT, true); // only knock back players in arc, in 100yards, not in water
                     }
 
@@ -297,7 +297,8 @@ public:
                     {
                         DoCast(me, SPELL_SPOUT_ANIM, true);
                         SpoutAnimTimer = 1000;
-                    } else SpoutAnimTimer -= diff;
+                    }
+                    else SpoutAnimTimer -= diff;
 
                     if (RotTimer <= diff)
                     {
@@ -379,7 +380,7 @@ public:
                 }
             }
         }
-     };
+    };
 };
 
 class npc_coilfang_ambusher : public CreatureScript
@@ -433,7 +434,8 @@ public:
 
                 MultiShotTimer = 10000 + rand32() % 10000;
                 ShootBowTimer += 1500; // add global cooldown
-            } else MultiShotTimer -= diff;
+            }
+            else MultiShotTimer -= diff;
 
             if (ShootBowTimer <= diff)
             {
@@ -442,7 +444,8 @@ public:
                     DoCast(target, SPELL_SHOOT, CastSpellExtraArgs(true).AddSpellBP0(bp0));
                 ShootBowTimer = 4000 + rand32() % 5000;
                 MultiShotTimer += 1500; // add global cooldown
-            } else ShootBowTimer -= diff;
+            }
+            else ShootBowTimer -= diff;
         }
     };
 
@@ -450,36 +453,36 @@ public:
 
 class go_strange_pool : public GameObjectScript
 {
-    public:
-        go_strange_pool() : GameObjectScript("go_strange_pool") { }
+public:
+    go_strange_pool() : GameObjectScript("go_strange_pool") { }
 
-        struct go_strange_poolAI : public GameObjectAI
+    struct go_strange_poolAI : public GameObjectAI
+    {
+        go_strange_poolAI(GameObject* go) : GameObjectAI(go), instance(go->GetInstanceScript()) { }
+
+        InstanceScript* instance;
+
+        bool GossipHello(Player* player) override
         {
-            go_strange_poolAI(GameObject* go) : GameObjectAI(go), instance(go->GetInstanceScript()) { }
-
-            InstanceScript* instance;
-
-            bool GossipHello(Player* player) override
+            // 25%
+            if (!urand(0, 3))
             {
-                // 25%
-                if (!urand(0, 3))
+                if (instance->GetData(DATA_STRANGE_POOL) == NOT_STARTED)
                 {
-                    if (instance->GetData(DATA_STRANGE_POOL) == NOT_STARTED)
-                    {
-                        me->CastSpell(player, 54587);
-                        instance->SetData(DATA_STRANGE_POOL, IN_PROGRESS);
-                    }
-                    return true;
+                    me->CastSpell(player, 54587);
+                    instance->SetData(DATA_STRANGE_POOL, IN_PROGRESS);
                 }
-
-                return false;
+                return true;
             }
-        };
 
-        GameObjectAI* GetAI(GameObject* go) const override
-        {
-            return GetSerpentshrineCavernAI<go_strange_poolAI>(go);
+            return false;
         }
+    };
+
+    GameObjectAI* GetAI(GameObject* go) const override
+    {
+        return GetSerpentshrineCavernAI<go_strange_poolAI>(go);
+    }
 };
 
 void AddSC_boss_the_lurker_below()

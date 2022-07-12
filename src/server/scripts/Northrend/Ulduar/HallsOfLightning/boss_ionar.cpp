@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Comment: Timer check pending
- */
+ /*
+  * Comment: Timer check pending
+  */
 
 #include "ScriptMgr.h"
 #include "halls_of_lightning.h"
@@ -29,35 +29,35 @@
 
 enum Spells
 {
-    SPELL_BALL_LIGHTNING                          = 52780,
-    SPELL_STATIC_OVERLOAD                         = 52658,
+    SPELL_BALL_LIGHTNING = 52780,
+    SPELL_STATIC_OVERLOAD = 52658,
 
-    SPELL_DISPERSE                                = 52770,
-    SPELL_SUMMON_SPARK                            = 52746,
-    SPELL_SPARK_DESPAWN                           = 52776,
+    SPELL_DISPERSE = 52770,
+    SPELL_SUMMON_SPARK = 52746,
+    SPELL_SPARK_DESPAWN = 52776,
 
     // Spark of Ionar
-    SPELL_SPARK_VISUAL_TRIGGER                    = 52667
+    SPELL_SPARK_VISUAL_TRIGGER = 52667
 };
 
 enum Yells
 {
-    SAY_AGGRO                                     = 0,
-    SAY_SPLIT                                     = 1,
-    SAY_SLAY                                      = 2,
-    SAY_DEATH                                     = 3
+    SAY_AGGRO = 0,
+    SAY_SPLIT = 1,
+    SAY_SLAY = 2,
+    SAY_DEATH = 3
 };
 
 enum Creatures
 {
-    NPC_SPARK_OF_IONAR                            = 28926
+    NPC_SPARK_OF_IONAR = 28926
 };
 
 enum Misc
 {
-    DATA_MAX_SPARKS                               = 5,
-    DATA_MAX_SPARK_DISTANCE                       = 90, // Distance to boss - prevent runs through the whole instance
-    DATA_POINT_CALLBACK                           = 0
+    DATA_MAX_SPARKS = 5,
+    DATA_MAX_SPARK_DISTANCE = 90, // Distance to boss - prevent runs through the whole instance
+    DATA_POINT_CALLBACK = 0
 };
 
 /*######
@@ -188,7 +188,7 @@ public:
             }
         }
 
-        void DamageTaken(Unit* /*pDoneBy*/, uint32 &uiDamage) override
+        void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
         {
             if (!me->IsVisible())
                 uiDamage = 0;
@@ -245,7 +245,7 @@ public:
 
                         DoCast(me, SPELL_SPARK_DESPAWN, false);
 
-                        uiSplitTimer = 25*IN_MILLISECONDS;
+                        uiSplitTimer = 25 * IN_MILLISECONDS;
                         bIsSplitPhase = true;
 
                         if (me->GetVictim())
@@ -263,7 +263,7 @@ public:
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                     DoCast(target, SPELL_STATIC_OVERLOAD);
 
-                uiStaticOverloadTimer = urand(5*IN_MILLISECONDS, 6*IN_MILLISECONDS);
+                uiStaticOverloadTimer = urand(5 * IN_MILLISECONDS, 6 * IN_MILLISECONDS);
             }
             else
                 uiStaticOverloadTimer -= uiDiff;
@@ -271,7 +271,7 @@ public:
             if (uiBallLightningTimer <= uiDiff)
             {
                 DoCastVictim(SPELL_BALL_LIGHTNING);
-                uiBallLightningTimer = urand(10*IN_MILLISECONDS, 11*IN_MILLISECONDS);
+                uiBallLightningTimer = urand(10 * IN_MILLISECONDS, 11 * IN_MILLISECONDS);
             }
             else
                 uiBallLightningTimer -= uiDiff;
@@ -336,7 +336,7 @@ public:
                 me->DespawnOrUnsummon();
         }
 
-        void DamageTaken(Unit* /*pDoneBy*/, uint32 &uiDamage) override
+        void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
         {
             uiDamage = 0;
         }
@@ -367,7 +367,7 @@ public:
                 }
                 else
                     me->DespawnOrUnsummon();
-                uiCheckTimer = 2*IN_MILLISECONDS;
+                uiCheckTimer = 2 * IN_MILLISECONDS;
             }
             else
                 uiCheckTimer -= uiDiff;

@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -29,13 +29,13 @@
 enum Spells
 {
     // Baron Ashbury
-    SPELL_ASPHYXIATE                = 93423,
-    SPELL_ASPHYXIATE_ROOT           = 93422,
-    SPELL_ASPHYXIATE_DAMAGE         = 93424,
-    SPELL_PAIN_AND_SUFFERING_DUMMY  = 93605,
-    SPELL_WRACKING_PAIN             = 93720,
-    SPELL_DARK_ARCHANGEL_FORM       = 93757,
-    SPELL_CALAMITY                  = 93812
+    SPELL_ASPHYXIATE = 93423,
+    SPELL_ASPHYXIATE_ROOT = 93422,
+    SPELL_ASPHYXIATE_DAMAGE = 93424,
+    SPELL_PAIN_AND_SUFFERING_DUMMY = 93605,
+    SPELL_WRACKING_PAIN = 93720,
+    SPELL_DARK_ARCHANGEL_FORM = 93757,
+    SPELL_CALAMITY = 93812
 };
 
 #define SPELL_STAY_OF_EXECUTION RAID_MODE<uint32>(93468, 93705)
@@ -44,12 +44,12 @@ enum Spells
 enum Texts
 {
     // Baron Ashbury
-    SAY_AGGRO                       = 1,
-    SAY_ASPHYXIATE                  = 2,
-    SAY_ANNOUNCE_STAY_OF_EXECUTION  = 3,
-    SAY_STAY_OF_EXECUTION           = 4,
-    SAY_ARCHANGEL_FORM              = 5,
-    SAY_DEATH                       = 6
+    SAY_AGGRO = 1,
+    SAY_ASPHYXIATE = 2,
+    SAY_ANNOUNCE_STAY_OF_EXECUTION = 3,
+    SAY_STAY_OF_EXECUTION = 4,
+    SAY_ARCHANGEL_FORM = 5,
+    SAY_DEATH = 6
 };
 
 enum Events
@@ -163,43 +163,43 @@ struct boss_baron_ashbury : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_ASPHYXIATE:
-                    me->AttackStop();
-                    me->SetReactState(REACT_PASSIVE);
-                    me->StopMoving();
-                    Talk(SAY_ASPHYXIATE);
-                    DoCastSelf(SPELL_ASPHYXIATE);
-                    events.CancelEvent(EVENT_PAIN_AND_SUFFERING);
-                    events.ScheduleEvent(EVENT_STAY_OF_EXECUTION, 7s);
-                    events.Repeat(47s);
-                    break;
-                case EVENT_STAY_OF_EXECUTION:
-                    me->MakeInterruptable(true);
-                    Talk(SAY_STAY_OF_EXECUTION);
-                    Talk(SAY_ANNOUNCE_STAY_OF_EXECUTION);
-                    DoCastSelf(SPELL_STAY_OF_EXECUTION);
-                    break;
-                case EVENT_PAIN_AND_SUFFERING:
-                    me->MakeInterruptable(true);
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f, true))
-                        DoCast(target, SPELL_PAIN_AND_SUFFERING);
+            case EVENT_ASPHYXIATE:
+                me->AttackStop();
+                me->SetReactState(REACT_PASSIVE);
+                me->StopMoving();
+                Talk(SAY_ASPHYXIATE);
+                DoCastSelf(SPELL_ASPHYXIATE);
+                events.CancelEvent(EVENT_PAIN_AND_SUFFERING);
+                events.ScheduleEvent(EVENT_STAY_OF_EXECUTION, 7s);
+                events.Repeat(47s);
+                break;
+            case EVENT_STAY_OF_EXECUTION:
+                me->MakeInterruptable(true);
+                Talk(SAY_STAY_OF_EXECUTION);
+                Talk(SAY_ANNOUNCE_STAY_OF_EXECUTION);
+                DoCastSelf(SPELL_STAY_OF_EXECUTION);
+                break;
+            case EVENT_PAIN_AND_SUFFERING:
+                me->MakeInterruptable(true);
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f, true))
+                    DoCast(target, SPELL_PAIN_AND_SUFFERING);
 
-                    if (IsHeroic() && events.GetTimeUntilEvent(EVENT_ASPHYXIATE) > 15 * IN_MILLISECONDS)
-                        events.ScheduleEvent(EVENT_WRACKING_PAIN, 8s + 100ms);
-                    events.Repeat(23s);
-                    break;
-                case EVENT_WRACKING_PAIN:
-                    DoCastAOE(SPELL_WRACKING_PAIN);
-                    break;
-                case EVENT_DARK_ARCHANGEL_FORM:
-                    me->AttackStop();
-                    me->SetReactState(REACT_PASSIVE);
-                    me->MakeInterruptable(false);
-                    Talk(SAY_ARCHANGEL_FORM);
-                    DoCastAOE(SPELL_DARK_ARCHANGEL_FORM);
-                    break;
-                default:
-                    break;
+                if (IsHeroic() && events.GetTimeUntilEvent(EVENT_ASPHYXIATE) > 15 * IN_MILLISECONDS)
+                    events.ScheduleEvent(EVENT_WRACKING_PAIN, 8s + 100ms);
+                events.Repeat(23s);
+                break;
+            case EVENT_WRACKING_PAIN:
+                DoCastAOE(SPELL_WRACKING_PAIN);
+                break;
+            case EVENT_DARK_ARCHANGEL_FORM:
+                me->AttackStop();
+                me->SetReactState(REACT_PASSIVE);
+                me->MakeInterruptable(false);
+                Talk(SAY_ARCHANGEL_FORM);
+                DoCastAOE(SPELL_DARK_ARCHANGEL_FORM);
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();
@@ -253,7 +253,7 @@ class spell_ashbury_pain_and_suffering : public AuraScript
     {
         if (Unit* owner = GetTarget())
             if (Unit* caster = GetCaster())
-               owner->CastSpell(caster, SPELL_PAIN_AND_SUFFERING_DUMMY, true);
+                owner->CastSpell(caster, SPELL_PAIN_AND_SUFFERING_DUMMY, true);
 
         uint64 damage = aurEff->GetBaseAmount() * aurEff->GetTickNumber();
         GetEffect(EFFECT_0)->ChangeAmount(damage);

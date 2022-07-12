@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -38,53 +38,53 @@ MinionData const minionData[] =
 
 class instance_gruuls_lair : public InstanceMapScript
 {
-    public:
-        instance_gruuls_lair() : InstanceMapScript(GLScriptName, 565) { }
+public:
+    instance_gruuls_lair() : InstanceMapScript(GLScriptName, 565) { }
 
-        struct instance_gruuls_lair_InstanceMapScript : public InstanceScript
+    struct instance_gruuls_lair_InstanceMapScript : public InstanceScript
+    {
+        instance_gruuls_lair_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_gruuls_lair_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadDoorData(doorData);
-                LoadMinionData(minionData);
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                InstanceScript::OnCreatureCreate(creature);
-
-                switch (creature->GetEntry())
-                {
-                    case NPC_MAULGAR:
-                        MaulgarGUID = creature->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_MAULGAR:
-                        return MaulgarGUID;
-                    default:
-                        break;
-                }
-                return ObjectGuid::Empty;
-            }
-
-        protected:
-            ObjectGuid MaulgarGUID;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_gruuls_lair_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadDoorData(doorData);
+            LoadMinionData(minionData);
         }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            InstanceScript::OnCreatureCreate(creature);
+
+            switch (creature->GetEntry())
+            {
+            case NPC_MAULGAR:
+                MaulgarGUID = creature->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_MAULGAR:
+                return MaulgarGUID;
+            default:
+                break;
+            }
+            return ObjectGuid::Empty;
+        }
+
+    protected:
+        ObjectGuid MaulgarGUID;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_gruuls_lair_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_gruuls_lair()

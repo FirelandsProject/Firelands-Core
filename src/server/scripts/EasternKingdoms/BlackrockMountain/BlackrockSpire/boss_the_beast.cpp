@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,16 +21,16 @@
 
 enum Spells
 {
-    SPELL_FLAMEBREAK                = 16785,
-    SPELL_IMMOLATE                  = 20294,
-    SPELL_TERRIFYINGROAR            = 14100,
+    SPELL_FLAMEBREAK = 16785,
+    SPELL_IMMOLATE = 20294,
+    SPELL_TERRIFYINGROAR = 14100,
 };
 
 enum Events
 {
-    EVENT_FLAME_BREAK              = 1,
-    EVENT_IMMOLATE                 = 2,
-    EVENT_TERRIFYING_ROAR          = 3,
+    EVENT_FLAME_BREAK = 1,
+    EVENT_IMMOLATE = 2,
+    EVENT_TERRIFYING_ROAR = 3,
 };
 
 class boss_the_beast : public CreatureScript
@@ -55,8 +55,8 @@ public:
         void JustEngagedWith(Unit* who) override
         {
             BossAI::JustEngagedWith(who);
-            events.ScheduleEvent(EVENT_FLAME_BREAK,     12 * IN_MILLISECONDS);
-            events.ScheduleEvent(EVENT_IMMOLATE,         3 * IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_FLAME_BREAK, 12 * IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_IMMOLATE, 3 * IN_MILLISECONDS);
             events.ScheduleEvent(EVENT_TERRIFYING_ROAR, 23 * IN_MILLISECONDS);
         }
 
@@ -70,7 +70,7 @@ public:
             if (!UpdateVictim())
                 return;
 
-             events.Update(diff);
+            events.Update(diff);
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
@@ -79,19 +79,19 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_FLAME_BREAK:
-                        DoCastVictim(SPELL_FLAMEBREAK);
-                        events.ScheduleEvent(EVENT_FLAME_BREAK, 10 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_IMMOLATE:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
-                            DoCast(target, SPELL_IMMOLATE);
-                        events.ScheduleEvent(EVENT_IMMOLATE, 8 * IN_MILLISECONDS);
-                        break;
-                    case EVENT_TERRIFYING_ROAR:
-                        DoCastVictim(SPELL_TERRIFYINGROAR);
-                        events.ScheduleEvent(EVENT_TERRIFYING_ROAR, 20 * IN_MILLISECONDS);
-                        break;
+                case EVENT_FLAME_BREAK:
+                    DoCastVictim(SPELL_FLAMEBREAK);
+                    events.ScheduleEvent(EVENT_FLAME_BREAK, 10 * IN_MILLISECONDS);
+                    break;
+                case EVENT_IMMOLATE:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                        DoCast(target, SPELL_IMMOLATE);
+                    events.ScheduleEvent(EVENT_IMMOLATE, 8 * IN_MILLISECONDS);
+                    break;
+                case EVENT_TERRIFYING_ROAR:
+                    DoCastVictim(SPELL_TERRIFYINGROAR);
+                    events.ScheduleEvent(EVENT_TERRIFYING_ROAR, 20 * IN_MILLISECONDS);
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

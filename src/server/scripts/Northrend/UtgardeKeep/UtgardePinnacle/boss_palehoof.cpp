@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,40 +29,40 @@
 enum Spells
 {
     // Palehoof
-    SPELL_ARCING_SMASH          = 48260,
-    SPELL_IMPALE                = 48261,
-    SPELL_IMPALE_H              = 59268,
-    SPELL_WITHERING_ROAR        = 48256,
-    SPELL_WITHERING_ROAR_H      = 59267,
-    SPELL_FREEZE                = 16245,
+    SPELL_ARCING_SMASH = 48260,
+    SPELL_IMPALE = 48261,
+    SPELL_IMPALE_H = 59268,
+    SPELL_WITHERING_ROAR = 48256,
+    SPELL_WITHERING_ROAR_H = 59267,
+    SPELL_FREEZE = 16245,
     // Orb - World Trigger
-    SPELL_ORB_VISUAL            = 48044,
-    SPELL_ORB_CHANNEL           = 48048,
-    SPELL_AWAKEN_SUBBOSS        = 47669,
-    SPELL_AWAKEN_GORTOK         = 47670,
+    SPELL_ORB_VISUAL = 48044,
+    SPELL_ORB_CHANNEL = 48048,
+    SPELL_AWAKEN_SUBBOSS = 47669,
+    SPELL_AWAKEN_GORTOK = 47670,
     // Ravenous Furbolg
-    SPELL_CHAIN_LIGHTNING       = 48140,
-    SPELL_CHAIN_LIGHTNING_H     = 59273,
-    SPELL_CRAZED                = 48139,
-    SPELL_CRAZED_TAUNT          = 48147,
-    SPELL_TERRIFYING_ROAR       = 48144,
+    SPELL_CHAIN_LIGHTNING = 48140,
+    SPELL_CHAIN_LIGHTNING_H = 59273,
+    SPELL_CRAZED = 48139,
+    SPELL_CRAZED_TAUNT = 48147,
+    SPELL_TERRIFYING_ROAR = 48144,
     // Frenzied Worgen
-    SPELL_MORTAL_WOUND          = 48137,
-    SPELL_MORTAL_WOUND_H        = 59265,
-    SPELL_ENRAGE_1              = 48138,
-    SPELL_ENRAGE_2              = 48142,
+    SPELL_MORTAL_WOUND = 48137,
+    SPELL_MORTAL_WOUND_H = 59265,
+    SPELL_ENRAGE_1 = 48138,
+    SPELL_ENRAGE_2 = 48142,
     // Ferocious Rhino
-    SPELL_GORE                  = 48130,
-    SPELL_GORE_2                = 59264,
-    SPELL_GRIEVOUS_WOUND        = 48105,
-    SPELL_GRIEVOUS_WOUND_H      = 59263,
-    SPELL_STOMP                 = 48131,
+    SPELL_GORE = 48130,
+    SPELL_GORE_2 = 59264,
+    SPELL_GRIEVOUS_WOUND = 48105,
+    SPELL_GRIEVOUS_WOUND_H = 59263,
+    SPELL_STOMP = 48131,
     // Massive Jormungar
-    SPELL_ACID_SPIT             = 48132,
-    SPELL_ACID_SPLATTER         = 48136,
-    SPELL_ACID_SPLATTER_H       = 59272,
-    SPELL_POISON_BREATH         = 48133,
-    SPELL_POISON_BREATH_H       = 59271
+    SPELL_ACID_SPIT = 48132,
+    SPELL_ACID_SPLATTER = 48136,
+    SPELL_ACID_SPLATTER_H = 59272,
+    SPELL_POISON_BREATH = 48133,
+    SPELL_POISON_BREATH_H = 59271
 };
 
 enum Events
@@ -87,8 +87,8 @@ enum Events
 
 enum Says
 {
-    SAY_AGGRO            = 0,
-    SAY_SLAY             = 1,
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
     PALEHOOF_SOUND_DEATH = 13467
 };
 
@@ -100,11 +100,11 @@ Position const OrbPositions[2] =
 
 enum Misc
 {
-    ACTION_NEXT_PHASE       = 1,
-    ACTION_START_FIGHT      = 2,
-    ACTION_START_ENCOUNTER  = 3,
-    POSITION_FLY            = 0,
-    POSITION_FINAL          = 1,
+    ACTION_NEXT_PHASE = 1,
+    ACTION_START_FIGHT = 2,
+    ACTION_START_ENCOUNTER = 3,
+    POSITION_FLY = 0,
+    POSITION_FINAL = 1,
     SUMMON_MINIBOSSES_GROUP = 1
 };
 
@@ -233,21 +233,21 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_ARCING_SMASH:
-                    DoCastVictim(SPELL_ARCING_SMASH);
-                    events.Repeat(Seconds(7));
-                    break;
-                case EVENT_IMPALE:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                        DoCast(target, SPELL_IMPALE);
-                    events.Repeat(Seconds(10), Seconds(15));
-                    break;
-                case EVENT_WITHERING_ROAR:
-                    DoCastSelf(SPELL_WITHERING_ROAR);
-                    events.Repeat(Seconds(11));
-                    break;
-                default:
-                    break;
+            case EVENT_ARCING_SMASH:
+                DoCastVictim(SPELL_ARCING_SMASH);
+                events.Repeat(Seconds(7));
+                break;
+            case EVENT_IMPALE:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_IMPALE);
+                events.Repeat(Seconds(10), Seconds(15));
+                break;
+            case EVENT_WITHERING_ROAR:
+                DoCastSelf(SPELL_WITHERING_ROAR);
+                events.Repeat(Seconds(11));
+                break;
+            default:
+                break;
             }
         }
 
@@ -277,43 +277,43 @@ public:
         {
             switch (actionId)
             {
-                case ACTION_NEXT_PHASE:
-                {
-                    Creature* orb = ObjectAccessor::GetCreature(*me, _orb);
-                    if (!orb)
-                        return;
+            case ACTION_NEXT_PHASE:
+            {
+                Creature* orb = ObjectAccessor::GetCreature(*me, _orb);
+                if (!orb)
+                    return;
 
-                    _encountersCount++;
-                    if (_encountersCount == _dungeonMode)
-                        orb->CastSpell(orb, SPELL_AWAKEN_GORTOK, true);
-                    else
-                        orb->CastSpell(orb, SPELL_AWAKEN_SUBBOSS, CastSpellExtraArgs(true).AddSpellMod(SPELLVALUE_MAX_TARGETS, 1));
-                    break;
+                _encountersCount++;
+                if (_encountersCount == _dungeonMode)
+                    orb->CastSpell(orb, SPELL_AWAKEN_GORTOK, true);
+                else
+                    orb->CastSpell(orb, SPELL_AWAKEN_SUBBOSS, CastSpellExtraArgs(true).AddSpellMod(SPELLVALUE_MAX_TARGETS, 1));
+                break;
+            }
+            case ACTION_START_FIGHT:
+                me->RemoveAurasDueToSpell(SPELL_FREEZE);
+                me->SetImmuneToPC(false);
+                DoZoneInCombat();
+                if (Creature* orb = ObjectAccessor::GetCreature(*me, _orb))
+                    orb->DespawnOrUnsummon(1000);
+                break;
+            case ACTION_START_ENCOUNTER:
+                if (Creature* orb = ObjectAccessor::GetCreature(*me, _orb))
+                {
+                    orb->CastSpell(orb, SPELL_ORB_VISUAL, true);
+                    orb->m_Events.AddEvent(new OrbAirPositionEvent(orb), orb->m_Events.CalculateTime(3000));
+                    orb->m_Events.AddEvent(new OrbFlyEvent(orb), orb->m_Events.CalculateTime(6000));
                 }
-                case ACTION_START_FIGHT:
-                    me->RemoveAurasDueToSpell(SPELL_FREEZE);
-                    me->SetImmuneToPC(false);
-                    DoZoneInCombat();
-                    if (Creature* orb = ObjectAccessor::GetCreature(*me, _orb))
-                        orb->DespawnOrUnsummon(1000);
-                    break;
-                case ACTION_START_ENCOUNTER:
-                    if (Creature* orb = ObjectAccessor::GetCreature(*me, _orb))
-                    {
-                        orb->CastSpell(orb, SPELL_ORB_VISUAL, true);
-                        orb->m_Events.AddEvent(new OrbAirPositionEvent(orb), orb->m_Events.CalculateTime(3000));
-                        orb->m_Events.AddEvent(new OrbFlyEvent(orb), orb->m_Events.CalculateTime(6000));
-                    }
-                    break;
-                default:
-                    break;
+                break;
+            default:
+                break;
             }
         }
 
-        private:
-            uint8 _dungeonMode;
-            uint8 _encountersCount;
-            ObjectGuid _orb;
+    private:
+        uint8 _dungeonMode;
+        uint8 _encountersCount;
+        ObjectGuid _orb;
     };
 
     CreatureAI* GetAI(Creature* creature) const override
@@ -383,20 +383,20 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_CRAZED:
-                    DoCastSelf(SPELL_CRAZED);
-                    events.Repeat(Seconds(20), Seconds(25));
-                    break;
-                case EVENT_CHAIN_LIGHTNING:
-                    DoCastVictim(SPELL_CHAIN_LIGHTNING);
-                    events.Repeat(Seconds(11));
-                    break;
-                case EVENT_TERRIFYING_ROAR:
-                    DoCastSelf(SPELL_TERRIFYING_ROAR);
-                    events.Repeat(Seconds(18));
-                    break;
-                default:
-                    break;
+            case EVENT_CRAZED:
+                DoCastSelf(SPELL_CRAZED);
+                events.Repeat(Seconds(20), Seconds(25));
+                break;
+            case EVENT_CHAIN_LIGHTNING:
+                DoCastVictim(SPELL_CHAIN_LIGHTNING);
+                events.Repeat(Seconds(11));
+                break;
+            case EVENT_TERRIFYING_ROAR:
+                DoCastSelf(SPELL_TERRIFYING_ROAR);
+                events.Repeat(Seconds(18));
+                break;
+            default:
+                break;
             }
         }
     };
@@ -427,19 +427,19 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_MORTAL_WOUND:
-                    DoCastVictim(SPELL_MORTAL_WOUND);
-                    events.Repeat(Seconds(6));
-                    break;
-                case EVENT_ENRAGE:
-                    DoCastSelf(SPELL_ENRAGE_1);
-                    events.Repeat(Seconds(25));
-                    break;
-                case EVENT_ENRAGE_2:
-                    DoCastSelf(SPELL_ENRAGE_2);
-                    break;
-                default:
-                    break;
+            case EVENT_MORTAL_WOUND:
+                DoCastVictim(SPELL_MORTAL_WOUND);
+                events.Repeat(Seconds(6));
+                break;
+            case EVENT_ENRAGE:
+                DoCastSelf(SPELL_ENRAGE_1);
+                events.Repeat(Seconds(25));
+                break;
+            case EVENT_ENRAGE_2:
+                DoCastSelf(SPELL_ENRAGE_2);
+                break;
+            default:
+                break;
             }
         }
     };
@@ -470,21 +470,21 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_GORE:
-                    DoCastVictim(SPELL_GORE);
-                    events.Repeat(Seconds(19));
-                    break;
-                case EVENT_GRIEVOUS_WOUND:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1))
-                        DoCast(target, SPELL_GRIEVOUS_WOUND);
-                    events.Repeat(Seconds(18));
-                    break;
-                case EVENT_STOMP:
-                    DoCastSelf(SPELL_STOMP);
-                    events.Repeat(Seconds(10), Seconds(15));
-                    break;
-                default:
-                    break;
+            case EVENT_GORE:
+                DoCastVictim(SPELL_GORE);
+                events.Repeat(Seconds(19));
+                break;
+            case EVENT_GRIEVOUS_WOUND:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1))
+                    DoCast(target, SPELL_GRIEVOUS_WOUND);
+                events.Repeat(Seconds(18));
+                break;
+            case EVENT_STOMP:
+                DoCastSelf(SPELL_STOMP);
+                events.Repeat(Seconds(10), Seconds(15));
+                break;
+            default:
+                break;
             }
         }
     };
@@ -524,21 +524,21 @@ public:
         {
             switch (eventId)
             {
-                case EVENT_ACID_SPIT:
-                    DoCastVictim(SPELL_ACID_SPIT);
-                    events.Repeat(Seconds(7));
-                    break;
-                case EVENT_ACID_SPLATTER:
-                    DoCastSelf(SPELL_ACID_SPLATTER);
-                    events.Repeat(Seconds(16));
-                    break;
-                case EVENT_POISON_BREATH:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                        DoCast(target, SPELL_POISON_BREATH);
-                    events.Repeat(Seconds(14));
-                    break;
-                default:
-                    break;
+            case EVENT_ACID_SPIT:
+                DoCastVictim(SPELL_ACID_SPIT);
+                events.Repeat(Seconds(7));
+                break;
+            case EVENT_ACID_SPLATTER:
+                DoCastSelf(SPELL_ACID_SPLATTER);
+                events.Repeat(Seconds(16));
+                break;
+            case EVENT_POISON_BREATH:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_POISON_BREATH);
+                events.Repeat(Seconds(14));
+                break;
+            default:
+                break;
             }
         }
 
@@ -590,114 +590,114 @@ public:
 //  48139 - Crazed
 class spell_palehoof_crazed : public SpellScriptLoader
 {
-    public:
-        spell_palehoof_crazed() : SpellScriptLoader("spell_palehoof_crazed") { }
+public:
+    spell_palehoof_crazed() : SpellScriptLoader("spell_palehoof_crazed") { }
 
-        class spell_palehoof_crazed_AuraScript : public AuraScript
+    class spell_palehoof_crazed_AuraScript : public AuraScript
+    {
+        void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
         {
-            void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
-            {
-                GetTarget()->RemoveAurasDueToSpell(SPELL_CRAZED_TAUNT);
-            }
-
-            void Register() override
-            {
-                OnEffectRemove.Register(&spell_palehoof_crazed_AuraScript::OnRemove, EFFECT_1, SPELL_AURA_PERIODIC_TRIGGER_SPELL, AURA_EFFECT_HANDLE_REAL);
-            }
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_palehoof_crazed_AuraScript();
+            GetTarget()->RemoveAurasDueToSpell(SPELL_CRAZED_TAUNT);
         }
+
+        void Register() override
+        {
+            OnEffectRemove.Register(&spell_palehoof_crazed_AuraScript::OnRemove, EFFECT_1, SPELL_AURA_PERIODIC_TRIGGER_SPELL, AURA_EFFECT_HANDLE_REAL);
+        }
+    };
+
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_palehoof_crazed_AuraScript();
+    }
 };
 
 class spell_palehoof_crazed_effect : public SpellScriptLoader
 {
-    public: spell_palehoof_crazed_effect() : SpellScriptLoader("spell_palehoof_crazed_effect") { }
+public: spell_palehoof_crazed_effect() : SpellScriptLoader("spell_palehoof_crazed_effect") { }
 
-        class spell_palehoof_crazed_effect_SpellScript : public SpellScript
-        {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo({ SPELL_CRAZED_TAUNT });
-            }
+      class spell_palehoof_crazed_effect_SpellScript : public SpellScript
+      {
+          bool Validate(SpellInfo const* /*spellInfo*/) override
+          {
+              return ValidateSpellInfo({ SPELL_CRAZED_TAUNT });
+          }
 
-            void HandleScriptEffect(SpellEffIndex /* effIndex */)
-            {
-                GetHitUnit()->CastSpell(GetCaster(), SPELL_CRAZED_TAUNT, true);
-            }
+          void HandleScriptEffect(SpellEffIndex /* effIndex */)
+          {
+              GetHitUnit()->CastSpell(GetCaster(), SPELL_CRAZED_TAUNT, true);
+          }
 
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_palehoof_crazed_effect_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
-            }
-        };
+          void Register() override
+          {
+              OnEffectHitTarget.Register(&spell_palehoof_crazed_effect_SpellScript::HandleScriptEffect, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+          }
+      };
 
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_palehoof_crazed_effect_SpellScript();
-        }
+      SpellScript* GetSpellScript() const override
+      {
+          return new spell_palehoof_crazed_effect_SpellScript();
+      }
 };
 
 // 47669 - Awaken Subbos
 class spell_palehoof_awaken_subboss : public SpellScriptLoader
 {
-    public:
-        spell_palehoof_awaken_subboss() : SpellScriptLoader("spell_palehoof_awaken_subboss") { }
+public:
+    spell_palehoof_awaken_subboss() : SpellScriptLoader("spell_palehoof_awaken_subboss") { }
 
-        class spell_palehoof_awaken_subboss_SpellScript : public SpellScript
+    class spell_palehoof_awaken_subboss_SpellScript : public SpellScript
+    {
+        bool Validate(SpellInfo const* /*spellInfo*/) override
         {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo({ SPELL_ORB_CHANNEL });
-            }
-
-            void HandleScript(SpellEffIndex /*effIndex*/)
-            {
-                Unit* target = GetHitUnit();
-                GetCaster()->CastSpell(target, SPELL_ORB_CHANNEL);
-                target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                target->m_Events.AddEvent(new CombatStartEvent(target), target->m_Events.CalculateTime(8500));
-            }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_palehoof_awaken_subboss_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_APPLY_AURA);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_palehoof_awaken_subboss_SpellScript();
+            return ValidateSpellInfo({ SPELL_ORB_CHANNEL });
         }
+
+        void HandleScript(SpellEffIndex /*effIndex*/)
+        {
+            Unit* target = GetHitUnit();
+            GetCaster()->CastSpell(target, SPELL_ORB_CHANNEL);
+            target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            target->m_Events.AddEvent(new CombatStartEvent(target), target->m_Events.CalculateTime(8500));
+        }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_palehoof_awaken_subboss_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_APPLY_AURA);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_palehoof_awaken_subboss_SpellScript();
+    }
 };
 
 // 47670 - Awaken Gortok
 class spell_palehoof_awaken_gortok : public SpellScriptLoader
 {
-    public:
-        spell_palehoof_awaken_gortok() : SpellScriptLoader("spell_palehoof_awaken_gortok") { }
+public:
+    spell_palehoof_awaken_gortok() : SpellScriptLoader("spell_palehoof_awaken_gortok") { }
 
-        class spell_palehoof_awaken_gortok_SpellScript : public SpellScript
+    class spell_palehoof_awaken_gortok_SpellScript : public SpellScript
+    {
+        void HandleDummy(SpellEffIndex /*effIndex*/)
         {
-            void HandleDummy(SpellEffIndex /*effIndex*/)
-            {
-                Unit* target = GetHitUnit();
-                target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                target->m_Events.AddEvent(new CombatStartEvent(target), target->m_Events.CalculateTime(8000));
-            }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_palehoof_awaken_gortok_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_palehoof_awaken_gortok_SpellScript();
+            Unit* target = GetHitUnit();
+            target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            target->m_Events.AddEvent(new CombatStartEvent(target), target->m_Events.CalculateTime(8000));
         }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_palehoof_awaken_gortok_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_palehoof_awaken_gortok_SpellScript();
+    }
 };
 
 void AddSC_boss_palehoof()

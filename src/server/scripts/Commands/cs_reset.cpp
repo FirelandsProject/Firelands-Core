@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -174,8 +174,8 @@ public:
         else
         {
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-            stmt->setUInt16(0, uint16(AT_LOGIN_RESET_SPELLS));
-            stmt->setUInt32(1, targetGuid.GetCounter());
+            stmt->SetData(0, uint16(AT_LOGIN_RESET_SPELLS));
+            stmt->SetData(1, targetGuid.GetCounter());
             CharacterDatabase.Execute(stmt);
 
             handler->PSendSysMessage(LANG_RESET_SPELLS_OFFLINE, targetName.c_str());
@@ -248,8 +248,8 @@ public:
         else if (targetGuid)
         {
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-            stmt->setUInt16(0, uint16(AT_LOGIN_NONE | AT_LOGIN_RESET_PET_TALENTS));
-            stmt->setUInt32(1, targetGuid.GetCounter());
+            stmt->SetData(0, uint16(AT_LOGIN_NONE | AT_LOGIN_RESET_PET_TALENTS));
+            stmt->SetData(1, targetGuid.GetCounter());
             CharacterDatabase.Execute(stmt);
 
             std::string nameLink = handler->playerLink(targetName);
@@ -294,7 +294,7 @@ public:
         }
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ALL_AT_LOGIN_FLAGS);
-        stmt->setUInt16(0, uint16(atLogin));
+        stmt->SetData(0, uint16(atLogin));
         CharacterDatabase.Execute(stmt);
 
         std::shared_lock<std::shared_mutex> lock(*HashMapHolder<Player>::GetLock());

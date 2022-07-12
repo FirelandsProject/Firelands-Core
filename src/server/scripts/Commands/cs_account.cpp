@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -90,8 +90,8 @@ public:
 
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_EXPANSION);
 
-        stmt->setUInt8(0, expansion);
-        stmt->setUInt32(1, handler->GetSession()->GetAccountId());
+        stmt->SetData(0, expansion);
+        stmt->SetData(1, handler->GetSession()->GetAccountId());
 
         LoginDatabase.Execute(stmt);
 
@@ -223,7 +223,7 @@ public:
             ///- Get the username, last IP and GM level of each account
             // No SQL injection. account is uint32.
             LoginDatabasePreparedStatement* loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_INFO);
-            loginStmt->setUInt32(0, account);
+            loginStmt->SetData(0, account);
             PreparedQueryResult resultLogin = LoginDatabase.Query(loginStmt);
 
             if (resultLogin)
@@ -249,8 +249,8 @@ public:
             if (IpLocationRecord const* location = sIPLocation->GetLocationRecord(handler->GetSession()->GetRemoteAddress()))
             {
                 LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_ACCOUNT_LOCK_COUNTRY);
-                stmt->setString(0, location->CountryCode);
-                stmt->setUInt32(1, handler->GetSession()->GetAccountId());
+                stmt->SetData(0, location->CountryCode);
+                stmt->SetData(1, handler->GetSession()->GetAccountId());
                 LoginDatabase.Execute(stmt);
                 handler->PSendSysMessage(LANG_COMMAND_ACCLOCKLOCKED);
             }
@@ -264,8 +264,8 @@ public:
         else
         {
             LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_ACCOUNT_LOCK_COUNTRY);
-            stmt->setString(0, "00");
-            stmt->setUInt32(1, handler->GetSession()->GetAccountId());
+            stmt->SetData(0, "00");
+            stmt->SetData(1, handler->GetSession()->GetAccountId());
             LoginDatabase.Execute(stmt);
             handler->PSendSysMessage(LANG_COMMAND_ACCLOCKUNLOCKED);
         }
@@ -278,16 +278,16 @@ public:
 
         if (state)
         {
-            stmt->setBool(0, true);                                     // locked
+            stmt->SetData(0, true);                                     // locked
             handler->PSendSysMessage(LANG_COMMAND_ACCLOCKLOCKED);
         }
         else
         {
-            stmt->setBool(0, false);                                    // unlocked
+            stmt->SetData(0, false);                                    // unlocked
             handler->PSendSysMessage(LANG_COMMAND_ACCLOCKUNLOCKED);
         }
 
-        stmt->setUInt32(1, handler->GetSession()->GetAccountId());
+        stmt->SetData(1, handler->GetSession()->GetAccountId());
 
         LoginDatabase.Execute(stmt);
         return true;
@@ -457,7 +457,7 @@ public:
             uint32 accountId = handler->GetSession()->GetAccountId();
 
             LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_EMAIL_BY_ID);
-            stmt->setUInt32(0, accountId);
+            stmt->SetData(0, accountId);
             PreparedQueryResult result = LoginDatabase.Query(stmt);
 
             if (result)
@@ -514,8 +514,8 @@ public:
 
         LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_EXPANSION);
 
-        stmt->setUInt8(0, expansion);
-        stmt->setUInt32(1, accountId);
+        stmt->SetData(0, expansion);
+        stmt->SetData(1, accountId);
 
         LoginDatabase.Execute(stmt);
 
@@ -574,8 +574,8 @@ public:
         {
             LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_ACCESS_GMLEVEL_TEST);
 
-            stmt->setUInt32(0, accountId);
-            stmt->setUInt8(1, gmLevel);
+            stmt->SetData(0, accountId);
+            stmt->SetData(1, gmLevel);
 
             PreparedQueryResult result = LoginDatabase.Query(stmt);
 

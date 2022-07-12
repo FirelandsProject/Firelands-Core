@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -76,14 +76,14 @@ void WorldPackets::Inspect::RequestInspectRatedBgStats::Read()
     TargetGUID[7] = _worldPacket.ReadBit();
     TargetGUID[3] = _worldPacket.ReadBit();
 
-   _worldPacket.ReadByteSeq(TargetGUID[4]);
-   _worldPacket.ReadByteSeq(TargetGUID[7]);
-   _worldPacket.ReadByteSeq(TargetGUID[2]);
-   _worldPacket.ReadByteSeq(TargetGUID[5]);
-   _worldPacket.ReadByteSeq(TargetGUID[6]);
-   _worldPacket.ReadByteSeq(TargetGUID[3]);
-   _worldPacket.ReadByteSeq(TargetGUID[0]);
-   _worldPacket.ReadByteSeq(TargetGUID[1]);
+    _worldPacket.ReadByteSeq(TargetGUID[4]);
+    _worldPacket.ReadByteSeq(TargetGUID[7]);
+    _worldPacket.ReadByteSeq(TargetGUID[2]);
+    _worldPacket.ReadByteSeq(TargetGUID[5]);
+    _worldPacket.ReadByteSeq(TargetGUID[6]);
+    _worldPacket.ReadByteSeq(TargetGUID[3]);
+    _worldPacket.ReadByteSeq(TargetGUID[0]);
+    _worldPacket.ReadByteSeq(TargetGUID[1]);
 }
 
 WorldPacket const* WorldPackets::Inspect::InspectRatedBgStats::Write()

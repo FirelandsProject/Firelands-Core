@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,10 +29,10 @@ uint32 const EncounterCount = 4;
 enum TotTDataTypes
 {
     // Encounters
-    DATA_LADY_NAZJAR                        = 0,
-    DATA_COMMANDER_ULTHOK                   = 1,
-    DATA_MINDBENDER_GURSHA                  = 2,
-    DATA_OZUMAT                             = 3,
+    DATA_LADY_NAZJAR = 0,
+    DATA_COMMANDER_ULTHOK = 1,
+    DATA_MINDBENDER_GURSHA = 2,
+    DATA_OZUMAT = 3,
 
     // Additional Data Types
     DATA_CURRENT_EVENT_PROGRESS,
@@ -58,84 +58,84 @@ enum TotTDataTypes
 enum TotTCreatureIds
 {
     // Bosses
-    BOSS_LADY_NAZJAR                        = 40586,
-    BOSS_COMMANDER_ULTHOK                   = 40765,
-    BOSS_MINDBENDER_GURSHA                  = 40788,
-    BOSS_OZUMAT                             = 44566,
+    BOSS_LADY_NAZJAR = 40586,
+    BOSS_COMMANDER_ULTHOK = 40765,
+    BOSS_MINDBENDER_GURSHA = 40788,
+    BOSS_OZUMAT = 44566,
 
     // Encounter Related
     /*Lady Naz'jar*/
-    NPC_GEYSER                              = 40597,
-    NPC_NAZJAR_HONOR_GUARD                  = 40633,
-    NPC_NAZJAR_TEMPEST_WITCH                = 44404,
-    NPC_WATERSPOUT                          = 48571,
+    NPC_GEYSER = 40597,
+    NPC_NAZJAR_HONOR_GUARD = 40633,
+    NPC_NAZJAR_TEMPEST_WITCH = 44404,
+    NPC_WATERSPOUT = 48571,
 
     /*Ozumat*/
-    NPC_NEPTULON                            = 40792,
-    NPC_OZUMAT_COMBAT_TRIGGER               = 44864,
-    NPC_WORLD_TRIGGER_FRIENDLY              = 18721,
-    NPC_DEEP_MURLOC_INVADER                 = 44658,
-    NPC_VICIOUS_MINDLASHER                  = 44715,
-    NPC_UNYIELDING_BEHEMOTH                 = 44648,
-    NPC_UNYIELDING_BEHEMOTH_LEAP_VEHICLE    = 44949,
-    NPC_OZUMAT_ADD_SPAWNER                  = 44656,
-    NPC_OZUMAT_VEHICLE                      = 44581,
-    NPC_FACELESS_SAPPER                     = 44752,
-    NPC_BLIGHT_BEAST                        = 44841,
-    NPC_BLIGHT_OF_OZUMAT                    = 44801,
-    NPC_BLIGHT_OF_OZUMAT_2                  = 44834,
+    NPC_NEPTULON = 40792,
+    NPC_OZUMAT_COMBAT_TRIGGER = 44864,
+    NPC_WORLD_TRIGGER_FRIENDLY = 18721,
+    NPC_DEEP_MURLOC_INVADER = 44658,
+    NPC_VICIOUS_MINDLASHER = 44715,
+    NPC_UNYIELDING_BEHEMOTH = 44648,
+    NPC_UNYIELDING_BEHEMOTH_LEAP_VEHICLE = 44949,
+    NPC_OZUMAT_ADD_SPAWNER = 44656,
+    NPC_OZUMAT_VEHICLE = 44581,
+    NPC_FACELESS_SAPPER = 44752,
+    NPC_BLIGHT_BEAST = 44841,
+    NPC_BLIGHT_OF_OZUMAT = 44801,
+    NPC_BLIGHT_OF_OZUMAT_2 = 44834,
 
     // Event Creatures
-    NPC_OZUMAT_VEHICLE_BIG                  = 45030,
-    NPC_WORLD_TRIGGER_INFINITE_AOI          = 36171,
-    NPC_NAZJAR_SPIRITMENDER_1               = 41096,
-    NPC_NAZJAR_SPIRITMENDER_2               = 41139,
-    NPC_NAZJAR_INVADER_1                    = 39616,
-    NPC_NAZJAR_INVADER_2                    = 40584,
-    NPC_OZUMAT                              = 40655,
-    NPC_WORLD_TRIGGER_NOT_IMMUNE_PC         = 21252,
-    NPC_LADY_NAZJAR                         = 39959,
+    NPC_OZUMAT_VEHICLE_BIG = 45030,
+    NPC_WORLD_TRIGGER_INFINITE_AOI = 36171,
+    NPC_NAZJAR_SPIRITMENDER_1 = 41096,
+    NPC_NAZJAR_SPIRITMENDER_2 = 41139,
+    NPC_NAZJAR_INVADER_1 = 39616,
+    NPC_NAZJAR_INVADER_2 = 40584,
+    NPC_OZUMAT = 40655,
+    NPC_WORLD_TRIGGER_NOT_IMMUNE_PC = 21252,
+    NPC_LADY_NAZJAR = 39959,
 
     // Generic Creatures
-    NPC_GEYSER_DUMMY                        = 48983,
-    NPC_GILGOBLIN_HUNTER                    = 40935,
-    NPC_FACELESS_WATCHER                    = 40936,
-    NPC_GILGOBLIN_AQUAMAGE                  = 40943,
-    NPC_THRONE_OF_THE_TIDES_TELEPORTER_1    = 51391, // Entrance
-    NPC_THRONE_OF_THE_TIDES_TELEPORTER_2    = 51395, // Neptulon's Rise
-    NPC_TAINTED_SENTRY                      = 40925,
-    NPC_UNSTABLE_CORRUPTION                 = 40923
+    NPC_GEYSER_DUMMY = 48983,
+    NPC_GILGOBLIN_HUNTER = 40935,
+    NPC_FACELESS_WATCHER = 40936,
+    NPC_GILGOBLIN_AQUAMAGE = 40943,
+    NPC_THRONE_OF_THE_TIDES_TELEPORTER_1 = 51391, // Entrance
+    NPC_THRONE_OF_THE_TIDES_TELEPORTER_2 = 51395, // Neptulon's Rise
+    NPC_TAINTED_SENTRY = 40925,
+    NPC_UNSTABLE_CORRUPTION = 40923
 };
 
 enum TotTGameObjectIds
 {
-    GO_TEMP_FALLING_ROCKS                   = 202742,
-    GO_DOODAD_ABYSSAL_MAW_DOOR_1            = 204338,
-    GO_DOODAD_ABYSSAL_MAW_DOOR_2            = 204339,
-    GO_DOODAD_ABYSSAL_MAW_DOOR_4            = 204341,
-    GO_THRONE_OF_THE_TIDES_DEFENSE_SYSTEM   = 203199,
-    GO_DOODAD_INVISIBLE_DOOR_1              = 207997,
-    GO_DOODAD_INVISIBLE_DOOR_2              = 207998,
-    GO_DOODAD_ABYSSAL_LEVIATHAN_TENTACLE_1  = 208302,
-    GO_DOODAD_ABYSSAL_LEVIATHAN_TENTACLE_2  = 208301,
-    GO_DOODAD_ABYSSAL_CORAL_CHUNK_CEILING   = 205542,
-    GO_NEPTULONS_CACHE_NORMAL               = 205216,
-    GO_NEPTULONS_CACHE_HEROIC               = 207973
+    GO_TEMP_FALLING_ROCKS = 202742,
+    GO_DOODAD_ABYSSAL_MAW_DOOR_1 = 204338,
+    GO_DOODAD_ABYSSAL_MAW_DOOR_2 = 204339,
+    GO_DOODAD_ABYSSAL_MAW_DOOR_4 = 204341,
+    GO_THRONE_OF_THE_TIDES_DEFENSE_SYSTEM = 203199,
+    GO_DOODAD_INVISIBLE_DOOR_1 = 207997,
+    GO_DOODAD_INVISIBLE_DOOR_2 = 207998,
+    GO_DOODAD_ABYSSAL_LEVIATHAN_TENTACLE_1 = 208302,
+    GO_DOODAD_ABYSSAL_LEVIATHAN_TENTACLE_2 = 208301,
+    GO_DOODAD_ABYSSAL_CORAL_CHUNK_CEILING = 205542,
+    GO_NEPTULONS_CACHE_NORMAL = 205216,
+    GO_NEPTULONS_CACHE_HEROIC = 207973
 };
 
 enum TotTSpells
 {
-    SPELL_SUMMON_FALLING_ROCKS                  = 74465,
-    SPELL_WATER_JUMP_THROUGH_WINDOW_VISUAL      = 74048,
-    SPELL_GEYSER_DUMMY                          = 91347,
-    SPELL_GEYSER_DUMMY_KNOCKBACK                = 91349,
-    SPELL_CAMERA                                = 77229,
-    SPELL_SHOCK_DEFENSE                         = 85170,
-    SPELL_SHOCK_DEFENSE_OZUMAT                  = 86635,
-    SPELL_ULTHOK_INTRO_VISUAL_CEILING_IMPACT    = 76021,
-    SPELL_ULTHOK_INTRO_JUMP                     = 82960,
-    SPELL_ULTHOK_INTRO_VISUAL_STATE             = 76017,
-    SPELL_QUIET_SUICIDE                         = 3617
+    SPELL_SUMMON_FALLING_ROCKS = 74465,
+    SPELL_WATER_JUMP_THROUGH_WINDOW_VISUAL = 74048,
+    SPELL_GEYSER_DUMMY = 91347,
+    SPELL_GEYSER_DUMMY_KNOCKBACK = 91349,
+    SPELL_CAMERA = 77229,
+    SPELL_SHOCK_DEFENSE = 85170,
+    SPELL_SHOCK_DEFENSE_OZUMAT = 86635,
+    SPELL_ULTHOK_INTRO_VISUAL_CEILING_IMPACT = 76021,
+    SPELL_ULTHOK_INTRO_JUMP = 82960,
+    SPELL_ULTHOK_INTRO_VISUAL_STATE = 76017,
+    SPELL_QUIET_SUICIDE = 3617
 };
 
 enum TotTCinematic
@@ -156,7 +156,7 @@ enum TotTEventIndex
 enum TotTActions
 {
     ACTION_DEFENSE_SYSTEM_ACTIVATED = 1,
-    ACTION_CORAL_GARDEN_ENTERED     = 1
+    ACTION_CORAL_GARDEN_ENTERED = 1
 };
 
 enum TotTSounds

@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -63,47 +63,47 @@ struct npc_bot_invisible_stalker_phase_twist final : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_REGISTER_TWISTERS:
-                    me->GetCreatureListWithEntryInGrid(_phaseTwisterVector, NPC_TWILIGHT_PHASE_SHIFTER, 10.f);
-                    if (_phaseTwisterVector.empty()) // if the twister have not been added to the grid yet, keep searching
-                        _events.Repeat(1s);
-                    else
-                    {
-                        _events.ScheduleEvent(EVENT_CHECK_TWISTERS, 1s);
-                        _events.ScheduleEvent(EVENT_PHASE_BURN, 1s);
-                    }
-                    break;
-                case EVENT_CHECK_TWISTERS:
+            case EVENT_REGISTER_TWISTERS:
+                me->GetCreatureListWithEntryInGrid(_phaseTwisterVector, NPC_TWILIGHT_PHASE_SHIFTER, 10.f);
+                if (_phaseTwisterVector.empty()) // if the twister have not been added to the grid yet, keep searching
+                    _events.Repeat(1s);
+                else
                 {
-                    uint8 deadTwisters = 0;
-                    for (Unit const* twister : _phaseTwisterVector)
-                    {
-                        if (!twister || twister->isDead())
-                            ++deadTwisters;
-                    }
-
-                    if (deadTwisters == _phaseTwisterVector.size())
-                    {
-                        _events.Reset();
-                        me->InterruptNonMeleeSpells(true);
-                        me->RemoveAllAuras();
-                        me->DespawnOrUnsummon(4s);
-                    }
-                    else
-                        _events.Repeat(1s);
-                    break;
+                    _events.ScheduleEvent(EVENT_CHECK_TWISTERS, 1s);
+                    _events.ScheduleEvent(EVENT_PHASE_BURN, 1s);
                 }
-                case EVENT_PHASE_BURN:
-                    if (Unit* target = me->SelectNearestTarget(40.f, true))
-                    {
-                        DoCast(target, SPELL_PHASED_BURN);
-                        _events.Repeat(8s);
-                    }
-                    else
-                        _events.Repeat(1s);
-                    break;
-                default:
-                    break;
+                break;
+            case EVENT_CHECK_TWISTERS:
+            {
+                uint8 deadTwisters = 0;
+                for (Unit const* twister : _phaseTwisterVector)
+                {
+                    if (!twister || twister->isDead())
+                        ++deadTwisters;
+                }
+
+                if (deadTwisters == _phaseTwisterVector.size())
+                {
+                    _events.Reset();
+                    me->InterruptNonMeleeSpells(true);
+                    me->RemoveAllAuras();
+                    me->DespawnOrUnsummon(4s);
+                }
+                else
+                    _events.Repeat(1s);
+                break;
+            }
+            case EVENT_PHASE_BURN:
+                if (Unit* target = me->SelectNearestTarget(40.f, true))
+                {
+                    DoCast(target, SPELL_PHASED_BURN);
+                    _events.Repeat(8s);
+                }
+                else
+                    _events.Repeat(1s);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -117,7 +117,7 @@ enum ChogallEvent
 {
     // Texts
     SAY_HALFUS_INTRO = 0,
-    SAY_HALFUS_DEAD  = 1
+    SAY_HALFUS_DEAD = 1
 };
 
 struct npc_bot_chogall final : public NullCreatureAI
@@ -128,14 +128,14 @@ struct npc_bot_chogall final : public NullCreatureAI
     {
         switch (action)
         {
-            case ACTION_TALK_HALFUS_WYRMBREAKER_INTRO:
-                Talk(SAY_HALFUS_INTRO);
-                break;
-            case ACTION_TALK_HALFUS_WYRMBREAKER_DEAD:
-                Talk(SAY_HALFUS_DEAD);
-                break;
-            default:
-                break;
+        case ACTION_TALK_HALFUS_WYRMBREAKER_INTRO:
+            Talk(SAY_HALFUS_INTRO);
+            break;
+        case ACTION_TALK_HALFUS_WYRMBREAKER_DEAD:
+            Talk(SAY_HALFUS_DEAD);
+            break;
+        default:
+            break;
         }
     }
 };
@@ -146,14 +146,14 @@ enum EvolvedDrakonaar
     EVENT_TWILIGHT_RUPTURE,
     EVENT_BLADE_TEMPEST,
 
-    SPELL_CLEAVE            = 40504,
-    SPELL_TWILIGHT_RUPTURE  = 93377,
-    SPELL_BLADE_TEMPEST     = 93373,
+    SPELL_CLEAVE = 40504,
+    SPELL_TWILIGHT_RUPTURE = 93377,
+    SPELL_BLADE_TEMPEST = 93373,
 };
 
 struct npc_bot_evolved_drakonaar : public ScriptedAI
 {
-    npc_bot_evolved_drakonaar(Creature * creature) : ScriptedAI(creature) { }
+    npc_bot_evolved_drakonaar(Creature* creature) : ScriptedAI(creature) { }
 
     void JustEngagedWith(Unit* /*who*/) override
     {
@@ -188,25 +188,25 @@ struct npc_bot_evolved_drakonaar : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_CLEAVE:
-                    DoCastVictim(SPELL_CLEAVE);
-                    _events.Repeat(20s, 21s);
-                    break;
-                case EVENT_TWILIGHT_RUPTURE:
-                {
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 45.f, true, false))
-                        DoCast(target, SPELL_TWILIGHT_RUPTURE);
-                    else
-                        DoCastVictim(SPELL_TWILIGHT_RUPTURE);
-                    _events.Repeat(24s, 25s);
-                    break;
-                }
-                case EVENT_BLADE_TEMPEST:
-                    DoCastSelf(SPELL_BLADE_TEMPEST);
-                    _events.Repeat(22s, 23s);
-                    break;
-                default:
-                    break;
+            case EVENT_CLEAVE:
+                DoCastVictim(SPELL_CLEAVE);
+                _events.Repeat(20s, 21s);
+                break;
+            case EVENT_TWILIGHT_RUPTURE:
+            {
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 45.f, true, false))
+                    DoCast(target, SPELL_TWILIGHT_RUPTURE);
+                else
+                    DoCastVictim(SPELL_TWILIGHT_RUPTURE);
+                _events.Repeat(24s, 25s);
+                break;
+            }
+            case EVENT_BLADE_TEMPEST:
+                DoCastSelf(SPELL_BLADE_TEMPEST);
+                _events.Repeat(22s, 23s);
+                break;
+            default:
+                break;
             }
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
@@ -297,11 +297,11 @@ class spell_bot_twilight_rupture : public SpellScript
 
 enum AscendantCouncilElementals
 {
-    SPELL_RENDING_GALE      = 93277,
-    SPELL_ENTOMB            = 93327,
-    SPELL_BURNING_REPRISAL  = 93352,
-    SPELL_COLD_TOUCHED      = 93381,
-    SPELL_ICY_SHROUD        = 93335
+    SPELL_RENDING_GALE = 93277,
+    SPELL_ENTOMB = 93327,
+    SPELL_BURNING_REPRISAL = 93352,
+    SPELL_COLD_TOUCHED = 93381,
+    SPELL_ICY_SHROUD = 93335
 };
 
 class spell_bot_cancel_aura : public SpellScript

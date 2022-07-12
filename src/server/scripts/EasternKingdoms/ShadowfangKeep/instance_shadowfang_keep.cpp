@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -60,34 +60,34 @@ BossBoundaryData const boundaries =
 
 enum SpawnGroups
 {
-    SPAWN_GROUP_ENTRANCE_ALLIANCE                       = 412, // Spawned by default when Baron Ashbury is not defeated for Alliance players
-    SPAWN_GROUP_ENTRANCE_HORDE                          = 413, // Spawned by default when Baron Ashbury is not defeated for Horde players
+    SPAWN_GROUP_ENTRANCE_ALLIANCE = 412, // Spawned by default when Baron Ashbury is not defeated for Alliance players
+    SPAWN_GROUP_ENTRANCE_HORDE = 413, // Spawned by default when Baron Ashbury is not defeated for Horde players
 
-    SPAWN_GROUP_DISEASE_CLOUDS_ENTRANCE                 = 414, // Spawned by default for Horde players
-    SPAWN_GROUP_DISEASE_CLOUDS_BARON_ASHBURY            = 415, // Spawned for Horde players when Baron Ashbury has been defeated
-    SPAWN_GROUP_DISEASE_CLOUDS_BARON_SILVERLAINE        = 416, // Spawned for Horde players when Baron Silverlaine has been defeated
-    SPAWN_GROUP_DISEASE_CLOUDS_COMMANDER_SPRINGVALE     = 417, // Spawned for Horde players when Commander Springvale has been defeated
-    SPAWN_GROUP_DISEASE_CLOUDS_LORD_WALDEN              = 418, // Spawned for Horde players when Lord Walden has been defeated
+    SPAWN_GROUP_DISEASE_CLOUDS_ENTRANCE = 414, // Spawned by default for Horde players
+    SPAWN_GROUP_DISEASE_CLOUDS_BARON_ASHBURY = 415, // Spawned for Horde players when Baron Ashbury has been defeated
+    SPAWN_GROUP_DISEASE_CLOUDS_BARON_SILVERLAINE = 416, // Spawned for Horde players when Baron Silverlaine has been defeated
+    SPAWN_GROUP_DISEASE_CLOUDS_COMMANDER_SPRINGVALE = 417, // Spawned for Horde players when Commander Springvale has been defeated
+    SPAWN_GROUP_DISEASE_CLOUDS_LORD_WALDEN = 418, // Spawned for Horde players when Lord Walden has been defeated
 
-    SPAWN_GROUP_LORD_GODFREY_DEAD_TROUPS_ALLIANCE       = 419, // Spawned for Alliance players when Lord Walden has been defeated
-    SPAWN_GROUP_LORD_GODFREY_DEAD_TROUPS_HORDE          = 420, // Spawned for Horde players when Lord Walden has been defeated
+    SPAWN_GROUP_LORD_GODFREY_DEAD_TROUPS_ALLIANCE = 419, // Spawned for Alliance players when Lord Walden has been defeated
+    SPAWN_GROUP_LORD_GODFREY_DEAD_TROUPS_HORDE = 420, // Spawned for Horde players when Lord Walden has been defeated
 
-    SPAWN_GROUP_BARON_ASHBURY_TROUPS_ALLIANCE           = 421, // Spawned for Alliance players when Baron Ashbury has been defeated
-    SPAWN_GROUP_BARON_ASHBURY_TROUPS_HORDE              = 422, // Spawned for Horde players when Baron Ashbury has been defeated
+    SPAWN_GROUP_BARON_ASHBURY_TROUPS_ALLIANCE = 421, // Spawned for Alliance players when Baron Ashbury has been defeated
+    SPAWN_GROUP_BARON_ASHBURY_TROUPS_HORDE = 422, // Spawned for Horde players when Baron Ashbury has been defeated
 
-    SPAWN_GROUP_BARON_SILVERLAINE_TROUPS_ALLIANCE       = 423, // Spawned for Alliance players when Baron Silverlaine has been defeated
-    SPAWN_GROUP_BARON_SILVERLAINE_TROUPS_HORDE          = 424, // Spawned for Horde players when Baron Silverlaine has been defeated
+    SPAWN_GROUP_BARON_SILVERLAINE_TROUPS_ALLIANCE = 423, // Spawned for Alliance players when Baron Silverlaine has been defeated
+    SPAWN_GROUP_BARON_SILVERLAINE_TROUPS_HORDE = 424, // Spawned for Horde players when Baron Silverlaine has been defeated
 
-    SPAWN_GROUP_COMMANDER_SPRINGVALE_TROUPS_ALLIANCE    = 425, // Spawned for Alliance players when Commander Springvale has been defeated
-    SPAWN_GROUP_OUTSIDE_TROUPS_ALLIANCE                 = 426, // Spawned for Alliance players when triggering an areatrigger after defeating Commander Springvale
-    SPAWN_GROUP_LORD_WALDEN_TROUPS_ALLIANCE             = 427, // Spawned for Alliance players when Lord Walden has been defeated
+    SPAWN_GROUP_COMMANDER_SPRINGVALE_TROUPS_ALLIANCE = 425, // Spawned for Alliance players when Commander Springvale has been defeated
+    SPAWN_GROUP_OUTSIDE_TROUPS_ALLIANCE = 426, // Spawned for Alliance players when triggering an areatrigger after defeating Commander Springvale
+    SPAWN_GROUP_LORD_WALDEN_TROUPS_ALLIANCE = 427, // Spawned for Alliance players when Lord Walden has been defeated
 
-    SPAWN_GROUP_COMMANDER_SPRINGVALE_TROUPS_HORDE       = 428, // Spawned for Horde players when Commander Springvale or Lord Walden has been defeated
-    SPAWN_GROUP_COMMANDER_SPRINGVALE_BELMONT            = 429, // Spawned for Horde players when Commander Springvale has been defeated
-    SPAWN_GROUP_LORD_WALDEN_BELMONT                     = 430, // Spawned for Horde players when Lord Walden has been defeated
+    SPAWN_GROUP_COMMANDER_SPRINGVALE_TROUPS_HORDE = 428, // Spawned for Horde players when Commander Springvale or Lord Walden has been defeated
+    SPAWN_GROUP_COMMANDER_SPRINGVALE_BELMONT = 429, // Spawned for Horde players when Commander Springvale has been defeated
+    SPAWN_GROUP_LORD_WALDEN_BELMONT = 430, // Spawned for Horde players when Lord Walden has been defeated
 
-    SPAWN_GROUP_LORD_GODFREY_IVAR_BLOODFANG             = 431, // Spawned for Alliance players when triggering an areatrigger near Lord Godfrey's room
-    SPAWN_GROUP_LORD_GODFREY_BELMONT                    = 432  // Spawned for Horde players when triggering an areatrigger near Lord Godfrey's room
+    SPAWN_GROUP_LORD_GODFREY_IVAR_BLOODFANG = 431, // Spawned for Alliance players when triggering an areatrigger near Lord Godfrey's room
+    SPAWN_GROUP_LORD_GODFREY_BELMONT = 432  // Spawned for Horde players when triggering an areatrigger near Lord Godfrey's room
 };
 
 struct SpawnGroupInfo
@@ -156,20 +156,20 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_FORSAKEN_BLIGHTSPREADER:
-                    creature->SetDisplayId(creature->GetCreatureTemplate()->Modelid1);
-                    break;
-                case NPC_HIGH_WARLORD_CROMUSH:
-                    if (creature->ToTempSummon())
-                        _cromushGUID = creature->GetGUID();
-                    break;
-                case NPC_PISTOL_BARRAGE_DUMMY:
-                    if (Creature* godfrey = GetCreature(DATA_LORD_GODFREY))
-                        if (godfrey->IsAIEnabled())
-                            godfrey->AI()->JustSummoned(creature);
-                    break;
-                default:
-                    break;
+            case NPC_FORSAKEN_BLIGHTSPREADER:
+                creature->SetDisplayId(creature->GetCreatureTemplate()->Modelid1);
+                break;
+            case NPC_HIGH_WARLORD_CROMUSH:
+                if (creature->ToTempSummon())
+                    _cromushGUID = creature->GetGUID();
+                break;
+            case NPC_PISTOL_BARRAGE_DUMMY:
+                if (Creature* godfrey = GetCreature(DATA_LORD_GODFREY))
+                    if (godfrey->IsAIEnabled())
+                        godfrey->AI()->JustSummoned(creature);
+                break;
+            default:
+                break;
             }
         }
 
@@ -179,20 +179,20 @@ public:
 
             switch (go->GetEntry())
             {
-                case GO_COURTYARD_DOOR:
-                    if (GetBossState(DATA_BARON_ASHBURY) == DONE)
-                        go->SetGoState(GO_STATE_ACTIVE);
-                    break;
-                case GO_SORCERERS_DOOR:
-                    if (GetBossState(DATA_LORD_WALDEN) == DONE)
-                        go->SetGoState(GO_STATE_ACTIVE);
-                    break;
-                case GO_ARUGALS_LAIR:
-                    if (GetBossState(DATA_LORD_GODFREY) != DONE)
-                        go->SetGoState(GO_STATE_READY);
-                    break;
-                default:
-                    break;
+            case GO_COURTYARD_DOOR:
+                if (GetBossState(DATA_BARON_ASHBURY) == DONE)
+                    go->SetGoState(GO_STATE_ACTIVE);
+                break;
+            case GO_SORCERERS_DOOR:
+                if (GetBossState(DATA_LORD_WALDEN) == DONE)
+                    go->SetGoState(GO_STATE_ACTIVE);
+                break;
+            case GO_ARUGALS_LAIR:
+                if (GetBossState(DATA_LORD_GODFREY) != DONE)
+                    go->SetGoState(GO_STATE_READY);
+                break;
+            default:
+                break;
             }
         }
 
@@ -235,23 +235,23 @@ public:
         {
             switch (type)
             {
-                case DATA_OUTSIDE_TROUPS_SPAWN:
-                    if (*_teamInInstance == ALLIANCE)
-                        instance->SpawnGroupSpawn(SPAWN_GROUP_OUTSIDE_TROUPS_ALLIANCE);
-                    break;
-                case DATA_GODFREY_INTRO_SPAWN:
-                    if (*_teamInInstance == ALLIANCE)
-                        instance->SpawnGroupDespawn(SPAWN_GROUP_LORD_WALDEN_TROUPS_ALLIANCE);
-                    else
-                    {
-                        instance->SpawnGroupDespawn(SPAWN_GROUP_COMMANDER_SPRINGVALE_TROUPS_HORDE);
-                        instance->SpawnGroupDespawn(SPAWN_GROUP_LORD_WALDEN_BELMONT);
-                    }
+            case DATA_OUTSIDE_TROUPS_SPAWN:
+                if (*_teamInInstance == ALLIANCE)
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_OUTSIDE_TROUPS_ALLIANCE);
+                break;
+            case DATA_GODFREY_INTRO_SPAWN:
+                if (*_teamInInstance == ALLIANCE)
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_LORD_WALDEN_TROUPS_ALLIANCE);
+                else
+                {
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_COMMANDER_SPRINGVALE_TROUPS_HORDE);
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_LORD_WALDEN_BELMONT);
+                }
 
-                    instance->SpawnGroupSpawn(*_teamInInstance == ALLIANCE ? SPAWN_GROUP_LORD_GODFREY_IVAR_BLOODFANG : SPAWN_GROUP_LORD_GODFREY_BELMONT);
-                    break;
-                default:
-                    break;
+                instance->SpawnGroupSpawn(*_teamInInstance == ALLIANCE ? SPAWN_GROUP_LORD_GODFREY_IVAR_BLOODFANG : SPAWN_GROUP_LORD_GODFREY_BELMONT);
+                break;
+            default:
+                break;
             }
         }
 
@@ -259,10 +259,10 @@ public:
         {
             switch (type)
             {
-                case DATA_TEAM_IN_INSTANCE:
-                    return *_teamInInstance;
-                default:
-                    break;
+            case DATA_TEAM_IN_INSTANCE:
+                return *_teamInInstance;
+            default:
+                break;
             }
             return 0;
         }
@@ -290,10 +290,10 @@ public:
             }
         }
 
-        protected:
-            EventMap events;
-            Optional<uint32>_teamInInstance;
-            ObjectGuid _cromushGUID;
+    protected:
+        EventMap events;
+        Optional<uint32>_teamInInstance;
+        ObjectGuid _cromushGUID;
     };
 
     InstanceScript* GetInstanceScript(InstanceMap* map) const override

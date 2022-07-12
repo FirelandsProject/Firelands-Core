@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -9,23 +9,23 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 CollectSourceFiles(
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  PRIVATE_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE_SOURCES
 
-  # Exclude
-  ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
-  ${CMAKE_CURRENT_SOURCE_DIR}/Platform
-  ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+    # Exclude
+    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
+    ${CMAKE_CURRENT_SOURCE_DIR}/Platform
+    ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
 
 # Manually set sources for Debugging directory as we don't want to include WheatyExceptionReport in common project
 # It needs to be included both in authserver and worldserver for the static global variable to be properly initialized
 # and to handle crash logs on windows
 list(APPEND PRIVATE_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.h)
 
 if(USE_COREPCH)
-  set(PRIVATE_PCH_HEADER PrecompiledHeaders/commonPCH.h)
+    set(PRIVATE_PCH_HEADER PrecompiledHeaders/commonPCH.h)
 endif(USE_COREPCH)
 
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
@@ -33,7 +33,7 @@ GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DFIRELANDS_API_EXPORT_COMMON)
 
 add_library(common
-  ${PRIVATE_SOURCES}
+    ${PRIVATE_SOURCES}
 )
 
 # Do NOT add any extra include directory here, as we don't want the common
@@ -46,56 +46,57 @@ add_library(common
 # include_directories leading to further unnoticed dependency aditions
 # Linker Depencency requirements: none
 CollectIncludeDirectories(
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  PUBLIC_INCLUDES
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC_INCLUDES
 
-  # Exclude
-  ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+    # Exclude
+    ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
 
 target_include_directories(common
-  PUBLIC
+    PUBLIC
 
-  # Provide the binary dir for all child targets
-  ${CMAKE_BINARY_DIR}
-  ${PUBLIC_INCLUDES}
-  PRIVATE
-  ${CMAKE_CURRENT_BINARY_DIR})
+    # Provide the binary dir for all child targets
+    ${CMAKE_BINARY_DIR}
+    ${PUBLIC_INCLUDES}
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(common
-  PRIVATE
-  firelands-core-interface
-  PUBLIC
-  boost
-  fmt
-  g3dlib
-  Detour
-  sfmt
-  utf8cpp
-  openssl
-  valgrind
-  threads
-  jemalloc)
+    PRIVATE
+    firelands-core-interface
+    PUBLIC
+    boost
+    argon2
+    fmt
+    g3dlib
+    Detour
+    sfmt
+    utf8cpp
+    openssl
+    valgrind
+    threads
+    jemalloc)
 
 add_dependencies(common revision_data.h)
 
 set_target_properties(common
-  PROPERTIES
-  FOLDER
-  "server")
+    PROPERTIES
+    FOLDER
+    "server")
 
 if(BUILD_SHARED_LIBS)
-  if(UNIX)
-    install(TARGETS common
-      LIBRARY
-      DESTINATION lib)
-  elseif(WIN32)
-    install(TARGETS common
-      RUNTIME
-      DESTINATION "${CMAKE_INSTALL_PREFIX}")
-  endif()
+    if(UNIX)
+        install(TARGETS common
+            LIBRARY
+            DESTINATION lib)
+    elseif(WIN32)
+        install(TARGETS common
+            RUNTIME
+            DESTINATION "${CMAKE_INSTALL_PREFIX}")
+    endif()
 endif()
 
 # Generate precompiled header
 if(USE_COREPCH)
-  add_cxx_pch(common ${PRIVATE_PCH_HEADER})
+    add_cxx_pch(common ${PRIVATE_PCH_HEADER})
 endif()

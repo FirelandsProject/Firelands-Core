@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,14 +30,14 @@
 #include "TemporarySummon.h"
 #include "InstanceScript.h"
 
-/*#####
-# npc_fire_cyclone
-#####*/
+ /*#####
+ # npc_fire_cyclone
+ #####*/
 
 enum FireCyclone
 {
-    SPELL_FIRE_CYCLONE_AURA     = 74851,
-    EVENT_FIRE_CYCLONE_AURA     = 1
+    SPELL_FIRE_CYCLONE_AURA = 74851,
+    EVENT_FIRE_CYCLONE_AURA = 1
 };
 
 struct npc_fire_cyclone : public ScriptedAI
@@ -58,12 +58,12 @@ struct npc_fire_cyclone : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_FIRE_CYCLONE_AURA:
-                    DoCast(me, SPELL_FIRE_CYCLONE_AURA, true);
-                    _events.ScheduleEvent(EVENT_FIRE_CYCLONE_AURA, 4000);
-                    break;
-                default:
-                    break;
+            case EVENT_FIRE_CYCLONE_AURA:
+                DoCast(me, SPELL_FIRE_CYCLONE_AURA, true);
+                _events.ScheduleEvent(EVENT_FIRE_CYCLONE_AURA, 4000);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -82,10 +82,10 @@ enum TwilightFlameCaller
 {
     SPELL_FIRE_CHANNELING_1 = 74911,
     SPELL_FIRE_CHANNELING_2 = 74912,
-    SPELL_BLAST_WAVE        = 76473,
-    SPELL_CALL_FLAMES       = 76325,
-    NPC_FIRE_CYCLONE        = 40164,
-    EVENT_CHANNEL           = 1,
+    SPELL_BLAST_WAVE = 76473,
+    SPELL_CALL_FLAMES = 76325,
+    NPC_FIRE_CYCLONE = 40164,
+    EVENT_CHANNEL = 1,
     EVENT_BLAST_WAVE,
     EVENT_CALL_FLAMES
 };
@@ -164,15 +164,15 @@ struct npc_twilight_flame_caller : public ScriptedAI
             {
                 switch (eventId)
                 {
-                    case EVENT_CHANNEL:
-                        if (me->GetGUID() == _flamecaller1GUID)
-                            DoCast(me, SPELL_FIRE_CHANNELING_1);
-                        if (me->GetGUID() == _flamecaller2GUID)
-                            DoCast(me, SPELL_FIRE_CHANNELING_2);
-                        _events.ScheduleEvent(EVENT_CHANNEL, 12000);
-                        break;
-                    default:
-                        break;
+                case EVENT_CHANNEL:
+                    if (me->GetGUID() == _flamecaller1GUID)
+                        DoCast(me, SPELL_FIRE_CHANNELING_1);
+                    if (me->GetGUID() == _flamecaller2GUID)
+                        DoCast(me, SPELL_FIRE_CHANNELING_2);
+                    _events.ScheduleEvent(EVENT_CHANNEL, 12000);
+                    break;
+                default:
+                    break;
                 }
             }
             return;
@@ -185,16 +185,16 @@ struct npc_twilight_flame_caller : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_BLAST_WAVE:
-                    DoCast(me, SPELL_BLAST_WAVE);
-                    _events.ScheduleEvent(EVENT_BLAST_WAVE, 16000, 20000);
-                    break;
-                case EVENT_CALL_FLAMES:
-                    DoCast(me, SPELL_CALL_FLAMES);
-                    _events.ScheduleEvent(EVENT_CALL_FLAMES, 12000, 15000);
-                    break;
-                default:
-                    break;
+            case EVENT_BLAST_WAVE:
+                DoCast(me, SPELL_BLAST_WAVE);
+                _events.ScheduleEvent(EVENT_BLAST_WAVE, 16000, 20000);
+                break;
+            case EVENT_CALL_FLAMES:
+                DoCast(me, SPELL_CALL_FLAMES);
+                _events.ScheduleEvent(EVENT_CALL_FLAMES, 12000, 15000);
+                break;
+            default:
+                break;
             }
         }
 
@@ -216,11 +216,11 @@ private:
 
 enum TwilightTorturer
 {
-    SPELL_INFLICT_PAIN      = 75590,
-    SPELL_RED_HOT_POKER     = 76478,
-    SPELL_SHACKLES          = 76484,
-    SPELL_WILD_BEATDOWN     = 76487,
-    EVENT_INFLICT_PAIN_TT   = 1,
+    SPELL_INFLICT_PAIN = 75590,
+    SPELL_RED_HOT_POKER = 76478,
+    SPELL_SHACKLES = 76484,
+    SPELL_WILD_BEATDOWN = 76487,
+    EVENT_INFLICT_PAIN_TT = 1,
     EVENT_RED_HOT_POKER,
     EVENT_SHACKLES,
     EVENT_WILD_BEATDOWN
@@ -264,12 +264,12 @@ struct npc_twilight_torturer : public ScriptedAI
             {
                 switch (eventId)
                 {
-                    case EVENT_INFLICT_PAIN_TT:
-                        DoCast(me, SPELL_INFLICT_PAIN);
-                        _events.ScheduleEvent(EVENT_INFLICT_PAIN_TT, urand(25000, 32000));
-                        break;
-                    default:
-                        break;
+                case EVENT_INFLICT_PAIN_TT:
+                    DoCast(me, SPELL_INFLICT_PAIN);
+                    _events.ScheduleEvent(EVENT_INFLICT_PAIN_TT, urand(25000, 32000));
+                    break;
+                default:
+                    break;
                 }
             }
             return;
@@ -282,20 +282,20 @@ struct npc_twilight_torturer : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_RED_HOT_POKER:
-                    DoCast(me, SPELL_RED_HOT_POKER);
-                    _events.ScheduleEvent(EVENT_RED_HOT_POKER, 16000, 20000);
-                    break;
-                case EVENT_SHACKLES:
-                    DoCast(me, SPELL_SHACKLES);
-                    _events.ScheduleEvent(EVENT_SHACKLES, 12000, 15000);
-                    break;
-                case EVENT_WILD_BEATDOWN:
-                    DoCast(me, SPELL_WILD_BEATDOWN);
-                    _events.ScheduleEvent(EVENT_WILD_BEATDOWN, 12000, 15000);
-                    break;
-                default:
-                    break;
+            case EVENT_RED_HOT_POKER:
+                DoCast(me, SPELL_RED_HOT_POKER);
+                _events.ScheduleEvent(EVENT_RED_HOT_POKER, 16000, 20000);
+                break;
+            case EVENT_SHACKLES:
+                DoCast(me, SPELL_SHACKLES);
+                _events.ScheduleEvent(EVENT_SHACKLES, 12000, 15000);
+                break;
+            case EVENT_WILD_BEATDOWN:
+                DoCast(me, SPELL_WILD_BEATDOWN);
+                _events.ScheduleEvent(EVENT_WILD_BEATDOWN, 12000, 15000);
+                break;
+            default:
+                break;
             }
         }
 
@@ -314,11 +314,11 @@ private:
 
 enum TwilightSadist
 {
-    SPELL_INFLICT_PAIN_1    = 76497,
+    SPELL_INFLICT_PAIN_1 = 76497,
     SPELL_HEAT_SEEKER_BLADE = 76502,
-    SPELL_SHORT_THROW       = 76572,
-    SPELL_SINISTER_STRIKE   = 76500,
-    EVENT_INFLICT_PAIN_TS   = 1,
+    SPELL_SHORT_THROW = 76572,
+    SPELL_SINISTER_STRIKE = 76500,
+    EVENT_INFLICT_PAIN_TS = 1,
     EVENT_HEAT_SEEKER_BLADE,
     EVENT_SHORT_THROW,
     EVENT_SINISTER_STRIKE
@@ -355,12 +355,12 @@ struct npc_twilight_sadist : public ScriptedAI
             {
                 switch (eventId)
                 {
-                    case EVENT_INFLICT_PAIN_TS:
-                        DoCast(me, SPELL_INFLICT_PAIN);
-                        _events.ScheduleEvent(EVENT_INFLICT_PAIN_TS, urand(25000, 32000));
-                        break;
-                    default:
-                        break;
+                case EVENT_INFLICT_PAIN_TS:
+                    DoCast(me, SPELL_INFLICT_PAIN);
+                    _events.ScheduleEvent(EVENT_INFLICT_PAIN_TS, urand(25000, 32000));
+                    break;
+                default:
+                    break;
                 }
             }
             return;
@@ -373,20 +373,20 @@ struct npc_twilight_sadist : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_RED_HOT_POKER:
-                    DoCast(me, SPELL_RED_HOT_POKER);
-                    _events.ScheduleEvent(EVENT_RED_HOT_POKER, 16000, 20000);
-                    break;
-                case EVENT_SHACKLES:
-                    DoCast(me, SPELL_SHACKLES);
-                    _events.ScheduleEvent(EVENT_SHACKLES, 12000, 15000);
-                    break;
-                case EVENT_WILD_BEATDOWN:
-                    DoCast(me, SPELL_WILD_BEATDOWN);
-                    _events.ScheduleEvent(EVENT_WILD_BEATDOWN, 12000, 15000);
-                    break;
-                default:
-                    break;
+            case EVENT_RED_HOT_POKER:
+                DoCast(me, SPELL_RED_HOT_POKER);
+                _events.ScheduleEvent(EVENT_RED_HOT_POKER, 16000, 20000);
+                break;
+            case EVENT_SHACKLES:
+                DoCast(me, SPELL_SHACKLES);
+                _events.ScheduleEvent(EVENT_SHACKLES, 12000, 15000);
+                break;
+            case EVENT_WILD_BEATDOWN:
+                DoCast(me, SPELL_WILD_BEATDOWN);
+                _events.ScheduleEvent(EVENT_WILD_BEATDOWN, 12000, 15000);
+                break;
+            default:
+                break;
             }
         }
 
@@ -405,10 +405,10 @@ private:
 
 enum MadPrisoner
 {
-    SPELL_HEAD_CRACK        = 77568,
-    SPELL_INFECTED_WOUND    = 76512,
-    SPELL_ENRAGE            = 8599,
-    EVENT_HEAD_CRACK        = 1,
+    SPELL_HEAD_CRACK = 77568,
+    SPELL_INFECTED_WOUND = 76512,
+    SPELL_ENRAGE = 8599,
+    EVENT_HEAD_CRACK = 1,
     EVENT_INFECTED_WOUND,
     EVENT_ENRAGE
 };
@@ -438,20 +438,20 @@ struct npc_mad_prisoner : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_HEAD_CRACK:
-                    DoCast(me, SPELL_HEAD_CRACK);
-                    _events.ScheduleEvent(EVENT_HEAD_CRACK, 16000, 20000);
-                    break;
-                case EVENT_INFECTED_WOUND:
-                    DoCast(me, SPELL_INFECTED_WOUND);
-                    _events.ScheduleEvent(EVENT_INFECTED_WOUND, 12000, 15000);
-                    break;
-                case EVENT_ENRAGE:
-                    DoCast(me, SPELL_ENRAGE);
-                    _events.ScheduleEvent(EVENT_ENRAGE, 12000, 15000);
-                    break;
-                default:
-                    break;
+            case EVENT_HEAD_CRACK:
+                DoCast(me, SPELL_HEAD_CRACK);
+                _events.ScheduleEvent(EVENT_HEAD_CRACK, 16000, 20000);
+                break;
+            case EVENT_INFECTED_WOUND:
+                DoCast(me, SPELL_INFECTED_WOUND);
+                _events.ScheduleEvent(EVENT_INFECTED_WOUND, 12000, 15000);
+                break;
+            case EVENT_ENRAGE:
+                DoCast(me, SPELL_ENRAGE);
+                _events.ScheduleEvent(EVENT_ENRAGE, 12000, 15000);
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();
@@ -498,20 +498,20 @@ struct npc_crazed_mage : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_HEAD_CRACK2:
-                    DoCast(me, SPELL_HEAD_CRACK);
-                    _events.ScheduleEvent(EVENT_HEAD_CRACK2, 16000, 20000);
-                    break;
-                case EVENT_INFECTED_WOUND2:
-                    DoCast(me, SPELL_INFECTED_WOUND);
-                    _events.ScheduleEvent(EVENT_INFECTED_WOUND2, 12000, 15000);
-                    break;
-                case EVENT_ENRAGE2:
-                    DoCast(me, SPELL_ENRAGE);
-                    _events.ScheduleEvent(EVENT_ENRAGE2, 12000, 15000);
-                    break;
-                default:
-                    break;
+            case EVENT_HEAD_CRACK2:
+                DoCast(me, SPELL_HEAD_CRACK);
+                _events.ScheduleEvent(EVENT_HEAD_CRACK2, 16000, 20000);
+                break;
+            case EVENT_INFECTED_WOUND2:
+                DoCast(me, SPELL_INFECTED_WOUND);
+                _events.ScheduleEvent(EVENT_INFECTED_WOUND2, 12000, 15000);
+                break;
+            case EVENT_ENRAGE2:
+                DoCast(me, SPELL_ENRAGE);
+                _events.ScheduleEvent(EVENT_ENRAGE2, 12000, 15000);
+                break;
+            default:
+                break;
             }
         }
 
@@ -530,24 +530,24 @@ private:
 enum RazTheCrazed
 {
     // Texts
-    SAY_SMASH                           = 0,
-    SAY_TIRED                           = 1,
+    SAY_SMASH = 0,
+    SAY_TIRED = 1,
 
     // Spells
-    SPELL_AGGRO_NEARBY_TARGETS          = 80189,
-    SPELL_HIGH_SECURITY_SHADOW_PRISON   = 79725,
-    SPELL_LEAP_FROM_CAGE                = 79720,
-    SPELL_LEAP_FROM_BRIDGE              = 80273,
-    SPELL_LEAP_FROM_LEDGE               = 80300,
-    SPELL_LEAP_OVER_BORER_PACKS         = 80305,
-    SPELL_LEAP_AT_OBSIDIUS              = 80320,
-    SPELL_FURIOUS_SWIPE                 = 80206,
-    SPELL_FURIOUS_SWIPE_DUMMY           = 80340,
-    SPELL_FURIOUS_RAGE                  = 80218,
-    SPELL_STOP_HEART                    = 82393,
-    SPELL_INSTAKILL_SELF                = 29878,
+    SPELL_AGGRO_NEARBY_TARGETS = 80189,
+    SPELL_HIGH_SECURITY_SHADOW_PRISON = 79725,
+    SPELL_LEAP_FROM_CAGE = 79720,
+    SPELL_LEAP_FROM_BRIDGE = 80273,
+    SPELL_LEAP_FROM_LEDGE = 80300,
+    SPELL_LEAP_OVER_BORER_PACKS = 80305,
+    SPELL_LEAP_AT_OBSIDIUS = 80320,
+    SPELL_FURIOUS_SWIPE = 80206,
+    SPELL_FURIOUS_SWIPE_DUMMY = 80340,
+    SPELL_FURIOUS_RAGE = 80218,
+    SPELL_STOP_HEART = 82393,
+    SPELL_INSTAKILL_SELF = 29878,
 
-    EVENT_SAY_SMASH                     = 1,
+    EVENT_SAY_SMASH = 1,
     EVENT_START_ESCORT_PATH,
     EVENT_FACE_TO_THE_SIDE,
     EVENT_LEAP_FROM_BRIDGE,
@@ -671,57 +671,57 @@ struct npc_raz_the_crazed : public EscortAI
         {
             switch (eventId)
             {
-                case EVENT_SAY_SMASH:
-                    Talk(SAY_SMASH);
-                    break;
-                case EVENT_START_ESCORT_PATH:
-                    if (!me->IsEngaged())
-                    {
-                        me->SetHomePosition(me->GetPosition());
-                        Start(true, true);
-                    }
-                    else
-                        _events.Repeat(1s);
-                    break;
-                case EVENT_FACE_TO_THE_SIDE:
-                    if (!me->IsEngaged())
-                    {
-                        me->SetFacingTo(5.061455f);
-                        _events.ScheduleEvent(EVENT_LEAP_FROM_BRIDGE, 1s);
-                    }
-                    else
-                        _events.Repeat(1s);
-                    break;
-                case EVENT_LEAP_FROM_BRIDGE:
-                    if (!me->IsEngaged())
-                    {
-                        DoCastSelf(SPELL_LEAP_FROM_BRIDGE);
-                        _events.ScheduleEvent(EVENT_RESUME_ESCORT, 500ms);
-                    }
-                    else
-                        _events.Repeat(1s);
-                    break;
-                case EVENT_RESUME_ESCORT:
-                    SetEscortPaused(false);
-                    break;
-                case EVENT_LEAP_FROM_LEDGE:
-                    DoCastSelf(SPELL_LEAP_FROM_LEDGE);
-                    _events.ScheduleEvent(EVENT_SAY_SMASH, 1s);
-                    _events.ScheduleEvent(EVENT_START_ESCORT_PATH, 2s);
-                    break;
-                case EVENT_LEAP_OVER_BORER_PACKS:
-                    DoCastSelf(SPELL_LEAP_OVER_BORER_PACKS);
-                    me->DespawnOrUnsummon(2s);
-                    break;
-                case EVENT_LEAP_AT_OBSIDIUS:
-                    Talk(SAY_SMASH);
-                    DoCastSelf(SPELL_LEAP_AT_OBSIDIUS);
-                    break;
-                case EVENT_KILL_RAZ:
-                    DoCastSelf(SPELL_INSTAKILL_SELF);
-                    break;
-                default:
-                    break;
+            case EVENT_SAY_SMASH:
+                Talk(SAY_SMASH);
+                break;
+            case EVENT_START_ESCORT_PATH:
+                if (!me->IsEngaged())
+                {
+                    me->SetHomePosition(me->GetPosition());
+                    Start(true, true);
+                }
+                else
+                    _events.Repeat(1s);
+                break;
+            case EVENT_FACE_TO_THE_SIDE:
+                if (!me->IsEngaged())
+                {
+                    me->SetFacingTo(5.061455f);
+                    _events.ScheduleEvent(EVENT_LEAP_FROM_BRIDGE, 1s);
+                }
+                else
+                    _events.Repeat(1s);
+                break;
+            case EVENT_LEAP_FROM_BRIDGE:
+                if (!me->IsEngaged())
+                {
+                    DoCastSelf(SPELL_LEAP_FROM_BRIDGE);
+                    _events.ScheduleEvent(EVENT_RESUME_ESCORT, 500ms);
+                }
+                else
+                    _events.Repeat(1s);
+                break;
+            case EVENT_RESUME_ESCORT:
+                SetEscortPaused(false);
+                break;
+            case EVENT_LEAP_FROM_LEDGE:
+                DoCastSelf(SPELL_LEAP_FROM_LEDGE);
+                _events.ScheduleEvent(EVENT_SAY_SMASH, 1s);
+                _events.ScheduleEvent(EVENT_START_ESCORT_PATH, 2s);
+                break;
+            case EVENT_LEAP_OVER_BORER_PACKS:
+                DoCastSelf(SPELL_LEAP_OVER_BORER_PACKS);
+                me->DespawnOrUnsummon(2s);
+                break;
+            case EVENT_LEAP_AT_OBSIDIUS:
+                Talk(SAY_SMASH);
+                DoCastSelf(SPELL_LEAP_AT_OBSIDIUS);
+                break;
+            case EVENT_KILL_RAZ:
+                DoCastSelf(SPELL_INSTAKILL_SELF);
+                break;
+            default:
+                break;
             }
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
@@ -778,44 +778,44 @@ class spell_brc_furious_swipe : public SpellScript
 
 class at_raz_corla_event : public AreaTriggerScript
 {
-    public:
-        at_raz_corla_event() : AreaTriggerScript("at_raz_corla_event") { }
+public:
+    at_raz_corla_event() : AreaTriggerScript("at_raz_corla_event") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
-        {
-            if (InstanceScript* instance = player->GetInstanceScript())
-                if (instance->GetData(DATA_RAZ_LAST_AREA_INDEX) == RAZ_AREA_INDEX_ROMOGG
-                    && instance->GetBossState(DATA_CORLA_HERALD_OF_TWILIGHT) == DONE)
-                    instance->SetData(DATA_RAZ_LAST_AREA_INDEX, RAZ_AREA_INDEX_CORLA);
+    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    {
+        if (InstanceScript* instance = player->GetInstanceScript())
+            if (instance->GetData(DATA_RAZ_LAST_AREA_INDEX) == RAZ_AREA_INDEX_ROMOGG
+                && instance->GetBossState(DATA_CORLA_HERALD_OF_TWILIGHT) == DONE)
+                instance->SetData(DATA_RAZ_LAST_AREA_INDEX, RAZ_AREA_INDEX_CORLA);
 
-            return true;
+        return true;
 
-        }
+    }
 };
 
 class at_raz_obsidius_event : public AreaTriggerScript
 {
-    public:
-        at_raz_obsidius_event() : AreaTriggerScript("at_raz_obsidius_event") { }
+public:
+    at_raz_obsidius_event() : AreaTriggerScript("at_raz_obsidius_event") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
-        {
-            if (InstanceScript* instance = player->GetInstanceScript())
-                if (instance->GetData(DATA_RAZ_LAST_AREA_INDEX) == RAZ_AREA_INDEX_CORLA
-                    && instance->GetBossState(DATA_KARSH_STEELBENDER) == DONE)
-                    instance->SetData(DATA_RAZ_LAST_AREA_INDEX, RAZ_AREA_INDEX_OBSIDIUS);
+    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    {
+        if (InstanceScript* instance = player->GetInstanceScript())
+            if (instance->GetData(DATA_RAZ_LAST_AREA_INDEX) == RAZ_AREA_INDEX_CORLA
+                && instance->GetBossState(DATA_KARSH_STEELBENDER) == DONE)
+                instance->SetData(DATA_RAZ_LAST_AREA_INDEX, RAZ_AREA_INDEX_OBSIDIUS);
 
-            return true;
-        }
+        return true;
+    }
 };
 
 enum AreaTriggerQuests
 {
-    SPELL_UPDATE_PLAYER_PHASE_AURAS     = 89457,
-    QUEST_ID_WHAT_IS_THIS_PLACE         = 28737,
-    QUEST_ID_THE_TWILIGHT_FORGE         = 28738,
-    QUEST_ID_DO_MY_EYES_DECEIVE_ME      = 28740,
-    QUEST_ID_ASCENDANT_LORD_OBSIDIUS    = 28741
+    SPELL_UPDATE_PLAYER_PHASE_AURAS = 89457,
+    QUEST_ID_WHAT_IS_THIS_PLACE = 28737,
+    QUEST_ID_THE_TWILIGHT_FORGE = 28738,
+    QUEST_ID_DO_MY_EYES_DECEIVE_ME = 28740,
+    QUEST_ID_ASCENDANT_LORD_OBSIDIUS = 28741
 };
 
 class at_brc_quest_trigger : public AreaTriggerScript

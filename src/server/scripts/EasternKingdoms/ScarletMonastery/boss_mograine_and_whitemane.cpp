@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,31 +29,31 @@
 enum Says
 {
     // Scarlet Commander Mograine
-    SAY_MO_AGGRO                 = 0,
-    SAY_MO_KILL                  = 1,
-    SAY_MO_RESURRECTED           = 2,
+    SAY_MO_AGGRO = 0,
+    SAY_MO_KILL = 1,
+    SAY_MO_RESURRECTED = 2,
 
     // High Inquisitor Whitemane
-    SAY_WH_INTRO                 = 0,
-    SAY_WH_KILL                  = 1,
-    SAY_WH_RESURRECT             = 2
+    SAY_WH_INTRO = 0,
+    SAY_WH_KILL = 1,
+    SAY_WH_RESURRECT = 2
 };
 
 enum Spells
 {
     // Scarlet Commander Mograine
-    SPELL_CRUSADER_STRIKE       = 14518,
-    SPELL_HAMMER_OF_JUSTICE     = 77787,
-    SPELL_DIVINE_SHIELD         = 63148,
-    SPELL_LAY_ON_HANDS          = 9257,
-    SPELL_RETRIBUTION_AURA      = 8990,
+    SPELL_CRUSADER_STRIKE = 14518,
+    SPELL_HAMMER_OF_JUSTICE = 77787,
+    SPELL_DIVINE_SHIELD = 63148,
+    SPELL_LAY_ON_HANDS = 9257,
+    SPELL_RETRIBUTION_AURA = 8990,
 
     // High Inquisitor Whitemane
-    SPELL_HOLY_SMITE            = 25054,
-    SPELL_DEEP_SLEEP            = 9256,
-    SPELL_SCARLET_RESURRECTION  = 9232,
-    SPELL_HEAL                  = 12039,
-    SPELL_POWER_WORD_SHIELD     = 22187
+    SPELL_HOLY_SMITE = 25054,
+    SPELL_DEEP_SLEEP = 9256,
+    SPELL_SCARLET_RESURRECTION = 9232,
+    SPELL_HEAL = 12039,
+    SPELL_POWER_WORD_SHIELD = 22187
 };
 
 enum Events
@@ -163,11 +163,11 @@ struct npc_scarlet_commander_mograine : public ScriptedAI
     {
         switch (action)
         {
-            case ACTION_RESURRECTED:
-                _events.ScheduleEvent(EVENT_RESURRECTED, 3s + 500ms);
-                break;
-            default:
-                break;
+        case ACTION_RESURRECTED:
+            _events.ScheduleEvent(EVENT_RESURRECTED, 3s + 500ms);
+            break;
+        default:
+            break;
         }
     }
 
@@ -185,38 +185,38 @@ struct npc_scarlet_commander_mograine : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_RESURRECTED:
-                    Talk(SAY_MO_RESURRECTED);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                    me->SetImmuneToPC(false, true);
-                    me->SetStandState(UNIT_STAND_STATE_STAND);
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    DoCastSelf(SPELL_LAY_ON_HANDS);
-                    _resurrected = true;
-                    _killed = false;
+            case EVENT_RESURRECTED:
+                Talk(SAY_MO_RESURRECTED);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                me->SetImmuneToPC(false, true);
+                me->SetStandState(UNIT_STAND_STATE_STAND);
+                me->SetReactState(REACT_AGGRESSIVE);
+                DoCastSelf(SPELL_LAY_ON_HANDS);
+                _resurrected = true;
+                _killed = false;
 
-                    _events.ScheduleEvent(EVENT_HAMMER_OF_JUSTICE, 6s);
-                    _events.ScheduleEvent(EVENT_RETRIBUTION_AURA, 7s);
-                    _events.ScheduleEvent(EVENT_CRUSADER_STRIKE, 20s);
-                    _events.ScheduleEvent(EVENT_DIVINE_SHIELD, 29s);
-                    break;
-                case EVENT_HAMMER_OF_JUSTICE:
-                    DoCastVictim(SPELL_HAMMER_OF_JUSTICE);
-                    _events.Repeat(8s, 10s);
-                    break;
-                case EVENT_CRUSADER_STRIKE:
-                    DoCastVictim(SPELL_CRUSADER_STRIKE);
-                    _events.Repeat(6s);
-                    break;
-                case EVENT_DIVINE_SHIELD:
-                    DoCastSelf(SPELL_DIVINE_SHIELD);
-                    // @todo: repeat timer
-                    break;
-                case EVENT_RETRIBUTION_AURA:
-                    DoCastSelf(SPELL_RETRIBUTION_AURA);
-                    break;
-                default:
-                    break;
+                _events.ScheduleEvent(EVENT_HAMMER_OF_JUSTICE, 6s);
+                _events.ScheduleEvent(EVENT_RETRIBUTION_AURA, 7s);
+                _events.ScheduleEvent(EVENT_CRUSADER_STRIKE, 20s);
+                _events.ScheduleEvent(EVENT_DIVINE_SHIELD, 29s);
+                break;
+            case EVENT_HAMMER_OF_JUSTICE:
+                DoCastVictim(SPELL_HAMMER_OF_JUSTICE);
+                _events.Repeat(8s, 10s);
+                break;
+            case EVENT_CRUSADER_STRIKE:
+                DoCastVictim(SPELL_CRUSADER_STRIKE);
+                _events.Repeat(6s);
+                break;
+            case EVENT_DIVINE_SHIELD:
+                DoCastSelf(SPELL_DIVINE_SHIELD);
+                // @todo: repeat timer
+                break;
+            case EVENT_RETRIBUTION_AURA:
+                DoCastSelf(SPELL_RETRIBUTION_AURA);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -234,7 +234,7 @@ private:
 
 struct npc_high_inquisitor_whitemane : public ScriptedAI
 {
-    npc_high_inquisitor_whitemane(Creature* creature) : ScriptedAI(creature), _below50PctHealth(false), _resurrectedMograine(false){ }
+    npc_high_inquisitor_whitemane(Creature* creature) : ScriptedAI(creature), _below50PctHealth(false), _resurrectedMograine(false) { }
 
     void InitializeAI() override
     {
@@ -290,15 +290,15 @@ struct npc_high_inquisitor_whitemane : public ScriptedAI
     {
         switch (action)
         {
-            case ACTION_MOGRAINE_DIED:
-                Talk(SAY_WH_INTRO);
-                if (GameObject* door = _instance->GetGameObject(DATA_HIGH_INQUISITORS_DOOR))
-                    door->UseDoorOrButton();
-                me->GetMotionMaster()->MovePoint(POINT_NONE, WhitemaneIntroPosition);
-                me->SetReactState(REACT_AGGRESSIVE);
-                break;
-            default:
-                break;
+        case ACTION_MOGRAINE_DIED:
+            Talk(SAY_WH_INTRO);
+            if (GameObject* door = _instance->GetGameObject(DATA_HIGH_INQUISITORS_DOOR))
+                door->UseDoorOrButton();
+            me->GetMotionMaster()->MovePoint(POINT_NONE, WhitemaneIntroPosition);
+            me->SetReactState(REACT_AGGRESSIVE);
+            break;
+        default:
+            break;
         }
     }
 
@@ -309,11 +309,11 @@ struct npc_high_inquisitor_whitemane : public ScriptedAI
 
         switch (pointId)
         {
-            case POINT_RESURRECT_MOGRAINE:
-                _events.ScheduleEvent(EVENT_SCARLET_RESURRECTION, 3s);
-                break;
-            default:
-                break;
+        case POINT_RESURRECT_MOGRAINE:
+            _events.ScheduleEvent(EVENT_SCARLET_RESURRECTION, 3s);
+            break;
+        default:
+            break;
         }
     }
 
@@ -346,56 +346,56 @@ struct npc_high_inquisitor_whitemane : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_HOLY_SMITE:
-                    DoCastVictim(SPELL_HOLY_SMITE);
-                    _events.Repeat(5s, 7s);
-                    break;
-                case EVENT_DEEP_SLEEP:
-                    DoCastAOE(SPELL_DEEP_SLEEP);
-                    if (Creature* mograine = _instance->GetCreature(DATA_SCARLET_COMMANDER_MOGRAINE))
-                    {
-                        Position pos = mograine->GetPosition();
-                        mograine->MovePositionToFirstCollision(pos, 2.f, mograine->GetRelativeAngle(me));
-                        me->GetMotionMaster()->MovePoint(POINT_RESURRECT_MOGRAINE, pos);
-                    }
-                    break;
-                case EVENT_SCARLET_RESURRECTION:
-                    DoCastAOE(SPELL_SCARLET_RESURRECTION);
-                    break;
-                case EVENT_SALUTE_EMOTE:
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
-                    break;
-                case EVENT_REENGAGE_PLAYERS:
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    _events.ScheduleEvent(EVENT_HOLY_SMITE, 1ms);
-                    _events.ScheduleEvent(EVENT_HEAL, 12s);
-                    _events.ScheduleEvent(EVENT_POWER_WORD_SHIELD, 22s);
-                    break;
-                case EVENT_HEAL:
+            case EVENT_HOLY_SMITE:
+                DoCastVictim(SPELL_HOLY_SMITE);
+                _events.Repeat(5s, 7s);
+                break;
+            case EVENT_DEEP_SLEEP:
+                DoCastAOE(SPELL_DEEP_SLEEP);
+                if (Creature* mograine = _instance->GetCreature(DATA_SCARLET_COMMANDER_MOGRAINE))
                 {
-                    // @todo: This logic has been ported from CMangos since there is very little sniff information about conditions and repeat timers
-                    Unit* target = nullptr;
-                    if (me->GetHealthPct() < 75.f)
-                        target = me;
-                    else if (Creature* mograine = _instance->GetCreature(DATA_SCARLET_COMMANDER_MOGRAINE))
-                        if (mograine->GetHealthPct() < 75.f)
-                            target = mograine;
-
-                    if (target)
-                    {
-                        DoCast(target, SPELL_HEAL);
-                        _events.Repeat(13s);
-                    }
-                    else
-                        _events.Repeat(1s);
-                    break;
+                    Position pos = mograine->GetPosition();
+                    mograine->MovePositionToFirstCollision(pos, 2.f, mograine->GetRelativeAngle(me));
+                    me->GetMotionMaster()->MovePoint(POINT_RESURRECT_MOGRAINE, pos);
                 }
-                case EVENT_POWER_WORD_SHIELD:
-                    DoCastSelf(SPELL_POWER_WORD_SHIELD);
-                    _events.Repeat(22s, 45s);
-                    break;
-                default:
-                    break;
+                break;
+            case EVENT_SCARLET_RESURRECTION:
+                DoCastAOE(SPELL_SCARLET_RESURRECTION);
+                break;
+            case EVENT_SALUTE_EMOTE:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
+                break;
+            case EVENT_REENGAGE_PLAYERS:
+                me->SetReactState(REACT_AGGRESSIVE);
+                _events.ScheduleEvent(EVENT_HOLY_SMITE, 1ms);
+                _events.ScheduleEvent(EVENT_HEAL, 12s);
+                _events.ScheduleEvent(EVENT_POWER_WORD_SHIELD, 22s);
+                break;
+            case EVENT_HEAL:
+            {
+                // @todo: This logic has been ported from CMangos since there is very little sniff information about conditions and repeat timers
+                Unit* target = nullptr;
+                if (me->GetHealthPct() < 75.f)
+                    target = me;
+                else if (Creature* mograine = _instance->GetCreature(DATA_SCARLET_COMMANDER_MOGRAINE))
+                    if (mograine->GetHealthPct() < 75.f)
+                        target = mograine;
+
+                if (target)
+                {
+                    DoCast(target, SPELL_HEAL);
+                    _events.Repeat(13s);
+                }
+                else
+                    _events.Repeat(1s);
+                break;
+            }
+            case EVENT_POWER_WORD_SHIELD:
+                DoCastSelf(SPELL_POWER_WORD_SHIELD);
+                _events.Repeat(22s, 45s);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))

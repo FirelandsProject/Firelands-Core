@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,18 +21,18 @@
 #include <G3D/CollisionDetection.h>
 #include <G3D/AABox.h>
 
-/**
-The Class is mainly taken from G3D/AABSPTree.h but modified to be able to use our internal data structure.
-This is an iterator that helps us analysing the BSP-Trees.
-The collision detection is modified to return true, if we are inside an object.
-*/
+ /**
+ The Class is mainly taken from G3D/AABSPTree.h but modified to be able to use our internal data structure.
+ This is an iterator that helps us analysing the BSP-Trees.
+ The collision detection is modified to return true, if we are inside an object.
+ */
 
 namespace VMAP
 {
     template<class TValue>
     class IntersectionCallBack {
     public:
-        TValue*      closestEntity;
+        TValue* closestEntity;
         G3D::Vector3 hitLocation;
         G3D::Vector3 hitNormal;
 
@@ -51,11 +51,11 @@ namespace VMAP
     public:
 
         static bool collisionLocationForMovingPointFixedAABox(
-            const G3D::Vector3&     origin,
-            const G3D::Vector3&     dir,
-            const G3D::AABox&       box,
-            G3D::Vector3&           location,
-            bool&                   Inside)
+            const G3D::Vector3& origin,
+            const G3D::Vector3& dir,
+            const G3D::AABox& box,
+            G3D::Vector3& location,
+            bool& Inside)
         {
 
             // Integer representation of a floating-point value.
@@ -72,7 +72,7 @@ namespace VMAP
                 if (origin[i] < MinB[i])
                 {
                     location[i] = MinB[i];
-                    Inside      = false;
+                    Inside = false;
 
                     // Calculate T distances to candidate planes
                     if (IR(dir[i]))
@@ -83,7 +83,7 @@ namespace VMAP
                 else if (origin[i] > MaxB[i])
                 {
                     location[i] = MaxB[i];
-                    Inside      = false;
+                    Inside = false;
 
                     // Calculate T distances to candidate planes
                     if (IR(dir[i]))

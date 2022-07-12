@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,13 +25,13 @@
 enum Spells
 {
     // Wrathbone Flayer
-    SPELL_CLEAVE                = 15496,
-    SPELL_IGNORED               = 39544,
-    SPELL_SUMMON_CHANNEL        = 40094,
+    SPELL_CLEAVE = 15496,
+    SPELL_IGNORED = 39544,
+    SPELL_SUMMON_CHANNEL = 40094,
 
     // Angered Soul Fragment
-    SPELL_GREATER_INVISIBILITY  = 41253,
-    SPELL_ANGER                 = 41986,
+    SPELL_GREATER_INVISIBILITY = 41253,
+    SPELL_ANGER = 41986,
 
     // Illidari Nightlord
     SPELL_SHADOW_INFERNO_DAMAGE = 39646
@@ -39,8 +39,8 @@ enum Spells
 
 enum Creatures
 {
-    NPC_BLOOD_MAGE               = 22945,
-    NPC_DEATHSHAPER              = 22882
+    NPC_BLOOD_MAGE = 22945,
+    NPC_DEATHSHAPER = 22882
 };
 
 enum Events
@@ -97,50 +97,50 @@ struct npc_wrathbone_flayer : public ScriptedAI
             {
                 switch (eventId)
                 {
-                    case EVENT_GET_CHANNELERS:
-                    {
-                        std::list<Creature*> BloodMageList;
-                        me->GetCreatureListWithEntryInGrid(BloodMageList, NPC_BLOOD_MAGE, 15.0f);
+                case EVENT_GET_CHANNELERS:
+                {
+                    std::list<Creature*> BloodMageList;
+                    me->GetCreatureListWithEntryInGrid(BloodMageList, NPC_BLOOD_MAGE, 15.0f);
 
-                        if (!BloodMageList.empty())
-                            for (std::list<Creature*>::const_iterator itr = BloodMageList.begin(); itr != BloodMageList.end(); ++itr)
-                            {
-                                _bloodmageList.push_back((*itr)->GetGUID());
-                                if ((*itr)->isDead())
-                                    (*itr)->Respawn();
-                            }
+                    if (!BloodMageList.empty())
+                        for (std::list<Creature*>::const_iterator itr = BloodMageList.begin(); itr != BloodMageList.end(); ++itr)
+                        {
+                            _bloodmageList.push_back((*itr)->GetGUID());
+                            if ((*itr)->isDead())
+                                (*itr)->Respawn();
+                        }
 
-                        std::list<Creature*> DeathShaperList;
-                        me->GetCreatureListWithEntryInGrid(DeathShaperList, NPC_DEATHSHAPER, 15.0f);
+                    std::list<Creature*> DeathShaperList;
+                    me->GetCreatureListWithEntryInGrid(DeathShaperList, NPC_DEATHSHAPER, 15.0f);
 
-                        if (!DeathShaperList.empty())
-                            for (std::list<Creature*>::const_iterator itr = DeathShaperList.begin(); itr != DeathShaperList.end(); ++itr)
-                            {
-                                _deathshaperList.push_back((*itr)->GetGUID());
-                                if ((*itr)->isDead())
-                                    (*itr)->Respawn();
-                            }
+                    if (!DeathShaperList.empty())
+                        for (std::list<Creature*>::const_iterator itr = DeathShaperList.begin(); itr != DeathShaperList.end(); ++itr)
+                        {
+                            _deathshaperList.push_back((*itr)->GetGUID());
+                            if ((*itr)->isDead())
+                                (*itr)->Respawn();
+                        }
 
-                        _events.ScheduleEvent(EVENT_SET_CHANNELERS, 3s);
+                    _events.ScheduleEvent(EVENT_SET_CHANNELERS, 3s);
 
-                        break;
-                    }
-                    case EVENT_SET_CHANNELERS:
-                    {
-                        for (ObjectGuid guid : _bloodmageList)
-                            if (Creature* bloodmage = ObjectAccessor::GetCreature(*me, guid))
-                                bloodmage->CastSpell(nullptr, SPELL_SUMMON_CHANNEL);
+                    break;
+                }
+                case EVENT_SET_CHANNELERS:
+                {
+                    for (ObjectGuid guid : _bloodmageList)
+                        if (Creature* bloodmage = ObjectAccessor::GetCreature(*me, guid))
+                            bloodmage->CastSpell(nullptr, SPELL_SUMMON_CHANNEL);
 
-                        for (ObjectGuid guid : _deathshaperList)
-                            if (Creature* deathshaper = ObjectAccessor::GetCreature(*me, guid))
-                                deathshaper->CastSpell(nullptr, SPELL_SUMMON_CHANNEL);
+                    for (ObjectGuid guid : _deathshaperList)
+                        if (Creature* deathshaper = ObjectAccessor::GetCreature(*me, guid))
+                            deathshaper->CastSpell(nullptr, SPELL_SUMMON_CHANNEL);
 
-                        _events.ScheduleEvent(EVENT_SET_CHANNELERS, 12s);
+                    _events.ScheduleEvent(EVENT_SET_CHANNELERS, 12s);
 
-                        break;
-                    }
-                    default:
-                        break;
+                    break;
+                }
+                default:
+                    break;
                 }
             }
         }
@@ -154,17 +154,17 @@ struct npc_wrathbone_flayer : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_CLEAVE:
-                    DoCastVictim(SPELL_CLEAVE);
-                    _events.ScheduleEvent(EVENT_CLEAVE, 1s, 2s);
-                    break;
-                case EVENT_IGNORED:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                        DoCast(target, SPELL_IGNORED);
-                    _events.ScheduleEvent(EVENT_IGNORED, 10s);
-                    break;
-                default:
-                    break;
+            case EVENT_CLEAVE:
+                DoCastVictim(SPELL_CLEAVE);
+                _events.ScheduleEvent(EVENT_CLEAVE, 1s, 2s);
+                break;
+            case EVENT_IGNORED:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_IGNORED);
+                _events.ScheduleEvent(EVENT_IGNORED, 10s);
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();
@@ -187,18 +187,18 @@ struct npc_angered_soul_fragment : public ScriptedAI
         _scheduler.CancelAll();
 
         _scheduler.Schedule(Seconds(1), GROUP_OUT_OF_COMBAT, [this](TaskContext invi)
-        {
-            DoCastSelf(SPELL_GREATER_INVISIBILITY);
-
-            /* Workaround - On Retail creature appear and "vanish" again periodically, but i cant find packets
-            with UPDATE_AURA on sniffs about it */
-            _scheduler.Schedule(Seconds(5), Seconds(10), GROUP_OUT_OF_COMBAT, [this](TaskContext /*context*/)
             {
-                me->RemoveAurasDueToSpell(SPELL_GREATER_INVISIBILITY);
-            });
+                DoCastSelf(SPELL_GREATER_INVISIBILITY);
 
-            invi.Repeat(Seconds(15), Seconds(25));
-        });
+                /* Workaround - On Retail creature appear and "vanish" again periodically, but i cant find packets
+                with UPDATE_AURA on sniffs about it */
+                _scheduler.Schedule(Seconds(5), Seconds(10), GROUP_OUT_OF_COMBAT, [this](TaskContext /*context*/)
+                    {
+                        me->RemoveAurasDueToSpell(SPELL_GREATER_INVISIBILITY);
+                    });
+
+                invi.Repeat(Seconds(15), Seconds(25));
+            });
     }
 
     void JustEngagedWith(Unit* /*who*/) override
@@ -207,13 +207,13 @@ struct npc_angered_soul_fragment : public ScriptedAI
 
         _scheduler.CancelGroup(GROUP_OUT_OF_COMBAT);
         _scheduler.Schedule(Seconds(1), [this](TaskContext anger)
-        {
-            Unit* target = me->GetVictim();
-            if (target && me->IsWithinMeleeRange(target))
-                DoCastSelf(SPELL_ANGER);
-            else
-                anger.Repeat(Seconds(1));
-        });
+            {
+                Unit* target = me->GetVictim();
+                if (target && me->IsWithinMeleeRange(target))
+                    DoCastSelf(SPELL_ANGER);
+                else
+                    anger.Repeat(Seconds(1));
+            });
     }
 
     void UpdateAI(uint32 diff) override

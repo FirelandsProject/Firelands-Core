@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -617,40 +617,40 @@ void ThreatManager::ProcessAIUpdates()
     SpellSchoolMask const mask = spell ? spell->GetSchoolMask() : SPELL_SCHOOL_MASK_NORMAL;
     switch (mask)
     {
-        case SPELL_SCHOOL_MASK_NORMAL:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_NORMAL];
-            break;
-        case SPELL_SCHOOL_MASK_HOLY:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_HOLY];
-            break;
-        case SPELL_SCHOOL_MASK_FIRE:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_FIRE];
-            break;
-        case SPELL_SCHOOL_MASK_NATURE:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_NATURE];
-            break;
-        case SPELL_SCHOOL_MASK_FROST:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_FROST];
-            break;
-        case SPELL_SCHOOL_MASK_SHADOW:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_SHADOW];
-            break;
-        case SPELL_SCHOOL_MASK_ARCANE:
-            threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_ARCANE];
-            break;
-        default:
+    case SPELL_SCHOOL_MASK_NORMAL:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_NORMAL];
+        break;
+    case SPELL_SCHOOL_MASK_HOLY:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_HOLY];
+        break;
+    case SPELL_SCHOOL_MASK_FIRE:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_FIRE];
+        break;
+    case SPELL_SCHOOL_MASK_NATURE:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_NATURE];
+        break;
+    case SPELL_SCHOOL_MASK_FROST:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_FROST];
+        break;
+    case SPELL_SCHOOL_MASK_SHADOW:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_SHADOW];
+        break;
+    case SPELL_SCHOOL_MASK_ARCANE:
+        threat *= victimMgr._singleSchoolModifiers[SPELL_SCHOOL_ARCANE];
+        break;
+    default:
+    {
+        auto it = victimMgr._multiSchoolModifiers.find(mask);
+        if (it != victimMgr._multiSchoolModifiers.end())
         {
-            auto it = victimMgr._multiSchoolModifiers.find(mask);
-            if (it != victimMgr._multiSchoolModifiers.end())
-            {
-                threat *= it->second;
-                break;
-            }
-            float mod = victim->GetTotalAuraMultiplierByMiscMask(SPELL_AURA_MOD_THREAT, mask);
-            victimMgr._multiSchoolModifiers[mask] = mod;
-            threat *= mod;
+            threat *= it->second;
             break;
         }
+        float mod = victim->GetTotalAuraMultiplierByMiscMask(SPELL_AURA_MOD_THREAT, mask);
+        victimMgr._multiSchoolModifiers[mask] = mod;
+        threat *= mod;
+        break;
+    }
     }
     return threat;
 }

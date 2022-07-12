@@ -10,7 +10,7 @@ TBD
 # Mandatory things when creating a ticket:
 
 -   Branch
--   commit hash (if you get something like FirelandsCore rev. unknown 1970-01-01 00:00:00 +0000 (Archived branch) (Win64, Release).
+-   commit hash (if you get something like Firelands Core rev. unknown 1970-01-01 00:00:00 +0000 (Archived branch) (Win64, Release).
 -   entries of affected creatures / items / quests with a link to the relevant wowhead page.
 -   clear title and description of the bug - if your english is very bad, please use google translate or yandex to translate to english and include one text in your native language.
 
@@ -34,7 +34,7 @@ The quest "The Collapse" http://www.wowhead.com/quest=11706 lacks final event.
 
 When creating patches read:
 
--   [FirelandsCore Development Standards](TBD)
+-   [Firelands Core Development Standards](TBD)
 -   [WDB Fields](TBD)
 -   [Git Squash](TBD)
 

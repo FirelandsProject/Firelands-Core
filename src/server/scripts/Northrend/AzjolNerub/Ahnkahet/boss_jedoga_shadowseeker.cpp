@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Comment: Visuals missing, de-germanize code, wow 3.3.5a-ize
- * Patch 3.3.2 (2010-01-02): Jedoga Shadowseeker now only ascends once during the encounter.
- */
+ /*
+  * Comment: Visuals missing, de-germanize code, wow 3.3.5a-ize
+  * Patch 3.3.2 (2010-01-02): Jedoga Shadowseeker now only ascends once during the encounter.
+  */
 
 #include "ScriptMgr.h"
 #include "ahnkahet.h"
@@ -29,21 +29,21 @@
 
 enum Yells
 {
-    TEXT_AGGRO          = 0,
-    TEXT_SACRIFICE_1    = 1,
-    TEXT_SACRIFICE_2    = 2,
-    TEXT_SLAY           = 3,
-    TEXT_DEATH          = 4,
-    TEXT_PREACHING      = 5
+    TEXT_AGGRO = 0,
+    TEXT_SACRIFICE_1 = 1,
+    TEXT_SACRIFICE_2 = 2,
+    TEXT_SLAY = 3,
+    TEXT_DEATH = 4,
+    TEXT_PREACHING = 5
 };
 
 enum Spells
 {
-    SPELL_SPHERE_VISUAL                           = 56075,
-    SPELL_GIFT_OF_THE_HERALD                      = 56219,
-    SPELL_CYCLONE_STRIKE                          = 56855, // Self
-    SPELL_LIGHTNING_BOLT                          = 56891, // 40Y
-    SPELL_THUNDERSHOCK                            = 56926  // 30Y
+    SPELL_SPHERE_VISUAL = 56075,
+    SPELL_GIFT_OF_THE_HERALD = 56219,
+    SPELL_CYCLONE_STRIKE = 56855, // Self
+    SPELL_LIGHTNING_BOLT = 56891, // 40Y
+    SPELL_THUNDERSHOCK = 56926  // 30Y
 };
 
 const Position JedogaPosition[2] =
@@ -54,8 +54,8 @@ const Position JedogaPosition[2] =
 
 enum Misc
 {
-    ACTION_INITIAND_KILLED                      = 1,
-    DATA_VOLUNTEER_WORK                         = 2
+    ACTION_INITIAND_KILLED = 1,
+    DATA_VOLUNTEER_WORK = 2
 };
 
 class boss_jedoga_shadowseeker : public CreatureScript
@@ -246,7 +246,7 @@ public:
                 OpferRufen();
 
             bOnGround = false;
-            uiOpFerTimer = urand(15*IN_MILLISECONDS, 30*IN_MILLISECONDS);
+            uiOpFerTimer = urand(15 * IN_MILLISECONDS, 30 * IN_MILLISECONDS);
         }
 
         void OpferRufen()
@@ -297,24 +297,27 @@ public:
                 if (uiCycloneTimer <= diff)
                 {
                     DoCast(me, SPELL_CYCLONE_STRIKE, false);
-                    uiCycloneTimer = urand(15*IN_MILLISECONDS, 30*IN_MILLISECONDS);
-                } else uiCycloneTimer -= diff;
+                    uiCycloneTimer = urand(15 * IN_MILLISECONDS, 30 * IN_MILLISECONDS);
+                }
+                else uiCycloneTimer -= diff;
 
                 if (uiBoltTimer <= diff)
                 {
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
                         me->CastSpell(target, SPELL_LIGHTNING_BOLT, false);
 
-                    uiBoltTimer = urand(15*IN_MILLISECONDS, 30*IN_MILLISECONDS);
-                } else uiBoltTimer -= diff;
+                    uiBoltTimer = urand(15 * IN_MILLISECONDS, 30 * IN_MILLISECONDS);
+                }
+                else uiBoltTimer -= diff;
 
                 if (uiThunderTimer <= diff)
                 {
                     if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
                         me->CastSpell(target, SPELL_THUNDERSHOCK, false);
 
-                    uiThunderTimer = urand(15*IN_MILLISECONDS, 30*IN_MILLISECONDS);
-                } else uiThunderTimer -= diff;
+                    uiThunderTimer = urand(15 * IN_MILLISECONDS, 30 * IN_MILLISECONDS);
+                }
+                else uiThunderTimer -= diff;
 
                 if (uiOpFerTimer <= diff)
                     MoveUp();
@@ -429,17 +432,17 @@ public:
 
             switch (uiPointId)
             {
-                case 1:
-                    {
-                        Creature* boss = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_JEDOGA_SHADOWSEEKER));
-                        if (boss)
-                        {
-                            ENSURE_AI(boss_jedoga_shadowseeker::boss_jedoga_shadowseekerAI, boss->AI())->bOpFerok = true;
-                            ENSURE_AI(boss_jedoga_shadowseeker::boss_jedoga_shadowseekerAI, boss->AI())->bOpFerokFail = false;
-                            me->KillSelf();
-                        }
-                    }
-                    break;
+            case 1:
+            {
+                Creature* boss = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_JEDOGA_SHADOWSEEKER));
+                if (boss)
+                {
+                    ENSURE_AI(boss_jedoga_shadowseeker::boss_jedoga_shadowseekerAI, boss->AI())->bOpFerok = true;
+                    ENSURE_AI(boss_jedoga_shadowseeker::boss_jedoga_shadowseekerAI, boss->AI())->bOpFerokFail = false;
+                    me->KillSelf();
+                }
+            }
+            break;
             }
         }
 
@@ -484,8 +487,9 @@ public:
                         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE + UNIT_FLAG_NON_ATTACKABLE);
                     }
                 }
-                bCheckTimer = 2*IN_MILLISECONDS;
-            } else bCheckTimer -= diff;
+                bCheckTimer = 2 * IN_MILLISECONDS;
+            }
+            else bCheckTimer -= diff;
 
             //Return since we have no target
             if (!UpdateVictim())
@@ -506,8 +510,8 @@ public:
 // ------------------------------------------------------------------------------------------------------------
 enum AufseherSpell
 {
-  SPELL_BEAM_VISUAL_JEDOGAS_AUFSEHER_1            = 60342,
-  SPELL_BEAM_VISUAL_JEDOGAS_AUFSEHER_2            = 56312
+    SPELL_BEAM_VISUAL_JEDOGAS_AUFSEHER_1 = 60342,
+    SPELL_BEAM_VISUAL_JEDOGAS_AUFSEHER_2 = 56312
 };
 
 class npc_jedogas_aufseher_trigger : public CreatureScript
@@ -519,11 +523,11 @@ public:
     {
         npc_jedogas_aufseher_triggerAI(Creature* creature) : ScriptedAI(creature)
         {
-            instance    = creature->GetInstanceScript();
-            bRemoved    = false;
-            bRemoved2   = false;
-            bCast     = false;
-            bCast2    = false;
+            instance = creature->GetInstanceScript();
+            bRemoved = false;
+            bRemoved2 = false;
+            bCast = false;
+            bCast2 = false;
 
             SetCombatMovement(false);
         }
@@ -586,22 +590,22 @@ public:
 
 class achievement_volunteer_work : public AchievementCriteriaScript
 {
-    public:
-        achievement_volunteer_work() : AchievementCriteriaScript("achievement_volunteer_work")
-        {
-        }
+public:
+    achievement_volunteer_work() : AchievementCriteriaScript("achievement_volunteer_work")
+    {
+    }
 
-        bool OnCheck(Player* /*player*/, Unit* target) override
-        {
-            if (!target)
-                return false;
-
-            if (Creature* Jedoga = target->ToCreature())
-                if (Jedoga->AI()->GetData(DATA_VOLUNTEER_WORK))
-                    return true;
-
+    bool OnCheck(Player* /*player*/, Unit* target) override
+    {
+        if (!target)
             return false;
-        }
+
+        if (Creature* Jedoga = target->ToCreature())
+            if (Jedoga->AI()->GetData(DATA_VOLUNTEER_WORK))
+                return true;
+
+        return false;
+    }
 };
 
 void AddSC_boss_jedoga_shadowseeker()

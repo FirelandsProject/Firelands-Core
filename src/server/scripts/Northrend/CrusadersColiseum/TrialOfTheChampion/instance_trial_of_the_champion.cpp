@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Instance Trial of the Champion
-SDComment:
-SDCategory: Trial Of the Champion
-EndScriptData */
+ /* ScriptData
+ SDName: Instance Trial of the Champion
+ SDComment:
+ SDCategory: Trial Of the Champion
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "Creature.h"
@@ -99,20 +99,20 @@ public:
         {
             switch (creature->GetEntry())
             {
-                case VEHICLE_ARGENT_WARHORSE:
-                case VEHICLE_ARGENT_BATTLEWORG:
-                    VehicleList.push_back(creature->GetGUID());
-                    break;
-                case NPC_EADRIC:
-                case NPC_PALETRESS:
-                    uiArgentChampionGUID = creature->GetGUID();
-                    break;
-                case NPC_JAEREN:
-                case NPC_ARELAS:
-                    uiAnnouncerGUID = creature->GetGUID();
-                    break;
-                default:
-                    break;
+            case VEHICLE_ARGENT_WARHORSE:
+            case VEHICLE_ARGENT_BATTLEWORG:
+                VehicleList.push_back(creature->GetGUID());
+                break;
+            case NPC_EADRIC:
+            case NPC_PALETRESS:
+                uiArgentChampionGUID = creature->GetGUID();
+                break;
+            case NPC_JAEREN:
+            case NPC_ARELAS:
+                uiAnnouncerGUID = creature->GetGUID();
+                break;
+            default:
+                break;
             }
         }
 
@@ -129,20 +129,20 @@ public:
             uint32 entry = data->id;
             switch (entry)
             {
-                case VEHICLE_MOKRA_SKILLCRUSHER_MOUNT:
-                    return teamInInstance == HORDE ? VEHICLE_MARSHAL_JACOB_ALERIUS_MOUNT : VEHICLE_MOKRA_SKILLCRUSHER_MOUNT;
-                case VEHICLE_ERESSEA_DAWNSINGER_MOUNT:
-                    return teamInInstance == HORDE ? VEHICLE_AMBROSE_BOLTSPARK_MOUNT : VEHICLE_ERESSEA_DAWNSINGER_MOUNT;
-                case VEHICLE_RUNOK_WILDMANE_MOUNT:
-                    return teamInInstance == HORDE ? VEHICLE_COLOSOS_MOUNT : VEHICLE_RUNOK_WILDMANE_MOUNT;
-                case VEHICLE_ZUL_TORE_MOUNT:
-                    return teamInInstance == HORDE ? VEHICLE_EVENSONG_MOUNT : VEHICLE_ZUL_TORE_MOUNT;
-                case VEHICLE_DEATHSTALKER_VESCERI_MOUNT:
-                    return teamInInstance == HORDE ? VEHICLE_LANA_STOUTHAMMER_MOUNT : VEHICLE_DEATHSTALKER_VESCERI_MOUNT;
-                case NPC_JAEREN:
-                    return teamInInstance == HORDE ? NPC_ARELAS : NPC_JAEREN;
-                default:
-                    return entry;
+            case VEHICLE_MOKRA_SKILLCRUSHER_MOUNT:
+                return teamInInstance == HORDE ? VEHICLE_MARSHAL_JACOB_ALERIUS_MOUNT : VEHICLE_MOKRA_SKILLCRUSHER_MOUNT;
+            case VEHICLE_ERESSEA_DAWNSINGER_MOUNT:
+                return teamInInstance == HORDE ? VEHICLE_AMBROSE_BOLTSPARK_MOUNT : VEHICLE_ERESSEA_DAWNSINGER_MOUNT;
+            case VEHICLE_RUNOK_WILDMANE_MOUNT:
+                return teamInInstance == HORDE ? VEHICLE_COLOSOS_MOUNT : VEHICLE_RUNOK_WILDMANE_MOUNT;
+            case VEHICLE_ZUL_TORE_MOUNT:
+                return teamInInstance == HORDE ? VEHICLE_EVENSONG_MOUNT : VEHICLE_ZUL_TORE_MOUNT;
+            case VEHICLE_DEATHSTALKER_VESCERI_MOUNT:
+                return teamInInstance == HORDE ? VEHICLE_LANA_STOUTHAMMER_MOUNT : VEHICLE_DEATHSTALKER_VESCERI_MOUNT;
+            case NPC_JAEREN:
+                return teamInInstance == HORDE ? NPC_ARELAS : NPC_JAEREN;
+            default:
+                return entry;
             }
         }
 
@@ -150,13 +150,13 @@ public:
         {
             switch (go->GetEntry())
             {
-                case GO_MAIN_GATE:
-                    uiMainGateGUID = go->GetGUID();
-                    break;
-                case GO_CHAMPIONS_LOOT:
-                case GO_CHAMPIONS_LOOT_H:
-                    uiChampionLootGUID = go->GetGUID();
-                    break;
+            case GO_MAIN_GATE:
+                uiMainGateGUID = go->GetGUID();
+                break;
+            case GO_CHAMPIONS_LOOT:
+            case GO_CHAMPIONS_LOOT_H:
+                uiChampionLootGUID = go->GetGUID();
+                break;
             }
         }
 
@@ -164,66 +164,66 @@ public:
         {
             switch (uiType)
             {
-                case DATA_MOVEMENT_DONE:
-                    uiMovementDone = uiData;
-                    if (uiMovementDone == 3)
+            case DATA_MOVEMENT_DONE:
+                uiMovementDone = uiData;
+                if (uiMovementDone == 3)
+                {
+                    if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
+                        pAnnouncer->AI()->SetData(DATA_IN_POSITION, 0);
+                }
+                break;
+            case BOSS_GRAND_CHAMPIONS:
+                m_auiEncounter[0] = uiData;
+                if (uiData == IN_PROGRESS)
+                {
+                    for (GuidList::const_iterator itr = VehicleList.begin(); itr != VehicleList.end(); ++itr)
+                        if (Creature* summon = instance->GetCreature(*itr))
+                            summon->RemoveFromWorld();
+                }
+                else if (uiData == DONE)
+                {
+                    ++uiGrandChampionsDeaths;
+                    if (uiGrandChampionsDeaths == 3)
                     {
                         if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
-                            pAnnouncer->AI()->SetData(DATA_IN_POSITION, 0);
-                    }
-                    break;
-                case BOSS_GRAND_CHAMPIONS:
-                    m_auiEncounter[0] = uiData;
-                    if (uiData == IN_PROGRESS)
-                    {
-                        for (GuidList::const_iterator itr = VehicleList.begin(); itr != VehicleList.end(); ++itr)
-                            if (Creature* summon = instance->GetCreature(*itr))
-                                summon->RemoveFromWorld();
-                    }
-                    else if (uiData == DONE)
-                    {
-                        ++uiGrandChampionsDeaths;
-                        if (uiGrandChampionsDeaths == 3)
                         {
-                            if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
-                            {
-                                pAnnouncer->GetMotionMaster()->MovePoint(0, 748.309f, 619.487f, 411.171f);
-                                pAnnouncer->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                                pAnnouncer->SummonGameObject(instance->IsHeroic() ? GO_CHAMPIONS_LOOT_H : GO_CHAMPIONS_LOOT, 746.59f, 618.49f, 411.09f, 1.42f, QuaternionData(), 90000);
-                            }
+                            pAnnouncer->GetMotionMaster()->MovePoint(0, 748.309f, 619.487f, 411.171f);
+                            pAnnouncer->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                            pAnnouncer->SummonGameObject(instance->IsHeroic() ? GO_CHAMPIONS_LOOT_H : GO_CHAMPIONS_LOOT, 746.59f, 618.49f, 411.09f, 1.42f, QuaternionData(), 90000);
                         }
                     }
-                    break;
-                case DATA_ARGENT_SOLDIER_DEFEATED:
-                    uiArgentSoldierDeaths = uiData;
-                    if (uiArgentSoldierDeaths == 9)
+                }
+                break;
+            case DATA_ARGENT_SOLDIER_DEFEATED:
+                uiArgentSoldierDeaths = uiData;
+                if (uiArgentSoldierDeaths == 9)
+                {
+                    if (Creature* pBoss = instance->GetCreature(uiArgentChampionGUID))
                     {
-                        if (Creature* pBoss = instance->GetCreature(uiArgentChampionGUID))
-                        {
-                            pBoss->GetMotionMaster()->MovePoint(0, 746.88f, 618.74f, 411.06f);
-                            pBoss->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                            pBoss->SetReactState(REACT_AGGRESSIVE);
-                        }
+                        pBoss->GetMotionMaster()->MovePoint(0, 746.88f, 618.74f, 411.06f);
+                        pBoss->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        pBoss->SetReactState(REACT_AGGRESSIVE);
                     }
-                    break;
-                case BOSS_ARGENT_CHALLENGE_E:
-                    m_auiEncounter[1] = uiData;
-                    if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
-                    {
-                        pAnnouncer->GetMotionMaster()->MovePoint(0, 748.309f, 619.487f, 411.171f);
-                        pAnnouncer->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                        pAnnouncer->SummonGameObject(instance->IsHeroic() ? GO_EADRIC_LOOT_H : GO_EADRIC_LOOT, 746.59f, 618.49f, 411.09f, 1.42f, QuaternionData(), 90000);
-                    }
-                    break;
-                case BOSS_ARGENT_CHALLENGE_P:
-                    m_auiEncounter[2] = uiData;
-                    if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
-                    {
-                        pAnnouncer->GetMotionMaster()->MovePoint(0, 748.309f, 619.487f, 411.171f);
-                        pAnnouncer->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                        pAnnouncer->SummonGameObject(instance->IsHeroic() ? GO_PALETRESS_LOOT_H : GO_PALETRESS_LOOT, 746.59f, 618.49f, 411.09f, 1.42f, QuaternionData(), 90000);
-                    }
-                    break;
+                }
+                break;
+            case BOSS_ARGENT_CHALLENGE_E:
+                m_auiEncounter[1] = uiData;
+                if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
+                {
+                    pAnnouncer->GetMotionMaster()->MovePoint(0, 748.309f, 619.487f, 411.171f);
+                    pAnnouncer->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    pAnnouncer->SummonGameObject(instance->IsHeroic() ? GO_EADRIC_LOOT_H : GO_EADRIC_LOOT, 746.59f, 618.49f, 411.09f, 1.42f, QuaternionData(), 90000);
+                }
+                break;
+            case BOSS_ARGENT_CHALLENGE_P:
+                m_auiEncounter[2] = uiData;
+                if (Creature* pAnnouncer = instance->GetCreature(uiAnnouncerGUID))
+                {
+                    pAnnouncer->GetMotionMaster()->MovePoint(0, 748.309f, 619.487f, 411.171f);
+                    pAnnouncer->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    pAnnouncer->SummonGameObject(instance->IsHeroic() ? GO_PALETRESS_LOOT_H : GO_PALETRESS_LOOT, 746.59f, 618.49f, 411.09f, 1.42f, QuaternionData(), 90000);
+                }
+                break;
             }
 
             if (uiData == DONE)
@@ -234,13 +234,13 @@ public:
         {
             switch (uiData)
             {
-                case BOSS_GRAND_CHAMPIONS:  return m_auiEncounter[0];
-                case BOSS_ARGENT_CHALLENGE_E: return m_auiEncounter[1];
-                case BOSS_ARGENT_CHALLENGE_P: return m_auiEncounter[2];
-                case BOSS_BLACK_KNIGHT: return m_auiEncounter[3];
+            case BOSS_GRAND_CHAMPIONS:  return m_auiEncounter[0];
+            case BOSS_ARGENT_CHALLENGE_E: return m_auiEncounter[1];
+            case BOSS_ARGENT_CHALLENGE_P: return m_auiEncounter[2];
+            case BOSS_BLACK_KNIGHT: return m_auiEncounter[3];
 
-                case DATA_MOVEMENT_DONE: return uiMovementDone;
-                case DATA_ARGENT_SOLDIER_DEFEATED: return uiArgentSoldierDeaths;
+            case DATA_MOVEMENT_DONE: return uiMovementDone;
+            case DATA_ARGENT_SOLDIER_DEFEATED: return uiArgentSoldierDeaths;
             }
 
             return 0;
@@ -250,12 +250,12 @@ public:
         {
             switch (uiData)
             {
-                case DATA_ANNOUNCER: return uiAnnouncerGUID;
-                case DATA_MAIN_GATE: return uiMainGateGUID;
+            case DATA_ANNOUNCER: return uiAnnouncerGUID;
+            case DATA_MAIN_GATE: return uiMainGateGUID;
 
-                case DATA_GRAND_CHAMPION_1: return uiGrandChampion1GUID;
-                case DATA_GRAND_CHAMPION_2: return uiGrandChampion2GUID;
-                case DATA_GRAND_CHAMPION_3: return uiGrandChampion3GUID;
+            case DATA_GRAND_CHAMPION_1: return uiGrandChampion1GUID;
+            case DATA_GRAND_CHAMPION_2: return uiGrandChampion2GUID;
+            case DATA_GRAND_CHAMPION_3: return uiGrandChampion3GUID;
             }
 
             return ObjectGuid::Empty;
@@ -265,15 +265,15 @@ public:
         {
             switch (uiType)
             {
-                case DATA_GRAND_CHAMPION_1:
-                    uiGrandChampion1GUID = uiData;
-                    break;
-                case DATA_GRAND_CHAMPION_2:
-                    uiGrandChampion2GUID = uiData;
-                    break;
-                case DATA_GRAND_CHAMPION_3:
-                    uiGrandChampion3GUID = uiData;
-                    break;
+            case DATA_GRAND_CHAMPION_1:
+                uiGrandChampion1GUID = uiData;
+                break;
+            case DATA_GRAND_CHAMPION_2:
+                uiGrandChampion2GUID = uiData;
+                break;
+            case DATA_GRAND_CHAMPION_3:
+                uiGrandChampion3GUID = uiData;
+                break;
             }
         }
 

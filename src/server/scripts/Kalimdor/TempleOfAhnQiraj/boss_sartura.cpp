@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Sartura
-SD%Complete: 95
-SDComment:
-SDCategory: Temple of Ahn'Qiraj
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Sartura
+ SD%Complete: 95
+ SDComment:
+ SDCategory: Temple of Ahn'Qiraj
+ EndScriptData */
 
 #include "temple_of_ahnqiraj.h"
 #include "ScriptMgr.h"
@@ -28,17 +28,17 @@ EndScriptData */
 
 enum Sartura
 {
-    SAY_AGGRO           = 0,
-    SAY_SLAY            = 1,
-    SAY_DEATH           = 2,
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_DEATH = 2,
 
-    SPELL_WHIRLWIND     = 26083,
-    SPELL_ENRAGE        = 28747,            //Not sure if right ID.
-    SPELL_ENRAGEHARD    = 28798,
+    SPELL_WHIRLWIND = 26083,
+    SPELL_ENRAGE = 28747,            //Not sure if right ID.
+    SPELL_ENRAGEHARD = 28798,
 
     //Guard Spell
-    SPELL_WHIRLWINDADD  = 26038,
-    SPELL_KNOCKBACK     = 26027
+    SPELL_WHIRLWINDADD = 26038,
+    SPELL_KNOCKBACK = 26027
 };
 
 class boss_sartura : public CreatureScript
@@ -97,16 +97,16 @@ public:
             _JustEngagedWith(who);
         }
 
-         void JustDied(Unit* /*killer*/) override
-         {
-             Talk(SAY_DEATH);
-             _JustDied();
-         }
+        void JustDied(Unit* /*killer*/) override
+        {
+            Talk(SAY_DEATH);
+            _JustDied();
+        }
 
-         void KilledUnit(Unit* /*victim*/) override
-         {
-             Talk(SAY_SLAY);
-         }
+        void KilledUnit(Unit* /*victim*/) override
+        {
+            Talk(SAY_SLAY);
+        }
 
         void UpdateAI(uint32 diff) override
         {
@@ -125,13 +125,15 @@ public:
                         AttackStart(target);
                     }
                     WhirlWindRandom_Timer = urand(3000, 7000);
-                } else WhirlWindRandom_Timer -= diff;
+                }
+                else WhirlWindRandom_Timer -= diff;
 
                 if (WhirlWindEnd_Timer <= diff)
                 {
                     WhirlWind = false;
                     WhirlWind_Timer = urand(25000, 40000);
-                } else WhirlWindEnd_Timer -= diff;
+                }
+                else WhirlWindEnd_Timer -= diff;
             }
 
             if (!WhirlWind)
@@ -141,7 +143,8 @@ public:
                     DoCast(me, SPELL_WHIRLWIND);
                     WhirlWind = true;
                     WhirlWindEnd_Timer = 15000;
-                } else WhirlWind_Timer -= diff;
+                }
+                else WhirlWind_Timer -= diff;
 
                 if (AggroReset_Timer <= diff)
                 {
@@ -153,7 +156,8 @@ public:
                     }
                     AggroReset = true;
                     AggroReset_Timer = urand(2000, 5000);
-                } else AggroReset_Timer -= diff;
+                }
+                else AggroReset_Timer -= diff;
 
                 if (AggroReset)
                 {
@@ -162,7 +166,8 @@ public:
                         AggroReset = false;
                         AggroResetEnd_Timer = 5000;
                         AggroReset_Timer = urand(35000, 45000);
-                    } else AggroResetEnd_Timer -= diff;
+                    }
+                    else AggroResetEnd_Timer -= diff;
                 }
 
                 //If she is 20% enrage
@@ -182,7 +187,8 @@ public:
                     {
                         DoCast(me, SPELL_ENRAGEHARD);
                         EnragedHard = true;
-                    } else EnrageHard_Timer -= diff;
+                    }
+                    else EnrageHard_Timer -= diff;
                 }
 
                 DoMeleeAttackIfReady();
@@ -253,7 +259,8 @@ public:
                 WhirlWind = true;
                 WhirlWind_Timer = urand(25000, 40000);
                 WhirlWindEnd_Timer = 15000;
-            } else WhirlWind_Timer -= diff;
+            }
+            else WhirlWind_Timer -= diff;
 
             if (WhirlWind)
             {
@@ -267,12 +274,14 @@ public:
                     }
 
                     WhirlWindRandom_Timer = urand(3000, 7000);
-                } else WhirlWindRandom_Timer -= diff;
+                }
+                else WhirlWindRandom_Timer -= diff;
 
                 if (WhirlWindEnd_Timer <= diff)
                 {
                     WhirlWind = false;
-                } else WhirlWindEnd_Timer -= diff;
+                }
+                else WhirlWindEnd_Timer -= diff;
             }
 
             if (!WhirlWind)
@@ -288,13 +297,15 @@ public:
 
                     AggroReset = true;
                     AggroReset_Timer = urand(2000, 5000);
-                } else AggroReset_Timer -= diff;
+                }
+                else AggroReset_Timer -= diff;
 
                 if (KnockBack_Timer <= diff)
                 {
                     DoCast(me, SPELL_WHIRLWINDADD);
                     KnockBack_Timer = urand(10000, 20000);
-                } else KnockBack_Timer -= diff;
+                }
+                else KnockBack_Timer -= diff;
             }
 
             if (AggroReset)
@@ -304,7 +315,8 @@ public:
                     AggroReset = false;
                     AggroResetEnd_Timer = 5000;
                     AggroReset_Timer = urand(30000, 40000);
-                } else AggroResetEnd_Timer -= diff;
+                }
+                else AggroResetEnd_Timer -= diff;
             }
 
             DoMeleeAttackIfReady();

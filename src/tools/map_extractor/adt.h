@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -51,7 +51,7 @@ struct adt_MCVT
         char   fcc_txt[4];
     };
     uint32 size;
-    float height_map[(ADT_CELL_SIZE + 1)*(ADT_CELL_SIZE + 1) + ADT_CELL_SIZE * ADT_CELL_SIZE];
+    float height_map[(ADT_CELL_SIZE + 1) * (ADT_CELL_SIZE + 1) + ADT_CELL_SIZE * ADT_CELL_SIZE];
 };
 
 //
@@ -86,7 +86,7 @@ struct adt_MCLQ
 //
 struct adt_MCNK
 {
-    union{
+    union {
         uint32 fcc;
         char   fcc_txt[4];
     };
@@ -187,7 +187,7 @@ public:
     adt_liquid_instance const* GetLiquidInstance(int32 x, int32 y) const
     {
         if (liquid[x][y].used && liquid[x][y].OffsetInstances)
-            return (adt_liquid_instance *)((uint8*)this + 8 + liquid[x][y].OffsetInstances);
+            return (adt_liquid_instance*)((uint8*)this + 8 + liquid[x][y].OffsetInstances);
         return nullptr;
     }
 
@@ -196,7 +196,7 @@ public:
         if (liquid[x][y].used)
         {
             if (liquid[x][y].OffsetAttributes)
-                return *((adt_liquid_attributes *)((uint8*)this + 8 + liquid[x][y].OffsetAttributes));
+                return *((adt_liquid_attributes*)((uint8*)this + 8 + liquid[x][y].OffsetAttributes));
             return { 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF };
         }
         return { 0, 0 };
@@ -242,20 +242,20 @@ public:
 
         switch (GetLiquidVertexFormat(h))
         {
-            case LiquidVertexFormatType::HeightDepth:
-                return ((int8 const*)((int8 const*)this + 8 + h->OffsetVertexData + (h->GetWidth() + 1) * (h->GetHeight() + 1) * 4))[pos];
-            case LiquidVertexFormatType::HeightTextureCoord:
-                return 0;
-            case LiquidVertexFormatType::Depth:
-                return ((int8 const*)((uint8*)this + 8 + h->OffsetVertexData))[pos];
-            case LiquidVertexFormatType::HeightDepthTextureCoord:
-                return ((int8 const*)((int8 const*)this + 8 + h->OffsetVertexData + (h->GetWidth() + 1) * (h->GetHeight() + 1) * 8))[pos];
-            case LiquidVertexFormatType::Unk4:
-                return ((int8 const*)((uint8*)this + 8 + h->OffsetVertexData))[pos * 8];
-            case LiquidVertexFormatType::Unk5:
-                return 0;
-            default:
-                break;
+        case LiquidVertexFormatType::HeightDepth:
+            return ((int8 const*)((int8 const*)this + 8 + h->OffsetVertexData + (h->GetWidth() + 1) * (h->GetHeight() + 1) * 4))[pos];
+        case LiquidVertexFormatType::HeightTextureCoord:
+            return 0;
+        case LiquidVertexFormatType::Depth:
+            return ((int8 const*)((uint8*)this + 8 + h->OffsetVertexData))[pos];
+        case LiquidVertexFormatType::HeightDepthTextureCoord:
+            return ((int8 const*)((int8 const*)this + 8 + h->OffsetVertexData + (h->GetWidth() + 1) * (h->GetHeight() + 1) * 8))[pos];
+        case LiquidVertexFormatType::Unk4:
+            return ((int8 const*)((uint8*)this + 8 + h->OffsetVertexData))[pos * 8];
+        case LiquidVertexFormatType::Unk5:
+            return 0;
+        default:
+            break;
         }
         return 0;
     }
@@ -285,7 +285,7 @@ public:
     uint64 GetLiquidExistsBitmap(adt_liquid_instance const* h) const
     {
         if (h->OffsetExistsBitmap)
-            return *((uint64 *)((uint8*)this + 8 + h->OffsetExistsBitmap));
+            return *((uint64*)((uint8*)this + 8 + h->OffsetExistsBitmap));
         else
             return 0xFFFFFFFFFFFFFFFFuLL;
     }

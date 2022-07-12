@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -29,9 +29,7 @@ endif(WIN32)
 
 add_subdirectory(database)
 add_subdirectory(shared)
-add_subdirectory(ipc)
 
-# add_subdirectory(bnetserver)
 add_subdirectory(authserver)
 add_subdirectory(game)
 add_subdirectory(scripts)

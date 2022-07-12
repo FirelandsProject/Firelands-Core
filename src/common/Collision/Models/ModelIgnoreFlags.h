@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,13 +22,13 @@
 
 namespace VMAP
 {
-enum class ModelIgnoreFlags : uint32
-{
-    Nothing = 0x00,
-    M2      = 0x01
-};
+    enum class ModelIgnoreFlags : uint32
+    {
+        Nothing = 0x00,
+        M2 = 0x01
+    };
 
-inline ModelIgnoreFlags operator&(ModelIgnoreFlags left, ModelIgnoreFlags right) { return ModelIgnoreFlags(uint32(left) & uint32(right)); }
+    inline ModelIgnoreFlags operator&(ModelIgnoreFlags left, ModelIgnoreFlags right) { return ModelIgnoreFlags(uint32(left) & uint32(right)); }
 }
 
 #endif // ModelIgnoreFlags_h__

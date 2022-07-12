@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,17 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Sholazar_Basin
-SD%Complete: 100
-SDComment: Quest support: 11253, 11241.
-SDCategory: howling_fjord
-EndScriptData */
+ /* ScriptData
+ SDName: Sholazar_Basin
+ SD%Complete: 100
+ SDComment: Quest support: 11253, 11241.
+ SDCategory: howling_fjord
+ EndScriptData */
 
-/* ContentData
-npc_plaguehound_tracker
-npc_apothecary_hanes
-EndContentData */
+ /* ContentData
+ npc_plaguehound_tracker
+ npc_apothecary_hanes
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "MotionMaster.h"
@@ -36,30 +36,30 @@ EndContentData */
 #include "SpellScript.h"
 #include "TemporarySummon.h"
 
-/*######
-## npc_apothecary_hanes
-######*/
+ /*######
+ ## npc_apothecary_hanes
+ ######*/
 enum Entries
 {
     NPC_APOTHECARY_HANES = 23784,
-    QUEST_TRAIL_OF_FIRE  = 11241,
+    QUEST_TRAIL_OF_FIRE = 11241,
 
     SPELL_HEALING_POTION = 17534,
-    SPELL_BURN           = 42685,
+    SPELL_BURN = 42685,
 
-    EVENT_EMOTE_BEG    = 1,
-    EVENT_BEGIN        = 2,
+    EVENT_EMOTE_BEG = 1,
+    EVENT_BEGIN = 2,
     EVENT_START_ESCORT = 3,
-    EVENT_TALK_1       = 4,
-    EVENT_KNEEL        = 5,
-    EVENT_TALK_2       = 6,
-    EVENT_BURN_CRATES  = 7,
-    EVENT_TALK_3       = 8,
-    EVENT_TALK_4       = 9,
-    EVENT_LAUGH        = 10,
-    EVENT_TALK_5       = 11,
-    EVENT_TALK_6       = 12,
-    EVENT_TALK_8       = 13,
+    EVENT_TALK_1 = 4,
+    EVENT_KNEEL = 5,
+    EVENT_TALK_2 = 6,
+    EVENT_BURN_CRATES = 7,
+    EVENT_TALK_3 = 8,
+    EVENT_TALK_4 = 9,
+    EVENT_LAUGH = 10,
+    EVENT_TALK_5 = 11,
+    EVENT_TALK_6 = 12,
+    EVENT_TALK_8 = 13,
 
     TALK_0 = 0,
     TALK_1 = 1,
@@ -132,7 +132,8 @@ public:
                 {
                     DoCast(me, SPELL_HEALING_POTION, true);
                     PotTimer = 10000;
-                } else PotTimer -= diff;
+                }
+                else PotTimer -= diff;
             }
 
             if (GetAttack() && UpdateVictim())
@@ -149,60 +150,60 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_EMOTE_BEG:
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_BEG);
-                        events.ScheduleEvent(EVENT_EMOTE_BEG, Seconds(25));
-                        break;
-                    case EVENT_BEGIN:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_0, player);
-                        break;
-                    case EVENT_START_ESCORT:
-                        events.Reset();
-                        me->SetFaction(FACTION_ESCORTEE_H_PASSIVE);
-                        me->SetReactState(REACT_AGGRESSIVE);
-                        ENSURE_AI(EscortAI, (me->AI()))->Start(true, true, _player);
-                        break;
-                    case EVENT_TALK_1:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_1, player);
-                        break;
-                    case EVENT_KNEEL:
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_KNEEL);
-                        break;
-                    case EVENT_TALK_2:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_2, player);
-                        me->LoadEquipment(EQUIP_TORCH);
-                        me->SetSheath(SHEATH_STATE_MELEE);
-                        break;
-                    case EVENT_BURN_CRATES:
-                        DoCastAOE(SPELL_BURN, true);
-                        break;
-                    case EVENT_TALK_3:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_3, player);
-                        break;
-                    case EVENT_TALK_4:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_4, player);
-                        break;
-                    case EVENT_LAUGH:
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-                        break;
-                    case EVENT_TALK_5:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_5, player);
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
-                        break;
-                    case EVENT_TALK_6:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_6, player);
-                        break;
-                    case EVENT_TALK_8:
-                        if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
-                            Talk(TALK_8, player);
-                        break;
+                case EVENT_EMOTE_BEG:
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_BEG);
+                    events.ScheduleEvent(EVENT_EMOTE_BEG, Seconds(25));
+                    break;
+                case EVENT_BEGIN:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_0, player);
+                    break;
+                case EVENT_START_ESCORT:
+                    events.Reset();
+                    me->SetFaction(FACTION_ESCORTEE_H_PASSIVE);
+                    me->SetReactState(REACT_AGGRESSIVE);
+                    ENSURE_AI(EscortAI, (me->AI()))->Start(true, true, _player);
+                    break;
+                case EVENT_TALK_1:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_1, player);
+                    break;
+                case EVENT_KNEEL:
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_KNEEL);
+                    break;
+                case EVENT_TALK_2:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_2, player);
+                    me->LoadEquipment(EQUIP_TORCH);
+                    me->SetSheath(SHEATH_STATE_MELEE);
+                    break;
+                case EVENT_BURN_CRATES:
+                    DoCastAOE(SPELL_BURN, true);
+                    break;
+                case EVENT_TALK_3:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_3, player);
+                    break;
+                case EVENT_TALK_4:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_4, player);
+                    break;
+                case EVENT_LAUGH:
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+                    break;
+                case EVENT_TALK_5:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_5, player);
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
+                    break;
+                case EVENT_TALK_6:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_6, player);
+                    break;
+                case EVENT_TALK_8:
+                    if (Player* player = ObjectAccessor::GetPlayer(*me, _player))
+                        Talk(TALK_8, player);
+                    break;
                 }
             }
         }
@@ -215,38 +216,38 @@ public:
 
             switch (waypointId)
             {
-                case 1:
-                    events.ScheduleEvent(EVENT_TALK_1, Seconds(3));
-                    events.ScheduleEvent(EVENT_KNEEL, Seconds(5));
-                    events.ScheduleEvent(EVENT_TALK_2, Seconds(6));
-                    me->SetStandState(UNIT_STAND_STATE_STAND);
-                    break;
-                case 12:
-                    events.ScheduleEvent(EVENT_BURN_CRATES, Seconds(1));
-                    events.ScheduleEvent(EVENT_TALK_3, Seconds(3));
-                    break;
-                case 20:
-                    events.ScheduleEvent(EVENT_BURN_CRATES, 0);
-                    break;
-                case 21:
-                    events.ScheduleEvent(EVENT_BURN_CRATES, 0);
-                    events.ScheduleEvent(EVENT_TALK_4, Seconds(3));
-                    break;
-                case 28:
-                    events.ScheduleEvent(EVENT_BURN_CRATES, 0);
-                    events.ScheduleEvent(EVENT_LAUGH, Seconds(7));
-                    events.ScheduleEvent(EVENT_TALK_5, Seconds(9));
-                    events.ScheduleEvent(EVENT_TALK_6, Seconds(17));
-                    break;
-                case 35:
-                    if (Player* pl = ObjectAccessor::GetPlayer(*me, _player))
-                        Talk(TALK_7, pl);
-                    break;
-                case 40:
-                    if (Player* pl = ObjectAccessor::GetPlayer(*me, _player))
-                        pl->GroupEventHappens(QUEST_TRAIL_OF_FIRE, me);
-                    events.ScheduleEvent(EVENT_TALK_8, Seconds(4));
-                    break;
+            case 1:
+                events.ScheduleEvent(EVENT_TALK_1, Seconds(3));
+                events.ScheduleEvent(EVENT_KNEEL, Seconds(5));
+                events.ScheduleEvent(EVENT_TALK_2, Seconds(6));
+                me->SetStandState(UNIT_STAND_STATE_STAND);
+                break;
+            case 12:
+                events.ScheduleEvent(EVENT_BURN_CRATES, Seconds(1));
+                events.ScheduleEvent(EVENT_TALK_3, Seconds(3));
+                break;
+            case 20:
+                events.ScheduleEvent(EVENT_BURN_CRATES, 0);
+                break;
+            case 21:
+                events.ScheduleEvent(EVENT_BURN_CRATES, 0);
+                events.ScheduleEvent(EVENT_TALK_4, Seconds(3));
+                break;
+            case 28:
+                events.ScheduleEvent(EVENT_BURN_CRATES, 0);
+                events.ScheduleEvent(EVENT_LAUGH, Seconds(7));
+                events.ScheduleEvent(EVENT_TALK_5, Seconds(9));
+                events.ScheduleEvent(EVENT_TALK_6, Seconds(17));
+                break;
+            case 35:
+                if (Player* pl = ObjectAccessor::GetPlayer(*me, _player))
+                    Talk(TALK_7, pl);
+                break;
+            case 40:
+                if (Player* pl = ObjectAccessor::GetPlayer(*me, _player))
+                    pl->GroupEventHappens(QUEST_TRAIL_OF_FIRE, me);
+                events.ScheduleEvent(EVENT_TALK_8, Seconds(4));
+                break;
             }
         }
     };
@@ -263,7 +264,7 @@ public:
 
 enum Plaguehound
 {
-    QUEST_SNIFF_OUT_ENEMY        = 11253
+    QUEST_SNIFF_OUT_ENEMY = 11253
 };
 
 class npc_plaguehound_tracker : public CreatureScript
@@ -341,22 +342,22 @@ public:
             if (player->GetQuestStatus(QUEST_REPORTS_FROM_THE_FIELD) == QUEST_STATUS_INCOMPLETE)
                 switch (me->GetEntry())
                 {
-                    case NPC_RAZAEL:
-                        if (!player->GetReqKillOrCastCurrentCount(QUEST_REPORTS_FROM_THE_FIELD, NPC_RAZAEL))
-                        {
-                            AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_RAZAEL_REPORT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-                            SendGossipMenuFor(player, GOSSIP_TEXTID_RAZAEL1, me->GetGUID());
-                            return true;
-                        }
-                        break;
-                    case NPC_LYANA:
-                        if (!player->GetReqKillOrCastCurrentCount(QUEST_REPORTS_FROM_THE_FIELD, NPC_LYANA))
-                        {
-                            AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_LYANA_REPORT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
-                            SendGossipMenuFor(player, GOSSIP_TEXTID_LYANA1, me->GetGUID());
-                            return true;
-                        }
-                        break;
+                case NPC_RAZAEL:
+                    if (!player->GetReqKillOrCastCurrentCount(QUEST_REPORTS_FROM_THE_FIELD, NPC_RAZAEL))
+                    {
+                        AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_RAZAEL_REPORT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+                        SendGossipMenuFor(player, GOSSIP_TEXTID_RAZAEL1, me->GetGUID());
+                        return true;
+                    }
+                    break;
+                case NPC_LYANA:
+                    if (!player->GetReqKillOrCastCurrentCount(QUEST_REPORTS_FROM_THE_FIELD, NPC_LYANA))
+                    {
+                        AddGossipItemFor(player, GOSSIP_ICON_CHAT, GOSSIP_LYANA_REPORT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+                        SendGossipMenuFor(player, GOSSIP_TEXTID_LYANA1, me->GetGUID());
+                        return true;
+                    }
+                    break;
                 }
             SendGossipMenuFor(player, player->GetGossipTextId(me), me->GetGUID());
             return true;
@@ -368,14 +369,14 @@ public:
             ClearGossipMenuFor(player);
             switch (action)
             {
-                case GOSSIP_ACTION_INFO_DEF + 1:
-                    SendGossipMenuFor(player, GOSSIP_TEXTID_RAZAEL2, me->GetGUID());
-                    player->TalkedToCreature(NPC_RAZAEL, me->GetGUID());
-                    break;
-                case GOSSIP_ACTION_INFO_DEF + 2:
-                    SendGossipMenuFor(player, GOSSIP_TEXTID_LYANA2, me->GetGUID());
-                    player->TalkedToCreature(NPC_LYANA, me->GetGUID());
-                    break;
+            case GOSSIP_ACTION_INFO_DEF + 1:
+                SendGossipMenuFor(player, GOSSIP_TEXTID_RAZAEL2, me->GetGUID());
+                player->TalkedToCreature(NPC_RAZAEL, me->GetGUID());
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 2:
+                SendGossipMenuFor(player, GOSSIP_TEXTID_LYANA2, me->GetGUID());
+                player->TalkedToCreature(NPC_LYANA, me->GetGUID());
+                break;
             }
             return true;
         }
@@ -393,20 +394,20 @@ public:
 
 enum Daegarnn
 {
-    QUEST_DEFEAT_AT_RING            = 11300,
+    QUEST_DEFEAT_AT_RING = 11300,
 
-    NPC_FIRJUS                      = 24213,
-    NPC_JLARBORN                    = 24215,
-    NPC_YOROS                       = 24214,
-    NPC_OLUF                        = 23931,
+    NPC_FIRJUS = 24213,
+    NPC_JLARBORN = 24215,
+    NPC_YOROS = 24214,
+    NPC_OLUF = 23931,
 
-    NPC_PRISONER_1                  = 24253,  // looks the same but has different abilities
-    NPC_PRISONER_2                  = 24254,
-    NPC_PRISONER_3                  = 24255,
+    NPC_PRISONER_1 = 24253,  // looks the same but has different abilities
+    NPC_PRISONER_2 = 24254,
+    NPC_PRISONER_3 = 24255,
 };
 
-static float afSummon[] = {838.81f, -4678.06f, -94.182f};
-static float afCenter[] = {801.88f, -4721.87f, -96.143f};
+static float afSummon[] = { 838.81f, -4678.06f, -94.182f };
+static float afCenter[] = { 801.88f, -4721.87f, -96.143f };
 
 class npc_daegarn : public CreatureScript
 {
@@ -469,7 +470,7 @@ public:
 
         void SummonGladiator(uint32 uiEntry)
         {
-            me->SummonCreature(uiEntry, afSummon[0], afSummon[1], afSummon[2], 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 30*IN_MILLISECONDS);
+            me->SummonCreature(uiEntry, afSummon[0], afSummon[1], afSummon[2], 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 30 * IN_MILLISECONDS);
         }
 
         void SummonedCreatureDies(Creature* summoned, Unit* /*killer*/) override
@@ -479,10 +480,10 @@ public:
             // will eventually reset the event if something goes wrong
             switch (summoned->GetEntry())
             {
-                case NPC_FIRJUS:    uiEntry = NPC_JLARBORN; break;
-                case NPC_JLARBORN:  uiEntry = NPC_YOROS;    break;
-                case NPC_YOROS:     uiEntry = NPC_OLUF;     break;
-                case NPC_OLUF:      Reset();                return;
+            case NPC_FIRJUS:    uiEntry = NPC_JLARBORN; break;
+            case NPC_JLARBORN:  uiEntry = NPC_YOROS;    break;
+            case NPC_YOROS:     uiEntry = NPC_OLUF;     break;
+            case NPC_OLUF:      Reset();                return;
             }
 
             SummonGladiator(uiEntry);
@@ -497,7 +498,7 @@ public:
 
 enum MindlessAbomination
 {
-    EVENT_CHECK_CHARMED                = 1
+    EVENT_CHECK_CHARMED = 1
 };
 
 class npc_mindless_abomination : public CreatureScript
@@ -522,12 +523,12 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_CHECK_CHARMED:
-                        if (!me->IsCharmedOwnedByPlayerOrPlayer())
-                            me->DespawnOrUnsummon();
-                        else
-                            events.ScheduleEvent(EVENT_CHECK_CHARMED, 1000);
-                        break;
+                case EVENT_CHECK_CHARMED:
+                    if (!me->IsCharmedOwnedByPlayerOrPlayer())
+                        me->DespawnOrUnsummon();
+                    else
+                        events.ScheduleEvent(EVENT_CHECK_CHARMED, 1000);
+                    break;
                 }
             }
         }
@@ -550,57 +551,57 @@ class spell_mindless_abomination_explosion_fx_master : public SpellScriptLoader
         SPELL_COSMETIC_BLOOD_EXPLOSION_GREEN_LARGE = 43401
     };
 
-    public:
-        spell_mindless_abomination_explosion_fx_master() : SpellScriptLoader("spell_mindless_abomination_explosion_fx_master") { }
+public:
+    spell_mindless_abomination_explosion_fx_master() : SpellScriptLoader("spell_mindless_abomination_explosion_fx_master") { }
 
-        class spell_mindless_abomination_explosion_fx_master_SpellScript : public SpellScript
+    class spell_mindless_abomination_explosion_fx_master_SpellScript : public SpellScript
+    {
+        bool Validate(SpellInfo const* /*spellInfo*/) override
         {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo({ SPELL_RANDOM_CIRCUMFERENCE_POINT_POISON, SPELL_COSMETIC_BLOOD_EXPLOSION_GREEN_LARGE });
-            }
-
-            void HandleScript(SpellEffIndex /*eff*/)
-            {
-                Creature* caster = GetCaster()->ToCreature();
-                if (!caster)
-                    return;
-
-                caster->CastSpell(caster, SPELL_COSMETIC_BLOOD_EXPLOSION_GREEN_LARGE);
-
-                for (uint8 i = 0; i < 10; ++i)
-                    caster->CastSpell(caster, SPELL_RANDOM_CIRCUMFERENCE_POINT_POISON);
-
-                caster->DespawnOrUnsummon(4000);
-            }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_mindless_abomination_explosion_fx_master_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_mindless_abomination_explosion_fx_master_SpellScript();
+            return ValidateSpellInfo({ SPELL_RANDOM_CIRCUMFERENCE_POINT_POISON, SPELL_COSMETIC_BLOOD_EXPLOSION_GREEN_LARGE });
         }
+
+        void HandleScript(SpellEffIndex /*eff*/)
+        {
+            Creature* caster = GetCaster()->ToCreature();
+            if (!caster)
+                return;
+
+            caster->CastSpell(caster, SPELL_COSMETIC_BLOOD_EXPLOSION_GREEN_LARGE);
+
+            for (uint8 i = 0; i < 10; ++i)
+                caster->CastSpell(caster, SPELL_RANDOM_CIRCUMFERENCE_POINT_POISON);
+
+            caster->DespawnOrUnsummon(4000);
+        }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_mindless_abomination_explosion_fx_master_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_mindless_abomination_explosion_fx_master_SpellScript();
+    }
 };
 
 enum SummonSpells
 {
-    SPELL_SUMMON_BABY_RIVEN_WIDOWS        = 43275,
-    SPELL_SUMMON_DARKCLAW_BAT             = 43276,
-    SPELL_SUMMON_FANGGORE_WORG            = 43277,
-    SPELL_SUMMON_GJALERBRON_RUNECASTER    = 43278,
-    SPELL_SUMMON_GJALERBRON_SLEEPWATCHER  = 43279,
-    SPELL_SUMMON_GJALERBRON_WARRIOR       = 43280,
-    SPELL_SUMMON_PUTRID_HORROR            = 43281,
-    SPELL_SUMMON_WINTERSKORN_BERSERKER    = 43282,
-    SPELL_SUMMON_WINTERSKORN_WOODSMAN     = 43283,
-    SPELL_SUMMON_WINTERSKORN_TRIBESMAN    = 43284,
-    SPELL_SUMMON_WINTERSKORN_ORACLE       = 43285,
+    SPELL_SUMMON_BABY_RIVEN_WIDOWS = 43275,
+    SPELL_SUMMON_DARKCLAW_BAT = 43276,
+    SPELL_SUMMON_FANGGORE_WORG = 43277,
+    SPELL_SUMMON_GJALERBRON_RUNECASTER = 43278,
+    SPELL_SUMMON_GJALERBRON_SLEEPWATCHER = 43279,
+    SPELL_SUMMON_GJALERBRON_WARRIOR = 43280,
+    SPELL_SUMMON_PUTRID_HORROR = 43281,
+    SPELL_SUMMON_WINTERSKORN_BERSERKER = 43282,
+    SPELL_SUMMON_WINTERSKORN_WOODSMAN = 43283,
+    SPELL_SUMMON_WINTERSKORN_TRIBESMAN = 43284,
+    SPELL_SUMMON_WINTERSKORN_ORACLE = 43285,
     SPELL_SUMMON_FREED_MIST_WHISPER_SCOUT = 43289,
-    NPC_MIST_WHISPER_SCOUT                = 24211
+    NPC_MIST_WHISPER_SCOUT = 24211
 };
 
 const uint32 rivenWidowCocoonVictims[11] =

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -665,22 +665,22 @@ void WorldSession::HandlePetRename(WorldPacket& recvData)
     if (isdeclined)
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_PET_DECLINEDNAME);
-        stmt->setUInt32(0, pet->GetCharmInfo()->GetPetNumber());
+        stmt->SetData(0, pet->GetCharmInfo()->GetPetNumber());
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_PET_DECLINEDNAME);
-        stmt->setUInt32(0, _player->GetGUID().GetCounter());
+        stmt->SetData(0, _player->GetGUID().GetCounter());
 
         for (uint8 i = 0; i < 5; i++)
-            stmt->setString(i + 1, declinedname.name[i]);
+            stmt->SetData(i + 1, declinedname.name[i]);
 
         trans->Append(stmt);
     }
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHAR_PET_NAME);
-    stmt->setString(0, name);
-    stmt->setUInt32(1, _player->GetGUID().GetCounter());
-    stmt->setUInt32(2, pet->GetCharmInfo()->GetPetNumber());
+    stmt->SetData(0, name);
+    stmt->SetData(1, _player->GetGUID().GetCounter());
+    stmt->SetData(2, pet->GetCharmInfo()->GetPetNumber());
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -910,9 +910,9 @@ void WorldSession::UpdatePetSlot(uint32 petNumberA, uint8 oldPetSlot, uint8 newP
         else
         {
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHAR_PET_SLOT_BY_SLOT);
-            stmt->setUInt32(0, oldPetSlot);
-            stmt->setUInt64(1, _player->GetGUID().GetCounter());
-            stmt->setUInt32(2, newPetSlot);
+            stmt->SetData(0, oldPetSlot);
+            stmt->SetData(1, _player->GetGUID().GetCounter());
+            stmt->SetData(2, newPetSlot);
             trans->Append(stmt);
 
         }
@@ -929,9 +929,9 @@ void WorldSession::UpdatePetSlot(uint32 petNumberA, uint8 oldPetSlot, uint8 newP
     else
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHAR_PET_SLOT_BY_ID);
-        stmt->setUInt32(0, newPetSlot);
-        stmt->setUInt64(1, _player->GetGUID().GetCounter());
-        stmt->setUInt32(2, petNumberA);
+        stmt->SetData(0, newPetSlot);
+        stmt->SetData(1, _player->GetGUID().GetCounter());
+        stmt->SetData(2, petNumberA);
         trans->Append(stmt);
     }
 
@@ -973,7 +973,7 @@ void WorldSession::SendPetAdded(int32 petSlot, int32 petNumber, int32 creatureID
 void WorldSession::HandleRequestPetInfoOpcode(WorldPacket& /*recvData*/)
 {
     /* Handle the packet CMSG_REQUEST_PET_INFO - Send when player has a pet, and does /reload
-     * From: https://github.com/FirelandsCore/FirelandsCore/commit/6ebe1afeeccb847702c12e522bddaa7b5694dc38#comments
+     * From: https://github.com/Firelands Core/FirelandsCore/commit/6ebe1afeeccb847702c12e522bddaa7b5694dc38#comments
      * This packet is also sent when
      *     You're controlling a vehicle (Player::VehicleSpellInitialize)
      *     You have a unit charmed (Player::CharmSpellInitialize)

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -47,7 +47,7 @@ void FleeingMovementGenerator<T>::DoInitialize(T* owner)
 }
 
 template<class T>
-void FleeingMovementGenerator<T>::DoFinalize(T *)
+void FleeingMovementGenerator<T>::DoFinalize(T*)
 {
 }
 
@@ -142,7 +142,7 @@ void FleeingMovementGenerator<T>::SetTargetLocation(T* owner)
 }
 
 template<class T>
-void FleeingMovementGenerator<T>::GetPoint(T* owner, Position &position)
+void FleeingMovementGenerator<T>::GetPoint(T* owner, Position& position)
 {
     float casterDistance, casterAngle;
     if (Unit* fleeTarget = ObjectAccessor::GetUnit(*owner, _fleeTargetGUID))
@@ -189,8 +189,8 @@ template bool FleeingMovementGenerator<Player>::DoUpdate(Player*, uint32);
 template bool FleeingMovementGenerator<Creature>::DoUpdate(Creature*, uint32);
 template void FleeingMovementGenerator<Player>::SetTargetLocation(Player*);
 template void FleeingMovementGenerator<Creature>::SetTargetLocation(Creature*);
-template void FleeingMovementGenerator<Player>::GetPoint(Player*, Position &);
-template void FleeingMovementGenerator<Creature>::GetPoint(Creature*, Position &);
+template void FleeingMovementGenerator<Player>::GetPoint(Player*, Position&);
+template void FleeingMovementGenerator<Creature>::GetPoint(Creature*, Position&);
 
 //---- TimedFleeingMovementGenerator
 

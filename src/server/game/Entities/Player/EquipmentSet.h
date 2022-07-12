@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,9 +26,9 @@
 enum EquipmentSetUpdateState
 {
     EQUIPMENT_SET_UNCHANGED = 0,
-    EQUIPMENT_SET_CHANGED   = 1,
-    EQUIPMENT_SET_NEW       = 2,
-    EQUIPMENT_SET_DELETED   = 3
+    EQUIPMENT_SET_CHANGED = 1,
+    EQUIPMENT_SET_NEW = 2,
+    EQUIPMENT_SET_DELETED = 3
 };
 
 #define EQUIPMENT_SET_SLOTS 19

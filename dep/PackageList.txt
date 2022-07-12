@@ -1,4 +1,4 @@
-FirelandsCore uses (parts of or in whole) the following opensource software:
+Firelands Core uses (parts of or in whole) the following opensource software:
 
 Boost (external)
   http://www.boost.org
@@ -64,7 +64,7 @@ recastnavigation (Recast is state of the art navigation mesh construction toolse
 StormLib (a pack of modules, written in C++, which are able to read and also to write files from/to the MPQ archives)
   http://www.zezula.net/en/mpq/stormlib.html
   Version: 8.04
-  
+
 libzmq (ZeroMQ core engine in C++, implements ZMTP/3.1)
   https://github.com/zeromq/libzmq
   Version: 4.2.3 stable

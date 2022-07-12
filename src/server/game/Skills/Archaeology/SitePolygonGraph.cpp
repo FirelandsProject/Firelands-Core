@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -25,11 +25,11 @@
 SitePolygonGraph::SitePolygonGraph()
 {
     // Commons
-    _arches      = 0;
-    _nodes       = 0;
-    _size_nodes  = 0;
+    _arches = 0;
+    _nodes = 0;
+    _size_nodes = 0;
     _size_arches = 0;
-    _geometry    = SitePolygonGraphGeometry();
+    _geometry = SitePolygonGraphGeometry();
 
     // use current time as seed for random generator
     std::srand(std::time(0));
@@ -38,11 +38,11 @@ SitePolygonGraph::SitePolygonGraph()
 SitePolygonGraph::~SitePolygonGraph()
 {
     // Mem. Leaks free
-    if(!_nodes) return;
+    if (!_nodes) return;
     delete[] _nodes;
 
     // Mem. Leaks free
-    if(!_arches) return;
+    if (!_arches) return;
     delete[] _arches;
 }
 
@@ -50,14 +50,14 @@ SitePolygonGraph::~SitePolygonGraph()
 //      ADD NEW NODE TO POOL
 //===========================================================================//
 
-bool SitePolygonGraph::add_node(const SitePolygonGraphNode &node)
+bool SitePolygonGraph::add_node(const SitePolygonGraphNode& node)
 {
     return add_node(node.getX(), node.getY());
 }
 
-bool SitePolygonGraph::add_node(const float &x, const float &y)
+bool SitePolygonGraph::add_node(const float& x, const float& y)
 {
-    if(!resize_nodes())
+    if (!resize_nodes())
         return false;
 
     _nodes[_size_nodes - 1].setX(x);
@@ -66,7 +66,7 @@ bool SitePolygonGraph::add_node(const float &x, const float &y)
     // Generate boundary rectangle
     generate_geometry();
 
-    if(_size_nodes > 1)
+    if (_size_nodes > 1)
         return this->merge_perimeter();
 
     return true;
@@ -76,7 +76,7 @@ bool SitePolygonGraph::add_node(const float &x, const float &y)
 //      ADD NEW ARCH TO POOL
 //===========================================================================//
 
-bool SitePolygonGraph::add_arch(const SitePolygonGraphNode &nodeA, const SitePolygonGraphNode &nodeB, bool skip_check)
+bool SitePolygonGraph::add_arch(const SitePolygonGraphNode& nodeA, const SitePolygonGraphNode& nodeB, bool skip_check)
 {
     SitePolygonGraphArch tmp;
     tmp.setA(nodeA);
@@ -86,9 +86,9 @@ bool SitePolygonGraph::add_arch(const SitePolygonGraphNode &nodeA, const SitePol
     bool check = skip_check ? true : generate_geometry_fragmentation(tmp);
 
     // CHECK FOR FRAGMENTATION
-    if(check)
+    if (check)
     {
-        if(!resize_arches())
+        if (!resize_arches())
             return false;
 
         // SAVE ARCH AND RETURN
@@ -125,11 +125,11 @@ SitePolygonGraphNode SitePolygonGraph::randomize_poi()
     for (index_type i = 0; i < SITE_POLYGON_GRAPH_MAX_VERTEX; i++)
         i_poi[i] = urand(0, _size_arches - 2);
 
-    index_type i_idx            = urand(0, SITE_POLYGON_GRAPH_MAX_VERTEX - 1);
-    float i_segment             = frand(0, 1.0f);
-    SitePolygonGraphArch arch   = _arches[i_poi[i_idx]];
-    float x_segment             = arch.getA().getX() + i_segment * (arch.getB().getX() - arch.getA().getX());
-    float y_segment             = arch.getA().getY() + i_segment * (arch.getB().getY() - arch.getA().getY());
+    index_type i_idx = urand(0, SITE_POLYGON_GRAPH_MAX_VERTEX - 1);
+    float i_segment = frand(0, 1.0f);
+    SitePolygonGraphArch arch = _arches[i_poi[i_idx]];
+    float x_segment = arch.getA().getX() + i_segment * (arch.getB().getX() - arch.getA().getX());
+    float y_segment = arch.getA().getY() + i_segment * (arch.getB().getY() - arch.getA().getY());
 
     poi_node.setX(x_segment);
     poi_node.setY(y_segment);

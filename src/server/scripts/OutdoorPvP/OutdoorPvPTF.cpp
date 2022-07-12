@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -110,7 +110,7 @@ OutdoorPvPTF::OutdoorPvPTF()
 }
 
 OPvPCapturePointTF::OPvPCapturePointTF(OutdoorPvP* pvp, OutdoorPvPTF_TowerType type)
-: OPvPCapturePoint(pvp), m_TowerType(type), m_TowerState(TF_TOWERSTATE_N)
+    : OPvPCapturePoint(pvp), m_TowerType(type), m_TowerState(TF_TOWERSTATE_N)
 {
     SetCapturePointData(TFCapturePoints[type].entry, TFCapturePoints[type].map, TFCapturePoints[type].pos, TFCapturePoints[type].rot);
 }
@@ -230,7 +230,8 @@ bool OutdoorPvPTF::Update(uint32 diff)
                 SendUpdateWorldState(TF_UI_LOCKED_TIME_MINUTES_FIRST_DIGIT, first_digit);
                 SendUpdateWorldState(TF_UI_LOCKED_TIME_MINUTES_SECOND_DIGIT, second_digit);
                 SendUpdateWorldState(TF_UI_LOCKED_TIME_HOURS, hours_left);
-            } else m_LockTimerUpdate -= diff;
+            }
+            else m_LockTimerUpdate -= diff;
             m_LockTimer -= diff;
         }
     }
@@ -315,7 +316,7 @@ bool OPvPCapturePointTF::Update(uint32 diff)
 {
     // can update even in locked state if gathers the controlling faction
     bool canupdate = ((((OutdoorPvPTF*)m_PvP)->GetAllianceTowersControlled() > 0) && m_activePlayers[0].size() > m_activePlayers[1].size()) ||
-            ((((OutdoorPvPTF*)m_PvP)->GetHordeTowersControlled() > 0) && m_activePlayers[0].size() < m_activePlayers[1].size());
+        ((((OutdoorPvPTF*)m_PvP)->GetHordeTowersControlled() > 0) && m_activePlayers[0].size() < m_activePlayers[1].size());
     // if gathers the other faction, then only update if the pvp is unlocked
     canupdate = canupdate || !((OutdoorPvPTF*)m_PvP)->IsLocked();
     return canupdate && OPvPCapturePoint::Update(diff);
@@ -390,13 +391,13 @@ void OPvPCapturePointTF::ChangeState()
 
 class OutdoorPvP_terokkar_forest : public OutdoorPvPScript
 {
-    public:
-        OutdoorPvP_terokkar_forest() : OutdoorPvPScript("outdoorpvp_tf") { }
+public:
+    OutdoorPvP_terokkar_forest() : OutdoorPvPScript("outdoorpvp_tf") { }
 
-        OutdoorPvP* GetOutdoorPvP() const override
-        {
-            return new OutdoorPvPTF();
-        }
+    OutdoorPvP* GetOutdoorPvP() const override
+    {
+        return new OutdoorPvPTF();
+    }
 };
 
 void AddSC_outdoorpvp_tf()

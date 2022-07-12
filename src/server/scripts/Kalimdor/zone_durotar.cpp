@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,45 +24,45 @@
 
 enum VoodooSpells
 {
-    SPELL_BREW      = 16712, // Special Brew
-    SPELL_GHOSTLY   = 16713, // Ghostly
-    SPELL_HEX1      = 16707, // Hex
-    SPELL_HEX2      = 16708, // Hex
-    SPELL_HEX3      = 16709, // Hex
-    SPELL_GROW      = 16711, // Grow
-    SPELL_LAUNCH    = 16716, // Launch (Whee!)
+    SPELL_BREW = 16712, // Special Brew
+    SPELL_GHOSTLY = 16713, // Ghostly
+    SPELL_HEX1 = 16707, // Hex
+    SPELL_HEX2 = 16708, // Hex
+    SPELL_HEX3 = 16709, // Hex
+    SPELL_GROW = 16711, // Grow
+    SPELL_LAUNCH = 16716, // Launch (Whee!)
 };
 
 // 17009
 class spell_voodoo : public SpellScriptLoader
 {
-    public:
-        spell_voodoo() : SpellScriptLoader("spell_voodoo") { }
+public:
+    spell_voodoo() : SpellScriptLoader("spell_voodoo") { }
 
-        class spell_voodoo_SpellScript : public SpellScript
+    class spell_voodoo_SpellScript : public SpellScript
+    {
+        bool Validate(SpellInfo const* /*spellInfo*/) override
         {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo({ SPELL_BREW, SPELL_GHOSTLY, SPELL_HEX1, SPELL_HEX2, SPELL_HEX3, SPELL_GROW, SPELL_LAUNCH });
-            }
-
-            void HandleDummy(SpellEffIndex /*effIndex*/)
-            {
-                uint32 spellid = RAND(SPELL_BREW, SPELL_GHOSTLY, RAND(SPELL_HEX1, SPELL_HEX2, SPELL_HEX3), SPELL_GROW, SPELL_LAUNCH);
-                if (Unit* target = GetHitUnit())
-                    GetCaster()->CastSpell(target, spellid, false);
-            }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_voodoo_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_voodoo_SpellScript();
+            return ValidateSpellInfo({ SPELL_BREW, SPELL_GHOSTLY, SPELL_HEX1, SPELL_HEX2, SPELL_HEX3, SPELL_GROW, SPELL_LAUNCH });
         }
+
+        void HandleDummy(SpellEffIndex /*effIndex*/)
+        {
+            uint32 spellid = RAND(SPELL_BREW, SPELL_GHOSTLY, RAND(SPELL_HEX1, SPELL_HEX2, SPELL_HEX3), SPELL_GROW, SPELL_LAUNCH);
+            if (Unit* target = GetHitUnit())
+                GetCaster()->CastSpell(target, spellid, false);
+        }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_voodoo_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_voodoo_SpellScript();
+    }
 };
 
 class spell_zuni_lvl_1_trigger_aura : public SpellScript

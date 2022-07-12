@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,11 +21,11 @@
 
 enum FrozenMountaineer
 {
-    DATA_SET_ICE_BROKEN      = 1,
-    EVENT_RUN_AWAY           = 1,
-    SAY_MONSTEREMOTE         = 0,
+    DATA_SET_ICE_BROKEN = 1,
+    EVENT_RUN_AWAY = 1,
+    SAY_MONSTEREMOTE = 0,
     SPELL_SUMMON_FROZEN_TOMB = 77906,
-    SPELL_FREEZE_ANIM        = 77910
+    SPELL_FREEZE_ANIM = 77910
 };
 
 /*######

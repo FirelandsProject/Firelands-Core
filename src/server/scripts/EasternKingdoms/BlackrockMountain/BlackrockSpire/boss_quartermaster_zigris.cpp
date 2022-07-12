@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,16 +21,16 @@
 
 enum Spells
 {
-    SPELL_SHOOT                     = 16496,
-    SPELL_STUNBOMB                  = 16497,
-    SPELL_HEALING_POTION            = 15504,
-    SPELL_HOOKEDNET                 = 15609
+    SPELL_SHOOT = 16496,
+    SPELL_STUNBOMB = 16497,
+    SPELL_HEALING_POTION = 15504,
+    SPELL_HOOKEDNET = 15609
 };
 
 enum Events
 {
-    EVENT_SHOOT                     = 1,
-    EVENT_STUN_BOMB                 = 2
+    EVENT_SHOOT = 1,
+    EVENT_STUN_BOMB = 2
 };
 
 class quartermaster_zigris : public CreatureScript
@@ -50,7 +50,7 @@ public:
         void JustEngagedWith(Unit* who) override
         {
             BossAI::JustEngagedWith(who);
-            events.ScheduleEvent(EVENT_SHOOT,      1000);
+            events.ScheduleEvent(EVENT_SHOOT, 1000);
             events.ScheduleEvent(EVENT_STUN_BOMB, 16000);
         }
 
@@ -73,14 +73,14 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_SHOOT:
-                        DoCastVictim(SPELL_SHOOT);
-                        events.ScheduleEvent(EVENT_SHOOT, 500);
-                        break;
-                    case EVENT_STUN_BOMB:
-                        DoCastVictim(SPELL_STUNBOMB);
-                        events.ScheduleEvent(EVENT_STUN_BOMB, 14000);
-                        break;
+                case EVENT_SHOOT:
+                    DoCastVictim(SPELL_SHOOT);
+                    events.ScheduleEvent(EVENT_SHOOT, 500);
+                    break;
+                case EVENT_STUN_BOMB:
+                    DoCastVictim(SPELL_STUNBOMB);
+                    events.ScheduleEvent(EVENT_STUN_BOMB, 14000);
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

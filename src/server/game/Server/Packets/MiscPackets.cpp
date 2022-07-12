@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -115,7 +115,7 @@ WorldPacket const* WorldPackets::Misc::PhaseShiftChange::Write()
     for (uint16 preloadMapId : PreloadMapIDs)
         _worldPacket << uint16(preloadMapId);                   // Inactive terrain swap map id
 
-    _worldPacket << uint32 (Phaseshift.Phases.size() * 2);      // size in bytes
+    _worldPacket << uint32(Phaseshift.Phases.size() * 2);      // size in bytes
     for (uint16 phaseId : Phaseshift.Phases)
         _worldPacket << uint16(phaseId);                        // active phase ids
 

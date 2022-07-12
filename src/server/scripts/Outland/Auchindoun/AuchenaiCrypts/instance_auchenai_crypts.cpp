@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,22 +21,22 @@
 
 class instance_auchenai_crypts : public InstanceMapScript
 {
-    public:
-        instance_auchenai_crypts() : InstanceMapScript(ACScriptName, 558) { }
+public:
+    instance_auchenai_crypts() : InstanceMapScript(ACScriptName, 558) { }
 
-        struct instance_auchenai_crypts_InstanceMapScript : public InstanceScript
+    struct instance_auchenai_crypts_InstanceMapScript : public InstanceScript
+    {
+        instance_auchenai_crypts_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_auchenai_crypts_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-            }
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_auchenai_crypts_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
         }
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_auchenai_crypts_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_auchenai_crypts()

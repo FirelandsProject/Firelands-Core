@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,12 +20,12 @@
 #include "InstanceScript.h"
 #include "vault_of_archavon.h"
 
-/* Vault of Archavon encounters:
-1 - Archavon the Stone Watcher event
-2 - Emalon the Storm Watcher event
-3 - Koralon the Flame Watcher event
-4 - Toravon the Ice Watcher event
-*/
+ /* Vault of Archavon encounters:
+ 1 - Archavon the Stone Watcher event
+ 2 - Emalon the Storm Watcher event
+ 3 - Koralon the Flame Watcher event
+ 4 - Toravon the Ice Watcher event
+ */
 
 ObjectData const creatureData[] =
 {
@@ -38,83 +38,83 @@ ObjectData const creatureData[] =
 
 class instance_vault_of_archavon : public InstanceMapScript
 {
-    public:
-        instance_vault_of_archavon() : InstanceMapScript(VoAScriptName, 624) { }
+public:
+    instance_vault_of_archavon() : InstanceMapScript(VoAScriptName, 624) { }
 
-        struct instance_vault_of_archavon_InstanceMapScript : public InstanceScript
+    struct instance_vault_of_archavon_InstanceMapScript : public InstanceScript
+    {
+        instance_vault_of_archavon_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_vault_of_archavon_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadObjectData(creatureData, nullptr);
+
+            ArchavonDeath = 0;
+            EmalonDeath = 0;
+            KoralonDeath = 0;
+        }
+
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            if (state != DONE)
+                return true;
+
+            switch (type)
             {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadObjectData(creatureData, nullptr);
-
-                ArchavonDeath   = 0;
-                EmalonDeath     = 0;
-                KoralonDeath    = 0;
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                if (state != DONE)
-                   return true;
-
-                switch (type)
-                {
-                    case DATA_ARCHAVON:
-                        ArchavonDeath = GameTime::GetGameTime();
-                        break;
-                    case DATA_EMALON:
-                        EmalonDeath = GameTime::GetGameTime();
-                        break;
-                    case DATA_KORALON:
-                        KoralonDeath = GameTime::GetGameTime();
-                        break;
-                    default:
-                        return true;
-                }
-
-                // on every death of Archavon, Emalon and Koralon check our achievement
-                DoCastSpellOnPlayers(SPELL_EARTH_WIND_FIRE_ACHIEVEMENT_CHECK);
-
+            case DATA_ARCHAVON:
+                ArchavonDeath = GameTime::GetGameTime();
+                break;
+            case DATA_EMALON:
+                EmalonDeath = GameTime::GetGameTime();
+                break;
+            case DATA_KORALON:
+                KoralonDeath = GameTime::GetGameTime();
+                break;
+            default:
                 return true;
             }
 
-            bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target*/, uint32 /*miscvalue1*/) override
-            {
-                switch (criteria_id)
-                {
-                    case CRITERIA_EARTH_WIND_FIRE_10:
-                    case CRITERIA_EARTH_WIND_FIRE_25:
-                        if (ArchavonDeath && EmalonDeath && KoralonDeath)
-                        {
-                            // instance difficulty check is already done in db (achievement_criteria_data)
-                            // int() for Visual Studio, compile errors with abs(time_t)
-                            return (abs(int(ArchavonDeath-EmalonDeath)) < MINUTE && \
-                                abs(int(EmalonDeath-KoralonDeath)) < MINUTE && \
-                                abs(int(KoralonDeath-ArchavonDeath)) < MINUTE);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            // on every death of Archavon, Emalon and Koralon check our achievement
+            DoCastSpellOnPlayers(SPELL_EARTH_WIND_FIRE_ACHIEVEMENT_CHECK);
 
-                return false;
+            return true;
+        }
+
+        bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target*/, uint32 /*miscvalue1*/) override
+        {
+            switch (criteria_id)
+            {
+            case CRITERIA_EARTH_WIND_FIRE_10:
+            case CRITERIA_EARTH_WIND_FIRE_25:
+                if (ArchavonDeath && EmalonDeath && KoralonDeath)
+                {
+                    // instance difficulty check is already done in db (achievement_criteria_data)
+                    // int() for Visual Studio, compile errors with abs(time_t)
+                    return (abs(int(ArchavonDeath - EmalonDeath)) < MINUTE && \
+                        abs(int(EmalonDeath - KoralonDeath)) < MINUTE && \
+                        abs(int(KoralonDeath - ArchavonDeath)) < MINUTE);
+                }
+                break;
+            default:
+                break;
             }
 
-        private:
-            time_t ArchavonDeath;
-            time_t EmalonDeath;
-            time_t KoralonDeath;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_vault_of_archavon_InstanceMapScript(map);
+            return false;
         }
+
+    private:
+        time_t ArchavonDeath;
+        time_t EmalonDeath;
+        time_t KoralonDeath;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_vault_of_archavon_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_vault_of_archavon()

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -431,9 +431,9 @@ void AuctionBotBuyer::PlaceBidToEntry(AuctionEntry* auction, uint32 bidPrice)
 
     // Update auction to DB
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_AUCTION_BID);
-    stmt->setUInt32(0, auction->bidder);
-    stmt->setUInt32(1, auction->bid);
-    stmt->setUInt32(2, auction->Id);
+    stmt->SetData(0, auction->bidder);
+    stmt->SetData(1, auction->bid);
+    stmt->SetData(2, auction->Id);
     trans->Append(stmt);
 
     // Run SQLs

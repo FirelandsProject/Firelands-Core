@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -68,9 +68,9 @@ void InstanceScript::SaveToDB()
         return;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_INSTANCE_DATA);
-    stmt->setUInt32(0, GetCompletedEncounterMask());
-    stmt->setString(1, data);
-    stmt->setUInt32(2, instance->GetInstanceId());
+    stmt->SetData(0, GetCompletedEncounterMask());
+    stmt->SetData(1, data);
+    stmt->SetData(2, instance->GetInstanceId());
     CharacterDatabase.Execute(stmt);
 }
 

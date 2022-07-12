@@ -34,15 +34,6 @@ namespace
     std::mutex _configLock;
     bool _usingDistConfig = false;
 
-    // Check system configs like *server.conf*
-    bool IsAppConfig(std::string_view fileName)
-    {
-        size_t foundAuth = fileName.find("bnetserver.conf");
-        size_t foundWorld = fileName.find("worldserver.conf");
-
-        return foundAuth != std::string_view::npos || foundWorld != std::string_view::npos;
-    }
-
     // Check logging system configs like Appender.* and Logger.*
     bool IsLoggingSystemOptions(std::string_view optionName)
     {
@@ -63,7 +54,7 @@ namespace
             if (!IsLoggingSystemOptions(optionName) && !isReload)
             {
                 std::string fileNameStr = std::string{ fileName };
-                LOG_ERROR(fileNameStr, "> Config::LoadFile: Found incorrect option '{}' in config file '{}'. Skip", optionName.c_str(), fileNameStr.c_str());
+                LOG_ERROR(fileNameStr, "> Config::LoadFile: Found incorrect option '%s' in config file '%s'. Skip", optionName, fileNameStr);
 
 #ifdef CONFIG_ABORT_INCORRECT_OPTIONS
                 ABORT("> Core can't start if found incorrect options");
@@ -107,7 +98,7 @@ namespace
             auto const& itr = fileConfigs.find(confOption);
             if (itr != fileConfigs.end())
             {
-                LOG_ERROR(file, "> Config::LoadFile: Dublicate key name '%s' in config file '%s'", confOption.c_str(), file.c_str());
+                LOG_ERROR(file, "> Config::LoadFile: Dublicate key name '%s' in config file '%s'", confOption, file);
                 return true;
             }
 
@@ -151,7 +142,7 @@ namespace
 
             if (equal_pos == std::string::npos || equal_pos == line.length())
             {
-                LOG_ERROR(file, "> Config::LoadFile: Failure to read line number {} in file '{}'. Skip this line", lineNumber, file.c_str());
+                LOG_ERROR(file, "> Config::LoadFile: Failure to read line number %s in file '%s'. Skip this line", lineNumber, file);
                 continue;
             }
 
@@ -246,7 +237,7 @@ T ConfigMgr::GetValueDefault(std::string const& name, T const& def, bool showLog
         if (showLogs)
         {
             LOG_ERROR("server.loading", "> Config: Missing property %s in all config files, at least the .dist file must contain: \"%s = %s\"",
-                name.c_str(), name.c_str(), Firelands::ToString(def).c_str());
+                name, name, Firelands::ToString(def));
         }
 
         return def;
@@ -258,7 +249,7 @@ T ConfigMgr::GetValueDefault(std::string const& name, T const& def, bool showLog
         if (showLogs)
         {
             LOG_ERROR("server.loading", "> Config: Bad value defined for name '%s', going to use '%s' instead",
-                name.c_str(), Firelands::ToString(def).c_str());
+                name, Firelands::ToString(def));
         }
 
         return def;
@@ -275,7 +266,7 @@ std::string ConfigMgr::GetValueDefault<std::string>(std::string const& name, std
     {
         if (showLogs)
         {
-            LOG_ERROR("server.loading", "> Config: Missing option %s, add \"%s = %s\"", name.c_str(), name.c_str(), def.c_str());
+            LOG_ERROR("server.loading", "> Config: Missing option %s, add \"%s = %s\"", name, name, def);
         }
 
         return def;
@@ -301,7 +292,7 @@ bool ConfigMgr::GetOption<bool>(std::string const& name, bool const& def, bool s
         if (showLogs)
         {
             LOG_ERROR("server.loading", "> Config: Bad value defined for name '%s', going to use '%s' instead",
-                name.c_str(), def ? "true" : "false");
+                name, def ? "true" : "false");
         }
 
         return def;
@@ -415,7 +406,7 @@ bool ConfigMgr::LoadModulesConfigs(bool isReload /*= false*/, bool isNeedPrintIn
 
         if (!isReload && !isExistDistConfig)
         {
-            LOG_FATAL("server.loading", "> ConfigMgr::LoadModulesConfigs: Not found original config '%s'. Stop loading", distFileName.c_str());
+            LOG_FATAL("server.loading", "> ConfigMgr::LoadModulesConfigs: Not found original config '%s'. Stop loading", distFileName);
             ABORT();
         }
 
@@ -442,7 +433,7 @@ bool ConfigMgr::LoadModulesConfigs(bool isReload /*= false*/, bool isNeedPrintIn
 
             for (auto const& itr : _moduleConfigFiles)
             {
-                LOG_INFO("server.loading", "> %s", itr.c_str());
+                LOG_INFO("server.loading", "> %s", itr);
             }
         }
         else

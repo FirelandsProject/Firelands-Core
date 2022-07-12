@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -44,6 +44,7 @@
 #include "SpellMgr.h"
 #include "World.h"
 #include "WorldSession.h"
+#include "Util.h"
 
 bool AchievementCriteriaData::IsValid(AchievementCriteriaEntry const* criteria)
 {
@@ -452,27 +453,8 @@ void AchievementMgr<Guild>::RemoveCriteriaProgress(AchievementCriteriaEntry cons
     if (criteriaProgress == m_criteriaProgress.end())
         return;
 
-    ObjectGuid guid = GetOwner()->GetGUID();
-
     WorldPacket data(SMSG_GUILD_CRITERIA_DELETED, 4 + 8);
-    data.WriteBit(guid[6]);
-    data.WriteBit(guid[5]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[0]);
-    data.WriteBit(guid[1]);
-    data.WriteBit(guid[3]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(guid[4]);
-
-    data.WriteByteSeq(guid[2]);
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(guid[4]);
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[7]);
     data << uint32(entry->ID);
-    data.WriteByteSeq(guid[5]);
-    data.WriteByteSeq(guid[0]);
-    data.WriteByteSeq(guid[6]);
 
     SendPacket(&data);
 
@@ -524,11 +506,11 @@ void AchievementMgr<Player>::DeleteFromDB(ObjectGuid guid)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_ACHIEVEMENT);
-    stmt->setUInt32(0, guid.GetCounter());
+    stmt->SetData(0, guid.GetCounter());
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_ACHIEVEMENT_PROGRESS);
-    stmt->setUInt32(0, guid.GetCounter());
+    stmt->SetData(0, guid.GetCounter());
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -540,11 +522,11 @@ void AchievementMgr<Guild>::DeleteFromDB(ObjectGuid guid)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ALL_GUILD_ACHIEVEMENTS);
-    stmt->setUInt32(0, guid.GetCounter());
+    stmt->SetData(0, guid.GetCounter());
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ALL_GUILD_ACHIEVEMENT_CRITERIA);
-    stmt->setUInt32(0, guid.GetCounter());
+    stmt->SetData(0, guid.GetCounter());
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -566,14 +548,14 @@ void AchievementMgr<Player>::SaveToDB(CharacterDatabaseTransaction& trans)
                 continue;
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_ACHIEVEMENT_BY_ACHIEVEMENT);
-            stmt->setUInt16(0, iter->first);
-            stmt->setUInt32(1, GetOwner()->GetGUID().GetCounter());
+            stmt->SetData(0, iter->first);
+            stmt->SetData(1, GetOwner()->GetGUID().GetCounter());
             trans->Append(stmt);
 
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_ACHIEVEMENT);
-            stmt->setUInt32(0, GetOwner()->GetGUID().GetCounter());
-            stmt->setUInt16(1, iter->first);
-            stmt->setUInt32(2, uint32(iter->second.date));
+            stmt->SetData(0, GetOwner()->GetGUID().GetCounter());
+            stmt->SetData(1, iter->first);
+            stmt->SetData(2, uint32(iter->second.date));
             trans->Append(stmt);
 
             iter->second.changed = false;
@@ -588,17 +570,17 @@ void AchievementMgr<Player>::SaveToDB(CharacterDatabaseTransaction& trans)
                 continue;
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_ACHIEVEMENT_PROGRESS_BY_CRITERIA);
-            stmt->setUInt32(0, GetOwner()->GetGUID().GetCounter());
-            stmt->setUInt16(1, iter->first);
+            stmt->SetData(0, GetOwner()->GetGUID().GetCounter());
+            stmt->SetData(1, iter->first);
             trans->Append(stmt);
 
             if (iter->second.counter)
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_ACHIEVEMENT_PROGRESS);
-                stmt->setUInt32(0, GetOwner()->GetGUID().GetCounter());
-                stmt->setUInt16(1, iter->first);
-                stmt->setUInt32(2, iter->second.counter);
-                stmt->setUInt32(3, uint32(iter->second.date));
+                stmt->SetData(0, GetOwner()->GetGUID().GetCounter());
+                stmt->SetData(1, iter->first);
+                stmt->SetData(2, iter->second.counter);
+                stmt->SetData(3, uint32(iter->second.date));
                 trans->Append(stmt);
             }
 
@@ -618,18 +600,18 @@ void AchievementMgr<Guild>::SaveToDB(CharacterDatabaseTransaction& trans)
             continue;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GUILD_ACHIEVEMENT);
-        stmt->setUInt32(0, GetOwner()->GetId());
-        stmt->setUInt16(1, itr->first);
+        stmt->SetData(0, GetOwner()->GetId());
+        stmt->SetData(1, itr->first);
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GUILD_ACHIEVEMENT);
-        stmt->setUInt32(0, GetOwner()->GetId());
-        stmt->setUInt16(1, itr->first);
-        stmt->setUInt32(2, itr->second.date);
+        stmt->SetData(0, GetOwner()->GetId());
+        stmt->SetData(1, itr->first);
+        stmt->SetData(2, itr->second.date);
         for (GuidSet::const_iterator gItr = itr->second.guids.begin(); gItr != itr->second.guids.end(); ++gItr)
             guidstr << gItr->GetCounter() << ',';
 
-        stmt->setString(3, guidstr.str());
+        stmt->SetData(3, guidstr.str());
         trans->Append(stmt);
 
         guidstr.str("");
@@ -641,16 +623,16 @@ void AchievementMgr<Guild>::SaveToDB(CharacterDatabaseTransaction& trans)
             continue;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GUILD_ACHIEVEMENT_CRITERIA);
-        stmt->setUInt32(0, GetOwner()->GetId());
-        stmt->setUInt16(1, itr->first);
+        stmt->SetData(0, GetOwner()->GetId());
+        stmt->SetData(1, itr->first);
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GUILD_ACHIEVEMENT_CRITERIA);
-        stmt->setUInt32(0, GetOwner()->GetId());
-        stmt->setUInt16(1, itr->first);
-        stmt->setUInt64(2, itr->second.counter);
-        stmt->setUInt32(3, itr->second.date);
-        stmt->setUInt32(4, itr->second.CompletedGUID.GetCounter());
+        stmt->SetData(0, GetOwner()->GetId());
+        stmt->SetData(1, itr->first);
+        stmt->SetData(2, itr->second.counter);
+        stmt->SetData(3, itr->second.date);
+        stmt->SetData(4, itr->second.CompletedGUID.GetCounter());
         trans->Append(stmt);
     }
 }
@@ -706,7 +688,7 @@ void AchievementMgr<Player>::LoadFromDB(PreparedQueryResult achievementResult, P
                 LOG_ERROR("achievement", "Non-existing achievement criteria %u data has been removed from the table `character_achievement_progress`.", id);
 
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_INVALID_ACHIEV_PROGRESS_CRITERIA);
-                stmt->setUInt16(0, uint16(id));
+                stmt->SetData(0, uint16(id));
                 CharacterDatabase.Execute(stmt);
 
                 continue;
@@ -767,7 +749,7 @@ void AchievementMgr<Guild>::LoadFromDB(PreparedQueryResult achievementResult, Pr
                 LOG_ERROR("achievement", "Non-existing achievement criteria %u data removed from table `guild_achievement_progress`.", id);
 
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_INVALID_ACHIEV_PROGRESS_CRITERIA_GUILD);
-                stmt->setUInt16(0, uint16(id));
+                stmt->SetData(0, uint16(id));
                 CharacterDatabase.Execute(stmt);
                 continue;
             }
@@ -822,24 +804,7 @@ void AchievementMgr<Guild>::Reset()
     for (CompletedAchievementMap::const_iterator iter = m_completedAchievements.begin(); iter != m_completedAchievements.end(); ++iter)
     {
         WorldPacket data(SMSG_GUILD_ACHIEVEMENT_DELETED, 4);
-        data.WriteBit(guid[4]);
-        data.WriteBit(guid[1]);
-        data.WriteBit(guid[2]);
-        data.WriteBit(guid[3]);
-        data.WriteBit(guid[0]);
-        data.WriteBit(guid[7]);
-        data.WriteBit(guid[5]);
-        data.WriteBit(guid[6]);
         data << uint32(iter->first);
-        data.WriteByteSeq(guid[5]);
-        data.WriteByteSeq(guid[1]);
-        data.WriteByteSeq(guid[3]);
-        data.WriteByteSeq(guid[6]);
-        data.WriteByteSeq(guid[0]);
-        data.WriteByteSeq(guid[7]);
-        data.AppendPackedTime(iter->second.date);
-        data.WriteByteSeq(guid[4]);
-        data.WriteByteSeq(guid[2]);
         SendPacket(&data);
     }
 
@@ -951,52 +916,15 @@ template<>
 void AchievementMgr<Guild>::SendCriteriaUpdate(AchievementCriteriaEntry const* entry, CriteriaProgress const* progress, uint32 /*timeElapsed*/, bool /*timedCompleted*/) const
 {
     //will send response to criteria progress request
-    WorldPacket data(SMSG_GUILD_CRITERIA_DATA, 3 + 1 + 1 + 8 + 8 + 4 + 4 + 4 + 4 + 4);
+    WorldPacket data(SMSG_GUILD_CRITERIA_DATA, 8 + 4 + 8);
 
     ObjectGuid counter(progress->counter); // for accessing every byte individually
     ObjectGuid guid = progress->CompletedGUID;
 
-    data.WriteBits(1, 21);
-    data.WriteBit(counter[4]);
-    data.WriteBit(counter[1]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(counter[3]);
-    data.WriteBit(guid[1]);
-    data.WriteBit(counter[5]);
-    data.WriteBit(counter[0]);
-    data.WriteBit(guid[3]);
-    data.WriteBit(counter[2]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[5]);
-    data.WriteBit(guid[0]);
-    data.WriteBit(counter[6]);
-    data.WriteBit(guid[6]);
-    data.WriteBit(counter[7]);
-    data.WriteBit(guid[4]);
-
-    data.FlushBits();
-
-    data.WriteByteSeq(guid[5]);
-    data << uint32(progress->date);      // unknown date
-    data.WriteByteSeq(counter[3]);
-    data.WriteByteSeq(counter[7]);
-    data << uint32(progress->date);      // unknown date
-    data.WriteByteSeq(counter[6]);
-    data.WriteByteSeq(guid[4]);
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(counter[4]);
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(counter[0]);
-    data.WriteByteSeq(guid[2]);
-    data.WriteByteSeq(counter[1]);
-    data.WriteByteSeq(guid[6]);
-    data << uint32(progress->date);      // last update time (not packed!)
     data << uint32(entry->ID);
-    data.WriteByteSeq(counter[5]);
-    data << uint32(0);
-    data.WriteByteSeq(guid[7]);
-    data.WriteByteSeq(counter[2]);
-    data.WriteByteSeq(guid[0]);
+    data << counter;
+    data << guid;
+
 
     GetOwner()->BroadcastPacketIfTrackingAchievement(&data, entry->ID);
 }
@@ -3541,7 +3469,7 @@ void AchievementGlobalMgr::LoadCompletedAchievements()
             LOG_ERROR("achievement", "Non-existing achievement %u data has been removed from the table `character_achievement`.", achievementId);
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_INVALID_ACHIEVMENT);
-            stmt->setUInt16(0, uint16(achievementId));
+            stmt->SetData(0, uint16(achievementId));
             CharacterDatabase.Execute(stmt);
 
             continue;

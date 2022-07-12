@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -49,8 +49,8 @@ enum Events
 
 enum SpawnGroups
 {
-    SPAWN_GROUP_ID_MUROZOND_CHEST   = 437,
-    SPAWN_GROUP_ID_ECHO_OF_JAINA    = 460
+    SPAWN_GROUP_ID_MUROZOND_CHEST = 437,
+    SPAWN_GROUP_ID_ECHO_OF_JAINA = 460
 };
 
 enum AreaIds
@@ -60,8 +60,8 @@ enum AreaIds
 
 enum WorldStates
 {
-    WORLD_STATE_ID_SHOW_COLLECTED_STAVE_FRAGMENTS   = 6046,
-    WORLD_STATE_ID_COLLECTED_STAVE_FRAGMENTS        = 6025
+    WORLD_STATE_ID_SHOW_COLLECTED_STAVE_FRAGMENTS = 6046,
+    WORLD_STATE_ID_COLLECTED_STAVE_FRAGMENTS = 6025
 };
 
 enum MapEvents
@@ -103,13 +103,13 @@ public:
 
             switch (eventId)
             {
-                case MAP_EVENT_AZURE_DRAGONSHRINE_ENTERED:
-                    if (GetBossState(DATA_ECHO_OF_JAINA) == DONE)
-                        break;
-                    instance->SetWorldState(WORLD_STATE_ID_SHOW_COLLECTED_STAVE_FRAGMENTS, 1);
+            case MAP_EVENT_AZURE_DRAGONSHRINE_ENTERED:
+                if (GetBossState(DATA_ECHO_OF_JAINA) == DONE)
                     break;
-                default:
-                    break;
+                instance->SetWorldState(WORLD_STATE_ID_SHOW_COLLECTED_STAVE_FRAGMENTS, 1);
+                break;
+            default:
+                break;
             }
 
             _executedMapEvents.insert(eventId);
@@ -139,16 +139,16 @@ public:
 
             switch (unit->GetEntry())
             {
-                case NPC_INFINITE_SUPRESSOR:
-                case NPC_INFINITE_WARDEN:
-                    ++_killedInfiniteDragonkins;
-                    if (_killedInfiniteDragonkins == 4 || _killedInfiniteDragonkins == 8)
-                        if (Creature* murozond = GetCreature(DATA_MUROZOND))
-                            if (murozond->IsAIEnabled())
-                                murozond->AI()->SetData(DATA_MUROZOND_INTRO, _killedInfiniteDragonkins == 4 ? IN_PROGRESS : DONE);
-                    break;
-                default:
-                    break;
+            case NPC_INFINITE_SUPRESSOR:
+            case NPC_INFINITE_WARDEN:
+                ++_killedInfiniteDragonkins;
+                if (_killedInfiniteDragonkins == 4 || _killedInfiniteDragonkins == 8)
+                    if (Creature* murozond = GetCreature(DATA_MUROZOND))
+                        if (murozond->IsAIEnabled())
+                            murozond->AI()->SetData(DATA_MUROZOND_INTRO, _killedInfiniteDragonkins == 4 ? IN_PROGRESS : DONE);
+                break;
+            default:
+                break;
             }
         }
 
@@ -158,12 +158,12 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_NOZDORMU_DRAGON_SHRINES:
-                    if (creature->GetAreaId() == AREA_ID_BRONZE_DRAGON_SHRINE)
-                        AddObject(creature, DATA_NOZDORMU_BRONZE_DRAGON_SHRINE, true);
-                    break;
-                default:
-                    break;
+            case NPC_NOZDORMU_DRAGON_SHRINES:
+                if (creature->GetAreaId() == AREA_ID_BRONZE_DRAGON_SHRINE)
+                    AddObject(creature, DATA_NOZDORMU_BRONZE_DRAGON_SHRINE, true);
+                break;
+            default:
+                break;
             }
         }
 
@@ -173,12 +173,12 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_NOZDORMU_DRAGON_SHRINES:
-                    if (creature->GetAreaId() == AREA_ID_BRONZE_DRAGON_SHRINE)
-                        AddObject(creature, DATA_NOZDORMU_BRONZE_DRAGON_SHRINE, false);
-                    break;
-                default:
-                    break;
+            case NPC_NOZDORMU_DRAGON_SHRINES:
+                if (creature->GetAreaId() == AREA_ID_BRONZE_DRAGON_SHRINE)
+                    AddObject(creature, DATA_NOZDORMU_BRONZE_DRAGON_SHRINE, false);
+                break;
+            default:
+                break;
             }
         }
 
@@ -189,22 +189,22 @@ public:
 
             switch (type)
             {
-                case DATA_MUROZOND:
-                    if (state == FAIL)
-                        _events.ScheduleEvent(EVENT_RESPAWN_MUROZOND, 30s);
-                    else if (state == DONE)
-                        instance->SpawnGroupSpawn(SPAWN_GROUP_ID_MUROZOND_CHEST);
-                    break;
-                case DATA_ECHO_OF_JAINA:
-                    if (state == IN_PROGRESS)
-                    {
-                        instance->SetWorldState(WORLD_STATE_ID_SHOW_COLLECTED_STAVE_FRAGMENTS, 0);
-                        if (Creature* circle = GetCreature(DATA_ARCANE_CIRCLE))
-                            circle->DespawnOrUnsummon();
-                    }
-                    break;
-                default:
-                    break;
+            case DATA_MUROZOND:
+                if (state == FAIL)
+                    _events.ScheduleEvent(EVENT_RESPAWN_MUROZOND, 30s);
+                else if (state == DONE)
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_ID_MUROZOND_CHEST);
+                break;
+            case DATA_ECHO_OF_JAINA:
+                if (state == IN_PROGRESS)
+                {
+                    instance->SetWorldState(WORLD_STATE_ID_SHOW_COLLECTED_STAVE_FRAGMENTS, 0);
+                    if (Creature* circle = GetCreature(DATA_ARCANE_CIRCLE))
+                        circle->DespawnOrUnsummon();
+                }
+                break;
+            default:
+                break;
             }
 
             return true;
@@ -214,23 +214,23 @@ public:
         {
             switch (type)
             {
-                case DATA_COLLECTED_FRAGMENT_OF_JAINAS_STAFF:
-                    if (GetBossState(DATA_ECHO_OF_JAINA) == DONE)
-                        break;
-
-                    ++_collectedStaffFragments;
-                    instance->SetWorldState(WORLD_STATE_ID_COLLECTED_STAVE_FRAGMENTS, _collectedStaffFragments);
-
-                    if (_collectedStaffFragments < 16)
-                    {
-                        if (Creature* circle = GetCreature(DATA_ARCANE_CIRCLE))
-                            circle->CastSpell(nullptr, SPELL_SUMMON_PHANTOM);
-                    }
-                    else
-                        instance->SpawnGroupSpawn(SPAWN_GROUP_ID_ECHO_OF_JAINA);
+            case DATA_COLLECTED_FRAGMENT_OF_JAINAS_STAFF:
+                if (GetBossState(DATA_ECHO_OF_JAINA) == DONE)
                     break;
-                default:
-                    break;
+
+                ++_collectedStaffFragments;
+                instance->SetWorldState(WORLD_STATE_ID_COLLECTED_STAVE_FRAGMENTS, _collectedStaffFragments);
+
+                if (_collectedStaffFragments < 16)
+                {
+                    if (Creature* circle = GetCreature(DATA_ARCANE_CIRCLE))
+                        circle->CastSpell(nullptr, SPELL_SUMMON_PHANTOM);
+                }
+                else
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_ID_ECHO_OF_JAINA);
+                break;
+            default:
+                break;
             }
         }
 
@@ -242,11 +242,11 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_RESPAWN_MUROZOND:
-                        instance->SummonCreature(BOSS_MUROZOND, MurozondSpawnPositions[1]);
-                        break;
-                    default:
-                        break;
+                case EVENT_RESPAWN_MUROZOND:
+                    instance->SummonCreature(BOSS_MUROZOND, MurozondSpawnPositions[1]);
+                    break;
+                default:
+                    break;
                 }
             }
         }

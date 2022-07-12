@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -33,21 +33,21 @@ enum Sounds
 enum Spells
 {
     // Beauty
-    SPELL_TERRIFYING_ROAR           = 76028,
-    SPELL_BERSERKER_CHARGE          = 76030,
-    SPELL_MAGMA_SPIT                = 76031,
-    SPELL_FLAMEBREAK                = 76032,
-    SPELL_BERSERK                   = 82395,
+    SPELL_TERRIFYING_ROAR = 76028,
+    SPELL_BERSERKER_CHARGE = 76030,
+    SPELL_MAGMA_SPIT = 76031,
+    SPELL_FLAMEBREAK = 76032,
+    SPELL_BERSERK = 82395,
 
     // Lucky, Spot and Buster
-    SPELL_LAVA_DROOL                = 76628,
-    SPELL_LITTLE_BIG_FLAME_BREATH   = 76665,
+    SPELL_LAVA_DROOL = 76628,
+    SPELL_LITTLE_BIG_FLAME_BREATH = 76665,
 
     // Player
-    SPELL_MAGMA_SPIT_MISSILE_1      = 76058,
-    SPELL_MAGMA_SPIT_MISSILE_2      = 76072,
-    SPELL_MAGMA_SPIT_MISSILE_3      = 76074,
-    SPELL_MAGMA_SPIT_MISSILE_4      = 76076
+    SPELL_MAGMA_SPIT_MISSILE_1 = 76058,
+    SPELL_MAGMA_SPIT_MISSILE_2 = 76072,
+    SPELL_MAGMA_SPIT_MISSILE_3 = 76074,
+    SPELL_MAGMA_SPIT_MISSILE_4 = 76076
 };
 
 enum Events
@@ -63,10 +63,10 @@ enum Events
     EVENT_LITTLE_BIG_FLAME_BREATH
 };
 
-Position const LuckyPos     = { 116.337f, 567.625f, 76.4501f, 3.49996f  };
-Position const SpotPos      = { 124.778f, 577.594f, 76.425f,  6.00992f  };
-Position const BusterPos    = { 116.316f, 592.533f, 76.2866f, 4.00554f  };
-Position const RuntyPos     = { 84.4645f, 612.958f, 76.8778f, 0.0431063f };
+Position const LuckyPos = { 116.337f, 567.625f, 76.4501f, 3.49996f };
+Position const SpotPos = { 124.778f, 577.594f, 76.425f,  6.00992f };
+Position const BusterPos = { 116.316f, 592.533f, 76.2866f, 4.00554f };
+Position const RuntyPos = { 84.4645f, 612.958f, 76.8778f, 0.0431063f };
 
 struct boss_beauty : public BossAI
 {
@@ -137,26 +137,26 @@ struct boss_beauty : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_MAGMA_SPIT:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true, true, -SPELL_MAGMA_SPIT))
-                        DoCast(target, SPELL_MAGMA_SPIT);
-                    events.Repeat(7s, 9s);
-                    break;
-                case EVENT_BERSERKER_CHARGE:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_MAXDISTANCE, 0, 100.0f, true, true, 0))
-                        DoCast(target, SPELL_BERSERKER_CHARGE);
-                    events.Repeat(15s, 21s);
-                    break;
-                case EVENT_FLAMEBREAK:
-                    DoCastAOE(SPELL_FLAMEBREAK);
-                    events.Repeat(15s, 21s);
-                    break;
-                case EVENT_TERRIFYING_ROAR:
-                    DoCastAOE(SPELL_TERRIFYING_ROAR);
-                    events.Repeat(31s, 33s);
-                    break;
-                default:
-                    break;
+            case EVENT_MAGMA_SPIT:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true, true, -SPELL_MAGMA_SPIT))
+                    DoCast(target, SPELL_MAGMA_SPIT);
+                events.Repeat(7s, 9s);
+                break;
+            case EVENT_BERSERKER_CHARGE:
+                if (Unit* target = SelectTarget(SELECT_TARGET_MAXDISTANCE, 0, 100.0f, true, true, 0))
+                    DoCast(target, SPELL_BERSERKER_CHARGE);
+                events.Repeat(15s, 21s);
+                break;
+            case EVENT_FLAMEBREAK:
+                DoCastAOE(SPELL_FLAMEBREAK);
+                events.Repeat(15s, 21s);
+                break;
+            case EVENT_TERRIFYING_ROAR:
+                DoCastAOE(SPELL_TERRIFYING_ROAR);
+                events.Repeat(31s, 33s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -201,16 +201,16 @@ struct npc_beauty_puppy : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_LAVA_DROOL:
-                    DoCastSelf(SPELL_LAVA_DROOL);
-                    _events.Repeat(12s, 13s);
-                    break;
-                case EVENT_LITTLE_BIG_FLAME_BREATH:
-                    DoCastVictim(SPELL_LITTLE_BIG_FLAME_BREATH);
-                    _events.Repeat(11s, 12s);
-                    break;
-                default:
-                    break;
+            case EVENT_LAVA_DROOL:
+                DoCastSelf(SPELL_LAVA_DROOL);
+                _events.Repeat(12s, 13s);
+                break;
+            case EVENT_LITTLE_BIG_FLAME_BREATH:
+                DoCastVictim(SPELL_LITTLE_BIG_FLAME_BREATH);
+                _events.Repeat(11s, 12s);
+                break;
+            default:
+                break;
             }
         }
 

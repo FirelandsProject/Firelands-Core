@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -77,7 +77,7 @@ public:
 
         // msgSubject, msgText isn't NUL after prev. check
         std::string subject = msgSubject;
-        std::string text    = msgText;
+        std::string text = msgText;
 
         // from console, use non-existing sender
         MailSender sender(MAIL_NORMAL, handler->GetSession() ? handler->GetSession()->GetPlayer()->GetGUID().GetCounter() : 0, MAIL_STATIONERY_GM);
@@ -122,7 +122,7 @@ public:
 
         // msgSubject, msgText isn't NUL after prev. check
         std::string subject = msgSubject;
-        std::string text    = msgText;
+        std::string text = msgText;
 
         // extract items
         typedef std::pair<uint32, uint32> ItemPair;
@@ -236,7 +236,7 @@ public:
 
         // msgSubject, msgText isn't NUL after prev. check
         std::string subject = msgSubject;
-        std::string text    = msgText;
+        std::string text = msgText;
 
         // from console show nonexisting sender
         MailSender sender(MAIL_NORMAL, handler->GetSession() ? handler->GetSession()->GetPlayer()->GetGUID().GetCounter() : 0, MAIL_STATIONERY_GM);

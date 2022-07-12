@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,10 +28,10 @@ uint32 const EncounterCount = 10;
 enum SMDataTypes
 {
     // Bosses
-    DATA_INTERROGATOR_VISHAS    = 1,
-    DATA_BLOODMAGE_THALNOS      = 2,
-    DATA_ARCANIST_DOAN          = 3,
-    DATA_HOUNDMASTER_LOKSEY     = 4,
+    DATA_INTERROGATOR_VISHAS = 1,
+    DATA_BLOODMAGE_THALNOS = 2,
+    DATA_ARCANIST_DOAN = 3,
+    DATA_HOUNDMASTER_LOKSEY = 4,
     DATA_MOGRAINE_AND_WHITEMANE = 5,
 
 
@@ -51,28 +51,28 @@ enum SMDataTypes
 enum SMCreatureIds
 {
     // Bosses
-    BOSS_INTERROGATOR_VISHAS        = 3983,
-    BOSS_BLOODMAGE_THALNOS          = 4543,
-    BOSS_HOUNDMASTER_LOKSEY         = 3974,
-    BOSS_ARCANIST_DOAN              = 6487,
-    BOSS_HIGH_INQUISITOR_WHITEMANE  = 3977,
+    BOSS_INTERROGATOR_VISHAS = 3983,
+    BOSS_BLOODMAGE_THALNOS = 4543,
+    BOSS_HOUNDMASTER_LOKSEY = 3974,
+    BOSS_ARCANIST_DOAN = 6487,
+    BOSS_HIGH_INQUISITOR_WHITEMANE = 3977,
     BOSS_SCARLET_COMMANDER_MOGRAINE = 3976,
 
     // Encounter related creature
     /*Houndmaster Loksey*/
-    NPC_SCARLET_TRACKING_HOUND      = 4304,
+    NPC_SCARLET_TRACKING_HOUND = 4304,
 
-    NPC_VORREL                      = 3981,
+    NPC_VORREL = 3981,
 
-    NPC_HORSEMAN                    = 23682,
-    NPC_HEAD                        = 23775,
-    NPC_PUMPKIN                     = 23694
+    NPC_HORSEMAN = 23682,
+    NPC_HEAD = 23775,
+    NPC_PUMPKIN = 23694
 };
 
 enum SMGameObjectIds
 {
-    GO_HIGH_INQUISITORS_DOOR        = 104600,
-    GO_PUMPKIN_SHRINE               = 186267
+    GO_HIGH_INQUISITORS_DOOR = 104600,
+    GO_PUMPKIN_SHRINE = 186267
 };
 
 template <class AI, class T>

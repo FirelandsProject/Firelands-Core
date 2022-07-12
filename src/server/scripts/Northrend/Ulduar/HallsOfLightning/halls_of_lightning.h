@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,27 +28,27 @@ uint32 const EncounterCount = 4;
 enum HOLDataTypes
 {
     // Encounter States/Boss GUIDs
-    DATA_BJARNGRIM          = 0,
-    DATA_VOLKHAN            = 1,
-    DATA_IONAR              = 2,
-    DATA_LOKEN              = 3
+    DATA_BJARNGRIM = 0,
+    DATA_VOLKHAN = 1,
+    DATA_IONAR = 2,
+    DATA_LOKEN = 3
 };
 
 enum HOLCreaturesIds
 {
-    NPC_BJARNGRIM           = 28586,
-    NPC_VOLKHAN             = 28587,
-    NPC_IONAR               = 28546,
-    NPC_LOKEN               = 28923
+    NPC_BJARNGRIM = 28586,
+    NPC_VOLKHAN = 28587,
+    NPC_IONAR = 28546,
+    NPC_LOKEN = 28923
 };
 
 enum HOLGameObjectIds
 {
-    GO_BJARNGRIM_DOOR       = 191416,
-    GO_VOLKHAN_DOOR         = 191325,
-    GO_IONAR_DOOR           = 191326,
-    GO_LOKEN_DOOR           = 191324,
-    GO_LOKEN_THRONE         = 192654
+    GO_BJARNGRIM_DOOR = 191416,
+    GO_VOLKHAN_DOOR = 191325,
+    GO_IONAR_DOOR = 191326,
+    GO_LOKEN_DOOR = 191324,
+    GO_LOKEN_THRONE = 192654
 };
 
 template <class AI, class T>

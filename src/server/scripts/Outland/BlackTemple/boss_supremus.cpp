@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,22 +24,22 @@
 
 enum Texts
 {
-    EMOTE_NEW_TARGET          = 0,
-    EMOTE_PUNCH_GROUND        = 1,
-    EMOTE_GROUND_CRACK        = 2
+    EMOTE_NEW_TARGET = 0,
+    EMOTE_PUNCH_GROUND = 1,
+    EMOTE_GROUND_CRACK = 2
 };
 
 enum Spells
 {
-    SPELL_MOLTEN_PUNCH        = 40126,
-    SPELL_HATEFUL_STRIKE      = 41926,
-    SPELL_MOLTEN_FLAME        = 40980,
-    SPELL_VOLCANIC_ERUPTION   = 40117,
-    SPELL_VOLCANIC_SUMMON     = 40276,
-    SPELL_VOLCANIC_GEYSER     = 42055,
-    SPELL_BERSERK             = 45078,
-    SPELL_SNARE_SELF          = 41922,
-    SPELL_CHARGE              = 41581
+    SPELL_MOLTEN_PUNCH = 40126,
+    SPELL_HATEFUL_STRIKE = 41926,
+    SPELL_MOLTEN_FLAME = 40980,
+    SPELL_VOLCANIC_ERUPTION = 40117,
+    SPELL_VOLCANIC_SUMMON = 40276,
+    SPELL_VOLCANIC_GEYSER = 42055,
+    SPELL_BERSERK = 45078,
+    SPELL_SNARE_SELF = 41922,
+    SPELL_CHARGE = 41581
 };
 
 enum Events
@@ -54,9 +54,9 @@ enum Events
 
 enum Phases
 {
-    PHASE_INITIAL =  1,
-    PHASE_STRIKE  =  2,
-    PHASE_CHASE   =  3
+    PHASE_INITIAL = 1,
+    PHASE_STRIKE = 2,
+    PHASE_CHASE = 3
 };
 
 enum Actions
@@ -140,38 +140,38 @@ struct boss_supremus : public BossAI
     {
         switch (eventId)
         {
-            case EVENT_BERSERK:
-                DoCastSelf(SPELL_BERSERK, true);
-                break;
-            case EVENT_FLAME:
-                DoCast(SPELL_MOLTEN_PUNCH);
-                events.Repeat(Seconds(15), Seconds(20));
-                break;
-            case EVENT_HATEFUL_STRIKE:
-                if (Unit* target = CalculateHatefulStrikeTarget())
-                    DoCast(target, SPELL_HATEFUL_STRIKE);
-                events.Repeat(Seconds(5));
-                break;
-            case EVENT_SWITCH_TARGET:
-                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, 100.0f, true))
-                {
-                    ResetThreatList();
-                    AddThreat(target, 1000000.0f);
-                    DoCast(target, SPELL_CHARGE);
-                    Talk(EMOTE_NEW_TARGET);
-                }
-                events.Repeat(Seconds(10));
-                break;
-            case EVENT_VOLCANO:
-                DoCastAOE(SPELL_VOLCANIC_SUMMON, true);
-                Talk(EMOTE_GROUND_CRACK);
-                events.Repeat(Seconds(10));
-                break;
-            case EVENT_SWITCH_PHASE:
-                ChangePhase();
-                break;
-            default:
-                break;
+        case EVENT_BERSERK:
+            DoCastSelf(SPELL_BERSERK, true);
+            break;
+        case EVENT_FLAME:
+            DoCast(SPELL_MOLTEN_PUNCH);
+            events.Repeat(Seconds(15), Seconds(20));
+            break;
+        case EVENT_HATEFUL_STRIKE:
+            if (Unit* target = CalculateHatefulStrikeTarget())
+                DoCast(target, SPELL_HATEFUL_STRIKE);
+            events.Repeat(Seconds(5));
+            break;
+        case EVENT_SWITCH_TARGET:
+            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, 100.0f, true))
+            {
+                ResetThreatList();
+                AddThreat(target, 1000000.0f);
+                DoCast(target, SPELL_CHARGE);
+                Talk(EMOTE_NEW_TARGET);
+            }
+            events.Repeat(Seconds(10));
+            break;
+        case EVENT_VOLCANO:
+            DoCastAOE(SPELL_VOLCANIC_SUMMON, true);
+            Talk(EMOTE_GROUND_CRACK);
+            events.Repeat(Seconds(10));
+            break;
+        case EVENT_SWITCH_PHASE:
+            ChangePhase();
+            break;
+        default:
+            break;
         }
     }
 };
@@ -196,9 +196,9 @@ struct npc_volcano : public NullCreatureAI
     void Reset() override
     {
         _scheduler.Schedule(Seconds(3), [this](TaskContext /*context*/)
-        {
-            DoCastSelf(SPELL_VOLCANIC_ERUPTION);
-        });
+            {
+                DoCastSelf(SPELL_VOLCANIC_ERUPTION);
+            });
     }
 
     void DoAction(int32 action) override

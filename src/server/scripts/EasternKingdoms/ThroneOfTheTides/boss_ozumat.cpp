@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -36,61 +36,61 @@
 enum Texts
 {
     // Neptulon
-    SAY_INTRO_1                     = 0,    
-    SAY_INTRO_2                     = 1,
-    SAY_PURIFY_WATERS_1             = 2,
-    SAY_PURIFY_WATERS_2             = 3,
-    SAY_OZUMAT_RETURNED             = 4,
-    SAY_STUNNED                     = 5,
-    SAY_WATERS_CLEANSED_1           = 6,
-    SAY_WATERS_CLEANSED_2           = 7,
-    SAY_ANNOUNCE_OZUMAT_VULNERABLE  = 8
+    SAY_INTRO_1 = 0,
+    SAY_INTRO_2 = 1,
+    SAY_PURIFY_WATERS_1 = 2,
+    SAY_PURIFY_WATERS_2 = 3,
+    SAY_OZUMAT_RETURNED = 4,
+    SAY_STUNNED = 5,
+    SAY_WATERS_CLEANSED_1 = 6,
+    SAY_WATERS_CLEANSED_2 = 7,
+    SAY_ANNOUNCE_OZUMAT_VULNERABLE = 8
 };
 
 enum Spells
 {
     // Neptulon
-    SPELL_PURIFY                        = 76952,
-    SPELL_PURE_WATER                    = 84037,
-    SPELL_TIDAL_SURGE_1                 = 76133,
-    SPELL_TIDAL_SURGE_2                 = 76155,
-    SPELL_CLEAR_TIDAL_SURGE             = 83909,
+    SPELL_PURIFY = 76952,
+    SPELL_PURE_WATER = 84037,
+    SPELL_TIDAL_SURGE_1 = 76133,
+    SPELL_TIDAL_SURGE_2 = 76155,
+    SPELL_CLEAR_TIDAL_SURGE = 83909,
 
     // Ozumat
-    SPELL_OZUMAT_GLOBE_IMPACT_PERIODIC  = 83126,
-    SPELL_OZUMAT_RIDE_AURA              = 83119,
-    SPELL_BLIGHT_OF_OZUMAT              = 83585,
-    SPELL_BLIGHT_OF_OZUMAT_CHANNEL      = 83672,
-    SPELL_SUMMON_BLIGHT_OF_OZUMAT       = 83606,
-    SPELL_SUMMON_CHEST_VISUAL           = 84074,
-    SPELL_GRAB_NEPTULON                 = 94170,
-    SPELL_THRONE_OF_TIDES_COMPLETE      = 95673,
+    SPELL_OZUMAT_GLOBE_IMPACT_PERIODIC = 83126,
+    SPELL_OZUMAT_RIDE_AURA = 83119,
+    SPELL_BLIGHT_OF_OZUMAT = 83585,
+    SPELL_BLIGHT_OF_OZUMAT_CHANNEL = 83672,
+    SPELL_SUMMON_BLIGHT_OF_OZUMAT = 83606,
+    SPELL_SUMMON_CHEST_VISUAL = 84074,
+    SPELL_GRAB_NEPTULON = 94170,
+    SPELL_THRONE_OF_TIDES_COMPLETE = 95673,
 
     // Phase 1 Adds
-    SPELL_CHARGE_TO_WINDOW              = 83240,
+    SPELL_CHARGE_TO_WINDOW = 83240,
 
     // Vicious Mindlasher
-    SPELL_SHADOW_BOLT                   = 83914,
-    SPELL_BRAIN_SPIKE                   = 83915,
-    SPELL_VEIL_OF_SHADOW                = 83926,
+    SPELL_SHADOW_BOLT = 83914,
+    SPELL_BRAIN_SPIKE = 83915,
+    SPELL_VEIL_OF_SHADOW = 83926,
 
     // Unyielding Behemoth
-    SPELL_SHADOW_BLAST                  = 83929,
-    SPELL_SHADOW_BLAST_RIDE_VEHICLE     = 83975,
-    SPELL_SHADOW_BLAST_VISUAL           = 83977,
-    SPELL_SHADOW_BLAST_MISSILE          = 83931,
-    SPELL_SHRINK                        = 83976,
-    SPELL_BLIGHT_SPRAY                  = 83985,
+    SPELL_SHADOW_BLAST = 83929,
+    SPELL_SHADOW_BLAST_RIDE_VEHICLE = 83975,
+    SPELL_SHADOW_BLAST_VISUAL = 83977,
+    SPELL_SHADOW_BLAST_MISSILE = 83931,
+    SPELL_SHRINK = 83976,
+    SPELL_BLIGHT_SPRAY = 83985,
 
     // Faceless Sapper
-    SPELL_WATER_EXPLOSION_DOWN          = 83479,
-    SPELL_ENTANGLING_GRASP              = 83463,
+    SPELL_WATER_EXPLOSION_DOWN = 83479,
+    SPELL_ENTANGLING_GRASP = 83463,
 
     // World Trigger (Friendly + Invis Man)
-    SPELL_SUMMON_MURLOC_ADD_PERIODIC    = 83357,
-    SPELL_SUMMON_CASTER_ADD_PERIODIC    = 83440,
-    SPELL_SUMMON_KITE_ADD_PERIODIC      = 83649,
-    SPELL_SUMMON_LT_ADD_EFFECT          = 83436
+    SPELL_SUMMON_MURLOC_ADD_PERIODIC = 83357,
+    SPELL_SUMMON_CASTER_ADD_PERIODIC = 83440,
+    SPELL_SUMMON_KITE_ADD_PERIODIC = 83649,
+    SPELL_SUMMON_LT_ADD_EFFECT = 83436
 };
 
 enum Events
@@ -135,7 +135,7 @@ enum Events
 enum Actions
 {
     // ACTION_CORAL_GARDEN_ENTERED = 1,
-    ACTION_COMPLETE_ENCOUNTER   = 2
+    ACTION_COMPLETE_ENCOUNTER = 2
 };
 
 enum MovePoints
@@ -156,74 +156,74 @@ enum VehicleSeats
 
 class ChargeToWindowEvent : public BasicEvent
 {
-    public:
-        ChargeToWindowEvent(Creature* owner) :  _owner(owner) { }
+public:
+    ChargeToWindowEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            _owner->CastSpell(_owner, SPELL_CHARGE_TO_WINDOW);
-            return true;
-        }
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        _owner->CastSpell(_owner, SPELL_CHARGE_TO_WINDOW);
+        return true;
+    }
 
-    private:
-        Creature* _owner;
+private:
+    Creature* _owner;
 };
 
 class EntanglingGraspEvent : public BasicEvent
 {
-    public:
-        EntanglingGraspEvent(Creature* owner) :  _owner(owner) { }
+public:
+    EntanglingGraspEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            _owner->CastSpell(_owner, SPELL_ENTANGLING_GRASP);
-            return true;
-        }
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        _owner->CastSpell(_owner, SPELL_ENTANGLING_GRASP);
+        return true;
+    }
 
-    private:
-        Creature* _owner;
+private:
+    Creature* _owner;
 };
 
 class AttackNeptulonEvent : public BasicEvent
 {
-    public:
-        AttackNeptulonEvent(Creature* owner) :  _owner(owner) { }
+public:
+    AttackNeptulonEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        if (InstanceScript* instance = _owner->GetInstanceScript())
         {
-            if (InstanceScript* instance = _owner->GetInstanceScript())
+            if (Creature* neptulon = instance->GetCreature(DATA_NEPTULON))
             {
-                if (Creature* neptulon = instance->GetCreature(DATA_NEPTULON))
+                _owner->SetReactState(REACT_AGGRESSIVE);
+                if (_owner->IsAIEnabled())
                 {
-                    _owner->SetReactState(REACT_AGGRESSIVE);
-                    if (_owner->IsAIEnabled())
-                    {
-                        if (_owner->GetEntry() == NPC_UNYIELDING_BEHEMOTH
-                            || _owner->GetEntry() == NPC_VICIOUS_MINDLASHER
-                            || _owner->GetEntry() == NPC_BLIGHT_BEAST)
-                            _owner->AI()->DoZoneInCombat();
-                        else
-                            _owner->AI()->AttackStart(neptulon);
-                    }
+                    if (_owner->GetEntry() == NPC_UNYIELDING_BEHEMOTH
+                        || _owner->GetEntry() == NPC_VICIOUS_MINDLASHER
+                        || _owner->GetEntry() == NPC_BLIGHT_BEAST)
+                        _owner->AI()->DoZoneInCombat();
+                    else
+                        _owner->AI()->AttackStart(neptulon);
                 }
             }
-            return true;
         }
-    private:
-        Creature* _owner;
+        return true;
+    }
+private:
+    Creature* _owner;
 };
 
-Position const OzumatCombatTriggerPos   = { -153.333f, 982.807f, 229.5483f, 2.792527f };
-Position const WorldTriggerFriendlyPos  = { -147.439f, 981.911f, 230.3853f, 0.0f };
-Position const OzumatPos                = { -64.0677f, 845.455f, 310.6913f, 2.181662f };
-Position const AddSpawnerPosLeft        = { -65.9722f, 1031.8f,  257.2863f };
-Position const WindowChargePos1         = { -95.2135f, 1014.13f, 253.908f };
-Position const WindowChargePos2         = { -127.332f, 930.429f, 253.371f };
-Position const GroundJumpPos1           = { -122.5607f, 1001.56f, 230.2997f };
-Position const GroundJumpPos2           = { -137.7711f, 952.5314f, 231.0441f };
-Position const OzumatVehicleEscapePos   = { 69.08652f, 746.204f, 423.8753f };
-Position const NeptulonsCachePos        = { -157.986f, 982.238f, 229.131f, 2.984498f };
-QuaternionData const NeptulonsCacheRot  = QuaternionData(0.0f, 0.0f, 0.9969168f, 0.07846643f);
+Position const OzumatCombatTriggerPos = { -153.333f, 982.807f, 229.5483f, 2.792527f };
+Position const WorldTriggerFriendlyPos = { -147.439f, 981.911f, 230.3853f, 0.0f };
+Position const OzumatPos = { -64.0677f, 845.455f, 310.6913f, 2.181662f };
+Position const AddSpawnerPosLeft = { -65.9722f, 1031.8f,  257.2863f };
+Position const WindowChargePos1 = { -95.2135f, 1014.13f, 253.908f };
+Position const WindowChargePos2 = { -127.332f, 930.429f, 253.371f };
+Position const GroundJumpPos1 = { -122.5607f, 1001.56f, 230.2997f };
+Position const GroundJumpPos2 = { -137.7711f, 952.5314f, 231.0441f };
+Position const OzumatVehicleEscapePos = { 69.08652f, 746.204f, 423.8753f };
+Position const NeptulonsCachePos = { -157.986f, 982.238f, 229.131f, 2.984498f };
+QuaternionData const NeptulonsCacheRot = QuaternionData(0.0f, 0.0f, 0.9969168f, 0.07846643f);
 
 Position const OzumatAddSpawnerPositions[] =
 {
@@ -257,7 +257,7 @@ struct boss_ozumat : public BossAI
         events.ScheduleEvent(EVENT_BLIGHT_OF_OZUMAT, 3s + 500ms);
     }
 
-    void DamageTaken(Unit* /*attacker*/, uint32 &damage) override
+    void DamageTaken(Unit* /*attacker*/, uint32& damage) override
     {
         if (damage >= me->GetHealth())
         {
@@ -287,48 +287,48 @@ struct boss_ozumat : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_GLOBE_IMPACT:
-                    DoCastSelf(SPELL_OZUMAT_GLOBE_IMPACT_PERIODIC);
-                    if (Creature* vehicle = instance->GetCreature(DATA_OZUMAT_VEHICLE))
-                        DoCast(vehicle, SPELL_OZUMAT_RIDE_AURA);
-                    break;
-                case EVENT_BLIGHT_OF_OZUMAT:
-                    DoZoneInCombat();
-                    DoCastSelf(SPELL_BLIGHT_OF_OZUMAT);
-                    break;
-                case EVENT_CHANGE_SEAT:
-                    DoCastAOE(SPELL_SUMMON_CHEST_VISUAL);
-                    if (instance->GetCreature(DATA_OZUMAT_VEHICLE))
-                        me->ChangeSeat(SEAT_1);
+            case EVENT_GLOBE_IMPACT:
+                DoCastSelf(SPELL_OZUMAT_GLOBE_IMPACT_PERIODIC);
+                if (Creature* vehicle = instance->GetCreature(DATA_OZUMAT_VEHICLE))
+                    DoCast(vehicle, SPELL_OZUMAT_RIDE_AURA);
+                break;
+            case EVENT_BLIGHT_OF_OZUMAT:
+                DoZoneInCombat();
+                DoCastSelf(SPELL_BLIGHT_OF_OZUMAT);
+                break;
+            case EVENT_CHANGE_SEAT:
+                DoCastAOE(SPELL_SUMMON_CHEST_VISUAL);
+                if (instance->GetCreature(DATA_OZUMAT_VEHICLE))
+                    me->ChangeSeat(SEAT_1);
 
-                    events.ScheduleEvent(EVENT_SWIM_AWAY, 1s);
-                    break;
-                case EVENT_SWIM_AWAY:
-                    if (Creature* vehicle = me->GetVehicleCreatureBase())
-                        vehicle->GetMotionMaster()->MovePoint(POINT_NONE, OzumatVehicleEscapePos, false);
-                    events.ScheduleEvent(EVENT_COMPLETE_ENCOUNTER, 5s);
-                    break;
-                case EVENT_COMPLETE_ENCOUNTER:
-                    DoCastAOE(SPELL_CLEAR_TIDAL_SURGE, true);
-                    if (Creature* neptulon = instance->GetCreature(DATA_NEPTULON))
-                    {
-                        instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_THRONE_OF_TIDES_COMPLETE, 0, me);
-                        instance->SetBossState(DATA_OZUMAT, DONE);
-                        instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, neptulon);
+                events.ScheduleEvent(EVENT_SWIM_AWAY, 1s);
+                break;
+            case EVENT_SWIM_AWAY:
+                if (Creature* vehicle = me->GetVehicleCreatureBase())
+                    vehicle->GetMotionMaster()->MovePoint(POINT_NONE, OzumatVehicleEscapePos, false);
+                events.ScheduleEvent(EVENT_COMPLETE_ENCOUNTER, 5s);
+                break;
+            case EVENT_COMPLETE_ENCOUNTER:
+                DoCastAOE(SPELL_CLEAR_TIDAL_SURGE, true);
+                if (Creature* neptulon = instance->GetCreature(DATA_NEPTULON))
+                {
+                    instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET, SPELL_THRONE_OF_TIDES_COMPLETE, 0, me);
+                    instance->SetBossState(DATA_OZUMAT, DONE);
+                    instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, neptulon);
 
-                        if (IsHeroic())
-                            instance->instance->PermBindAllPlayers();
+                    if (IsHeroic())
+                        instance->instance->PermBindAllPlayers();
 
-                        neptulon->DespawnOrUnsummon();
+                    neptulon->DespawnOrUnsummon();
 
-                        if (Player* player = me->SelectNearestPlayer(500.0f))
-                            player->RewardPlayerAndGroupAtKill(me, false);
+                    if (Player* player = me->SelectNearestPlayer(500.0f))
+                        player->RewardPlayerAndGroupAtKill(me, false);
 
-                        me->DespawnOrUnsummon();
-                    }
-                    break;
-                default:
-                    break;
+                    me->DespawnOrUnsummon();
+                }
+                break;
+            default:
+                break;
             }
         }
     }
@@ -414,22 +414,22 @@ struct npc_ozumat_neptulon : public ScriptedAI
     {
         switch (action)
         {
-            case ACTION_CORAL_GARDEN_ENTERED:
-                Talk(SAY_INTRO_1);
-                _events.ScheduleEvent(EVENT_TALK_INTRO, 7s);
-                break;
-            case ACTION_COMPLETE_ENCOUNTER:
-                for (ObjectGuid guid : _summons)
-                    if (Creature* summon = ObjectAccessor::GetCreature(*me, guid))
-                        if (summon->GetEntry() != BOSS_OZUMAT)
-                            summon->DespawnOrUnsummon();
+        case ACTION_CORAL_GARDEN_ENTERED:
+            Talk(SAY_INTRO_1);
+            _events.ScheduleEvent(EVENT_TALK_INTRO, 7s);
+            break;
+        case ACTION_COMPLETE_ENCOUNTER:
+            for (ObjectGuid guid : _summons)
+                if (Creature* summon = ObjectAccessor::GetCreature(*me, guid))
+                    if (summon->GetEntry() != BOSS_OZUMAT)
+                        summon->DespawnOrUnsummon();
 
-                _events.Reset();
-                break;
-            default:
-                break;
+            _events.Reset();
+            break;
+        default:
+            break;
         }
-        
+
     }
 
     void SummonedCreatureDies(Creature* summon, Unit* /*killer*/) override
@@ -466,37 +466,37 @@ struct npc_ozumat_neptulon : public ScriptedAI
 
         switch (summon->GetEntry())
         {
-            case NPC_DEEP_MURLOC_INVADER:
-            case NPC_VICIOUS_MINDLASHER:
-            case NPC_UNYIELDING_BEHEMOTH:
-                summon->SetReactState(REACT_PASSIVE);
-                summon->SetDisableGravity(true);
-                summon->SendSetPlayHoverAnim(true);
-                summon->SetCorpseDelay(4);
-                summon->m_Events.AddEvent(new ChargeToWindowEvent(summon), summon->m_Events.CalculateTime(2 * IN_MILLISECONDS));
-                break;
-            case NPC_BLIGHT_BEAST:
-                summon->SetReactState(REACT_PASSIVE);
-                summon->SetDisableGravity(true);
-                summon->SendSetPlayHoverAnim(true);
-                summon->SetCorpseDelay(4);
-                summon->m_Events.AddEvent(new ChargeToWindowEvent(summon), summon->m_Events.CalculateTime(2400));
-                break;
-            case NPC_FACELESS_SAPPER:
-                summon->CastSpell(summon, SPELL_WATER_EXPLOSION_DOWN);
-                summon->SetReactState(REACT_PASSIVE);
-                summon->AI()->DoZoneInCombat();
-                summon->SetCorpseDelay(4);
-                summon->GetMotionMaster()->MoveFall();
-                summon->m_Events.AddEvent(new EntanglingGraspEvent(summon), summon->m_Events.CalculateTime(3 * IN_MILLISECONDS));
-                break;
-            case NPC_OZUMAT_COMBAT_TRIGGER:
-                summon->SetReactState(REACT_PASSIVE);
-                summon->SetCombatPulseDelay(1);
-                summon->AI()->DoZoneInCombat();
-                break;
-            default:
-                break;
+        case NPC_DEEP_MURLOC_INVADER:
+        case NPC_VICIOUS_MINDLASHER:
+        case NPC_UNYIELDING_BEHEMOTH:
+            summon->SetReactState(REACT_PASSIVE);
+            summon->SetDisableGravity(true);
+            summon->SendSetPlayHoverAnim(true);
+            summon->SetCorpseDelay(4);
+            summon->m_Events.AddEvent(new ChargeToWindowEvent(summon), summon->m_Events.CalculateTime(2 * IN_MILLISECONDS));
+            break;
+        case NPC_BLIGHT_BEAST:
+            summon->SetReactState(REACT_PASSIVE);
+            summon->SetDisableGravity(true);
+            summon->SendSetPlayHoverAnim(true);
+            summon->SetCorpseDelay(4);
+            summon->m_Events.AddEvent(new ChargeToWindowEvent(summon), summon->m_Events.CalculateTime(2400));
+            break;
+        case NPC_FACELESS_SAPPER:
+            summon->CastSpell(summon, SPELL_WATER_EXPLOSION_DOWN);
+            summon->SetReactState(REACT_PASSIVE);
+            summon->AI()->DoZoneInCombat();
+            summon->SetCorpseDelay(4);
+            summon->GetMotionMaster()->MoveFall();
+            summon->m_Events.AddEvent(new EntanglingGraspEvent(summon), summon->m_Events.CalculateTime(3 * IN_MILLISECONDS));
+            break;
+        case NPC_OZUMAT_COMBAT_TRIGGER:
+            summon->SetReactState(REACT_PASSIVE);
+            summon->SetCombatPulseDelay(1);
+            summon->AI()->DoZoneInCombat();
+            break;
+        default:
+            break;
         }
     }
 
@@ -508,75 +508,75 @@ struct npc_ozumat_neptulon : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_TALK_INTRO:
-                    Talk(SAY_INTRO_2);
-                    break;
-                case EVENT_PURIFY:
-                    Talk(SAY_PURIFY_WATERS_1);
-                    DoCastSelf(SPELL_PURIFY);
-                    _events.ScheduleEvent(EVENT_TALK_PURIFY_2, 46s);
-                    break;
-                case EVENT_APPLY_CASTER_PERIODIC:
-                    if (Creature* friendlyTrigger = ObjectAccessor::GetCreature(*me, _friendlyTriggerGUID))
-                        friendlyTrigger->CastSpell(friendlyTrigger, SPELL_SUMMON_CASTER_ADD_PERIODIC);
-                    break;
-                case EVENT_CAST_LT_EFFECT:
-                    if (Creature* friendlyTrigger = ObjectAccessor::GetCreature(*me, _friendlyTriggerGUID))
-                        friendlyTrigger->CastSpell(friendlyTrigger, SPELL_SUMMON_LT_ADD_EFFECT);
-                    break;
-                case EVENT_TALK_PURIFY_2:
-                    Talk(SAY_PURIFY_WATERS_2);
-                    break;
-                case EVENT_SUMMON_OZUMAT:
-                    DoSummon(BOSS_OZUMAT, OzumatPos);
-                    break;
-                case EVENT_TALK_OZUMAT_RETURNED:
-                    Talk(SAY_OZUMAT_RETURNED);
-                    break;
-                case EVENT_SUMMON_FACELESS_SAPPERS:
-                    for (uint8 i = 0; i < 3; i++)
-                        DoSummon(NPC_FACELESS_SAPPER, FacelessSapperPositions[i]);
-                    break;
-                case EVENT_TALK_STUNNED:
-                    Talk(SAY_STUNNED);
-                    break;
-                case EVENT_APPLY_KITE_PERIODIC:
-                    if (Creature* friendlyTrigger = ObjectAccessor::GetCreature(*me, _friendlyTriggerGUID))
-                        friendlyTrigger->CastSpell(friendlyTrigger, SPELL_SUMMON_KITE_ADD_PERIODIC);
-                    break;
-                case EVENT_TIDAL_SURGE_1:
-                    if (Creature* ozumat = _instance->GetCreature(DATA_OZUMAT))
-                    {
-                        ozumat->CastSpell(ozumat, SPELL_SUMMON_BLIGHT_OF_OZUMAT);
-                        ozumat->CastSpell(ozumat, SPELL_BLIGHT_OF_OZUMAT_CHANNEL);
-                    }
+            case EVENT_TALK_INTRO:
+                Talk(SAY_INTRO_2);
+                break;
+            case EVENT_PURIFY:
+                Talk(SAY_PURIFY_WATERS_1);
+                DoCastSelf(SPELL_PURIFY);
+                _events.ScheduleEvent(EVENT_TALK_PURIFY_2, 46s);
+                break;
+            case EVENT_APPLY_CASTER_PERIODIC:
+                if (Creature* friendlyTrigger = ObjectAccessor::GetCreature(*me, _friendlyTriggerGUID))
+                    friendlyTrigger->CastSpell(friendlyTrigger, SPELL_SUMMON_CASTER_ADD_PERIODIC);
+                break;
+            case EVENT_CAST_LT_EFFECT:
+                if (Creature* friendlyTrigger = ObjectAccessor::GetCreature(*me, _friendlyTriggerGUID))
+                    friendlyTrigger->CastSpell(friendlyTrigger, SPELL_SUMMON_LT_ADD_EFFECT);
+                break;
+            case EVENT_TALK_PURIFY_2:
+                Talk(SAY_PURIFY_WATERS_2);
+                break;
+            case EVENT_SUMMON_OZUMAT:
+                DoSummon(BOSS_OZUMAT, OzumatPos);
+                break;
+            case EVENT_TALK_OZUMAT_RETURNED:
+                Talk(SAY_OZUMAT_RETURNED);
+                break;
+            case EVENT_SUMMON_FACELESS_SAPPERS:
+                for (uint8 i = 0; i < 3; i++)
+                    DoSummon(NPC_FACELESS_SAPPER, FacelessSapperPositions[i]);
+                break;
+            case EVENT_TALK_STUNNED:
+                Talk(SAY_STUNNED);
+                break;
+            case EVENT_APPLY_KITE_PERIODIC:
+                if (Creature* friendlyTrigger = ObjectAccessor::GetCreature(*me, _friendlyTriggerGUID))
+                    friendlyTrigger->CastSpell(friendlyTrigger, SPELL_SUMMON_KITE_ADD_PERIODIC);
+                break;
+            case EVENT_TIDAL_SURGE_1:
+                if (Creature* ozumat = _instance->GetCreature(DATA_OZUMAT))
+                {
+                    ozumat->CastSpell(ozumat, SPELL_SUMMON_BLIGHT_OF_OZUMAT);
+                    ozumat->CastSpell(ozumat, SPELL_BLIGHT_OF_OZUMAT_CHANNEL);
+                }
 
-                    Talk(SAY_WATERS_CLEANSED_1);
-                    DoCastAOE(SPELL_TIDAL_SURGE_1);
-                    _events.ScheduleEvent(EVENT_TIDAL_SURGE_2, 3s + 200ms);
-                    break;
-                case EVENT_TIDAL_SURGE_2:
-                    _instance->DoCastSpellOnPlayers(SPELL_TIDAL_SURGE_2);
-                    _events.ScheduleEvent(EVENT_MAKE_OZUMAT_ATTACKABLE, 5s + 500ms);
-                    break;
-                case EVENT_MAKE_OZUMAT_ATTACKABLE:
-                    Talk(SAY_WATERS_CLEANSED_2);
-                    Talk(SAY_ANNOUNCE_OZUMAT_VULNERABLE);
-                    DoCastAOE(SPELL_PURE_WATER);
-                    _events.ScheduleEvent(EVENT_PURE_WATER, 2s + 500ms);
-                    break;
-                case EVENT_PURE_WATER:
-                    DoCastAOE(SPELL_PURE_WATER);
-                    _events.Repeat(2s + 500ms);
-                    break;
-                case EVENT_ENTER_PHASE_TWO:
-                    _events.ScheduleEvent(EVENT_SUMMON_OZUMAT, 3s);
-                    _events.ScheduleEvent(EVENT_TALK_OZUMAT_RETURNED, 200ms);
-                    _events.ScheduleEvent(EVENT_SUMMON_FACELESS_SAPPERS, 4s + 500ms);
-                    _events.ScheduleEvent(EVENT_APPLY_KITE_PERIODIC, 9s);
-                    break;
-                default:
-                    break;
+                Talk(SAY_WATERS_CLEANSED_1);
+                DoCastAOE(SPELL_TIDAL_SURGE_1);
+                _events.ScheduleEvent(EVENT_TIDAL_SURGE_2, 3s + 200ms);
+                break;
+            case EVENT_TIDAL_SURGE_2:
+                _instance->DoCastSpellOnPlayers(SPELL_TIDAL_SURGE_2);
+                _events.ScheduleEvent(EVENT_MAKE_OZUMAT_ATTACKABLE, 5s + 500ms);
+                break;
+            case EVENT_MAKE_OZUMAT_ATTACKABLE:
+                Talk(SAY_WATERS_CLEANSED_2);
+                Talk(SAY_ANNOUNCE_OZUMAT_VULNERABLE);
+                DoCastAOE(SPELL_PURE_WATER);
+                _events.ScheduleEvent(EVENT_PURE_WATER, 2s + 500ms);
+                break;
+            case EVENT_PURE_WATER:
+                DoCastAOE(SPELL_PURE_WATER);
+                _events.Repeat(2s + 500ms);
+                break;
+            case EVENT_ENTER_PHASE_TWO:
+                _events.ScheduleEvent(EVENT_SUMMON_OZUMAT, 3s);
+                _events.ScheduleEvent(EVENT_TALK_OZUMAT_RETURNED, 200ms);
+                _events.ScheduleEvent(EVENT_SUMMON_FACELESS_SAPPERS, 4s + 500ms);
+                _events.ScheduleEvent(EVENT_APPLY_KITE_PERIODIC, 9s);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -622,20 +622,20 @@ struct npc_ozumat_vicious_mindlasher : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_BRAIN_SPIKE:
-                    DoCastAOE(SPELL_BRAIN_SPIKE);
-                    break;
-                case EVENT_VEIL_OF_SHADOW:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f, true))
-                        DoCast(target, SPELL_VEIL_OF_SHADOW);
-                    break;
-                case EVENT_SHADOW_BOLT:
-                    if (Unit* target = me->GetVictim())
-                        DoCast(target, SPELL_SHADOW_BOLT);
-                    _events.Repeat(2s + 500ms);
-                    break;
-                default:
-                    break;
+            case EVENT_BRAIN_SPIKE:
+                DoCastAOE(SPELL_BRAIN_SPIKE);
+                break;
+            case EVENT_VEIL_OF_SHADOW:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f, true))
+                    DoCast(target, SPELL_VEIL_OF_SHADOW);
+                break;
+            case EVENT_SHADOW_BOLT:
+                if (Unit* target = me->GetVictim())
+                    DoCast(target, SPELL_SHADOW_BOLT);
+                _events.Repeat(2s + 500ms);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -698,29 +698,29 @@ struct npc_ozumat_unyielding_behemoth : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_BLIGHT_SPRAY:
-                    DoCastVictim(SPELL_BLIGHT_SPRAY);
-                    break;
-                case EVENT_SHADOW_BLAST:
-                    DoCastAOE(SPELL_SHADOW_BLAST);
-                    break;
-                case EVENT_DISABLE_HOVER_ANIM:
-                    me->SendSetPlayHoverAnim(false);
-                    break;
-                case EVENT_SHADOW_BLAST_VISUAL:
-                    DoCastAOE(SPELL_SHADOW_BLAST_VISUAL);
-                    break;
-                case EVENT_FINISH_SHADOW_BLAST:
-                    me->SetDisableGravity(false);
-                    me->SendSetPlayHoverAnim(false);
-                    me->SetReactState(REACT_AGGRESSIVE);
-                    if (Unit* victim = me->GetVictim())
-                        AttackStart(victim);
+            case EVENT_BLIGHT_SPRAY:
+                DoCastVictim(SPELL_BLIGHT_SPRAY);
+                break;
+            case EVENT_SHADOW_BLAST:
+                DoCastAOE(SPELL_SHADOW_BLAST);
+                break;
+            case EVENT_DISABLE_HOVER_ANIM:
+                me->SendSetPlayHoverAnim(false);
+                break;
+            case EVENT_SHADOW_BLAST_VISUAL:
+                DoCastAOE(SPELL_SHADOW_BLAST_VISUAL);
+                break;
+            case EVENT_FINISH_SHADOW_BLAST:
+                me->SetDisableGravity(false);
+                me->SendSetPlayHoverAnim(false);
+                me->SetReactState(REACT_AGGRESSIVE);
+                if (Unit* victim = me->GetVictim())
+                    AttackStart(victim);
 
-                    _events.ScheduleEvent(EVENT_BLIGHT_SPRAY, 100ms);
-                    break;
-                default:
-                    break;
+                _events.ScheduleEvent(EVENT_BLIGHT_SPRAY, 100ms);
+                break;
+            default:
+                break;
             }
         }
 
@@ -869,13 +869,13 @@ class spell_ozumat_blight_of_ozumat : public SpellScript
 
 class PurifyHeightCheck
 {
-    public:
-        PurifyHeightCheck() { }
+public:
+    PurifyHeightCheck() { }
 
-        bool operator()(WorldObject* object)
-        {
-            return (object->GetPositionZ() < 265.42f);
-        }
+    bool operator()(WorldObject* object)
+    {
+        return (object->GetPositionZ() < 265.42f);
+    }
 };
 
 class spell_ozumat_purify : public SpellScript

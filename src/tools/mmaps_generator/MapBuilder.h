@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -92,7 +92,7 @@ namespace MMAP
         int TILES_PER_MAP;
     };
 
-        struct TileInfo
+    struct TileInfo
     {
         TileInfo() : m_mapId(uint32(-1)), m_tileX(), m_tileY(), m_navMeshParams() {}
 
@@ -106,118 +106,118 @@ namespace MMAP
     class MapBuilder;
     class TileBuilder
     {
-        public:
-            TileBuilder(MapBuilder* mapBuilder,
-                bool skipLiquid,
-                bool bigBaseUnit,
-                bool debugOutput);
+    public:
+        TileBuilder(MapBuilder* mapBuilder,
+            bool skipLiquid,
+            bool bigBaseUnit,
+            bool debugOutput);
 
-            TileBuilder(TileBuilder&&) = default;
-            ~TileBuilder();
+        TileBuilder(TileBuilder&&) = default;
+        ~TileBuilder();
 
-            void WorkerThread();
-            void WaitCompletion();
+        void WorkerThread();
+        void WaitCompletion();
 
-            void buildTile(uint32 mapID, uint32 tileX, uint32 tileY, dtNavMesh* navMesh);
-            // move map building
-            void buildMoveMapTile(uint32 mapID,
-                uint32 tileX,
-                uint32 tileY,
-                MeshData& meshData,
-                float bmin[3],
-                float bmax[3],
-                dtNavMesh* navMesh);
+        void buildTile(uint32 mapID, uint32 tileX, uint32 tileY, dtNavMesh* navMesh);
+        // move map building
+        void buildMoveMapTile(uint32 mapID,
+            uint32 tileX,
+            uint32 tileY,
+            MeshData& meshData,
+            float bmin[3],
+            float bmax[3],
+            dtNavMesh* navMesh);
 
-            bool shouldSkipTile(uint32 mapID, uint32 tileX, uint32 tileY) const;
+        bool shouldSkipTile(uint32 mapID, uint32 tileX, uint32 tileY) const;
 
-        private:
-            bool m_bigBaseUnit;
-            bool m_debugOutput;
+    private:
+        bool m_bigBaseUnit;
+        bool m_debugOutput;
 
-            MapBuilder* m_mapBuilder;
-            TerrainBuilder* m_terrainBuilder;
-            std::thread m_workerThread;
-            // build performance - not really used for now
-            rcContext* m_rcContext;
+        MapBuilder* m_mapBuilder;
+        TerrainBuilder* m_terrainBuilder;
+        std::thread m_workerThread;
+        // build performance - not really used for now
+        rcContext* m_rcContext;
     };
 
     class MapBuilder
     {
         friend class TileBuilder;
 
-        public:
-            MapBuilder(Optional<float> maxWalkableAngle,
-                Optional<float> maxWalkableAngleNotSteep,
-                bool skipLiquid,
-                bool skipContinents,
-                bool skipJunkMaps,
-                bool skipBattlegrounds,
-                bool debugOutput,
-                bool bigBaseUnit,
-                int mapid,
-                char const* offMeshFilePath,
-                unsigned int threads);
+    public:
+        MapBuilder(Optional<float> maxWalkableAngle,
+            Optional<float> maxWalkableAngleNotSteep,
+            bool skipLiquid,
+            bool skipContinents,
+            bool skipJunkMaps,
+            bool skipBattlegrounds,
+            bool debugOutput,
+            bool bigBaseUnit,
+            int mapid,
+            char const* offMeshFilePath,
+            unsigned int threads);
 
-            ~MapBuilder();
+        ~MapBuilder();
 
-            void buildMeshFromFile(char* name);
+        void buildMeshFromFile(char* name);
 
-            // builds an mmap tile for the specified map and its mesh
-            void buildSingleTile(uint32 mapID, uint32 tileX, uint32 tileY);
+        // builds an mmap tile for the specified map and its mesh
+        void buildSingleTile(uint32 mapID, uint32 tileX, uint32 tileY);
 
-            // builds list of maps, then builds all of mmap tiles (based on the skip settings)
-            void buildMaps(Optional<uint32> mapID);
+        // builds list of maps, then builds all of mmap tiles (based on the skip settings)
+        void buildMaps(Optional<uint32> mapID);
 
-        private:
-            // builds all mmap tiles for the specified map id (ignores skip settings)
-            void buildMap(uint32 mapID);
-            // detect maps and tiles
-            void discoverTiles();
-            std::set<uint32>* getTileList(uint32 mapID);
+    private:
+        // builds all mmap tiles for the specified map id (ignores skip settings)
+        void buildMap(uint32 mapID);
+        // detect maps and tiles
+        void discoverTiles();
+        std::set<uint32>* getTileList(uint32 mapID);
 
-            void buildNavMesh(uint32 mapID, dtNavMesh* &navMesh);
+        void buildNavMesh(uint32 mapID, dtNavMesh*& navMesh);
 
-            void getTileBounds(uint32 tileX, uint32 tileY,
-                float* verts, int vertCount,
-                float* bmin, float* bmax) const;
-            void getGridBounds(uint32 mapID, uint32 &minX, uint32 &minY, uint32 &maxX, uint32 &maxY) const;
+        void getTileBounds(uint32 tileX, uint32 tileY,
+            float* verts, int vertCount,
+            float* bmin, float* bmax) const;
+        void getGridBounds(uint32 mapID, uint32& minX, uint32& minY, uint32& maxX, uint32& maxY) const;
 
-            bool shouldSkipMap(uint32 mapID) const;
-            bool isTransportMap(uint32 mapID) const;
-            bool isContinentMap(uint32 mapID) const;
+        bool shouldSkipMap(uint32 mapID) const;
+        bool isTransportMap(uint32 mapID) const;
+        bool isContinentMap(uint32 mapID) const;
 
-            rcConfig GetMapSpecificConfig(uint32 mapID, float bmin[3], float bmax[3], const TileConfig &tileConfig) const;
+        rcConfig GetMapSpecificConfig(uint32 mapID, float bmin[3], float bmax[3], const TileConfig& tileConfig) const;
 
-            uint32 percentageDone(uint32 totalTiles, uint32 totalTilesDone) const;
-            uint32 currentPercentageDone() const;
+        uint32 percentageDone(uint32 totalTiles, uint32 totalTilesDone) const;
+        uint32 currentPercentageDone() const;
 
-            TerrainBuilder* m_terrainBuilder;
-            TileList m_tiles;
+        TerrainBuilder* m_terrainBuilder;
+        TileList m_tiles;
 
-            bool m_debugOutput;
+        bool m_debugOutput;
 
-            char const* m_offMeshFilePath;
-            unsigned int m_threads;
-            bool m_skipContinents;
-            bool m_skipJunkMaps;
-            bool m_skipBattlegrounds;
-            bool m_skipLiquid;
+        char const* m_offMeshFilePath;
+        unsigned int m_threads;
+        bool m_skipContinents;
+        bool m_skipJunkMaps;
+        bool m_skipBattlegrounds;
+        bool m_skipLiquid;
 
-            Optional<float> m_maxWalkableAngle;
-            Optional<float> m_maxWalkableAngleNotSteep;
-            bool m_bigBaseUnit;
+        Optional<float> m_maxWalkableAngle;
+        Optional<float> m_maxWalkableAngleNotSteep;
+        bool m_bigBaseUnit;
 
-            int32 m_mapid;
+        int32 m_mapid;
 
-            std::atomic<uint32> m_totalTiles;
-            std::atomic<uint32> m_totalTilesProcessed;
+        std::atomic<uint32> m_totalTiles;
+        std::atomic<uint32> m_totalTilesProcessed;
 
-            // build performance - not really used for now
-            rcContext* m_rcContext;
+        // build performance - not really used for now
+        rcContext* m_rcContext;
 
-            std::vector<TileBuilder*> m_tileBuilders;
-            ProducerConsumerQueue<TileInfo> _queue;
-            std::atomic<bool> _cancelationToken;
+        std::vector<TileBuilder*> m_tileBuilders;
+        ProducerConsumerQueue<TileInfo> _queue;
+        std::atomic<bool> _cancelationToken;
     };
 }
 

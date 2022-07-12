@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "npc_pet_pal_".
- */
+ /*
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "npc_pet_pal_".
+  */
 
 #include "ScriptMgr.h"
 #include "CellImpl.h"
@@ -30,8 +30,8 @@
 
 enum GuardianOfAncientKings
 {
-    SPELL_ANCIENT_GUARDIAN                      = 86657,
-    NPC_GUARDIAN_OF_ANCIENT_KINGS_PROTECTION    = 46490
+    SPELL_ANCIENT_GUARDIAN = 86657,
+    NPC_GUARDIAN_OF_ANCIENT_KINGS_PROTECTION = 46490
 };
 
 struct npc_pet_pal_guardian_of_ancient_kings : public PetAI

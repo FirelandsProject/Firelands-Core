@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright (C) 2008-2018 FirelandsCore <https://github.com/FirelandsProject>
+# Copyright (C) 2008-2018 Firelands Core <https://github.com/FirelandsProject>
 # Author: leak
 # Date: 2010-12-06
 # Note: Based on conf file format of rev 10507

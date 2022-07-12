@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -57,51 +57,51 @@ enum Events
 enum Spells
 {
     // Hadronox
-    SPELL_WEB_FRONT_DOORS                   = 53177,
-    SPELL_WEB_SIDE_DOORS                    = 53185,
-    SPELL_LEECH_POISON                      = 53030,
-    SPELL_LEECH_POISON_HEAL                 = 53800,
-    SPELL_ACID_CLOUD                        = 53400,
-    SPELL_WEB_GRAB                          = 57731,
-    SPELL_PIERCE_ARMOR                      = 53418,
+    SPELL_WEB_FRONT_DOORS = 53177,
+    SPELL_WEB_SIDE_DOORS = 53185,
+    SPELL_LEECH_POISON = 53030,
+    SPELL_LEECH_POISON_HEAL = 53800,
+    SPELL_ACID_CLOUD = 53400,
+    SPELL_WEB_GRAB = 57731,
+    SPELL_PIERCE_ARMOR = 53418,
 
     // Anub'ar opponent summoning spells
-    SPELL_SUMMON_CHAMPION_PERIODIC          = 53035,
-    SPELL_SUMMON_CRYPT_FIEND_PERIODIC       = 53037,
-    SPELL_SUMMON_NECROMANCER_PERIODIC       = 53036,
-    SPELL_SUMMON_CHAMPION_TOP               = 53064,
-    SPELL_SUMMON_CRYPT_FIEND_TOP            = 53065,
-    SPELL_SUMMON_NECROMANCER_TOP            = 53066,
-    SPELL_SUMMON_CHAMPION_BOTTOM            = 53090,
-    SPELL_SUMMON_CRYPT_FIEND_BOTTOM         = 53091,
-    SPELL_SUMMON_NECROMANCER_BOTTOM         = 53092,
+    SPELL_SUMMON_CHAMPION_PERIODIC = 53035,
+    SPELL_SUMMON_CRYPT_FIEND_PERIODIC = 53037,
+    SPELL_SUMMON_NECROMANCER_PERIODIC = 53036,
+    SPELL_SUMMON_CHAMPION_TOP = 53064,
+    SPELL_SUMMON_CRYPT_FIEND_TOP = 53065,
+    SPELL_SUMMON_NECROMANCER_TOP = 53066,
+    SPELL_SUMMON_CHAMPION_BOTTOM = 53090,
+    SPELL_SUMMON_CRYPT_FIEND_BOTTOM = 53091,
+    SPELL_SUMMON_NECROMANCER_BOTTOM = 53092,
 
     // Anub'ar Crusher
-    SPELL_SMASH                             = 53318,
-    SPELL_FRENZY                            = 53801,
+    SPELL_SMASH = 53318,
+    SPELL_FRENZY = 53801,
 
     // Anub'ar foes - Shared
-    SPELL_TAUNT                             = 53798,
+    SPELL_TAUNT = 53798,
 
     // Anub'ar Champion
-    SPELL_REND                              = 59343,
-    SPELL_PUMMEL                            = 59344,
+    SPELL_REND = 59343,
+    SPELL_PUMMEL = 59344,
 
     // Anub'ar Crypt Guard
-    SPELL_CRUSHING_WEBS                     = 59347,
-    SPELL_INFECTED_WOUND                    = 59348,
+    SPELL_CRUSHING_WEBS = 59347,
+    SPELL_INFECTED_WOUND = 59348,
 
     // Anub'ar Necromancer
-    SPELL_SHADOW_BOLT                       = 53333,
-    SPELL_ANIMATE_BONES_1                   = 53334,
-    SPELL_ANIMATE_BONES_2                   = 53336,
+    SPELL_SHADOW_BOLT = 53333,
+    SPELL_ANIMATE_BONES_1 = 53334,
+    SPELL_ANIMATE_BONES_2 = 53336,
 };
 
 enum SummonGroups : uint32
 {
-    SUMMON_GROUP_CRUSHER_1      = 1,
-    SUMMON_GROUP_CRUSHER_2      = 2,
-    SUMMON_GROUP_CRUSHER_3      = 3
+    SUMMON_GROUP_CRUSHER_1 = 1,
+    SUMMON_GROUP_CRUSHER_2 = 2,
+    SUMMON_GROUP_CRUSHER_3 = 3
 };
 
 enum Actions
@@ -120,8 +120,8 @@ enum Data
 
 enum Creatures
 {
-    NPC_CRUSHER             = 28922,
-    NPC_WORLDTRIGGER_LARGE  = 23472
+    NPC_CRUSHER = 28922,
+    NPC_WORLDTRIGGER_LARGE = 23472
 };
 
 enum Talk
@@ -197,7 +197,7 @@ public:
             if (type != POINT_MOTION_TYPE)
                 return;
             me->SetReactState(REACT_AGGRESSIVE);
-            if (_step < NUM_STEPS-1)
+            if (_step < NUM_STEPS - 1)
                 return;
             DoCastAOE(SPELL_WEB_FRONT_DOORS);
             DoCastAOE(SPELL_WEB_SIDE_DOORS);
@@ -236,21 +236,21 @@ public:
         {
             switch (action)
             {
-                case ACTION_CRUSHER_ENGAGED:
-                    if (_enteredCombat)
-                        break;
-                    instance->SetBossState(DATA_HADRONOX, IN_PROGRESS);
-                    _enteredCombat = true;
-                    SummonCrusherPack(SUMMON_GROUP_CRUSHER_2);
-                    SummonCrusherPack(SUMMON_GROUP_CRUSHER_3);
+            case ACTION_CRUSHER_ENGAGED:
+                if (_enteredCombat)
                     break;
-                case ACTION_HADRONOX_MOVE:
-                    if (_step < NUM_STEPS-1)
-                    {
-                        SetStep(_step + 1);
-                        Talk(HADRONOX_EMOTE_MOVE);
-                    }
-                    break;
+                instance->SetBossState(DATA_HADRONOX, IN_PROGRESS);
+                _enteredCombat = true;
+                SummonCrusherPack(SUMMON_GROUP_CRUSHER_2);
+                SummonCrusherPack(SUMMON_GROUP_CRUSHER_3);
+                break;
+            case ACTION_HADRONOX_MOVE:
+                if (_step < NUM_STEPS - 1)
+                {
+                    SetStep(_step + 1);
+                    Talk(HADRONOX_EMOTE_MOVE);
+                }
+                break;
             }
         }
 
@@ -306,47 +306,47 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_LEECH_POISON:
-                        DoCastAOE(SPELL_LEECH_POISON);
-                        events.Repeat(randtime(Seconds(7), Seconds(9)));
-                        break;
-                    case EVENT_ACID_CLOUD:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f))
-                            DoCast(target, SPELL_ACID_CLOUD);
-                        events.Repeat(randtime(Seconds(16), Seconds(23)));
-                        break;
-                    case EVENT_WEB_GRAB:
-                        DoCastAOE(SPELL_WEB_GRAB);
-                        events.Repeat(randtime(Seconds(20), Seconds(25)));
-                        break;
-                    case EVENT_PIERCE_ARMOR:
-                        DoCastVictim(SPELL_PIERCE_ARMOR);
-                        events.Repeat(randtime(Seconds(10), Seconds(15)));
-                        break;
-                    case EVENT_PLAYER_CHECK:
-                        if (IsInCombatWithPlayer() != _lastPlayerCombatState)
+                case EVENT_LEECH_POISON:
+                    DoCastAOE(SPELL_LEECH_POISON);
+                    events.Repeat(randtime(Seconds(7), Seconds(9)));
+                    break;
+                case EVENT_ACID_CLOUD:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f))
+                        DoCast(target, SPELL_ACID_CLOUD);
+                    events.Repeat(randtime(Seconds(16), Seconds(23)));
+                    break;
+                case EVENT_WEB_GRAB:
+                    DoCastAOE(SPELL_WEB_GRAB);
+                    events.Repeat(randtime(Seconds(20), Seconds(25)));
+                    break;
+                case EVENT_PIERCE_ARMOR:
+                    DoCastVictim(SPELL_PIERCE_ARMOR);
+                    events.Repeat(randtime(Seconds(10), Seconds(15)));
+                    break;
+                case EVENT_PLAYER_CHECK:
+                    if (IsInCombatWithPlayer() != _lastPlayerCombatState)
+                    {
+                        _lastPlayerCombatState = !_lastPlayerCombatState;
+                        if (_lastPlayerCombatState) // we are now in combat with players
                         {
-                            _lastPlayerCombatState = !_lastPlayerCombatState;
-                            if (_lastPlayerCombatState) // we are now in combat with players
+                            if (!instance->CheckRequiredBosses(DATA_HADRONOX))
                             {
-                                if (!instance->CheckRequiredBosses(DATA_HADRONOX))
-                                {
-                                    EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
-                                    return;
-                                }
-                                // cancel current point movement if engaged by players
-                                if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == POINT_MOTION_TYPE)
-                                {
-                                    me->GetMotionMaster()->Clear();
-                                    SetCombatMovement(true);
-                                    AttackStart(me->GetVictim());
-                                }
+                                EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+                                return;
                             }
-                            else // we are no longer in combat with players - reset the encounter
-                                EnterEvadeMode(EVADE_REASON_NO_HOSTILES);
+                            // cancel current point movement if engaged by players
+                            if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == POINT_MOTION_TYPE)
+                            {
+                                me->GetMotionMaster()->Clear();
+                                SetCombatMovement(true);
+                                AttackStart(me->GetVictim());
+                            }
                         }
-                        events.Repeat(Seconds(1));
-                        break;
+                        else // we are no longer in combat with players - reset the encounter
+                            EnterEvadeMode(EVADE_REASON_NO_HOSTILES);
+                    }
+                    events.Repeat(Seconds(1));
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -364,7 +364,7 @@ public:
                 if (me->HealthBelowPctDamaged(5, damage))
                     damage = 0;
                 else
-                    damage *= (me->GetHealthPct()-5.0f)/ 65.0f;
+                    damage *= (me->GetHealthPct() - 5.0f) / 65.0f;
             }
         }
 
@@ -374,12 +374,12 @@ public:
             // Do not enter combat with zone
         }
 
-        private:
-            bool _enteredCombat; // has a player entered combat with the first crusher pack? (talk and spawn two more packs)
-            bool _doorsWebbed;   // obvious - have we reached the top and webbed the doors shut? (trigger for hadronox denied achievement)
-            bool _lastPlayerCombatState; // was there a player in our threat list the last time we checked (we check every second)
-            uint8 _step;
-            std::list<ObjectGuid> _anubar;
+    private:
+        bool _enteredCombat; // has a player entered combat with the first crusher pack? (talk and spawn two more packs)
+        bool _doorsWebbed;   // obvious - have we reached the top and webbed the doors shut? (trigger for hadronox denied achievement)
+        bool _lastPlayerCombatState; // was there a player in our threat list the last time we checked (we check every second)
+        uint8 _step;
+        std::list<ObjectGuid> _anubar;
     };
 
     CreatureAI* GetAI(Creature* creature) const override
@@ -398,13 +398,13 @@ struct npc_hadronox_crusherPackAI : public ScriptedAI
         {
             switch (_myPack)
             {
-                case SUMMON_GROUP_CRUSHER_1:
-                case SUMMON_GROUP_CRUSHER_2:
-                case SUMMON_GROUP_CRUSHER_3:
-                    me->GetMotionMaster()->MovePoint(ACTION_PACK_WALK, _positions[_myPack - SUMMON_GROUP_CRUSHER_1]);
-                    break;
-                default:
-                    break;
+            case SUMMON_GROUP_CRUSHER_1:
+            case SUMMON_GROUP_CRUSHER_2:
+            case SUMMON_GROUP_CRUSHER_3:
+                me->GetMotionMaster()->MovePoint(ACTION_PACK_WALK, _positions[_myPack - SUMMON_GROUP_CRUSHER_1]);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -488,12 +488,12 @@ struct npc_hadronox_crusherPackAI : public ScriptedAI
         DoMeleeAttackIfReady();
     }
 
-    protected:
-        InstanceScript* const _instance;
-        EventMap _events;
-        Position const* const _positions;
-        SummonGroups _myPack;
-        bool _doFacing;
+protected:
+    InstanceScript* const _instance;
+    EventMap _events;
+    Position const* const _positions;
+    SummonGroups _myPack;
+    bool _doFacing;
 
 };
 
@@ -505,65 +505,65 @@ static const Position crusherWaypoints[] =
 };
 class npc_anub_ar_crusher : public CreatureScript
 {
-    public:
-        npc_anub_ar_crusher() : CreatureScript("npc_anub_ar_crusher") { }
+public:
+    npc_anub_ar_crusher() : CreatureScript("npc_anub_ar_crusher") { }
 
-        struct npc_anub_ar_crusherAI : public npc_hadronox_crusherPackAI
+    struct npc_anub_ar_crusherAI : public npc_hadronox_crusherPackAI
+    {
+        npc_anub_ar_crusherAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, crusherWaypoints), _hadFrenzy(false) { }
+
+        void _JustEngagedWith() override
         {
-            npc_anub_ar_crusherAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, crusherWaypoints), _hadFrenzy(false) { }
+            _events.ScheduleEvent(EVENT_SMASH, randtime(Seconds(8), Seconds(12)));
 
-            void _JustEngagedWith() override
+            if (_myPack != SUMMON_GROUP_CRUSHER_1)
+                return;
+
+            if (Creature* hadronox = _instance->GetCreature(DATA_HADRONOX))
             {
-                _events.ScheduleEvent(EVENT_SMASH, randtime(Seconds(8), Seconds(12)));
-
-                if (_myPack != SUMMON_GROUP_CRUSHER_1)
+                if (hadronox->AI()->GetData(DATA_HADRONOX_ENTERED_COMBAT))
                     return;
-
-                if (Creature* hadronox = _instance->GetCreature(DATA_HADRONOX))
-                {
-                    if (hadronox->AI()->GetData(DATA_HADRONOX_ENTERED_COMBAT))
-                        return;
-                    hadronox->AI()->DoAction(ACTION_CRUSHER_ENGAGED);
-                }
-
-                Talk(CRUSHER_SAY_AGGRO);
+                hadronox->AI()->DoAction(ACTION_CRUSHER_ENGAGED);
             }
 
-            void DamageTaken(Unit* /*source*/, uint32& damage) override
-            {
-                if (_hadFrenzy || !me->HealthBelowPctDamaged(25, damage))
-                    return;
-                _hadFrenzy = true;
-                Talk(CRUSHER_EMOTE_FRENZY);
-                DoCastSelf(SPELL_FRENZY);
-            }
-
-            void DoEvent(uint32 eventId) override
-            {
-                switch (eventId)
-                {
-                    case EVENT_SMASH:
-                        DoCastVictim(SPELL_SMASH);
-                        _events.Repeat(randtime(Seconds(13), Seconds(21)));
-                        break;
-                }
-            }
-
-            void JustDied(Unit* killer) override
-            {
-                if (Creature* hadronox = _instance->GetCreature(DATA_HADRONOX))
-                    hadronox->AI()->DoAction(ACTION_HADRONOX_MOVE);
-                ScriptedAI::JustDied(killer);
-            }
-
-            private:
-                bool _hadFrenzy;
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return GetAzjolNerubAI<npc_anub_ar_crusherAI>(creature);
+            Talk(CRUSHER_SAY_AGGRO);
         }
+
+        void DamageTaken(Unit* /*source*/, uint32& damage) override
+        {
+            if (_hadFrenzy || !me->HealthBelowPctDamaged(25, damage))
+                return;
+            _hadFrenzy = true;
+            Talk(CRUSHER_EMOTE_FRENZY);
+            DoCastSelf(SPELL_FRENZY);
+        }
+
+        void DoEvent(uint32 eventId) override
+        {
+            switch (eventId)
+            {
+            case EVENT_SMASH:
+                DoCastVictim(SPELL_SMASH);
+                _events.Repeat(randtime(Seconds(13), Seconds(21)));
+                break;
+            }
+        }
+
+        void JustDied(Unit* killer) override
+        {
+            if (Creature* hadronox = _instance->GetCreature(DATA_HADRONOX))
+                hadronox->AI()->DoAction(ACTION_HADRONOX_MOVE);
+            ScriptedAI::JustDied(killer);
+        }
+
+    private:
+        bool _hadFrenzy;
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return GetAzjolNerubAI<npc_anub_ar_crusherAI>(creature);
+    }
 };
 
 static const Position championWaypoints[] =
@@ -574,39 +574,39 @@ static const Position championWaypoints[] =
 };
 class npc_anub_ar_crusher_champion : public CreatureScript
 {
-    public:
-        npc_anub_ar_crusher_champion() : CreatureScript("npc_anub_ar_crusher_champion") { }
+public:
+    npc_anub_ar_crusher_champion() : CreatureScript("npc_anub_ar_crusher_champion") { }
 
-        struct npc_anub_ar_crusher_championAI : public npc_hadronox_crusherPackAI
+    struct npc_anub_ar_crusher_championAI : public npc_hadronox_crusherPackAI
+    {
+        npc_anub_ar_crusher_championAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, championWaypoints) { }
+
+        void DoEvent(uint32 eventId) override
         {
-            npc_anub_ar_crusher_championAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, championWaypoints) { }
-
-            void DoEvent(uint32 eventId) override
+            switch (eventId)
             {
-                switch (eventId)
-                {
-                    case EVENT_REND:
-                        DoCastVictim(SPELL_REND);
-                        _events.Repeat(randtime(Seconds(12), Seconds(16)));
-                        break;
-                    case EVENT_PUMMEL:
-                        DoCastVictim(SPELL_PUMMEL);
-                        _events.Repeat(randtime(Seconds(12), Seconds(17)));
-                        break;
-                }
+            case EVENT_REND:
+                DoCastVictim(SPELL_REND);
+                _events.Repeat(randtime(Seconds(12), Seconds(16)));
+                break;
+            case EVENT_PUMMEL:
+                DoCastVictim(SPELL_PUMMEL);
+                _events.Repeat(randtime(Seconds(12), Seconds(17)));
+                break;
             }
-
-            void _JustEngagedWith() override
-            {
-                _events.ScheduleEvent(EVENT_REND, randtime(Seconds(4), Seconds(8)));
-                _events.ScheduleEvent(EVENT_PUMMEL, randtime(Seconds(15), Seconds(19)));
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return GetAzjolNerubAI<npc_anub_ar_crusher_championAI>(creature);
         }
+
+        void _JustEngagedWith() override
+        {
+            _events.ScheduleEvent(EVENT_REND, randtime(Seconds(4), Seconds(8)));
+            _events.ScheduleEvent(EVENT_PUMMEL, randtime(Seconds(15), Seconds(19)));
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return GetAzjolNerubAI<npc_anub_ar_crusher_championAI>(creature);
+    }
 };
 
 static const Position cryptFiendWaypoints[] =
@@ -617,39 +617,39 @@ static const Position cryptFiendWaypoints[] =
 };
 class npc_anub_ar_crusher_crypt_fiend : public CreatureScript
 {
-    public:
-        npc_anub_ar_crusher_crypt_fiend() : CreatureScript("npc_anub_ar_crusher_crypt_fiend") { }
+public:
+    npc_anub_ar_crusher_crypt_fiend() : CreatureScript("npc_anub_ar_crusher_crypt_fiend") { }
 
-        struct npc_anub_ar_crusher_crypt_fiendAI : public npc_hadronox_crusherPackAI
+    struct npc_anub_ar_crusher_crypt_fiendAI : public npc_hadronox_crusherPackAI
+    {
+        npc_anub_ar_crusher_crypt_fiendAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, cryptFiendWaypoints) { }
+
+        void DoEvent(uint32 eventId) override
         {
-            npc_anub_ar_crusher_crypt_fiendAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, cryptFiendWaypoints) { }
-
-            void DoEvent(uint32 eventId) override
+            switch (eventId)
             {
-                switch (eventId)
-                {
-                    case EVENT_CRUSHING_WEBS:
-                        DoCastVictim(SPELL_CRUSHING_WEBS);
-                        _events.Repeat(randtime(Seconds(12), Seconds(16)));
-                        break;
-                    case EVENT_INFECTED_WOUND:
-                        DoCastVictim(SPELL_INFECTED_WOUND);
-                        _events.Repeat(randtime(Seconds(16), Seconds(25)));
-                        break;
-                }
+            case EVENT_CRUSHING_WEBS:
+                DoCastVictim(SPELL_CRUSHING_WEBS);
+                _events.Repeat(randtime(Seconds(12), Seconds(16)));
+                break;
+            case EVENT_INFECTED_WOUND:
+                DoCastVictim(SPELL_INFECTED_WOUND);
+                _events.Repeat(randtime(Seconds(16), Seconds(25)));
+                break;
             }
-
-            void _JustEngagedWith() override
-            {
-                _events.ScheduleEvent(EVENT_CRUSHING_WEBS, randtime(Seconds(4), Seconds(8)));
-                _events.ScheduleEvent(EVENT_INFECTED_WOUND, randtime(Seconds(15), Seconds(19)));
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return GetAzjolNerubAI<npc_anub_ar_crusher_crypt_fiendAI>(creature);
         }
+
+        void _JustEngagedWith() override
+        {
+            _events.ScheduleEvent(EVENT_CRUSHING_WEBS, randtime(Seconds(4), Seconds(8)));
+            _events.ScheduleEvent(EVENT_INFECTED_WOUND, randtime(Seconds(15), Seconds(19)));
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return GetAzjolNerubAI<npc_anub_ar_crusher_crypt_fiendAI>(creature);
+    }
 };
 
 static const Position necromancerWaypoints[] =
@@ -660,39 +660,39 @@ static const Position necromancerWaypoints[] =
 };
 class npc_anub_ar_crusher_necromancer : public CreatureScript
 {
-    public:
-        npc_anub_ar_crusher_necromancer() : CreatureScript("npc_anub_ar_crusher_necromancer") { }
+public:
+    npc_anub_ar_crusher_necromancer() : CreatureScript("npc_anub_ar_crusher_necromancer") { }
 
-        struct npc_anub_ar_crusher_necromancerAI : public npc_hadronox_crusherPackAI
+    struct npc_anub_ar_crusher_necromancerAI : public npc_hadronox_crusherPackAI
+    {
+        npc_anub_ar_crusher_necromancerAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, necromancerWaypoints) { }
+
+        void DoEvent(uint32 eventId) override
         {
-            npc_anub_ar_crusher_necromancerAI(Creature* creature) : npc_hadronox_crusherPackAI(creature, necromancerWaypoints) { }
-
-            void DoEvent(uint32 eventId) override
+            switch (eventId)
             {
-                switch (eventId)
-                {
-                    case EVENT_SHADOW_BOLT:
-                        DoCastVictim(SPELL_SHADOW_BOLT);
-                        _events.Repeat(randtime(Seconds(2), Seconds(5)));
-                        break;
-                    case EVENT_ANIMATE_BONES:
-                        DoCastVictim(urand(0, 1) ? SPELL_ANIMATE_BONES_2 : SPELL_ANIMATE_BONES_1);
-                        _events.Repeat(randtime(Seconds(35), Seconds(50)));
-                        break;
-                }
+            case EVENT_SHADOW_BOLT:
+                DoCastVictim(SPELL_SHADOW_BOLT);
+                _events.Repeat(randtime(Seconds(2), Seconds(5)));
+                break;
+            case EVENT_ANIMATE_BONES:
+                DoCastVictim(urand(0, 1) ? SPELL_ANIMATE_BONES_2 : SPELL_ANIMATE_BONES_1);
+                _events.Repeat(randtime(Seconds(35), Seconds(50)));
+                break;
             }
-
-            void _JustEngagedWith() override
-            {
-                _events.ScheduleEvent(EVENT_SHADOW_BOLT, randtime(Seconds(2), Seconds(4)));
-                _events.ScheduleEvent(EVENT_ANIMATE_BONES, randtime(Seconds(37), Seconds(45)));
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return GetAzjolNerubAI<npc_anub_ar_crusher_necromancerAI>(creature);
         }
+
+        void _JustEngagedWith() override
+        {
+            _events.ScheduleEvent(EVENT_SHADOW_BOLT, randtime(Seconds(2), Seconds(4)));
+            _events.ScheduleEvent(EVENT_ANIMATE_BONES, randtime(Seconds(37), Seconds(45)));
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return GetAzjolNerubAI<npc_anub_ar_crusher_necromancerAI>(creature);
+    }
 };
 
 static const uint8 NUM_SPAWNS = 3;
@@ -728,7 +728,7 @@ struct npc_hadronox_foeAI : public ScriptedAI
     void MovementInform(uint32 type, uint32 id) override
     {
         if (type == POINT_MOTION_TYPE)
-            _nextMovement = Movements(id+1);
+            _nextMovement = Movements(id + 1);
     }
 
     void EnterEvadeMode(EvadeReason /*why*/) override
@@ -744,50 +744,50 @@ struct npc_hadronox_foeAI : public ScriptedAI
         {
             switch (_nextMovement)
             {
-                case MOVE_OUTSIDE:
+            case MOVE_OUTSIDE:
+            {
+                float dist = HUGE_VALF;
+                for (uint8 spawn = 0; spawn < NUM_SPAWNS; ++spawn)
                 {
-                    float dist = HUGE_VALF;
-                    for (uint8 spawn = 0; spawn < NUM_SPAWNS; ++spawn)
+                    float thisDist = initialMoves[spawn].GetExactDistSq(me);
+                    if (thisDist < dist)
                     {
-                        float thisDist = initialMoves[spawn].GetExactDistSq(me);
-                        if (thisDist < dist)
+                        _mySpawn = spawn;
+                        dist = thisDist;
+                    }
+                }
+                me->GetMotionMaster()->MovePoint(MOVE_OUTSIDE, initialMoves[_mySpawn], false); // do not pathfind here, we have to pass through a "wall" of webbing
+                break;
+            }
+            case MOVE_DOWNSTAIRS:
+                me->GetMotionMaster()->MovePoint(MOVE_DOWNSTAIRS, downstairsMoves[_mySpawn]);
+                break;
+            case MOVE_DOWNSTAIRS_2:
+                if (downstairsMoves2[_mySpawn].GetPositionX() > 0.0f) // might be unset for this spawn - if yes, skip
+                {
+                    me->GetMotionMaster()->MovePoint(MOVE_DOWNSTAIRS_2, downstairsMoves2[_mySpawn]);
+                    break;
+                }
+                [[fallthrough]];
+            case MOVE_HADRONOX:
+            case MOVE_HADRONOX_REAL:
+            {
+                static const float zCutoff = 702.0f;
+                Creature* hadronox = _instance->GetCreature(DATA_HADRONOX);
+                if (hadronox && hadronox->IsAlive())
+                {
+                    if (_nextMovement != MOVE_HADRONOX_REAL)
+                        if (hadronox->GetPositionZ() < zCutoff)
                         {
-                            _mySpawn = spawn;
-                            dist = thisDist;
+                            me->GetMotionMaster()->MovePoint(MOVE_HADRONOX, hadronoxStep[2]);
+                            break;
                         }
-                    }
-                    me->GetMotionMaster()->MovePoint(MOVE_OUTSIDE, initialMoves[_mySpawn], false); // do not pathfind here, we have to pass through a "wall" of webbing
-                    break;
+                    AttackStart(hadronox);
                 }
-                case MOVE_DOWNSTAIRS:
-                    me->GetMotionMaster()->MovePoint(MOVE_DOWNSTAIRS, downstairsMoves[_mySpawn]);
-                    break;
-                case MOVE_DOWNSTAIRS_2:
-                    if (downstairsMoves2[_mySpawn].GetPositionX() > 0.0f) // might be unset for this spawn - if yes, skip
-                    {
-                        me->GetMotionMaster()->MovePoint(MOVE_DOWNSTAIRS_2, downstairsMoves2[_mySpawn]);
-                        break;
-                    }
-                    [[fallthrough]];
-                case MOVE_HADRONOX:
-                case MOVE_HADRONOX_REAL:
-                {
-                    static const float zCutoff = 702.0f;
-                    Creature* hadronox = _instance->GetCreature(DATA_HADRONOX);
-                    if (hadronox && hadronox->IsAlive())
-                    {
-                        if (_nextMovement != MOVE_HADRONOX_REAL)
-                            if (hadronox->GetPositionZ() < zCutoff)
-                            {
-                                me->GetMotionMaster()->MovePoint(MOVE_HADRONOX, hadronoxStep[2]);
-                                break;
-                            }
-                        AttackStart(hadronox);
-                    }
-                    break;
-                }
-                default:
-                    break;
+                break;
+            }
+            default:
+                break;
             }
             _nextMovement = MOVE_NONE;
         }
@@ -803,60 +803,60 @@ struct npc_hadronox_foeAI : public ScriptedAI
         DoMeleeAttackIfReady();
     }
 
-    protected:
-        EventMap _events;
-        InstanceScript* const _instance;
+protected:
+    EventMap _events;
+    InstanceScript* const _instance;
 
-    private:
-        Movements _nextMovement;
-        uint8 _mySpawn;
+private:
+    Movements _nextMovement;
+    uint8 _mySpawn;
 };
 
 class npc_anub_ar_champion : public CreatureScript
 {
-    public:
-        npc_anub_ar_champion() : CreatureScript("npc_anub_ar_champion") { }
+public:
+    npc_anub_ar_champion() : CreatureScript("npc_anub_ar_champion") { }
 
-        struct npc_anub_ar_championAI : public npc_hadronox_foeAI
+    struct npc_anub_ar_championAI : public npc_hadronox_foeAI
+    {
+        npc_anub_ar_championAI(Creature* creature) : npc_hadronox_foeAI(creature) { }
+
+        void DoEvent(uint32 eventId) override
         {
-            npc_anub_ar_championAI(Creature* creature) : npc_hadronox_foeAI(creature) { }
-
-            void DoEvent(uint32 eventId) override
+            switch (eventId)
             {
-                switch (eventId)
-                {
-                    case EVENT_REND:
-                        DoCastVictim(SPELL_REND);
-                        _events.Repeat(randtime(Seconds(12), Seconds(16)));
-                        break;
-                    case EVENT_PUMMEL:
-                        DoCastVictim(SPELL_PUMMEL);
-                        _events.Repeat(randtime(Seconds(12), Seconds(17)));
-                        break;
-                    case EVENT_TAUNT:
-                        DoCastVictim(SPELL_TAUNT);
-                        _events.Repeat(randtime(Seconds(15), Seconds(50)));
-                        break;
-                }
+            case EVENT_REND:
+                DoCastVictim(SPELL_REND);
+                _events.Repeat(randtime(Seconds(12), Seconds(16)));
+                break;
+            case EVENT_PUMMEL:
+                DoCastVictim(SPELL_PUMMEL);
+                _events.Repeat(randtime(Seconds(12), Seconds(17)));
+                break;
+            case EVENT_TAUNT:
+                DoCastVictim(SPELL_TAUNT);
+                _events.Repeat(randtime(Seconds(15), Seconds(50)));
+                break;
             }
-
-            void JustEngagedWith(Unit* /*who*/) override
-            {
-                _events.ScheduleEvent(EVENT_REND, randtime(Seconds(4), Seconds(8)));
-                _events.ScheduleEvent(EVENT_PUMMEL, randtime(Seconds(15), Seconds(19)));
-                _events.ScheduleEvent(EVENT_TAUNT, randtime(Seconds(15), Seconds(50)));
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return GetAzjolNerubAI<npc_anub_ar_championAI>(creature);
         }
+
+        void JustEngagedWith(Unit* /*who*/) override
+        {
+            _events.ScheduleEvent(EVENT_REND, randtime(Seconds(4), Seconds(8)));
+            _events.ScheduleEvent(EVENT_PUMMEL, randtime(Seconds(15), Seconds(19)));
+            _events.ScheduleEvent(EVENT_TAUNT, randtime(Seconds(15), Seconds(50)));
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return GetAzjolNerubAI<npc_anub_ar_championAI>(creature);
+    }
 };
 
 class npc_anub_ar_crypt_fiend : public CreatureScript
 {
-    public:
+public:
     npc_anub_ar_crypt_fiend() : CreatureScript("npc_anub_ar_crypt_fiend") { }
 
     struct npc_anub_ar_crypt_fiendAI : public npc_hadronox_foeAI
@@ -867,18 +867,18 @@ class npc_anub_ar_crypt_fiend : public CreatureScript
         {
             switch (eventId)
             {
-                case EVENT_CRUSHING_WEBS:
-                    DoCastVictim(SPELL_CRUSHING_WEBS);
-                    _events.Repeat(randtime(Seconds(12), Seconds(16)));
-                    break;
-                case EVENT_INFECTED_WOUND:
-                    DoCastVictim(SPELL_INFECTED_WOUND);
-                    _events.Repeat(randtime(Seconds(16), Seconds(25)));
-                    break;
-                case EVENT_TAUNT:
-                    DoCastVictim(SPELL_TAUNT);
-                    _events.Repeat(randtime(Seconds(15), Seconds(50)));
-                    break;
+            case EVENT_CRUSHING_WEBS:
+                DoCastVictim(SPELL_CRUSHING_WEBS);
+                _events.Repeat(randtime(Seconds(12), Seconds(16)));
+                break;
+            case EVENT_INFECTED_WOUND:
+                DoCastVictim(SPELL_INFECTED_WOUND);
+                _events.Repeat(randtime(Seconds(16), Seconds(25)));
+                break;
+            case EVENT_TAUNT:
+                DoCastVictim(SPELL_TAUNT);
+                _events.Repeat(randtime(Seconds(15), Seconds(50)));
+                break;
             }
         }
 
@@ -898,7 +898,7 @@ class npc_anub_ar_crypt_fiend : public CreatureScript
 
 class npc_anub_ar_necromancer : public CreatureScript
 {
-    public:
+public:
     npc_anub_ar_necromancer() : CreatureScript("npc_anub_ar_necromancer") { }
 
     struct npc_anub_ar_necromancerAI : public npc_hadronox_foeAI
@@ -909,18 +909,18 @@ class npc_anub_ar_necromancer : public CreatureScript
         {
             switch (eventId)
             {
-                case EVENT_SHADOW_BOLT:
-                    DoCastVictim(SPELL_SHADOW_BOLT);
-                    _events.Repeat(randtime(Seconds(2), Seconds(5)));
-                    break;
-                case EVENT_ANIMATE_BONES:
-                    DoCastVictim(urand(0,1) ? SPELL_ANIMATE_BONES_2 : SPELL_ANIMATE_BONES_1);
-                    _events.Repeat(randtime(Seconds(35), Seconds(50)));
-                    break;
-                case EVENT_TAUNT:
-                    DoCastVictim(SPELL_TAUNT);
-                    _events.Repeat(randtime(Seconds(15), Seconds(50)));
-                    break;
+            case EVENT_SHADOW_BOLT:
+                DoCastVictim(SPELL_SHADOW_BOLT);
+                _events.Repeat(randtime(Seconds(2), Seconds(5)));
+                break;
+            case EVENT_ANIMATE_BONES:
+                DoCastVictim(urand(0, 1) ? SPELL_ANIMATE_BONES_2 : SPELL_ANIMATE_BONES_1);
+                _events.Repeat(randtime(Seconds(35), Seconds(50)));
+                break;
+            case EVENT_TAUNT:
+                DoCastVictim(SPELL_TAUNT);
+                _events.Repeat(randtime(Seconds(15), Seconds(50)));
+                break;
             }
         }
 
@@ -940,106 +940,106 @@ class npc_anub_ar_necromancer : public CreatureScript
 
 class spell_hadronox_periodic_summon_template_AuraScript : public AuraScript
 {
-    public:
-        spell_hadronox_periodic_summon_template_AuraScript(uint32 topSpellId, uint32 bottomSpellId) : AuraScript(), _topSpellId(topSpellId), _bottomSpellId(bottomSpellId) { }
+public:
+    spell_hadronox_periodic_summon_template_AuraScript(uint32 topSpellId, uint32 bottomSpellId) : AuraScript(), _topSpellId(topSpellId), _bottomSpellId(bottomSpellId) { }
 
-        bool Validate(SpellInfo const* /*spell*/) override
-        {
-            return ValidateSpellInfo({ _topSpellId, _bottomSpellId });
-        }
+    bool Validate(SpellInfo const* /*spell*/) override
+    {
+        return ValidateSpellInfo({ _topSpellId, _bottomSpellId });
+    }
 
-        void HandleApply(AuraEffect const* /*eff*/, AuraEffectHandleModes /*mode*/)
-        {
-            if (AuraEffect* effect = GetAura()->GetEffect(EFFECT_0))
-                effect->SetPeriodicTimer(urandms(2, 17));
-        }
+    void HandleApply(AuraEffect const* /*eff*/, AuraEffectHandleModes /*mode*/)
+    {
+        if (AuraEffect* effect = GetAura()->GetEffect(EFFECT_0))
+            effect->SetPeriodicTimer(urandms(2, 17));
+    }
 
-        void HandlePeriodic(AuraEffect const* /*eff*/)
+    void HandlePeriodic(AuraEffect const* /*eff*/)
+    {
+        Unit* caster = GetCaster();
+        if (!caster)
+            return;
+        InstanceScript* instance = caster->GetInstanceScript();
+        if (!instance)
+            return;
+        if (!instance->instance->HavePlayers())
+            return;
+        if (instance->GetBossState(DATA_HADRONOX) == DONE)
+            GetAura()->Remove();
+        else
         {
-            Unit* caster = GetCaster();
-            if (!caster)
-                return;
-            InstanceScript* instance = caster->GetInstanceScript();
-            if (!instance)
-                return;
-            if (!instance->instance->HavePlayers())
-                return;
-            if (instance->GetBossState(DATA_HADRONOX) == DONE)
-                GetAura()->Remove();
+            if (caster->GetPositionZ() >= 750.0f)
+                caster->CastSpell(caster, _topSpellId, true);
             else
-            {
-                if (caster->GetPositionZ() >= 750.0f)
-                    caster->CastSpell(caster, _topSpellId, true);
-                else
-                    caster->CastSpell(caster, _bottomSpellId, true);
-            }
+                caster->CastSpell(caster, _bottomSpellId, true);
         }
+    }
 
-        void Register() override
-        {
-            AfterEffectApply.Register(&spell_hadronox_periodic_summon_template_AuraScript::HandleApply, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY, AURA_EFFECT_HANDLE_REAL);
-            OnEffectPeriodic.Register(&spell_hadronox_periodic_summon_template_AuraScript::HandlePeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
-        }
+    void Register() override
+    {
+        AfterEffectApply.Register(&spell_hadronox_periodic_summon_template_AuraScript::HandleApply, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY, AURA_EFFECT_HANDLE_REAL);
+        OnEffectPeriodic.Register(&spell_hadronox_periodic_summon_template_AuraScript::HandlePeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
+    }
 
-    private:
-        uint32 _topSpellId;
-        uint32 _bottomSpellId;
+private:
+    uint32 _topSpellId;
+    uint32 _bottomSpellId;
 };
 
 class spell_hadronox_periodic_summon_champion : public SpellScriptLoader
 {
+public:
+    spell_hadronox_periodic_summon_champion() : SpellScriptLoader("spell_hadronox_periodic_summon_champion") { }
+
+    class spell_hadronox_periodic_summon_champion_AuraScript : public spell_hadronox_periodic_summon_template_AuraScript
+    {
     public:
-        spell_hadronox_periodic_summon_champion() : SpellScriptLoader("spell_hadronox_periodic_summon_champion") { }
+        spell_hadronox_periodic_summon_champion_AuraScript() : spell_hadronox_periodic_summon_template_AuraScript(SPELL_SUMMON_CHAMPION_TOP, SPELL_SUMMON_CHAMPION_BOTTOM) { }
+    };
 
-        class spell_hadronox_periodic_summon_champion_AuraScript : public spell_hadronox_periodic_summon_template_AuraScript
-        {
-            public:
-                spell_hadronox_periodic_summon_champion_AuraScript() : spell_hadronox_periodic_summon_template_AuraScript(SPELL_SUMMON_CHAMPION_TOP, SPELL_SUMMON_CHAMPION_BOTTOM) { }
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_hadronox_periodic_summon_champion_AuraScript();
-        }
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_hadronox_periodic_summon_champion_AuraScript();
+    }
 };
 
 class spell_hadronox_periodic_summon_crypt_fiend : public SpellScriptLoader
 {
+public:
+    spell_hadronox_periodic_summon_crypt_fiend() : SpellScriptLoader("spell_hadronox_periodic_summon_crypt_fiend") { }
+
+    class spell_hadronox_periodic_summon_crypt_fiend_AuraScript : public spell_hadronox_periodic_summon_template_AuraScript
+    {
     public:
-        spell_hadronox_periodic_summon_crypt_fiend() : SpellScriptLoader("spell_hadronox_periodic_summon_crypt_fiend") { }
+        spell_hadronox_periodic_summon_crypt_fiend_AuraScript() : spell_hadronox_periodic_summon_template_AuraScript(SPELL_SUMMON_CRYPT_FIEND_TOP, SPELL_SUMMON_CRYPT_FIEND_BOTTOM) { }
+    };
 
-        class spell_hadronox_periodic_summon_crypt_fiend_AuraScript : public spell_hadronox_periodic_summon_template_AuraScript
-        {
-            public:
-                spell_hadronox_periodic_summon_crypt_fiend_AuraScript() : spell_hadronox_periodic_summon_template_AuraScript(SPELL_SUMMON_CRYPT_FIEND_TOP, SPELL_SUMMON_CRYPT_FIEND_BOTTOM) { }
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_hadronox_periodic_summon_crypt_fiend_AuraScript();
-        }
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_hadronox_periodic_summon_crypt_fiend_AuraScript();
+    }
 };
 
 class spell_hadronox_periodic_summon_necromancer : public SpellScriptLoader
 {
+public:
+    spell_hadronox_periodic_summon_necromancer() : SpellScriptLoader("spell_hadronox_periodic_summon_necromancer") { }
+
+    class spell_hadronox_periodic_summon_necromancer_AuraScript : public spell_hadronox_periodic_summon_template_AuraScript
+    {
     public:
-        spell_hadronox_periodic_summon_necromancer() : SpellScriptLoader("spell_hadronox_periodic_summon_necromancer") { }
+        spell_hadronox_periodic_summon_necromancer_AuraScript() : spell_hadronox_periodic_summon_template_AuraScript(SPELL_SUMMON_NECROMANCER_TOP, SPELL_SUMMON_NECROMANCER_BOTTOM) { }
+    };
 
-        class spell_hadronox_periodic_summon_necromancer_AuraScript : public spell_hadronox_periodic_summon_template_AuraScript
-        {
-            public:
-                spell_hadronox_periodic_summon_necromancer_AuraScript() : spell_hadronox_periodic_summon_template_AuraScript(SPELL_SUMMON_NECROMANCER_TOP, SPELL_SUMMON_NECROMANCER_BOTTOM) { }
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_hadronox_periodic_summon_necromancer_AuraScript();
-        }
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_hadronox_periodic_summon_necromancer_AuraScript();
+    }
 };
 
 class spell_hadronox_leeching_poison : public SpellScriptLoader
 {
-    public:
+public:
     spell_hadronox_leeching_poison() : SpellScriptLoader("spell_hadronox_leeching_poison") { }
 
     class spell_hadronox_leeching_poison_AuraScript : public AuraScript
@@ -1075,54 +1075,54 @@ class spell_hadronox_leeching_poison : public SpellScriptLoader
 
 class spell_hadronox_web_doors : public SpellScriptLoader
 {
-    public:
-        spell_hadronox_web_doors() : SpellScriptLoader("spell_hadronox_web_doors") { }
+public:
+    spell_hadronox_web_doors() : SpellScriptLoader("spell_hadronox_web_doors") { }
 
-        class spell_hadronox_web_doors_SpellScript : public SpellScript
+    class spell_hadronox_web_doors_SpellScript : public SpellScript
+    {
+        bool Validate(SpellInfo const* /*spell*/) override
         {
-            bool Validate(SpellInfo const* /*spell*/) override
-            {
-                return ValidateSpellInfo({ SPELL_SUMMON_CHAMPION_PERIODIC, SPELL_SUMMON_CRYPT_FIEND_PERIODIC, SPELL_SUMMON_NECROMANCER_PERIODIC });
-            }
-
-            void HandleDummy(SpellEffIndex /*effIndex*/)
-            {
-                if (Unit* target = GetHitUnit())
-                {
-                    target->RemoveAurasDueToSpell(SPELL_SUMMON_CHAMPION_PERIODIC);
-                    target->RemoveAurasDueToSpell(SPELL_SUMMON_CRYPT_FIEND_PERIODIC);
-                    target->RemoveAurasDueToSpell(SPELL_SUMMON_NECROMANCER_PERIODIC);
-                }
-            }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_hadronox_web_doors_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_APPLY_AURA);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_hadronox_web_doors_SpellScript();
+            return ValidateSpellInfo({ SPELL_SUMMON_CHAMPION_PERIODIC, SPELL_SUMMON_CRYPT_FIEND_PERIODIC, SPELL_SUMMON_NECROMANCER_PERIODIC });
         }
+
+        void HandleDummy(SpellEffIndex /*effIndex*/)
+        {
+            if (Unit* target = GetHitUnit())
+            {
+                target->RemoveAurasDueToSpell(SPELL_SUMMON_CHAMPION_PERIODIC);
+                target->RemoveAurasDueToSpell(SPELL_SUMMON_CRYPT_FIEND_PERIODIC);
+                target->RemoveAurasDueToSpell(SPELL_SUMMON_NECROMANCER_PERIODIC);
+            }
+        }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_hadronox_web_doors_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_APPLY_AURA);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_hadronox_web_doors_SpellScript();
+    }
 };
 
 class achievement_hadronox_denied : public AchievementCriteriaScript
 {
-    public:
-        achievement_hadronox_denied() : AchievementCriteriaScript("achievement_hadronox_denied") { }
+public:
+    achievement_hadronox_denied() : AchievementCriteriaScript("achievement_hadronox_denied") { }
 
-        bool OnCheck(Player* /*player*/, Unit* target) override
-        {
-            if (!target)
-                return false;
-
-            if (Creature* cTarget = target->ToCreature())
-                if (!cTarget->AI()->GetData(DATA_HADRONOX_WEBBED_DOORS))
-                    return true;
-
+    bool OnCheck(Player* /*player*/, Unit* target) override
+    {
+        if (!target)
             return false;
-        }
+
+        if (Creature* cTarget = target->ToCreature())
+            if (!cTarget->AI()->GetData(DATA_HADRONOX_WEBBED_DOORS))
+                return true;
+
+        return false;
+    }
 };
 
 void AddSC_boss_hadronox()

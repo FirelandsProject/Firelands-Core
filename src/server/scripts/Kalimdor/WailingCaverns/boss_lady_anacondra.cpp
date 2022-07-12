@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,18 +27,18 @@ enum Texts
 enum Spells
 {
     SPELL_NATURE_CHANNELING = 13236,
-    SPELL_LIGHTNING_BOLT    = 20295,
-    SPELL_DRUID_SLUMBER     = 8040,
-    SPELL_THORNS_AURA       = 8148,
-    SPELL_HEALING_TOUCH     = 23381
+    SPELL_LIGHTNING_BOLT = 20295,
+    SPELL_DRUID_SLUMBER = 8040,
+    SPELL_THORNS_AURA = 8148,
+    SPELL_HEALING_TOUCH = 23381
 };
 
 enum Events
 {
     EVENT_LIGHTNING_BOLT = 1,
-    EVENT_DRUID_SLUMBER  = 2,
-    EVENT_THORNS_AURA    = 3,
-    EVENT_HEALING_TOUCH  = 4
+    EVENT_DRUID_SLUMBER = 2,
+    EVENT_THORNS_AURA = 3,
+    EVENT_HEALING_TOUCH = 4
 };
 
 class boss_lady_anacondra : public CreatureScript
@@ -92,23 +92,23 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_LIGHTNING_BOLT:
-                        DoCastVictim(SPELL_LIGHTNING_BOLT);
-                        events.Repeat(Seconds(4));
-                        break;
-                    case EVENT_DRUID_SLUMBER:
-                        if(Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                            DoCast(target, SPELL_DRUID_SLUMBER);
-                        events.Repeat(Seconds(12));
-                        break;
-                    case EVENT_THORNS_AURA:
-                        DoCastSelf(SPELL_THORNS_AURA);
-                        break;
-                    case EVENT_HEALING_TOUCH:
-                        DoCastSelf(SPELL_HEALING_TOUCH);
-                        break;
-                    default:
-                        break;
+                case EVENT_LIGHTNING_BOLT:
+                    DoCastVictim(SPELL_LIGHTNING_BOLT);
+                    events.Repeat(Seconds(4));
+                    break;
+                case EVENT_DRUID_SLUMBER:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                        DoCast(target, SPELL_DRUID_SLUMBER);
+                    events.Repeat(Seconds(12));
+                    break;
+                case EVENT_THORNS_AURA:
+                    DoCastSelf(SPELL_THORNS_AURA);
+                    break;
+                case EVENT_HEALING_TOUCH:
+                    DoCastSelf(SPELL_HEALING_TOUCH);
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

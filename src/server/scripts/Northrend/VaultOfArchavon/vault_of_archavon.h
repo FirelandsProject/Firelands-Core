@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,18 +27,18 @@ uint32 const EncounterCount = 4;
 
 enum VAData
 {
-    DATA_ARCHAVON       = 0,
-    DATA_EMALON         = 1,
-    DATA_KORALON        = 2,
-    DATA_TORAVON        = 3
+    DATA_ARCHAVON = 0,
+    DATA_EMALON = 1,
+    DATA_KORALON = 2,
+    DATA_TORAVON = 3
 };
 
 enum VACreatureIds
 {
-    NPC_ARCHAVON        = 31125,
-    NPC_EMALON          = 33993,
-    NPC_KORALON         = 35013,
-    NPC_TORAVON         = 38433
+    NPC_ARCHAVON = 31125,
+    NPC_EMALON = 33993,
+    NPC_KORALON = 35013,
+    NPC_TORAVON = 38433
 };
 
 enum VAAchievementCriteriaIds

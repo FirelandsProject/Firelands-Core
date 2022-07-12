@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,32 +29,32 @@ namespace WorldPackets
 
 enum BattlegroundRLObjectTypes
 {
-    BG_RL_OBJECT_DOOR_1         = 0,
-    BG_RL_OBJECT_DOOR_2         = 1,
-    BG_RL_OBJECT_BUFF_1         = 2,
-    BG_RL_OBJECT_BUFF_2         = 3,
-    BG_RL_OBJECT_MAX            = 4
+    BG_RL_OBJECT_DOOR_1 = 0,
+    BG_RL_OBJECT_DOOR_2 = 1,
+    BG_RL_OBJECT_BUFF_1 = 2,
+    BG_RL_OBJECT_BUFF_2 = 3,
+    BG_RL_OBJECT_MAX = 4
 };
 
 enum BattlegroundRLGameObjects
 {
-    BG_RL_OBJECT_TYPE_DOOR_1    = 185918,
-    BG_RL_OBJECT_TYPE_DOOR_2    = 185917,
-    BG_RL_OBJECT_TYPE_BUFF_1    = 184663,
-    BG_RL_OBJECT_TYPE_BUFF_2    = 184664
+    BG_RL_OBJECT_TYPE_DOOR_1 = 185918,
+    BG_RL_OBJECT_TYPE_DOOR_2 = 185917,
+    BG_RL_OBJECT_TYPE_BUFF_1 = 184663,
+    BG_RL_OBJECT_TYPE_BUFF_2 = 184664
 };
 
 class BattlegroundRL : public Arena
 {
-    public:
-        BattlegroundRL();
+public:
+    BattlegroundRL();
 
-        /* inherited from BattlegroundClass */
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& d) override;
-        void StartingEventCloseDoors() override;
-        void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& d) override;
+    void StartingEventCloseDoors() override;
+    void StartingEventOpenDoors() override;
 
-        void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
-        bool SetupBattleground() override;
+    void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
+    bool SetupBattleground() override;
 };
 #endif

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -72,14 +72,14 @@ DoorData const doorData[] =
     { 0,                            0,                              DOOR_TYPE_ROOM      }  // END
 };
 
-Position const MassiveCrashRightSpawnPosition   = { -288.59f,  -14.8472f,  211.2573f };
-Position const MassiveCrashTargetPositionLeft   = { -304.181f, -90.1806f,  214.1653f };
-Position const MassiveCrashTargetPositionRight  = { -337.375f, -43.6615f,  212.0853f };
-Position const ColumnOfLightPosition            = { 231.3559f, -224.3038f, 74.95496f, 3.193953f };
-Position const AtramedesIntroSummonPosition     = { 288.325f,  -222.438f,  96.61964f, 3.089233f };
-Position const AtramedesRespawnPosition         = { 220.0347f, -224.3125f, 74.88777f, 3.141593f };
-Position const LordVictorNefariusIntroPosition  = { -290.4809f, -224.5955f, 191.6532f, 3.124139f };
-Position const NefarianRespawnPosition          = { -184.12674f, -224.5573f, 97.70717f, 5.217541f };
+Position const MassiveCrashRightSpawnPosition = { -288.59f,  -14.8472f,  211.2573f };
+Position const MassiveCrashTargetPositionLeft = { -304.181f, -90.1806f,  214.1653f };
+Position const MassiveCrashTargetPositionRight = { -337.375f, -43.6615f,  212.0853f };
+Position const ColumnOfLightPosition = { 231.3559f, -224.3038f, 74.95496f, 3.193953f };
+Position const AtramedesIntroSummonPosition = { 288.325f,  -222.438f,  96.61964f, 3.089233f };
+Position const AtramedesRespawnPosition = { 220.0347f, -224.3125f, 74.88777f, 3.141593f };
+Position const LordVictorNefariusIntroPosition = { -290.4809f, -224.5955f, 191.6532f, 3.124139f };
+Position const NefarianRespawnPosition = { -184.12674f, -224.5573f, 97.70717f, 5.217541f };
 
 enum Events
 {
@@ -100,9 +100,9 @@ enum Actions
 enum SpawnGroup
 {
     SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS = 400,
-    SPAWN_GROUP_NEFARIANS_END           = 402,
-    SPAWN_GROUP_DWARVEN_SPIRITS_LEFT    = 435,
-    SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT   = 436
+    SPAWN_GROUP_NEFARIANS_END = 402,
+    SPAWN_GROUP_DWARVEN_SPIRITS_LEFT = 435,
+    SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT = 436
 };
 
 enum SummonGroups
@@ -117,423 +117,423 @@ enum Spells
 
 class instance_blackwing_descent : public InstanceMapScript
 {
-    public:
-        instance_blackwing_descent() : InstanceMapScript(BWDScriptName, 669) { }
+public:
+    instance_blackwing_descent() : InstanceMapScript(BWDScriptName, 669) { }
 
-        struct instance_blackwing_descent_InstanceMapScript : public InstanceScript
+    struct instance_blackwing_descent_InstanceMapScript : public InstanceScript
+    {
+        instance_blackwing_descent_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_blackwing_descent_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadObjectData(creatureData, gameobjectData);
+            LoadDoorData(doorData);
+            _deadDwarfSpiritsLeft = 0;
+            _deadDwarfSpiritsRight = 0;
+            _atramedesIntroState = NOT_STARTED;
+            _nefariansEndIntroDone = false;
+        }
+
+        void Create() override
+        {
+            instance->SpawnGroupSpawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, true);
+            instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT, true);
+            instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT, true);
+        }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            InstanceScript::OnCreatureCreate(creature);
+
+            switch (creature->GetEntry())
             {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadObjectData(creatureData, gameobjectData);
-                LoadDoorData(doorData);
-                _deadDwarfSpiritsLeft = 0;
-                _deadDwarfSpiritsRight = 0;
-                _atramedesIntroState = NOT_STARTED;
-                _nefariansEndIntroDone = false;
+            case NPC_PILLAR_OF_FLAME:
+            case NPC_LAVA_PARASITE_1:
+            case NPC_LAVA_PARASITE_2:
+            case NPC_BLAZING_BONE_CONSTRUCT:
+            case NPC_IGNITION:
+                if (Creature* magmaw = GetCreature(DATA_MAGMAW))
+                    magmaw->AI()->JustSummoned(creature);
+                break;
+            case NPC_MASSIVE_CRASH:
+                if (creature->GetExactDist2d(MassiveCrashRightSpawnPosition) < 1.0f)
+                    _massiveCrashRightDummyGUID = creature->GetGUID();
+                else
+                    _massiveCrashLeftDummyGUID = creature->GetGUID();
+
+                break;
+            case NPC_ROOM_STALKER:
+                _roomStalkerGUIDs.push_back(creature->GetGUID());
+
+                if (creature->GetExactDist2d(MassiveCrashTargetPositionLeft) < 1.0f)
+                    _roomStalkerTargetDummyLeftGuid = creature->GetGUID();
+                else if (creature->GetExactDist2d(MassiveCrashTargetPositionRight) < 1.0f)
+                    _roomStalkerTargetDummyRightGuid = creature->GetGUID();
+                break;
+            case NPC_CHEMICAL_CLOUD:
+            case NPC_POISON_BOMB:
+            case NPC_POISON_PUDDLE:
+            case NPC_POWER_GENERATOR:
+                if (Creature* omnotron = GetCreature(DATA_OMNOTRON_DEFENSE_SYSTEM))
+                    omnotron->AI()->JustSummoned(creature);
+
+                if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_OMNOTRON))
+                    nefarius->AI()->JustSummoned(creature);
+                break;
+            case NPC_SONAR_PULSE:
+            case NPC_TRACKING_FLAMES:
+            case NPC_SONAR_PULSE_BOMB:
+            case NPC_REVERBERATING_FLAME:
+            case NPC_OBNOXIOUS_FIEND:
+                if (Creature* atramedes = GetCreature(DATA_ATRAMEDES))
+                    atramedes->AI()->JustSummoned(creature);
+                break;
+            case NPC_FLASH_FREEZE:
+            case NPC_VILE_SWILL:
+                if (Creature* maloriak = GetCreature(DATA_MALORIAK))
+                    maloriak->AI()->JustSummoned(creature);
+                break;
+            case NPC_DOMINION_STALKER:
+                if (Creature* nefarian = GetCreature(DATA_NEFARIANS_END))
+                    nefarian->AI()->JustSummoned(creature);
+                break;
+            case NPC_DRAKONID_DRUDGE:
+                creature->ApplySpellImmune(SPELL_EMOTE_MAGMA_LAVA_SPLASH, IMMUNITY_ID, SPELL_EMOTE_MAGMA_LAVA_SPLASH, true);
+                break;
+            default:
+                break;
             }
+        }
 
-            void Create() override
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+
+            switch (go->GetEntry())
             {
-                instance->SpawnGroupSpawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, true);
-                instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT, true);
-                instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT, true);
+            case GO_INNER_CHAMBER_DOOR:
+                if (GetBossState(DATA_MAGMAW) == DONE && GetBossState(DATA_OMNOTRON_DEFENSE_SYSTEM) == DONE)
+                    go->SetGoState(GO_STATE_ACTIVE);
+                break;
+            default:
+                break;
             }
+        }
 
-            void OnCreatureCreate(Creature* creature) override
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
             {
-                InstanceScript::OnCreatureCreate(creature);
-
-                switch (creature->GetEntry())
+            case DATA_MAGMAW:
+                if (state == FAIL || state == DONE)
                 {
-                    case NPC_PILLAR_OF_FLAME:
-                    case NPC_LAVA_PARASITE_1:
-                    case NPC_LAVA_PARASITE_2:
-                    case NPC_BLAZING_BONE_CONSTRUCT:
-                    case NPC_IGNITION:
-                        if (Creature* magmaw = GetCreature(DATA_MAGMAW))
-                            magmaw->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_MASSIVE_CRASH:
-                        if (creature->GetExactDist2d(MassiveCrashRightSpawnPosition) < 1.0f)
-                            _massiveCrashRightDummyGUID = creature->GetGUID();
-                        else
-                            _massiveCrashLeftDummyGUID = creature->GetGUID();
+                    if (Creature* dummy = instance->GetCreature(_massiveCrashRightDummyGUID))
+                        dummy->DespawnOrUnsummon(0s, 30s);
 
-                        break;
-                    case NPC_ROOM_STALKER:
-                        _roomStalkerGUIDs.push_back(creature->GetGUID());
+                    if (Creature* dummy = instance->GetCreature(_massiveCrashLeftDummyGUID))
+                        dummy->DespawnOrUnsummon(0s, 30s);
 
-                        if (creature->GetExactDist2d(MassiveCrashTargetPositionLeft) < 1.0f)
-                            _roomStalkerTargetDummyLeftGuid = creature->GetGUID();
-                        else if (creature->GetExactDist2d(MassiveCrashTargetPositionRight) < 1.0f)
-                            _roomStalkerTargetDummyRightGuid = creature->GetGUID();
-                        break;
-                    case NPC_CHEMICAL_CLOUD:
-                    case NPC_POISON_BOMB:
-                    case NPC_POISON_PUDDLE:
-                    case NPC_POWER_GENERATOR:
-                        if (Creature* omnotron = GetCreature(DATA_OMNOTRON_DEFENSE_SYSTEM))
-                            omnotron->AI()->JustSummoned(creature);
-
-                        if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_OMNOTRON))
-                            nefarius->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_SONAR_PULSE:
-                    case NPC_TRACKING_FLAMES:
-                    case NPC_SONAR_PULSE_BOMB:
-                    case NPC_REVERBERATING_FLAME:
-                    case NPC_OBNOXIOUS_FIEND:
-                        if (Creature* atramedes = GetCreature(DATA_ATRAMEDES))
-                            atramedes->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_FLASH_FREEZE:
-                    case NPC_VILE_SWILL:
-                        if (Creature* maloriak = GetCreature(DATA_MALORIAK))
-                            maloriak->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_DOMINION_STALKER:
-                        if (Creature* nefarian = GetCreature(DATA_NEFARIANS_END))
-                            nefarian->AI()->JustSummoned(creature);
-                        break;
-                    case NPC_DRAKONID_DRUDGE:
-                        creature->ApplySpellImmune(SPELL_EMOTE_MAGMA_LAVA_SPLASH, IMMUNITY_ID, SPELL_EMOTE_MAGMA_LAVA_SPLASH, true);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                InstanceScript::OnGameObjectCreate(go);
-
-                switch (go->GetEntry())
-                {
-                    case GO_INNER_CHAMBER_DOOR:
-                        if (GetBossState(DATA_MAGMAW) == DONE && GetBossState(DATA_OMNOTRON_DEFENSE_SYSTEM) == DONE)
-                            go->SetGoState(GO_STATE_ACTIVE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_MAGMAW:
-                        if (state == FAIL || state == DONE)
-                        {
-                            if (Creature* dummy = instance->GetCreature(_massiveCrashRightDummyGUID))
-                                dummy->DespawnOrUnsummon(0s, 30s);
-
-                            if (Creature* dummy = instance->GetCreature(_massiveCrashLeftDummyGUID))
-                                dummy->DespawnOrUnsummon(0s, 30s);
-
-                            for (ObjectGuid guid : _roomStalkerGUIDs)
-                            {
-                                if (Creature* stalker = instance->GetCreature(guid))
-                                    stalker->DespawnOrUnsummon(0s, 30s);
-                            }
-
-                            if (state == DONE)
-                                if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC))
-                                    if (nefarius->IsAIEnabled())
-                                        nefarius->AI()->SetData(DATA_BOSS_DEFEATED, type);
-
-                            _roomStalkerGUIDs.clear();
-                        }
-                        break;
-                    case DATA_OMNOTRON_DEFENSE_SYSTEM:
-                    case DATA_CHIMAERON:
-                    case DATA_MALORIAK:
-                        if (state == DONE)
-                            if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC))
-                                if (nefarius->IsAIEnabled())
-                                    nefarius->AI()->SetData(DATA_BOSS_DEFEATED, type);
-                        break;
-                    case DATA_ATRAMEDES:
-                        if (state == FAIL)
-                        {
-                            _events.ScheduleEvent(EVENT_RESPAWN_ATRAMEDES, 30s);
-                            instance->SpawnGroupDespawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, false);
-                        }
-                        else if (state == DONE)
-                        {
-                            instance->SpawnGroupDespawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, false);
-                            if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC))
-                                if (nefarius->IsAIEnabled())
-                                    nefarius->AI()->SetData(DATA_BOSS_DEFEATED, type);
-                        }
-                        break;
-                    case DATA_NEFARIANS_END:
-                        if (state == FAIL)
-                        {
-                            instance->SpawnGroupDespawn(SPAWN_GROUP_NEFARIANS_END, false);
-                            _events.ScheduleEvent(EVENT_RESPAWN_NEFARIAN, 30s);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                if (type != DATA_NEFARIANS_END)
-                    if (IsNefarianAvailable())
-                        instance->SpawnGroupSpawn(SPAWN_GROUP_NEFARIANS_END, true);
-
-                return true;
-            }
-
-            void SetData(uint32 type, uint32 data) override
-            {
-                switch (type)
-                {
-                    case DATA_DWARVEN_SPIRIT_DIED:
-                        if (data == DWARVEN_SPIRIT_GROUP_LEFT)
-                            ++_deadDwarfSpiritsLeft;
-                        else
-                            ++_deadDwarfSpiritsRight;
-
-                        if ((_deadDwarfSpiritsLeft + _deadDwarfSpiritsRight) == 8)
-                        {
-                            _atramedesIntroState = DONE;
-                            SaveToDB();
-
-                            std::list<TempSummon*> summoned;
-                            instance->SummonCreatureGroup(SUMMON_GROUP_ATRAMEDES_INTRO, &summoned);
-                            for (TempSummon* summon : summoned)
-                                _atramedesIntroGUIDs.push_back(summon->GetGUID());
-
-                            instance->SummonCreature(NPC_COLUMN_OF_LIGHT, ColumnOfLightPosition);
-                            _events.ScheduleEvent(EVENT_MAKE_ANCIENT_BELL_SELECTABLE, 4s + 500ms);
-                        }
-                        break;
-                    case DATA_RESET_DWARVEN_SPIRIT_GROUP:
-                        if (data == DWARVEN_SPIRIT_GROUP_LEFT)
-                        {
-                            _deadDwarfSpiritsLeft = 0;
-                            _events.RescheduleEvent(EVENT_RESPAWN_LEFT_DWARVEN_GROUP, 30s);
-                            instance->SpawnGroupDespawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT);
-                        }
-                        else
-                        {
-                            _deadDwarfSpiritsRight = 0;
-                            _events.RescheduleEvent(EVENT_RESPAWN_RIGHT_DWARVEN_GROUP, 30s);
-                            instance->SpawnGroupDespawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT);
-                        }
-
-                        break;
-                    case DATA_ATRAMEDES_INTRO:
-                        if (!GetCreature(DATA_ATRAMEDES))
-                        {
-                            if (Creature* atramedes = instance->SummonCreature(BOSS_ATRAMEDES, AtramedesIntroSummonPosition))
-                            {
-                                for (ObjectGuid guid : _atramedesIntroGUIDs)
-                                    if (Creature* intro = instance->GetCreature(guid))
-                                        intro->DespawnOrUnsummon();
-
-                                atramedes->SetDisableGravity(true);
-                                atramedes->SetReactState(REACT_PASSIVE);
-                                atramedes->SendSetPlayHoverAnim(true);
-
-                                if (atramedes->IsAIEnabled())
-                                    atramedes->AI()->DoAction(ACTION_START_ATRAMEDES_INTRO);
-                            }
-                        }
-                        break;
-                    case DATA_ENTRANCE_INTRO:
+                    for (ObjectGuid guid : _roomStalkerGUIDs)
                     {
-                        Creature* nefarius = nullptr;
-                        if (instance->IsHeroic())
-                            nefarius = instance->SummonCreature(NPC_LORD_VICTOR_NEFARIUS_GENERIC, LordVictorNefariusIntroPosition);
-                        else
-                            nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC);
-
-                        if (nefarius && nefarius->IsAIEnabled())
-                            nefarius->AI()->SetData(DATA_HEROES_ENTERED_HALLS, DONE);
-                        break;
+                        if (Creature* stalker = instance->GetCreature(guid))
+                            stalker->DespawnOrUnsummon(0s, 30s);
                     }
-                    case DATA_NEFARIANS_END_INTRO_DONE:
-                        _nefariansEndIntroDone = uint8(data);
-                        break;
-                    case DATA_RESET_ELEVATOR:
-                        _events.ScheduleEvent(EVENT_RAISE_ELEVATOR, data);
-                        break;
-                    default:
-                        break;
-                }
-            }
 
-            uint32 GetData(uint32 type) const override
-            {
-                switch (type)
+                    if (state == DONE)
+                        if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC))
+                            if (nefarius->IsAIEnabled())
+                                nefarius->AI()->SetData(DATA_BOSS_DEFEATED, type);
+
+                    _roomStalkerGUIDs.clear();
+                }
+                break;
+            case DATA_OMNOTRON_DEFENSE_SYSTEM:
+            case DATA_CHIMAERON:
+            case DATA_MALORIAK:
+                if (state == DONE)
+                    if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC))
+                        if (nefarius->IsAIEnabled())
+                            nefarius->AI()->SetData(DATA_BOSS_DEFEATED, type);
+                break;
+            case DATA_ATRAMEDES:
+                if (state == FAIL)
                 {
-                    case DATA_ATRAMEDES_INTRO:
-                        return _atramedesIntroState;
-                    case DATA_NEFARIANS_END_INTRO_DONE:
-                        return uint8(_nefariansEndIntroDone);
+                    _events.ScheduleEvent(EVENT_RESPAWN_ATRAMEDES, 30s);
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, false);
                 }
-                return 0;
-            }
-
-            ObjectGuid GetGuidData(uint32 type) const override
-            {
-                switch (type)
+                else if (state == DONE)
                 {
-                    case DATA_PREPARE_MASSIVE_CRASH_AND_GET_TARGET_GUID:
-                    {
-                        Creature* massiveCrashStalker = nullptr;
-                        uint8 sideIndex = MASSIVE_CRASH_SIDE_LEFT;
-                        switch (urand(MASSIVE_CRASH_SIDE_LEFT, MASSIVE_CRASH_SIDE_RIGHT))
-                        {
-                            case MASSIVE_CRASH_SIDE_LEFT:
-                                massiveCrashStalker = instance->GetCreature(_massiveCrashLeftDummyGUID);
-                                break;
-                            case MASSIVE_CRASH_SIDE_RIGHT:
-                                massiveCrashStalker = instance->GetCreature(_massiveCrashRightDummyGUID);
-                                sideIndex = MASSIVE_CRASH_SIDE_RIGHT;
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (!massiveCrashStalker)
-                            return ObjectGuid::Empty;
-
-                        for (ObjectGuid guid : _roomStalkerGUIDs)
-                        {
-                            if (Creature* stalker = instance->GetCreature(guid))
-                            {
-                                if (massiveCrashStalker->HasInArc(float(M_PI / 4.0f), stalker))
-                                {
-                                    stalker->CastSpell(stalker, SPELL_LIGHT_SHOW);
-                                    stalker->m_Events.AddEventAtOffset([stalker]()
-                                    {
-                                        stalker->RemoveAurasDueToSpell(SPELL_LIGHT_SHOW);
-                                    }, 7s);
-                                }
-                            }
-                        }
-
-                        massiveCrashStalker->m_Events.AddEventAtOffset([massiveCrashStalker]()
-                        {
-                            massiveCrashStalker->CastSpell(massiveCrashStalker, SPELL_MASSIVE_CRASH_DAMAGE);
-                        }, 6s);
-
-                        if (sideIndex == MASSIVE_CRASH_SIDE_LEFT)
-                            return _roomStalkerTargetDummyLeftGuid;
-                        else
-                            return _roomStalkerTargetDummyRightGuid;
-
-                        break;
-                    }
-                    default:
-                        break;
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, false);
+                    if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC))
+                        if (nefarius->IsAIEnabled())
+                            nefarius->AI()->SetData(DATA_BOSS_DEFEATED, type);
                 }
-
-                return ObjectGuid::Empty;
-            }
-
-            void Update(uint32 diff) override
-            {
-                _events.Update(diff);
-
-                while (uint32 eventId = _events.ExecuteEvent())
+                break;
+            case DATA_NEFARIANS_END:
+                if (state == FAIL)
                 {
-                    switch (eventId)
-                    {
-                        case EVENT_MAKE_ANCIENT_BELL_SELECTABLE:
-                            if (GameObject* bell = GetGameObject(DATA_ANCIENT_BELL))
-                                bell->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-
-                            if (Creature* column = GetCreature(DATA_COLUMN_OF_LIGHT))
-                                column->CastSpell(column, SPELL_COLUMN_OF_LIGHT);
-                            break;
-                        case EVENT_RESPAWN_ATRAMEDES:
-                            instance->SpawnGroupSpawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, true);
-                            instance->SummonCreature(BOSS_ATRAMEDES, AtramedesRespawnPosition);
-                            break;
-                        case EVENT_RESPAWN_NEFARIAN:
-                            instance->SummonCreature(BOSS_NEFARIAN, NefarianRespawnPosition);
-                            break;
-                        case EVENT_RAISE_ELEVATOR:
-                            if (GameObject* elevator = GetGameObject(DATA_BLACKWING_ELEVATOR_ONYXIA))
-                                elevator->SetGoState(GOState(GO_STATE_TRANSPORT_ACTIVE + 1));
-                            break;
-                        case EVENT_RESPAWN_LEFT_DWARVEN_GROUP:
-                            instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT, true);
-                            break;
-                        case EVENT_RESPAWN_RIGHT_DWARVEN_GROUP:
-                            instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT, true);
-                            break;
-                        default:
-                            break;
-                    }
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_NEFARIANS_END, false);
+                    _events.ScheduleEvent(EVENT_RESPAWN_NEFARIAN, 30s);
                 }
+                break;
+            default:
+                break;
             }
 
-            void WriteSaveDataMore(std::ostringstream& data) override
-            {
-                data << _atramedesIntroState;
-            }
-
-            void ReadSaveDataMore(std::istringstream& data) override
-            {
-                data >> _atramedesIntroState;
-
-                if (GetBossState(DATA_ATRAMEDES) != DONE)
-                {
-                    instance->SpawnGroupSpawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, true);
-
-                    if (_atramedesIntroState == DONE)
-                        instance->SummonCreature(BOSS_ATRAMEDES, AtramedesRespawnPosition);
-                    else
-                    {
-                        instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT, true);
-                        instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT, true);
-                    }
-                }
-
+            if (type != DATA_NEFARIANS_END)
                 if (IsNefarianAvailable())
                     instance->SpawnGroupSpawn(SPAWN_GROUP_NEFARIANS_END, true);
+
+            return true;
+        }
+
+        void SetData(uint32 type, uint32 data) override
+        {
+            switch (type)
+            {
+            case DATA_DWARVEN_SPIRIT_DIED:
+                if (data == DWARVEN_SPIRIT_GROUP_LEFT)
+                    ++_deadDwarfSpiritsLeft;
+                else
+                    ++_deadDwarfSpiritsRight;
+
+                if ((_deadDwarfSpiritsLeft + _deadDwarfSpiritsRight) == 8)
+                {
+                    _atramedesIntroState = DONE;
+                    SaveToDB();
+
+                    std::list<TempSummon*> summoned;
+                    instance->SummonCreatureGroup(SUMMON_GROUP_ATRAMEDES_INTRO, &summoned);
+                    for (TempSummon* summon : summoned)
+                        _atramedesIntroGUIDs.push_back(summon->GetGUID());
+
+                    instance->SummonCreature(NPC_COLUMN_OF_LIGHT, ColumnOfLightPosition);
+                    _events.ScheduleEvent(EVENT_MAKE_ANCIENT_BELL_SELECTABLE, 4s + 500ms);
+                }
+                break;
+            case DATA_RESET_DWARVEN_SPIRIT_GROUP:
+                if (data == DWARVEN_SPIRIT_GROUP_LEFT)
+                {
+                    _deadDwarfSpiritsLeft = 0;
+                    _events.RescheduleEvent(EVENT_RESPAWN_LEFT_DWARVEN_GROUP, 30s);
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT);
+                }
+                else
+                {
+                    _deadDwarfSpiritsRight = 0;
+                    _events.RescheduleEvent(EVENT_RESPAWN_RIGHT_DWARVEN_GROUP, 30s);
+                    instance->SpawnGroupDespawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT);
+                }
+
+                break;
+            case DATA_ATRAMEDES_INTRO:
+                if (!GetCreature(DATA_ATRAMEDES))
+                {
+                    if (Creature* atramedes = instance->SummonCreature(BOSS_ATRAMEDES, AtramedesIntroSummonPosition))
+                    {
+                        for (ObjectGuid guid : _atramedesIntroGUIDs)
+                            if (Creature* intro = instance->GetCreature(guid))
+                                intro->DespawnOrUnsummon();
+
+                        atramedes->SetDisableGravity(true);
+                        atramedes->SetReactState(REACT_PASSIVE);
+                        atramedes->SendSetPlayHoverAnim(true);
+
+                        if (atramedes->IsAIEnabled())
+                            atramedes->AI()->DoAction(ACTION_START_ATRAMEDES_INTRO);
+                    }
+                }
+                break;
+            case DATA_ENTRANCE_INTRO:
+            {
+                Creature* nefarius = nullptr;
+                if (instance->IsHeroic())
+                    nefarius = instance->SummonCreature(NPC_LORD_VICTOR_NEFARIUS_GENERIC, LordVictorNefariusIntroPosition);
+                else
+                    nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS_GENERIC);
+
+                if (nefarius && nefarius->IsAIEnabled())
+                    nefarius->AI()->SetData(DATA_HEROES_ENTERED_HALLS, DONE);
+                break;
+            }
+            case DATA_NEFARIANS_END_INTRO_DONE:
+                _nefariansEndIntroDone = uint8(data);
+                break;
+            case DATA_RESET_ELEVATOR:
+                _events.ScheduleEvent(EVENT_RAISE_ELEVATOR, data);
+                break;
+            default:
+                break;
+            }
+        }
+
+        uint32 GetData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_ATRAMEDES_INTRO:
+                return _atramedesIntroState;
+            case DATA_NEFARIANS_END_INTRO_DONE:
+                return uint8(_nefariansEndIntroDone);
+            }
+            return 0;
+        }
+
+        ObjectGuid GetGuidData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_PREPARE_MASSIVE_CRASH_AND_GET_TARGET_GUID:
+            {
+                Creature* massiveCrashStalker = nullptr;
+                uint8 sideIndex = MASSIVE_CRASH_SIDE_LEFT;
+                switch (urand(MASSIVE_CRASH_SIDE_LEFT, MASSIVE_CRASH_SIDE_RIGHT))
+                {
+                case MASSIVE_CRASH_SIDE_LEFT:
+                    massiveCrashStalker = instance->GetCreature(_massiveCrashLeftDummyGUID);
+                    break;
+                case MASSIVE_CRASH_SIDE_RIGHT:
+                    massiveCrashStalker = instance->GetCreature(_massiveCrashRightDummyGUID);
+                    sideIndex = MASSIVE_CRASH_SIDE_RIGHT;
+                    break;
+                default:
+                    break;
+                }
+
+                if (!massiveCrashStalker)
+                    return ObjectGuid::Empty;
+
+                for (ObjectGuid guid : _roomStalkerGUIDs)
+                {
+                    if (Creature* stalker = instance->GetCreature(guid))
+                    {
+                        if (massiveCrashStalker->HasInArc(float(M_PI / 4.0f), stalker))
+                        {
+                            stalker->CastSpell(stalker, SPELL_LIGHT_SHOW);
+                            stalker->m_Events.AddEventAtOffset([stalker]()
+                                {
+                                    stalker->RemoveAurasDueToSpell(SPELL_LIGHT_SHOW);
+                                }, 7s);
+                        }
+                    }
+                }
+
+                massiveCrashStalker->m_Events.AddEventAtOffset([massiveCrashStalker]()
+                    {
+                        massiveCrashStalker->CastSpell(massiveCrashStalker, SPELL_MASSIVE_CRASH_DAMAGE);
+                    }, 6s);
+
+                if (sideIndex == MASSIVE_CRASH_SIDE_LEFT)
+                    return _roomStalkerTargetDummyLeftGuid;
+                else
+                    return _roomStalkerTargetDummyRightGuid;
+
+                break;
+            }
+            default:
+                break;
             }
 
-        private:
-            EventMap _events;
-            ObjectGuid _massiveCrashLeftDummyGUID;
-            ObjectGuid _massiveCrashRightDummyGUID;
-            ObjectGuid _roomStalkerTargetDummyLeftGuid;
-            ObjectGuid _roomStalkerTargetDummyRightGuid;
-            GuidVector _roomStalkerGUIDs;
-            GuidVector _atramedesIntroGUIDs;
-            uint8 _deadDwarfSpiritsLeft;
-            uint8 _deadDwarfSpiritsRight;
-            uint8 _atramedesIntroState;
-            bool _nefariansEndIntroDone;
+            return ObjectGuid::Empty;
+        }
 
-            bool IsNefarianAvailable() const
+        void Update(uint32 diff) override
+        {
+            _events.Update(diff);
+
+            while (uint32 eventId = _events.ExecuteEvent())
             {
-                if (GetBossState(DATA_NEFARIANS_END) == DONE)
+                switch (eventId)
+                {
+                case EVENT_MAKE_ANCIENT_BELL_SELECTABLE:
+                    if (GameObject* bell = GetGameObject(DATA_ANCIENT_BELL))
+                        bell->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+
+                    if (Creature* column = GetCreature(DATA_COLUMN_OF_LIGHT))
+                        column->CastSpell(column, SPELL_COLUMN_OF_LIGHT);
+                    break;
+                case EVENT_RESPAWN_ATRAMEDES:
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, true);
+                    instance->SummonCreature(BOSS_ATRAMEDES, AtramedesRespawnPosition);
+                    break;
+                case EVENT_RESPAWN_NEFARIAN:
+                    instance->SummonCreature(BOSS_NEFARIAN, NefarianRespawnPosition);
+                    break;
+                case EVENT_RAISE_ELEVATOR:
+                    if (GameObject* elevator = GetGameObject(DATA_BLACKWING_ELEVATOR_ONYXIA))
+                        elevator->SetGoState(GOState(GO_STATE_TRANSPORT_ACTIVE + 1));
+                    break;
+                case EVENT_RESPAWN_LEFT_DWARVEN_GROUP:
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT, true);
+                    break;
+                case EVENT_RESPAWN_RIGHT_DWARVEN_GROUP:
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT, true);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        void WriteSaveDataMore(std::ostringstream& data) override
+        {
+            data << _atramedesIntroState;
+        }
+
+        void ReadSaveDataMore(std::istringstream& data) override
+        {
+            data >> _atramedesIntroState;
+
+            if (GetBossState(DATA_ATRAMEDES) != DONE)
+            {
+                instance->SpawnGroupSpawn(SPAWN_GROUP_ANCIENT_DWARVEN_SHIELDS, true);
+
+                if (_atramedesIntroState == DONE)
+                    instance->SummonCreature(BOSS_ATRAMEDES, AtramedesRespawnPosition);
+                else
+                {
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_LEFT, true);
+                    instance->SpawnGroupSpawn(SPAWN_GROUP_DWARVEN_SPIRITS_RIGHT, true);
+                }
+            }
+
+            if (IsNefarianAvailable())
+                instance->SpawnGroupSpawn(SPAWN_GROUP_NEFARIANS_END, true);
+        }
+
+    private:
+        EventMap _events;
+        ObjectGuid _massiveCrashLeftDummyGUID;
+        ObjectGuid _massiveCrashRightDummyGUID;
+        ObjectGuid _roomStalkerTargetDummyLeftGuid;
+        ObjectGuid _roomStalkerTargetDummyRightGuid;
+        GuidVector _roomStalkerGUIDs;
+        GuidVector _atramedesIntroGUIDs;
+        uint8 _deadDwarfSpiritsLeft;
+        uint8 _deadDwarfSpiritsRight;
+        uint8 _atramedesIntroState;
+        bool _nefariansEndIntroDone;
+
+        bool IsNefarianAvailable() const
+        {
+            if (GetBossState(DATA_NEFARIANS_END) == DONE)
+                return false;
+
+            for (BWDDataTypes data : { DATA_MAGMAW, DATA_OMNOTRON_DEFENSE_SYSTEM, DATA_CHIMAERON, DATA_ATRAMEDES, DATA_MALORIAK })
+                if (GetBossState(data) != DONE)
                     return false;
 
-                for (BWDDataTypes data : { DATA_MAGMAW, DATA_OMNOTRON_DEFENSE_SYSTEM, DATA_CHIMAERON, DATA_ATRAMEDES, DATA_MALORIAK })
-                    if (GetBossState(data) != DONE)
-                        return false;
-
-                return true;
-            }
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_blackwing_descent_InstanceMapScript(map);
+            return true;
         }
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_blackwing_descent_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_blackwing_descent()

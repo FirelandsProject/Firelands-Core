@@ -100,10 +100,10 @@ void PetitionMgr::AddPetition(ObjectGuid petitionGuid, ObjectGuid ownerGuid, std
         return;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_PETITION);
-    stmt->setUInt32(0, ownerGuid.GetCounter());
-    stmt->setUInt32(1, petitionGuid.GetCounter());
-    stmt->setString(2, name);
-    stmt->setUInt8(3, uint8(type));
+    stmt->SetData(0, ownerGuid.GetCounter());
+    stmt->SetData(1, petitionGuid.GetCounter());
+    stmt->SetData(2, name);
+    stmt->SetData(3, uint8(type));
     CharacterDatabase.Execute(stmt);
 }
 
@@ -115,11 +115,11 @@ void PetitionMgr::RemovePetition(ObjectGuid petitionGuid)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_BY_GUID);
-    stmt->setUInt32(0, petitionGuid.GetCounter());
+    stmt->SetData(0, petitionGuid.GetCounter());
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_SIGNATURE_BY_GUID);
-    stmt->setUInt32(0, petitionGuid.GetCounter());
+    stmt->SetData(0, petitionGuid.GetCounter());
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -168,23 +168,23 @@ void PetitionMgr::RemovePetitionsByOwnerAndType(ObjectGuid ownerGuid, CharterTyp
     if (type == CHARTER_TYPE_ANY)
     {
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_BY_OWNER);
-        stmt->setUInt32(0, ownerGuid.GetCounter());
+        stmt->SetData(0, ownerGuid.GetCounter());
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_SIGNATURE_BY_OWNER);
-        stmt->setUInt32(0, ownerGuid.GetCounter());
+        stmt->SetData(0, ownerGuid.GetCounter());
         trans->Append(stmt);
     }
     else
     {
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_BY_OWNER_AND_TYPE);
-        stmt->setUInt32(0, ownerGuid.GetCounter());
-        stmt->setUInt8(1, uint8(type));
+        stmt->SetData(0, ownerGuid.GetCounter());
+        stmt->SetData(1, uint8(type));
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_SIGNATURE_BY_OWNER_AND_TYPE);
-        stmt->setUInt32(0, ownerGuid.GetCounter());
-        stmt->setUInt8(1, uint8(type));
+        stmt->SetData(0, ownerGuid.GetCounter());
+        stmt->SetData(1, uint8(type));
         trans->Append(stmt);
     }
     CharacterDatabase.CommitTransaction(trans);
@@ -202,13 +202,13 @@ void PetitionMgr::RemoveSignaturesBySignerAndType(ObjectGuid signerGuid, Charter
     if (type == CHARTER_TYPE_ANY)
     {
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ALL_PETITION_SIGNATURES);
-        stmt->setUInt32(0, signerGuid.GetCounter());
+        stmt->SetData(0, signerGuid.GetCounter());
     }
     else
     {
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_SIGNATURE);
-        stmt->setUInt32(0, signerGuid.GetCounter());
-        stmt->setUInt8(1, uint8(type));
+        stmt->SetData(0, signerGuid.GetCounter());
+        stmt->SetData(1, uint8(type));
     }
     CharacterDatabase.Execute(stmt);
 }
@@ -231,10 +231,10 @@ void Petition::AddSignature(ObjectGuid petitionGuid, uint32 accountId, ObjectGui
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_PETITION_SIGNATURE);
 
-    stmt->setUInt32(0, ownerGuid.GetCounter());
-    stmt->setUInt32(1, petitionGuid.GetCounter());
-    stmt->setUInt32(2, playerGuid);
-    stmt->setUInt32(3, accountId);
+    stmt->SetData(0, ownerGuid.GetCounter());
+    stmt->SetData(1, petitionGuid.GetCounter());
+    stmt->SetData(2, playerGuid);
+    stmt->SetData(3, accountId);
 
     CharacterDatabase.Execute(stmt);
 }
@@ -244,8 +244,8 @@ void Petition::UpdateName(std::string const& newName)
     petitionName = newName;
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_PETITION_NAME);
-    stmt->setString(0, newName);
-    stmt->setUInt32(1, petitionGuid.GetCounter());
+    stmt->SetData(0, newName);
+    stmt->SetData(1, petitionGuid.GetCounter());
     CharacterDatabase.Execute(stmt);
 }
 

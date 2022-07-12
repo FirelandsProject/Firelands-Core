@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -91,19 +91,19 @@ namespace WorldPackets
 
         struct LootItemData
         {
-            uint8 Type              = 0;
-            uint8 UIType            = 0;
-            uint32 Quantity         = 0;
-            uint8 LootItemType      = 0;
-            uint8 LootListID        = 0;
+            uint8 Type = 0;
+            uint8 UIType = 0;
+            uint32 Quantity = 0;
+            uint8 LootItemType = 0;
+            uint8 LootListID = 0;
             WorldPackets::Item::ItemInstance Loot;
         };
 
         struct LootCurrency
         {
-            uint32 CurrencyID   = 0;
-            uint32 Quantity     = 0;
-            uint8 LootListID    = 0;
+            uint32 CurrencyID = 0;
+            uint32 Quantity = 0;
+            uint8 LootListID = 0;
         };
 
         class LootResponse final : public ServerPacket
@@ -114,10 +114,10 @@ namespace WorldPackets
             WorldPacket const* Write() override;
 
             ObjectGuid Owner;
-            uint8 Threshold      = 2; // Most common value, 2 = Uncommon
-            uint8 AcquireReason  = 0;
-            uint8 FailureReason  = 17; // Most common value
-            uint32 Coins         = 0;
+            uint8 Threshold = 2; // Most common value, 2 = Uncommon
+            uint8 AcquireReason = 0;
+            uint8 FailureReason = 17; // Most common value
+            uint32 Coins = 0;
             std::vector<LootItemData> Items;
             std::vector<LootCurrency> Currencies;
         };

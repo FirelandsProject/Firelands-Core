@@ -1,4 +1,4 @@
-# FirelandsCore
+# Firelands Core
 
 ## Build Status
 
@@ -6,7 +6,7 @@
 
 ## Introduction
 
-FirelandsCore is a _MMORPG_ Framework based mostly in C++.
+Firelands Core is a _MMORPG_ Framework based mostly in C++.
 
 It is derived from _MaNGOS_ and _TrinityCore_, the _Massive Network Game Object Server_, and is
 based on the code of that project with extensive changes over time to optimize,
@@ -45,12 +45,12 @@ Read file [AUTHORS](AUTHORS)
 
 ## Links
 
-[Site](TBD)
+[Site](https://github.com/FirelandsProject)
 
-[Wiki](TBD)
+[Wiki](https://github.com/FirelandsProject/firelands-wiki)
 
 [Documentation](TBD) (powered by Doxygen)
 
 [Forums](TBD)
 
-[Discord](TBD)
+[Discord](https://discord.gg/CGj9Gghg)

@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -14,8 +14,7 @@ add_custom_target(revision_data.h ALL
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )
 
-
 set_target_properties(revision_data.h
-    PROPERTIES
-      FOLDER
-        "server")
+  PROPERTIES
+  FOLDER
+  "server")

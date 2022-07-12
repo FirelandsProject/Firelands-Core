@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -97,8 +97,8 @@ namespace AddonMgr
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ADDON);
 
-        stmt->setString(0, name);
-        stmt->setUInt32(1, publicKeyCrc);
+        stmt->SetData(0, name);
+        stmt->SetData(1, publicKeyCrc);
 
         CharacterDatabase.Execute(stmt);
 

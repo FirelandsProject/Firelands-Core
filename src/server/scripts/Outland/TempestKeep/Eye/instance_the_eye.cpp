@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,24 +15,24 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Instance_The_Eye
-SD%Complete: 100
-SDComment:
-SDCategory: Tempest Keep, The Eye
-EndScriptData */
+ /* ScriptData
+ SDName: Instance_The_Eye
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Tempest Keep, The Eye
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "Creature.h"
 #include "InstanceScript.h"
 #include "the_eye.h"
 
-/* The Eye encounters:
-0 - Kael'thas event
-1 - Al' ar event
-2 - Solarian Event
-3 - Void Reaver event
-*/
+ /* The Eye encounters:
+ 0 - Kael'thas event
+ 1 - Al' ar event
+ 2 - Solarian Event
+ 3 - Void Reaver event
+ */
 
 DoorData const doorData[] =
 {
@@ -51,77 +51,77 @@ ObjectData const gameObjectData[] =
 
 class instance_the_eye : public InstanceMapScript
 {
-    public:
-        instance_the_eye() : InstanceMapScript(TheEyeScriptName, 550) { }
+public:
+    instance_the_eye() : InstanceMapScript(TheEyeScriptName, 550) { }
 
-        struct instance_the_eye_InstanceMapScript : public InstanceScript
+    struct instance_the_eye_InstanceMapScript : public InstanceScript
+    {
+        instance_the_eye_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_the_eye_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadDoorData(doorData);
-                LoadObjectData(nullptr, gameObjectData);
-            }
-
-            ObjectGuid ThaladredTheDarkener;
-            ObjectGuid LordSanguinar;
-            ObjectGuid GrandAstromancerCapernian;
-            ObjectGuid MasterEngineerTelonicus;
-            ObjectGuid Kaelthas;
-            ObjectGuid Astromancer;
-            ObjectGuid Alar;
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                switch (creature->GetEntry())
-                {
-                    case NPC_SANGUINAR:
-                        LordSanguinar = creature->GetGUID();
-                        break;
-                    case NPC_CAPERNIAN:
-                        GrandAstromancerCapernian = creature->GetGUID();
-                        break;
-                    case NPC_TELONICUS:
-                        MasterEngineerTelonicus = creature->GetGUID();
-                        break;
-                    case NPC_THALADRED:
-                        ThaladredTheDarkener = creature->GetGUID();
-                        break;
-                    case NPC_KAELTHAS:
-                        Kaelthas = creature->GetGUID();
-                        break;
-                    case NPC_HIGH_ASTROMANCER_SOLARIAN:
-                        Astromancer = creature->GetGUID();
-                        break;
-                    case NPC_ALAR:
-                        Alar = creature->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            ObjectGuid GetGuidData(uint32 identifier) const override
-            {
-                switch (identifier)
-                {
-                    case DATA_THALADREDTHEDARKENER:         return ThaladredTheDarkener;
-                    case DATA_LORDSANGUINAR:                return LordSanguinar;
-                    case DATA_GRANDASTROMANCERCAPERNIAN:    return GrandAstromancerCapernian;
-                    case DATA_MASTERENGINEERTELONICUS:      return MasterEngineerTelonicus;
-                    case DATA_KAELTHAS:                     return Kaelthas;
-                    case DATA_HIGH_ASTROMANCER_SOLARIAN:    return Astromancer;
-                    case DATA_ALAR:                         return Alar;
-                }
-                return ObjectGuid::Empty;
-            }
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_the_eye_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadDoorData(doorData);
+            LoadObjectData(nullptr, gameObjectData);
         }
+
+        ObjectGuid ThaladredTheDarkener;
+        ObjectGuid LordSanguinar;
+        ObjectGuid GrandAstromancerCapernian;
+        ObjectGuid MasterEngineerTelonicus;
+        ObjectGuid Kaelthas;
+        ObjectGuid Astromancer;
+        ObjectGuid Alar;
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            switch (creature->GetEntry())
+            {
+            case NPC_SANGUINAR:
+                LordSanguinar = creature->GetGUID();
+                break;
+            case NPC_CAPERNIAN:
+                GrandAstromancerCapernian = creature->GetGUID();
+                break;
+            case NPC_TELONICUS:
+                MasterEngineerTelonicus = creature->GetGUID();
+                break;
+            case NPC_THALADRED:
+                ThaladredTheDarkener = creature->GetGUID();
+                break;
+            case NPC_KAELTHAS:
+                Kaelthas = creature->GetGUID();
+                break;
+            case NPC_HIGH_ASTROMANCER_SOLARIAN:
+                Astromancer = creature->GetGUID();
+                break;
+            case NPC_ALAR:
+                Alar = creature->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
+
+        ObjectGuid GetGuidData(uint32 identifier) const override
+        {
+            switch (identifier)
+            {
+            case DATA_THALADREDTHEDARKENER:         return ThaladredTheDarkener;
+            case DATA_LORDSANGUINAR:                return LordSanguinar;
+            case DATA_GRANDASTROMANCERCAPERNIAN:    return GrandAstromancerCapernian;
+            case DATA_MASTERENGINEERTELONICUS:      return MasterEngineerTelonicus;
+            case DATA_KAELTHAS:                     return Kaelthas;
+            case DATA_HIGH_ASTROMANCER_SOLARIAN:    return Astromancer;
+            case DATA_ALAR:                         return Alar;
+            }
+            return ObjectGuid::Empty;
+        }
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_the_eye_InstanceMapScript(map);
+    }
 };
 void AddSC_instance_the_eye()
 {

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -18,12 +18,12 @@
 #include "BoundingIntervalHierarchy.h"
 
 #ifdef _MSC_VER
-  #define isnan _isnan
+#define isnan _isnan
 #else
-  #define isnan std::isnan
+#define isnan std::isnan
 #endif
 
-void BIH::buildHierarchy(std::vector<uint32> &tempTree, buildData &dat, BuildStats &stats)
+void BIH::buildHierarchy(std::vector<uint32>& tempTree, buildData& dat, BuildStats& stats)
 {
     // create space for the first node
     tempTree.push_back(uint32(3 << 30)); // dummy leaf
@@ -37,7 +37,7 @@ void BIH::buildHierarchy(std::vector<uint32> &tempTree, buildData &dat, BuildSta
     subdivide(0, dat.numPrims - 1, tempTree, dat, gridBox, nodeBox, 0, 1, stats);
 }
 
-void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildData &dat, AABound &gridBox, AABound &nodeBox, int nodeIndex, int depth, BuildStats &stats)
+void BIH::subdivide(int left, int right, std::vector<uint32>& tempTree, buildData& dat, AABound& gridBox, AABound& nodeBox, int nodeIndex, int depth, BuildStats& stats)
 {
     if ((right - left + 1) <= dat.maxPrims || depth >= MAX_STACK_SIZE)
     {
@@ -56,7 +56,7 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
         prevAxis = axis;
         prevSplit = split;
         // perform quick consistency checks
-        G3D::Vector3 d( gridBox.hi - gridBox.lo );
+        G3D::Vector3 d(gridBox.hi - gridBox.lo);
         if (d.x < 0 || d.y < 0 || d.z < 0)
             throw std::logic_error("negative node extents");
         for (int i = 0; i < 3; i++)
@@ -187,7 +187,8 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
                     tempTree[nodeIndex + 0] = (prevAxis << 30) | nextIndex;
                     tempTree[nodeIndex + 1] = floatToRawIntBits(prevClip);
                     tempTree[nodeIndex + 2] = floatToRawIntBits(G3D::finf());
-                } else {
+                }
+                else {
                     // create a node with a right child
                     // write leaf node
                     stats.updateInner();
@@ -213,7 +214,8 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
         tempTree.push_back(0);
         tempTree.push_back(0);
         tempTree.push_back(0);
-    } else
+    }
+    else
         nextIndex -= 3;
     // allocate right node
     if (nr > 0) {
@@ -246,7 +248,7 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
 bool BIH::writeToFile(FILE* wf) const
 {
     uint32 treeSize = tree.size();
-    uint32 check=0, count;
+    uint32 check = 0, count;
     check += fwrite(&bounds.low(), sizeof(float), 3, wf);
     check += fwrite(&bounds.high(), sizeof(float), 3, wf);
     check += fwrite(&treeSize, sizeof(uint32), 1, wf);
@@ -261,7 +263,7 @@ bool BIH::readFromFile(FILE* rf)
 {
     uint32 treeSize;
     G3D::Vector3 lo, hi;
-    uint32 check=0, count=0;
+    uint32 check = 0, count = 0;
     check += fread(&lo, sizeof(float), 3, rf);
     check += fread(&hi, sizeof(float), 3, rf);
     bounds = G3D::AABox(lo, hi);
@@ -293,11 +295,11 @@ void BIH::BuildStats::printStats()
     printf("  * Nodes:          %d\n", numNodes);
     printf("  * Leaves:         %d\n", numLeaves);
     printf("  * Objects: min    %d\n", minObjects);
-    printf("             avg    %.2f\n", (float) sumObjects / numLeaves);
-    printf("           avg(n>0) %.2f\n", (float) sumObjects / (numLeaves - numLeavesN[0]));
+    printf("             avg    %.2f\n", (float)sumObjects / numLeaves);
+    printf("           avg(n>0) %.2f\n", (float)sumObjects / (numLeaves - numLeavesN[0]));
     printf("             max    %d\n", maxObjects);
     printf("  * Depth:   min    %d\n", minDepth);
-    printf("             avg    %.2f\n", (float) sumDepth / numLeaves);
+    printf("             avg    %.2f\n", (float)sumDepth / numLeaves);
     printf("             max    %d\n", maxDepth);
     printf("  * Leaves w/: N=0  %3d%%\n", 100 * numLeavesN[0] / numLeaves);
     printf("               N=1  %3d%%\n", 100 * numLeavesN[1] / numLeaves);

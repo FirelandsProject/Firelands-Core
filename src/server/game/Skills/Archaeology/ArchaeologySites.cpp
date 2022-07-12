@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -27,16 +27,16 @@
 // use squared distances so we don't have to use the squareroot
 enum DigSiteDist
 {
-    DIST_FAR            = 10000,    // 100 yards
-    DIST_MED            = 900,      // 30  yards
-    DIST_CLOSE          = 100,      // 10  yards
+    DIST_FAR = 10000,    // 100 yards
+    DIST_MED = 900,      // 30  yards
+    DIST_CLOSE = 100,      // 10  yards
 };
 
 enum SurveyBot
 {
-    FAR_SURVEYBOT       = 206590,
-    MED_SURVEYBOT       = 206589,
-    CLOSE_SURVEYBOT     = 204272,
+    FAR_SURVEYBOT = 206590,
+    MED_SURVEYBOT = 206589,
+    CLOSE_SURVEYBOT = 204272,
 };
 
 void Archaeology::LoadSitesFromDB()
@@ -48,7 +48,7 @@ void Archaeology::LoadSitesFromDB()
 
     uint32 count = 0;
     do {
-        Field *fields = result->Fetch();
+        Field* fields = result->Fetch();
         uint32 site = fields[0].GetUInt8();
         uint16 type = fields[1].GetUInt16();
         uint8 finds = fields[2].GetUInt8();
@@ -162,25 +162,25 @@ Continent Archaeology::GetContinent()
 {
     switch (_player->GetMapId())
     {
-        case 0:
-            return CONT_EASTERN;
-        case 1:
-            return CONT_KALIMDOR;
-        case 530:
-            return CONT_OUTLAND;
-        case 571:
-            return CONT_NORTHREND;
+    case 0:
+        return CONT_EASTERN;
+    case 1:
+        return CONT_KALIMDOR;
+    case 530:
+        return CONT_OUTLAND;
+    case 571:
+        return CONT_NORTHREND;
     }
     return COUNT_CONT;
 }
 
-uint32 Archaeology::GetNearestSite(float &distance)
+uint32 Archaeology::GetNearestSite(float& distance)
 {
     uint32 cont = GetContinent();
-    
+
     if (COUNT_CONT == cont)
         return 0;
-    
+
     uint32 position = cont * CONTINENT_SITES;
 
     float pX = _player->GetPositionX();
@@ -190,7 +190,7 @@ uint32 Archaeology::GetNearestSite(float &distance)
 
     for (uint32 i = cont * CONTINENT_SITES + 1; i < (cont + 1) * CONTINENT_SITES; ++i)
     {
-        float distSq2 = (pX -_site[i].X) * (pX -_site[i].X) + (pY - _site[i].Y) * (pY - _site[i].Y);
+        float distSq2 = (pX - _site[i].X) * (pX - _site[i].X) + (pY - _site[i].Y) * (pY - _site[i].Y);
         if (distSq2 < distSq)
         {
             position = i;
@@ -239,7 +239,7 @@ void Archaeology::RegenerateContinent(Continent continent)
     }
 
     uint32 position = continent * CONTINENT_SITES;
-    
+
     for (uint32 i = 0; i < CONTINENT_SITES; i++)
         RegeneratePosition(position + i, continent);
 }

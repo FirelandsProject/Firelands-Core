@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,16 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: The_Barrens
-SD%Complete: 90
-SDComment: Quest support: 863
-SDCategory: Barrens
-EndScriptData */
+ /* ScriptData
+ SDName: The_Barrens
+ SD%Complete: 90
+ SDComment: Quest support: 863
+ SDCategory: Barrens
+ EndScriptData */
 
-/* ContentData
-npc_wizzlecrank_shredder
-EndContentData */
+ /* ContentData
+ npc_wizzlecrank_shredder
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "MotionMaster.h"
@@ -35,42 +35,42 @@ EndContentData */
 #include "SpellInfo.h"
 #include "TemporarySummon.h"
 
-/*######
-## npc_beaten_corpse
-######*/
+ /*######
+ ## npc_beaten_corpse
+ ######*/
 
 enum BeatenCorpse
 {
-    GOSSIP_OPTION_ID_BEATEN_CORPSE  = 0,
+    GOSSIP_OPTION_ID_BEATEN_CORPSE = 0,
     GOSSIP_MENU_OPTION_INSPECT_BODY = 2871
 };
 
 class npc_beaten_corpse : public CreatureScript
 {
-    public:
-        npc_beaten_corpse() : CreatureScript("npc_beaten_corpse") { }
+public:
+    npc_beaten_corpse() : CreatureScript("npc_beaten_corpse") { }
 
-        struct npc_beaten_corpseAI : public ScriptedAI
+    struct npc_beaten_corpseAI : public ScriptedAI
+    {
+        npc_beaten_corpseAI(Creature* creature) : ScriptedAI(creature)
         {
-            npc_beaten_corpseAI(Creature* creature) : ScriptedAI(creature)
-            {
-            }
-
-            bool GossipSelect(Player* player, uint32 menuId, uint32 gossipListId) override
-            {
-                if (menuId == GOSSIP_MENU_OPTION_INSPECT_BODY && gossipListId == GOSSIP_OPTION_ID_BEATEN_CORPSE)
-                {
-                    CloseGossipMenuFor(player);
-                    player->TalkedToCreature(me->GetEntry(), me->GetGUID());
-                }
-                return true;
-            }
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new npc_beaten_corpseAI(creature);
         }
+
+        bool GossipSelect(Player* player, uint32 menuId, uint32 gossipListId) override
+        {
+            if (menuId == GOSSIP_MENU_OPTION_INSPECT_BODY && gossipListId == GOSSIP_OPTION_ID_BEATEN_CORPSE)
+            {
+                CloseGossipMenuFor(player);
+                player->TalkedToCreature(me->GetEntry(), me->GetGUID());
+            }
+            return true;
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new npc_beaten_corpseAI(creature);
+    }
 };
 
 /*######
@@ -79,18 +79,18 @@ class npc_beaten_corpse : public CreatureScript
 
 enum Gilthares
 {
-    SAY_GIL_START               = 0,
-    SAY_GIL_AT_LAST             = 1,
-    SAY_GIL_PROCEED             = 2,
-    SAY_GIL_FREEBOOTERS         = 3,
-    SAY_GIL_AGGRO               = 4,
-    SAY_GIL_ALMOST              = 5,
-    SAY_GIL_SWEET               = 6,
-    SAY_GIL_FREED               = 7,
+    SAY_GIL_START = 0,
+    SAY_GIL_AT_LAST = 1,
+    SAY_GIL_PROCEED = 2,
+    SAY_GIL_FREEBOOTERS = 3,
+    SAY_GIL_AGGRO = 4,
+    SAY_GIL_ALMOST = 5,
+    SAY_GIL_SWEET = 6,
+    SAY_GIL_FREED = 7,
 
-    QUEST_FREE_FROM_HOLD        = 898,
-    AREA_MERCHANT_COAST         = 391,
-    FACTION_ESCORTEE            = 232                       //guessed, possible not needed for this quest
+    QUEST_FREE_FROM_HOLD = 898,
+    AREA_MERCHANT_COAST = 391,
+    FACTION_ESCORTEE = 232                       //guessed, possible not needed for this quest
 };
 
 class npc_gilthares : public CreatureScript
@@ -130,25 +130,25 @@ public:
 
             switch (waypointId)
             {
-                case 16:
-                    Talk(SAY_GIL_AT_LAST, player);
-                    break;
-                case 17:
-                    Talk(SAY_GIL_PROCEED, player);
-                    break;
-                case 18:
-                    Talk(SAY_GIL_FREEBOOTERS, player);
-                    break;
-                case 37:
-                    Talk(SAY_GIL_ALMOST, player);
-                    break;
-                case 47:
-                    Talk(SAY_GIL_SWEET, player);
-                    break;
-                case 53:
-                    Talk(SAY_GIL_FREED, player);
-                    player->GroupEventHappens(QUEST_FREE_FROM_HOLD, me);
-                    break;
+            case 16:
+                Talk(SAY_GIL_AT_LAST, player);
+                break;
+            case 17:
+                Talk(SAY_GIL_PROCEED, player);
+                break;
+            case 18:
+                Talk(SAY_GIL_FREEBOOTERS, player);
+                break;
+            case 37:
+                Talk(SAY_GIL_ALMOST, player);
+                break;
+            case 47:
+                Talk(SAY_GIL_SWEET, player);
+                break;
+            case 53:
+                Talk(SAY_GIL_FREED, player);
+                player->GroupEventHappens(QUEST_FREE_FROM_HOLD, me);
+                break;
             }
         }
 
@@ -175,9 +175,9 @@ public:
 
 enum TaskmasterFizzule
 {
-    FACTION_FRIENDLY_F  = 35,
-    SPELL_FLARE         = 10113,
-    SPELL_FOLLY         = 10137,
+    FACTION_FRIENDLY_F = 35,
+    SPELL_FLARE = 10113,
+    SPELL_FOLLY = 10137,
 };
 
 class npc_taskmaster_fizzule : public CreatureScript
@@ -252,7 +252,8 @@ public:
                 {
                     EnterEvadeMode();
                     return;
-                } else ResetTimer -= diff;
+                }
+                else ResetTimer -= diff;
             }
 
             if (!UpdateVictim())
@@ -284,14 +285,14 @@ public:
 
 enum TwiggyFlathead
 {
-    NPC_BIG_WILL                = 6238,
-    NPC_AFFRAY_CHALLENGER       = 6240,
+    NPC_BIG_WILL = 6238,
+    NPC_AFFRAY_CHALLENGER = 6240,
 
-    SAY_BIG_WILL_READY          = 0,
-    SAY_TWIGGY_FLATHEAD_BEGIN   = 0,
-    SAY_TWIGGY_FLATHEAD_FRAY    = 1,
-    SAY_TWIGGY_FLATHEAD_DOWN    = 2,
-    SAY_TWIGGY_FLATHEAD_OVER    = 3
+    SAY_BIG_WILL_READY = 0,
+    SAY_TWIGGY_FLATHEAD_BEGIN = 0,
+    SAY_TWIGGY_FLATHEAD_FRAY = 1,
+    SAY_TWIGGY_FLATHEAD_DOWN = 2,
+    SAY_TWIGGY_FLATHEAD_OVER = 3
 };
 
 Position const AffrayChallengerLoc[6] =
@@ -448,7 +449,8 @@ public:
                             }
                         }
                         ChallengerChecker = 1000;
-                    } else ChallengerChecker -= diff;
+                    }
+                    else ChallengerChecker -= diff;
 
                     if (WaveTimer <= diff)
                     {
@@ -497,7 +499,8 @@ public:
                                 creature->AI()->AttackStart(warrior);
                             }
                         }
-                    } else WaveTimer -= diff;
+                    }
+                    else WaveTimer -= diff;
                 }
             }
         }
@@ -511,19 +514,19 @@ public:
 
 enum Wizzlecrank
 {
-    SAY_MERCENARY       = 0,
-    SAY_START           = 0,
-    SAY_STARTUP1        = 1,
-    SAY_STARTUP2        = 2,
-    SAY_PROGRESS_1      = 3,
-    SAY_PROGRESS_2      = 4,
-    SAY_PROGRESS_3      = 5,
-    SAY_END             = 6,
+    SAY_MERCENARY = 0,
+    SAY_START = 0,
+    SAY_STARTUP1 = 1,
+    SAY_STARTUP2 = 2,
+    SAY_PROGRESS_1 = 3,
+    SAY_PROGRESS_2 = 4,
+    SAY_PROGRESS_3 = 5,
+    SAY_END = 6,
 
-    QUEST_ESCAPE        = 863,
-    FACTION_RATCHET     = 637,
-    NPC_PILOT_WIZZ      = 3451,
-    NPC_MERCENARY       = 3282,
+    QUEST_ESCAPE = 863,
+    FACTION_RATCHET = 637,
+    NPC_PILOT_WIZZ = 3451,
+    NPC_MERCENARY = 3282,
 };
 
 class npc_wizzlecrank_shredder : public CreatureScript
@@ -549,22 +552,22 @@ public:
         {
             switch (waypointId)
             {
-                case 0:
-                    Talk(SAY_STARTUP1);
-                    break;
-                case 9:
-                    SetRun(false);
-                    break;
-                case 17:
-                    if (Creature* temp = me->SummonCreature(NPC_MERCENARY, 1128.489f, -3037.611f, 92.701f, 1.472f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 120000))
-                    {
-                        temp->AI()->Talk(SAY_MERCENARY);
-                        me->SummonCreature(NPC_MERCENARY, 1160.172f, -2980.168f, 97.313f, 3.690f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 120000);
-                    }
-                    break;
-                case 24:
-                    IsPostEvent = true;
-                    break;
+            case 0:
+                Talk(SAY_STARTUP1);
+                break;
+            case 9:
+                SetRun(false);
+                break;
+            case 17:
+                if (Creature* temp = me->SummonCreature(NPC_MERCENARY, 1128.489f, -3037.611f, 92.701f, 1.472f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 120000))
+                {
+                    temp->AI()->Talk(SAY_MERCENARY);
+                    me->SummonCreature(NPC_MERCENARY, 1160.172f, -2980.168f, 97.313f, 3.690f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 120000);
+                }
+                break;
+            case 24:
+                IsPostEvent = true;
+                break;
             }
         }
 
@@ -577,13 +580,13 @@ public:
 
             switch (PointId)
             {
-                case 9:
-                    Talk(SAY_STARTUP2, player);
-                    break;
-                case 18:
-                    Talk(SAY_PROGRESS_1, player);
-                    SetRun();
-                    break;
+            case 9:
+                Talk(SAY_STARTUP2, player);
+                break;
+            case 18:
+                Talk(SAY_PROGRESS_1, player);
+                SetRun();
+                break;
             }
         }
 
@@ -615,23 +618,23 @@ public:
 
             switch (PostEventCount)
             {
-                case 0:
-                    Talk(SAY_PROGRESS_2);
-                    break;
-                case 1:
-                    Talk(SAY_PROGRESS_3);
-                    break;
-                case 2:
-                    Talk(SAY_END);
-                    break;
-                case 3:
-                    if (Player* player = GetPlayerForEscort())
-                    {
-                        player->GroupEventHappens(QUEST_ESCAPE, me);
-                        me->DespawnOrUnsummon(Minutes(3));
-                        me->SummonCreature(NPC_PILOT_WIZZ, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_DESPAWN, 180000);
-                    }
-                    break;
+            case 0:
+                Talk(SAY_PROGRESS_2);
+                break;
+            case 1:
+                Talk(SAY_PROGRESS_3);
+                break;
+            case 2:
+                Talk(SAY_END);
+                break;
+            case 3:
+                if (Player* player = GetPlayerForEscort())
+                {
+                    player->GroupEventHappens(QUEST_ESCAPE, me);
+                    me->DespawnOrUnsummon(Minutes(3));
+                    me->SummonCreature(NPC_PILOT_WIZZ, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_DESPAWN, 180000);
+                }
+                break;
             }
 
             ++PostEventCount;

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,22 +15,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Sholazar_Basin
-SD%Complete: 100
-SDComment: Quest support: 12550, 12645, 12688, 12726, 13957
-SDCategory: Sholazar_Basin
-EndScriptData */
+ /* ScriptData
+ SDName: Sholazar_Basin
+ SD%Complete: 100
+ SDComment: Quest support: 12550, 12645, 12688, 12726, 13957
+ SDCategory: Sholazar_Basin
+ EndScriptData */
 
-/* ContentData
-npc_engineer_helice
-npc_jungle_punch_target
-spell_q12620_the_lifewarden_wrath
-spell_q12589_shoot_rjr
-npc_haiphoon (Quest: "Song of Wind and Water")
-npc_vics_flying_machine
-spell_shango_tracks
-EndContentData */
+ /* ContentData
+ npc_engineer_helice
+ npc_jungle_punch_target
+ spell_q12620_the_lifewarden_wrath
+ spell_q12589_shoot_rjr
+ npc_haiphoon (Quest: "Song of Wind and Water")
+ npc_vics_flying_machine
+ spell_shango_tracks
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "CombatAI.h"
@@ -44,27 +44,27 @@ EndContentData */
 #include "SpellScript.h"
 #include "Vehicle.h"
 
-/*######
-## npc_engineer_helice
-######*/
+ /*######
+ ## npc_engineer_helice
+ ######*/
 
 enum EngineerHelice
 {
     // Spells
-    SPELL_EXPLODE_CRYSTAL       = 62487,
-    SPELL_FLAMES                = 64561,
+    SPELL_EXPLODE_CRYSTAL = 62487,
+    SPELL_FLAMES = 64561,
 
     // Yells
-    SAY_WP_1                    = 0,
-    SAY_WP_2                    = 1,
-    SAY_WP_3                    = 2,
-    SAY_WP_4                    = 3,
-    SAY_WP_5                    = 4,
-    SAY_WP_6                    = 5,
-    SAY_WP_7                    = 6,
+    SAY_WP_1 = 0,
+    SAY_WP_2 = 1,
+    SAY_WP_3 = 2,
+    SAY_WP_4 = 3,
+    SAY_WP_5 = 4,
+    SAY_WP_6 = 5,
+    SAY_WP_7 = 6,
 
     // Quests
-    QUEST_DISASTER              = 12688
+    QUEST_DISASTER = 12688
 };
 
 class npc_engineer_helice : public CreatureScript
@@ -92,36 +92,36 @@ public:
 
             switch (waypointId)
             {
-                case 0:
-                    Talk(SAY_WP_2);
-                    break;
-                case 1:
-                    Talk(SAY_WP_3);
-                    me->CastSpell({ 5918.33f, 5372.91f, -98.770f }, SPELL_EXPLODE_CRYSTAL, true);
-                    me->SummonGameObject(184743, 5918.33f, 5372.91f, -98.770f, 0, QuaternionData(), TEMPSUMMON_MANUAL_DESPAWN);     //approx 3 to 4 seconds
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-                    break;
-                case 2:
-                    Talk(SAY_WP_4);
-                    break;
-                case 7:
-                    Talk(SAY_WP_5);
-                    break;
-                case 8:
-                    me->CastSpell({ 5887.37f, 5379.39f, -91.289f }, SPELL_EXPLODE_CRYSTAL, true);
-                    me->SummonGameObject(184743, 5887.37f, 5379.39f, -91.289f, 0, QuaternionData(), TEMPSUMMON_MANUAL_DESPAWN);      //approx 3 to 4 seconds
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-                    break;
-                case 9:
-                    Talk(SAY_WP_6);
-                    break;
-                case 13:
-                    if (player)
-                    {
-                        player->GroupEventHappens(QUEST_DISASTER, me);
-                        Talk(SAY_WP_7);
-                    }
-                    break;
+            case 0:
+                Talk(SAY_WP_2);
+                break;
+            case 1:
+                Talk(SAY_WP_3);
+                me->CastSpell({ 5918.33f, 5372.91f, -98.770f }, SPELL_EXPLODE_CRYSTAL, true);
+                me->SummonGameObject(184743, 5918.33f, 5372.91f, -98.770f, 0, QuaternionData(), TEMPSUMMON_MANUAL_DESPAWN);     //approx 3 to 4 seconds
+                me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+                break;
+            case 2:
+                Talk(SAY_WP_4);
+                break;
+            case 7:
+                Talk(SAY_WP_5);
+                break;
+            case 8:
+                me->CastSpell({ 5887.37f, 5379.39f, -91.289f }, SPELL_EXPLODE_CRYSTAL, true);
+                me->SummonGameObject(184743, 5887.37f, 5379.39f, -91.289f, 0, QuaternionData(), TEMPSUMMON_MANUAL_DESPAWN);      //approx 3 to 4 seconds
+                me->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+                break;
+            case 9:
+                Talk(SAY_WP_6);
+                break;
+            case 13:
+                if (player)
+                {
+                    player->GroupEventHappens(QUEST_DISASTER, me);
+                    Talk(SAY_WP_7);
+                }
+                break;
             }
         }
 
@@ -181,31 +181,31 @@ public:
 
 enum JunglePunch
 {
-    SPELL_OFFER                         = 51962,
-    QUEST_TASTE_TEST                    = 12645,
+    SPELL_OFFER = 51962,
+    QUEST_TASTE_TEST = 12645,
 
-    SAY_HEMET_HADRIUS_TAMARA_1          = 0,
-    SAY_HEMET_HADRIUS_TAMARA_2          = 1,
-    SAY_HEMET_HADRIUS_TAMARA_3          = 2,
+    SAY_HEMET_HADRIUS_TAMARA_1 = 0,
+    SAY_HEMET_HADRIUS_TAMARA_2 = 1,
+    SAY_HEMET_HADRIUS_TAMARA_3 = 2,
 
-    SAY_HEMET_4                         = 3, // unused
-    SAY_HEMET_5                         = 4  // unused
+    SAY_HEMET_4 = 3, // unused
+    SAY_HEMET_5 = 4  // unused
 };
 
 enum NesingwaryChildrensWeek
 {
-    SPELL_ORPHAN_OUT                    = 58818,
+    SPELL_ORPHAN_OUT = 58818,
 
-    QUEST_THE_MIGHTY_HEMET_NESINGWARY   = 13957,
+    QUEST_THE_MIGHTY_HEMET_NESINGWARY = 13957,
 
-    ORPHAN_WOLVAR                       = 33532,
+    ORPHAN_WOLVAR = 33532,
 
-    TEXT_NESINGWARY_1                   = 5,
+    TEXT_NESINGWARY_1 = 5,
 
-    TEXT_WOLVAR_ORPHAN_6                = 6,
-    TEXT_WOLVAR_ORPHAN_7                = 7,
-    TEXT_WOLVAR_ORPHAN_8                = 8,
-    TEXT_WOLVAR_ORPHAN_9                = 9
+    TEXT_WOLVAR_ORPHAN_6 = 6,
+    TEXT_WOLVAR_ORPHAN_7 = 7,
+    TEXT_WOLVAR_ORPHAN_8 = 8,
+    TEXT_WOLVAR_ORPHAN_9 = 9
 };
 
 class npc_jungle_punch_target : public CreatureScript
@@ -266,33 +266,33 @@ public:
 
                 switch (phase)
                 {
-                    case 1:
-                        orphan->GetMotionMaster()->MovePoint(0, me->GetPositionX() + std::cos(me->GetOrientation()) * 5, me->GetPositionY() + std::sin(me->GetOrientation()) * 5, me->GetPositionZ());
-                        orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_6);
-                        timer = 5000;
-                        break;
-                    case 2:
-                        orphan->SetFacingToObject(me);
-                        orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_7);
-                        timer = 5000;
-                        break;
-                    case 3:
-                        Talk(TEXT_NESINGWARY_1);
-                        timer = 5000;
-                        break;
-                    case 4:
-                        orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_8);
-                        timer = 5000;
-                        break;
-                    case 5:
-                        orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_9);
-                        timer = 5000;
-                        break;
-                    case 6:
-                        orphan->FollowTarget(player);
-                        player->GroupEventHappens(QUEST_THE_MIGHTY_HEMET_NESINGWARY, me);
-                        Reset();
-                        return;
+                case 1:
+                    orphan->GetMotionMaster()->MovePoint(0, me->GetPositionX() + std::cos(me->GetOrientation()) * 5, me->GetPositionY() + std::sin(me->GetOrientation()) * 5, me->GetPositionZ());
+                    orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_6);
+                    timer = 5000;
+                    break;
+                case 2:
+                    orphan->SetFacingToObject(me);
+                    orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_7);
+                    timer = 5000;
+                    break;
+                case 3:
+                    Talk(TEXT_NESINGWARY_1);
+                    timer = 5000;
+                    break;
+                case 4:
+                    orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_8);
+                    timer = 5000;
+                    break;
+                case 5:
+                    orphan->AI()->Talk(TEXT_WOLVAR_ORPHAN_9);
+                    timer = 5000;
+                    break;
+                case 6:
+                    orphan->FollowTarget(player);
+                    player->GroupEventHappens(QUEST_THE_MIGHTY_HEMET_NESINGWARY, me);
+                    Reset();
+                    return;
                 }
                 ++phase;
             }
@@ -353,13 +353,13 @@ public:
             }
         }
 
-        private:
-            uint16 sayTimer;
-            uint8 sayStep;
-            uint32 timer;
-            int8 phase;
-            ObjectGuid playerGUID;
-            ObjectGuid orphanGUID;
+    private:
+        uint16 sayTimer;
+        uint8 sayStep;
+        uint32 timer;
+        int8 phase;
+        ObjectGuid playerGUID;
+        ObjectGuid orphanGUID;
     };
 
     CreatureAI* GetAI(Creature* creature) const override
@@ -374,17 +374,17 @@ public:
 
 enum MiscLifewarden
 {
-    NPC_PRESENCE                 = 28563, // Freya's Presence
-    NPC_SABOTEUR                 = 28538, // Cultist Saboteur
-    NPC_SERVANT                  = 28320, // Servant of Freya
+    NPC_PRESENCE = 28563, // Freya's Presence
+    NPC_SABOTEUR = 28538, // Cultist Saboteur
+    NPC_SERVANT = 28320, // Servant of Freya
 
-    WHISPER_ACTIVATE             = 0,
+    WHISPER_ACTIVATE = 0,
 
-    SPELL_FREYA_DUMMY            = 51318,
-    SPELL_LIFEFORCE              = 51395,
-    SPELL_FREYA_DUMMY_TRIGGER    = 51335,
-    SPELL_LASHER_EMERGE          = 48195,
-    SPELL_WILD_GROWTH            = 52948,
+    SPELL_FREYA_DUMMY = 51318,
+    SPELL_LIFEFORCE = 51395,
+    SPELL_FREYA_DUMMY_TRIGGER = 51335,
+    SPELL_LASHER_EMERGE = 48195,
+    SPELL_WILD_GROWTH = 52948,
 };
 
 class spell_q12620_the_lifewarden_wrath : public SpellScriptLoader
@@ -452,25 +452,25 @@ public:
 
 enum KickWhatKick
 {
-    NPC_LUCKY_WILHELM         = 28054,
-    NPC_APPLE                 = 28053,
-    NPC_DROSTAN               = 28328,
-    NPC_CRUNCHY               = 28346,
-    NPC_THICKBIRD             = 28093,
+    NPC_LUCKY_WILHELM = 28054,
+    NPC_APPLE = 28053,
+    NPC_DROSTAN = 28328,
+    NPC_CRUNCHY = 28346,
+    NPC_THICKBIRD = 28093,
 
-    SPELL_HIT_APPLE           = 51331,
-    SPELL_MISS_APPLE          = 51332,
-    SPELL_MISS_BIRD_APPLE     = 51366,
-    SPELL_APPLE_FALL          = 51371,
-    SPELL_BIRD_FALL           = 51369,
+    SPELL_HIT_APPLE = 51331,
+    SPELL_MISS_APPLE = 51332,
+    SPELL_MISS_BIRD_APPLE = 51366,
+    SPELL_APPLE_FALL = 51371,
+    SPELL_BIRD_FALL = 51369,
 
-    EVENT_MISS                = 0,
-    EVENT_HIT                 = 1,
-    EVENT_MISS_BIRD           = 2,
+    EVENT_MISS = 0,
+    EVENT_HIT = 1,
+    EVENT_MISS_BIRD = 2,
 
-    SAY_WILHELM_MISS          = 0,
-    SAY_WILHELM_HIT           = 1,
-    SAY_DROSTAN_REPLY_MISS    = 0,
+    SAY_WILHELM_MISS = 0,
+    SAY_WILHELM_HIT = 1,
+    SAY_DROSTAN_REPLY_MISS = 0,
 };
 
 class spell_q12589_shoot_rjr : public SpellScriptLoader
@@ -480,7 +480,7 @@ public:
 
     class spell_q12589_shoot_rjr_SpellScript : public SpellScript
     {
-             SpellCastResult CheckCast()
+        SpellCastResult CheckCast()
         {
             if (Unit* target = GetExplTargetUnit())
                 if (target->GetEntry() == NPC_LUCKY_WILHELM)
@@ -512,42 +512,42 @@ public:
 
             switch (ev)
             {
-                case EVENT_MISS_BIRD:
-                {
-                    Creature* crunchy = shooter->FindNearestCreature(NPC_CRUNCHY, 30.f);
-                    Creature* bird = shooter->FindNearestCreature(NPC_THICKBIRD, 30.f);
+            case EVENT_MISS_BIRD:
+            {
+                Creature* crunchy = shooter->FindNearestCreature(NPC_CRUNCHY, 30.f);
+                Creature* bird = shooter->FindNearestCreature(NPC_THICKBIRD, 30.f);
 
-                    if (bird && crunchy)
-                    {
-                        shooter->CastSpell(bird, SPELL_MISS_BIRD_APPLE);
-                        bird->CastSpell(bird, SPELL_BIRD_FALL);
-                        wilhelm->AI()->Talk(SAY_WILHELM_MISS);
-                        drostan->AI()->Talk(SAY_DROSTAN_REPLY_MISS);
-
-                        bird->KillSelf();
-                        crunchy->GetMotionMaster()->MovePoint(0, bird->GetPositionX(), bird->GetPositionY(),
-                            bird->GetMap()->GetWaterOrGroundLevel(bird->GetPhaseShift(), bird->GetPositionX(), bird->GetPositionY(), bird->GetPositionZ()));
-                        /// @todo Make crunchy perform emote eat when he reaches the bird
-                        break;
-                    }
-                    [[fallthrough]];
-                }
-                case EVENT_MISS:
+                if (bird && crunchy)
                 {
-                    shooter->CastSpell(wilhelm, SPELL_MISS_APPLE);
+                    shooter->CastSpell(bird, SPELL_MISS_BIRD_APPLE);
+                    bird->CastSpell(bird, SPELL_BIRD_FALL);
                     wilhelm->AI()->Talk(SAY_WILHELM_MISS);
                     drostan->AI()->Talk(SAY_DROSTAN_REPLY_MISS);
+
+                    bird->KillSelf();
+                    crunchy->GetMotionMaster()->MovePoint(0, bird->GetPositionX(), bird->GetPositionY(),
+                        bird->GetMap()->GetWaterOrGroundLevel(bird->GetPhaseShift(), bird->GetPositionX(), bird->GetPositionY(), bird->GetPositionZ()));
+                    /// @todo Make crunchy perform emote eat when he reaches the bird
                     break;
                 }
-                case EVENT_HIT:
-                {
-                    shooter->CastSpell(apple, SPELL_HIT_APPLE);
-                    apple->CastSpell(apple, SPELL_APPLE_FALL);
-                    wilhelm->AI()->Talk(SAY_WILHELM_HIT);
-                    if (Player* player = shooter->ToPlayer())
-                        player->KilledMonsterCredit(NPC_APPLE);
-                    break;
-                }
+                [[fallthrough]];
+            }
+            case EVENT_MISS:
+            {
+                shooter->CastSpell(wilhelm, SPELL_MISS_APPLE);
+                wilhelm->AI()->Talk(SAY_WILHELM_MISS);
+                drostan->AI()->Talk(SAY_DROSTAN_REPLY_MISS);
+                break;
+            }
+            case EVENT_HIT:
+            {
+                shooter->CastSpell(apple, SPELL_HIT_APPLE);
+                apple->CastSpell(apple, SPELL_APPLE_FALL);
+                wilhelm->AI()->Talk(SAY_WILHELM_HIT);
+                if (Player* player = shooter->ToPlayer())
+                    player->KilledMonsterCredit(NPC_APPLE);
+                break;
+            }
             }
         }
 
@@ -572,11 +572,11 @@ may be easily converted to SAI when they get.*/
 enum SongOfWindAndWater
 {
     // Spells
-    SPELL_DEVOUR_WIND     = 52862,
-    SPELL_DEVOUR_WATER    = 52864,
+    SPELL_DEVOUR_WIND = 52862,
+    SPELL_DEVOUR_WATER = 52864,
     // NPCs
-    NPC_HAIPHOON_WATER    = 28999,
-    NPC_HAIPHOON_AIR      = 28985
+    NPC_HAIPHOON_WATER = 28999,
+    NPC_HAIPHOON_AIR = 28985
 };
 
 class npc_haiphoon : public CreatureScript
@@ -615,22 +615,22 @@ public:
 ######*/
 enum ReconnaissanceFlight
 {
-    NPC_PLANE       = 28710, // Vic's Flying Machine
-    NPC_PILOT       = 28646,
+    NPC_PLANE = 28710, // Vic's Flying Machine
+    NPC_PILOT = 28646,
 
-    VIC_SAY_0       = 0,
-    VIC_SAY_1       = 1,
-    VIC_SAY_2       = 2,
-    VIC_SAY_3       = 3,
-    VIC_SAY_4       = 4,
-    VIC_SAY_5       = 5,
-    VIC_SAY_6       = 6,
-    PLANE_EMOTE     = 0,
+    VIC_SAY_0 = 0,
+    VIC_SAY_1 = 1,
+    VIC_SAY_2 = 2,
+    VIC_SAY_3 = 3,
+    VIC_SAY_4 = 4,
+    VIC_SAY_5 = 5,
+    VIC_SAY_6 = 6,
+    PLANE_EMOTE = 0,
 
-    SPELL_ENGINE    = 52255, // Engine on Fire
+    SPELL_ENGINE = 52255, // Engine on Fire
 
-    SPELL_LAND      = 52226, // Land Flying Machine
-    SPELL_CREDIT    = 53328 // Land Flying Machine Credit
+    SPELL_LAND = 52226, // Land Flying Machine
+    SPELL_CREDIT = 53328 // Land Flying Machine Credit
 };
 
 class npc_vics_flying_machine : public CreatureScript
@@ -663,32 +663,32 @@ public:
             if (Creature* pilot = GetClosestCreatureWithEntry(me, NPC_PILOT, 10))
                 switch (id)
                 {
-                    case 5:
-                        pilot->AI()->Talk(VIC_SAY_0);
-                        break;
-                    case 11:
-                        pilot->AI()->Talk(VIC_SAY_1);
-                        break;
-                    case 12:
-                        pilot->AI()->Talk(VIC_SAY_2);
-                        break;
-                    case 14:
-                        pilot->AI()->Talk(VIC_SAY_3);
-                        break;
-                    case 15:
-                        pilot->AI()->Talk(VIC_SAY_4);
-                        break;
-                    case 17:
-                        pilot->AI()->Talk(VIC_SAY_5);
-                        break;
-                    case 21:
-                        pilot->AI()->Talk(VIC_SAY_6);
-                        break;
-                    case 25:
-                        Talk(PLANE_EMOTE);
-                        DoCast(SPELL_ENGINE);
-                        me->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FORCE_MOVEMENT);
-                        break;
+                case 5:
+                    pilot->AI()->Talk(VIC_SAY_0);
+                    break;
+                case 11:
+                    pilot->AI()->Talk(VIC_SAY_1);
+                    break;
+                case 12:
+                    pilot->AI()->Talk(VIC_SAY_2);
+                    break;
+                case 14:
+                    pilot->AI()->Talk(VIC_SAY_3);
+                    break;
+                case 15:
+                    pilot->AI()->Talk(VIC_SAY_4);
+                    break;
+                case 17:
+                    pilot->AI()->Talk(VIC_SAY_5);
+                    break;
+                case 21:
+                    pilot->AI()->Talk(VIC_SAY_6);
+                    break;
+                case 25:
+                    Talk(PLANE_EMOTE);
+                    DoCast(SPELL_ENGINE);
+                    me->SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FORCE_MOVEMENT);
+                    break;
                 }
         }
 
@@ -720,16 +720,16 @@ public:
 
 enum ShangoTracks
 {
-    SPELL_CORRECT_TRACKS   = 52160,
+    SPELL_CORRECT_TRACKS = 52160,
     SPELL_INCORRECT_TRACKS = 52163,
-    SAY_CORRECT_TRACKS     = 28634,
-    SAY_INCORRECT_TRACKS   = 28635
+    SAY_CORRECT_TRACKS = 28634,
+    SAY_INCORRECT_TRACKS = 28635
 };
 
 class spell_shango_tracks : public SpellScriptLoader
 {
 public:
-   spell_shango_tracks() : SpellScriptLoader("spell_shango_tracks") { }
+    spell_shango_tracks() : SpellScriptLoader("spell_shango_tracks") { }
 
     class spell_shango_tracks_SpellScript : public SpellScript
     {
@@ -739,14 +739,14 @@ public:
             {
                 switch (GetSpellInfo()->Id)
                 {
-                    case SPELL_CORRECT_TRACKS:
-                        target->Say(SAY_CORRECT_TRACKS, target);
-                        break;
-                    case SPELL_INCORRECT_TRACKS:
-                        target->Say(SAY_INCORRECT_TRACKS, target);
-                        break;
-                    default:
-                        break;
+                case SPELL_CORRECT_TRACKS:
+                    target->Say(SAY_CORRECT_TRACKS, target);
+                    break;
+                case SPELL_INCORRECT_TRACKS:
+                    target->Say(SAY_INCORRECT_TRACKS, target);
+                    break;
+                default:
+                    break;
                 }
             }
         }

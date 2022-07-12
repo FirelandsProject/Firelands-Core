@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,25 +24,25 @@
 #include "SpellInfo.h"
 
 
-/*####
-# npc_omen
-####*/
+ /*####
+ # npc_omen
+ ####*/
 
 enum Omen
 {
-    NPC_OMEN                    = 15467,
+    NPC_OMEN = 15467,
 
-    SPELL_OMEN_CLEAVE           = 15284,
-    SPELL_OMEN_STARFALL         = 26540,
+    SPELL_OMEN_CLEAVE = 15284,
+    SPELL_OMEN_STARFALL = 26540,
     SPELL_OMEN_SUMMON_SPOTLIGHT = 26392,
-    SPELL_ELUNE_CANDLE          = 26374,
+    SPELL_ELUNE_CANDLE = 26374,
 
-    GO_ELUNE_TRAP_1             = 180876,
-    GO_ELUNE_TRAP_2             = 180877,
+    GO_ELUNE_TRAP_1 = 180876,
+    GO_ELUNE_TRAP_2 = 180877,
 
-    EVENT_CAST_CLEAVE           = 1,
-    EVENT_CAST_STARFALL         = 2,
-    EVENT_DESPAWN               = 3,
+    EVENT_CAST_CLEAVE = 1,
+    EVENT_CAST_STARFALL = 2,
+    EVENT_DESPAWN = 3,
 };
 
 class npc_omen : public CreatureScript
@@ -106,15 +106,15 @@ public:
 
             switch (events.ExecuteEvent())
             {
-                case EVENT_CAST_CLEAVE:
-                    DoCastVictim(SPELL_OMEN_CLEAVE);
-                    events.ScheduleEvent(EVENT_CAST_CLEAVE, urand(8000, 10000));
-                    break;
-                case EVENT_CAST_STARFALL:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                        DoCast(target, SPELL_OMEN_STARFALL);
-                    events.ScheduleEvent(EVENT_CAST_STARFALL, urand(14000, 16000));
-                    break;
+            case EVENT_CAST_CLEAVE:
+                DoCastVictim(SPELL_OMEN_CLEAVE);
+                events.ScheduleEvent(EVENT_CAST_CLEAVE, urand(8000, 10000));
+                break;
+            case EVENT_CAST_STARFALL:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                    DoCast(target, SPELL_OMEN_STARFALL);
+                events.ScheduleEvent(EVENT_CAST_STARFALL, urand(14000, 16000));
+                break;
             }
 
             DoMeleeAttackIfReady();
@@ -141,7 +141,7 @@ public:
         void Reset() override
         {
             events.Reset();
-            events.ScheduleEvent(EVENT_DESPAWN, 5*MINUTE*IN_MILLISECONDS);
+            events.ScheduleEvent(EVENT_DESPAWN, 5 * MINUTE * IN_MILLISECONDS);
         }
 
         void UpdateAI(uint32 diff) override

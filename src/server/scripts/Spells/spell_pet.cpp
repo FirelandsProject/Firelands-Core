@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Scripts for spells with SPELLFAMILY_DEATHKNIGHT and SPELLFAMILY_GENERIC spells used by deathknight players.
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "spell_dk_".
- */
+ /*
+  * Scripts for spells with SPELLFAMILY_DEATHKNIGHT and SPELLFAMILY_GENERIC spells used by deathknight players.
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "spell_dk_".
+  */
 
 #include "ScriptMgr.h"
 #include "ObjectMgr.h"
@@ -32,60 +32,60 @@
 
 enum HunterPetCalculate
 {
-    SPELL_TAMED_PET_PASSIVE_09          = 34667,
-    SPELL_TAMED_PET_PASSIVE_10          = 34675,
-    SPELL_HUNTER_PET_SCALING_01         = 34902,
-    SPELL_HUNTER_PET_SCALING_02         = 34903,
-    SPELL_HUNTER_PET_SCALING_03         = 34904,
-    SPELL_HUNTER_PET_SCALING_04         = 61017,
-    SPELL_HUNTER_PET_SCALING_05         = 89446,
+    SPELL_TAMED_PET_PASSIVE_09 = 34667,
+    SPELL_TAMED_PET_PASSIVE_10 = 34675,
+    SPELL_HUNTER_PET_SCALING_01 = 34902,
+    SPELL_HUNTER_PET_SCALING_02 = 34903,
+    SPELL_HUNTER_PET_SCALING_03 = 34904,
+    SPELL_HUNTER_PET_SCALING_04 = 61017,
+    SPELL_HUNTER_PET_SCALING_05 = 89446,
 
-    SPELL_HUNTER_PET_CUNNING_MARKER     = 87884,
-    SPELL_HUNTER_PET_FEROCITY_MARKER    = 87887,
-    SPELL_HUNTER_PET_TENACITY_MARKER    = 87891,
+    SPELL_HUNTER_PET_CUNNING_MARKER = 87884,
+    SPELL_HUNTER_PET_FEROCITY_MARKER = 87887,
+    SPELL_HUNTER_PET_TENACITY_MARKER = 87891,
 };
 
 enum WarlockPetCalculate
 {
-    SPELL_PET_PASSIVE_CRIT             = 35695,
-    SPELL_PET_PASSIVE_DAMAGE_TAKEN     = 35697,
-    SPELL_WARLOCK_PET_SCALING_01       = 34947,
-    SPELL_WARLOCK_PET_SCALING_02       = 34956,
-    SPELL_WARLOCK_PET_SCALING_03       = 34957,
-    SPELL_WARLOCK_PET_SCALING_04       = 34958,
-    SPELL_WARLOCK_PET_SCALING_05       = 61013,
-    SPELL_WARLOCK_GLYPH_OF_VOIDWALKER  = 56247,
+    SPELL_PET_PASSIVE_CRIT = 35695,
+    SPELL_PET_PASSIVE_DAMAGE_TAKEN = 35697,
+    SPELL_WARLOCK_PET_SCALING_01 = 34947,
+    SPELL_WARLOCK_PET_SCALING_02 = 34956,
+    SPELL_WARLOCK_PET_SCALING_03 = 34957,
+    SPELL_WARLOCK_PET_SCALING_04 = 34958,
+    SPELL_WARLOCK_PET_SCALING_05 = 61013,
+    SPELL_WARLOCK_GLYPH_OF_VOIDWALKER = 56247,
 };
 
 enum DKPetCalculate
 {
-    SPELL_DEATH_KNIGHT_RUNE_WEAPON_02       = 51906,
-    SPELL_DEATH_KNIGHT_PET_SCALING_01       = 54566,
-    SPELL_DEATH_KNIGHT_PET_SCALING_02       = 51996,
-    SPELL_DEATH_KNIGHT_PET_SCALING_03       = 61697,
-    SPELL_DEATH_KNIGHT_PET_SCALING_05       = 110474,
-    SPELL_NIGHT_OF_THE_DEAD                 = 55620,
-    SPELL_DEATH_KNIGHT_GLYPH_OF_GHOUL       = 58686,
+    SPELL_DEATH_KNIGHT_RUNE_WEAPON_02 = 51906,
+    SPELL_DEATH_KNIGHT_PET_SCALING_01 = 54566,
+    SPELL_DEATH_KNIGHT_PET_SCALING_02 = 51996,
+    SPELL_DEATH_KNIGHT_PET_SCALING_03 = 61697,
+    SPELL_DEATH_KNIGHT_PET_SCALING_05 = 110474,
+    SPELL_NIGHT_OF_THE_DEAD = 55620,
+    SPELL_DEATH_KNIGHT_GLYPH_OF_GHOUL = 58686,
     DEATH_KNIGHT_ICON_ID_GLYPH_OF_RAISE_DEAD = 221,
 };
 
 enum ShamanPetCalculate
 {
-    SPELL_FERAL_SPIRIT_PET_UNK_01      = 35674,
-    SPELL_FERAL_SPIRIT_PET_UNK_02      = 35675,
-    SPELL_FERAL_SPIRIT_PET_UNK_03      = 35676,
-    SPELL_FERAL_SPIRIT_PET_SCALING_04  = 61783,
+    SPELL_FERAL_SPIRIT_PET_UNK_01 = 35674,
+    SPELL_FERAL_SPIRIT_PET_UNK_02 = 35675,
+    SPELL_FERAL_SPIRIT_PET_UNK_03 = 35676,
+    SPELL_FERAL_SPIRIT_PET_SCALING_04 = 61783,
 };
 
 enum MiscPetCalculate
 {
-    SPELL_MAGE_PET_PASSIVE_ELEMENTAL   = 44559,
-    SPELL_PET_HEALTH_SCALING           = 61679,
+    SPELL_MAGE_PET_PASSIVE_ELEMENTAL = 44559,
+    SPELL_PET_HEALTH_SCALING = 61679,
 };
 
 enum WarlockSpellIconId
 {
-    SPELL_ICON_ID_GLYPH_OF_VOID_WALKER  = 217,
+    SPELL_ICON_ID_GLYPH_OF_VOID_WALKER = 217,
 };
 
 class spell_warl_pet_scaling_01 : public AuraScript
@@ -103,21 +103,21 @@ class spell_warl_pet_scaling_01 : public AuraScript
                 float staminaBonus = 0.0f;
                 switch (pet->GetEntry())
                 {
-                    case ENTRY_IMP:
-                        staminaBonus = stamina * 8.4f;
-                        break;
-                    case ENTRY_FELGUARD:
-                    case ENTRY_VOIDWALKER:
-                        staminaBonus = stamina * 11.0f;
-                        break;
-                    case ENTRY_SUCCUBUS:
-                        staminaBonus = stamina * 9.1f;
-                        break;
-                    case ENTRY_FELHUNTER:
-                        staminaBonus = stamina * 9.5f;
-                        break;
-                    default:
-                        break;
+                case ENTRY_IMP:
+                    staminaBonus = stamina * 8.4f;
+                    break;
+                case ENTRY_FELGUARD:
+                case ENTRY_VOIDWALKER:
+                    staminaBonus = stamina * 11.0f;
+                    break;
+                case ENTRY_SUCCUBUS:
+                    staminaBonus = stamina * 9.1f;
+                    break;
+                case ENTRY_FELHUNTER:
+                    staminaBonus = stamina * 9.5f;
+                    break;
+                default:
+                    break;
                 }
 
                 float glyphBonus = 0.0f;
@@ -182,17 +182,17 @@ class spell_warl_pet_scaling_02 : public AuraScript
                 float manaBonus = 0.0f;
                 switch (pet->GetEntry())
                 {
-                    case ENTRY_IMP:
-                        manaBonus = uint32(intellect * 4.9f);
-                        break;
-                    case ENTRY_FELGUARD:
-                    case ENTRY_VOIDWALKER:
-                    case ENTRY_SUCCUBUS:
-                    case ENTRY_FELHUNTER:
-                        manaBonus = uint32(intellect * 11.5f);
-                        break;
-                    default:
-                        break;
+                case ENTRY_IMP:
+                    manaBonus = uint32(intellect * 4.9f);
+                    break;
+                case ENTRY_FELGUARD:
+                case ENTRY_VOIDWALKER:
+                case ENTRY_SUCCUBUS:
+                case ENTRY_FELHUNTER:
+                    manaBonus = uint32(intellect * 11.5f);
+                    break;
+                default:
+                    break;
                 }
 
                 amount = int32(manaBonus);
@@ -717,7 +717,7 @@ class spell_hun_pet_passive_crit : public AuraScript
         canBeRecalculated = true;
         if (!GetCaster() || !GetCaster()->GetOwner())
             return;
-        if (Player *owner = GetCaster()->GetOwner()->ToPlayer())
+        if (Player* owner = GetCaster()->GetOwner()->ToPlayer())
         {
             // For others recalculate it from:
             float CritMelee = 0.0f;

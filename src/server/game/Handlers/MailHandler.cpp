@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,7 +17,6 @@
 
 #include "WorldSession.h"
 #include "AccountMgr.h"
-#include "BattlenetAccountMgr.h"
 #include "CharacterCache.h"
 #include "DatabaseEnv.h"
 #include "DBCStores.h"
@@ -205,7 +204,6 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
     uint8 mailsCount = 0;                                  //do not allow to send to one player more than 100 mails
     uint8 receiverLevel = 0;
     uint32 receiverAccountId = 0;
-    uint32 receiverBnetAccountId = 0;
 
     if (receiver)
     {
@@ -213,7 +211,6 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
         mailsCount = receiver->GetMailSize();
         receiverLevel = receiver->getLevel();
         receiverAccountId = receiver->GetSession()->GetAccountId();
-        receiverBnetAccountId = receiver->GetSession()->GetBattlenetAccountId();
     }
     else
     {
@@ -225,7 +222,7 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
         }
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_COUNT);
-        stmt->setUInt32(0, receiverGuid.GetCounter());
+        stmt->SetData(0, receiverGuid.GetCounter());
 
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
         if (result)
@@ -234,7 +231,6 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
             mailsCount = fields[0].GetUInt64();
         }
 
-        receiverBnetAccountId = Battlenet::AccountMgr::GetIdByGameAccount(receiverAccountId);
     }
 
     // do not allow to have more than 100 mails in mailbox.. mails count is in opcode uint8!!! - so max can be 255..
@@ -298,11 +294,8 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
 
         if (item->IsBoundAccountWide() && item->IsSoulBound() && player->GetSession()->GetAccountId() != receiverAccountId)
         {
-            if (!item->IsBattlenetAccountBound() || !player->GetSession()->GetBattlenetAccountId() || player->GetSession()->GetBattlenetAccountId() != receiverBnetAccountId)
-            {
-                player->SendMailResult(0, MAIL_SEND, MAIL_ERR_EQUIP_ERROR, EQUIP_ERR_NOT_SAME_ACCOUNT);
-                return;
-            }
+            player->SendMailResult(0, MAIL_SEND, MAIL_ERR_EQUIP_ERROR, EQUIP_ERR_NOT_SAME_ACCOUNT);
+            return;
         }
 
         if (item->GetTemplate()->GetFlags() & ITEM_FLAG_CONJURED || item->GetUInt32Value(ITEM_FIELD_DURATION))
@@ -471,11 +464,11 @@ void WorldSession::HandleMailReturnToSender(WorldPacket& recvData)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_BY_ID);
-    stmt->setUInt32(0, mailId);
+    stmt->SetData(0, mailId);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_ITEM_BY_ID);
-    stmt->setUInt32(0, mailId);
+    stmt->SetData(0, mailId);
     trans->Append(stmt);
 
     player->RemoveMail(mailId);

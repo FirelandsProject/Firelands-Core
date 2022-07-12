@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Comment: Missing AI for Twisted Visages
- */
+ /*
+  * Comment: Missing AI for Twisted Visages
+  */
 
 #include "ScriptMgr.h"
 #include "ahnkahet.h"
@@ -33,31 +33,31 @@
 
 enum Spells
 {
-    SPELL_INSANITY                                = 57496, //Dummy
-    INSANITY_VISUAL                               = 57561,
-    SPELL_INSANITY_TARGET                         = 57508,
-    SPELL_MIND_FLAY                               = 57941,
-    SPELL_SHADOW_BOLT_VOLLEY                      = 57942,
-    SPELL_SHIVER                                  = 57949,
-    SPELL_CLONE_PLAYER                            = 57507, //cast on player during insanity
-    SPELL_INSANITY_PHASING_1                      = 57508,
-    SPELL_INSANITY_PHASING_2                      = 57509,
-    SPELL_INSANITY_PHASING_3                      = 57510,
-    SPELL_INSANITY_PHASING_4                      = 57511,
-    SPELL_INSANITY_PHASING_5                      = 57512
+    SPELL_INSANITY = 57496, //Dummy
+    INSANITY_VISUAL = 57561,
+    SPELL_INSANITY_TARGET = 57508,
+    SPELL_MIND_FLAY = 57941,
+    SPELL_SHADOW_BOLT_VOLLEY = 57942,
+    SPELL_SHIVER = 57949,
+    SPELL_CLONE_PLAYER = 57507, //cast on player during insanity
+    SPELL_INSANITY_PHASING_1 = 57508,
+    SPELL_INSANITY_PHASING_2 = 57509,
+    SPELL_INSANITY_PHASING_3 = 57510,
+    SPELL_INSANITY_PHASING_4 = 57511,
+    SPELL_INSANITY_PHASING_5 = 57512
 };
 
 enum Yells
 {
-    SAY_AGGRO   = 0,
-    SAY_SLAY    = 1,
-    SAY_DEATH   = 2,
-    SAY_PHASE   = 3
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_DEATH = 2,
+    SAY_PHASE = 3
 };
 
 enum Achievements
 {
-    ACHIEV_QUICK_DEMISE_START_EVENT               = 20382,
+    ACHIEV_QUICK_DEMISE_START_EVENT = 20382,
 };
 
 class boss_volazj : public CreatureScript
@@ -95,15 +95,15 @@ public:
         {
             if (damage > me->GetHealth())
                 return 0;
-            return 100*(me->GetHealth()-damage)/me->GetMaxHealth();
+            return 100 * (me->GetHealth() - damage) / me->GetMaxHealth();
         }
 
-        void DamageTaken(Unit* /*pAttacker*/, uint32 &damage) override
+        void DamageTaken(Unit* /*pAttacker*/, uint32& damage) override
         {
             if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
                 damage = 0;
 
-            if ((GetHealthPct(0) >= 66 && GetHealthPct(damage) < 66)||
+            if ((GetHealthPct(0) >= 66 && GetHealthPct(damage) < 66) ||
                 (GetHealthPct(0) >= 33 && GetHealthPct(damage) < 33))
             {
                 me->InterruptNonMeleeSpells(false);
@@ -256,21 +256,24 @@ public:
             if (uiMindFlayTimer <= diff)
             {
                 DoCastVictim(SPELL_MIND_FLAY);
-                uiMindFlayTimer = 20*IN_MILLISECONDS;
-            } else uiMindFlayTimer -= diff;
+                uiMindFlayTimer = 20 * IN_MILLISECONDS;
+            }
+            else uiMindFlayTimer -= diff;
 
             if (uiShadowBoltVolleyTimer <= diff)
             {
                 DoCastVictim(SPELL_SHADOW_BOLT_VOLLEY);
-                uiShadowBoltVolleyTimer = 5*IN_MILLISECONDS;
-            } else uiShadowBoltVolleyTimer -= diff;
+                uiShadowBoltVolleyTimer = 5 * IN_MILLISECONDS;
+            }
+            else uiShadowBoltVolleyTimer -= diff;
 
             if (uiShiverTimer <= diff)
             {
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                     DoCast(target, SPELL_SHIVER);
-                uiShiverTimer = 15*IN_MILLISECONDS;
-            } else uiShiverTimer -= diff;
+                uiShiverTimer = 15 * IN_MILLISECONDS;
+            }
+            else uiShiverTimer -= diff;
 
             DoMeleeAttackIfReady();
         }

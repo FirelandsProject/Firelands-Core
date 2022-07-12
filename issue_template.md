@@ -24,9 +24,9 @@ CHANGEME Tell us what should happen instead.
 **FC rev. hash/commit:**
 
 CHANGEME Copy the first line of the `worldserver` or `bnetserver` startup.
-For example: FirelandsCore rev. 0000000000 2000-01-09 11:31:41 +0100 (my branch) (Win64, RelWithDebInfo, Static) (bnetserver)
+For example: Firelands Core rev. 0000000000 2000-01-09 11:31:41 +0100 (my branch) (Win64, RelWithDebInfo, Static) (bnetserver)
 
-**TDB version:** CHANGEME Version of the FirelandsCore database
+**TDB version:** CHANGEME Version of the Firelands Core database
 
 **Operating system:** CHANGEME OS
 

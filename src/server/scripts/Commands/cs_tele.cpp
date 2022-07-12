@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -131,7 +131,7 @@ public:
             else
             {
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_HOMEBIND);
-                stmt->setUInt32(0, target_guid.GetCounter());
+                stmt->SetData(0, target_guid.GetCounter());
                 PreparedQueryResult resultDB = CharacterDatabase.Query(stmt);
 
                 if (resultDB)

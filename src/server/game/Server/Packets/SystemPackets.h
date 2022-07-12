@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -26,20 +26,20 @@ namespace WorldPackets
 {
     namespace System
     {
-            struct SavedThrottleObjectState
-            {
-                uint32 MaxTries               = 0;
-                uint32 PerMilliseconds        = 0;
-                uint32 TryCount               = 0;
-                uint32 LastResetTimeBeforeNow = 0;
-            };
+        struct SavedThrottleObjectState
+        {
+            uint32 MaxTries = 0;
+            uint32 PerMilliseconds = 0;
+            uint32 TryCount = 0;
+            uint32 LastResetTimeBeforeNow = 0;
+        };
 
-            struct SessionAlertConfig
-            {
-                int32 Delay       = 0;
-                int32 Period      = 0;
-                int32 DisplayTime = 0;
-            };
+        struct SessionAlertConfig
+        {
+            int32 Delay = 0;
+            int32 Period = 0;
+            int32 DisplayTime = 0;
+        };
 
         class FeatureSystemStatus final : public ServerPacket
         {

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,9 +21,9 @@
 #include "InstanceScript.h"
 #include "obsidian_sanctum.h"
 
-/* Obsidian Sanctum encounters:
-0 - Sartharion
-*/
+ /* Obsidian Sanctum encounters:
+ 0 - Sartharion
+ */
 
 BossBoundaryData const boundaries =
 {
@@ -48,43 +48,43 @@ public:
         {
             switch (creature->GetEntry())
             {
-                case NPC_SARTHARION:
-                    sartharionGUID = creature->GetGUID();
-                    break;
+            case NPC_SARTHARION:
+                sartharionGUID = creature->GetGUID();
+                break;
                 // Three dragons below set to active state once created.
                 // We must expect bigger raid to encounter main boss, and then three dragons must be active due to grid differences
-                case NPC_TENEBRON:
-                    tenebronGUID = creature->GetGUID();
-                    creature->setActive(true);
-                    creature->SetFarVisible(true);
-                    break;
-                case NPC_SHADRON:
-                    shadronGUID = creature->GetGUID();
-                    creature->setActive(true);
-                    creature->SetFarVisible(true);
-                    break;
-                case NPC_VESPERON:
-                    vesperonGUID = creature->GetGUID();
-                    creature->setActive(true);
-                    creature->SetFarVisible(true);
-                    break;
+            case NPC_TENEBRON:
+                tenebronGUID = creature->GetGUID();
+                creature->setActive(true);
+                creature->SetFarVisible(true);
+                break;
+            case NPC_SHADRON:
+                shadronGUID = creature->GetGUID();
+                creature->setActive(true);
+                creature->SetFarVisible(true);
+                break;
+            case NPC_VESPERON:
+                vesperonGUID = creature->GetGUID();
+                creature->setActive(true);
+                creature->SetFarVisible(true);
+                break;
             }
         }
 
         bool SetBossState(uint32 type, EncounterState state) override
         {
             if (!InstanceScript::SetBossState(type, state))
-                 return false;
+                return false;
 
             switch (type)
             {
-                case DATA_SARTHARION:
-                case DATA_TENEBRON:
-                case DATA_SHADRON:
-                case DATA_VESPERON:
-                    break;
-                default:
-                    break;
+            case DATA_SARTHARION:
+            case DATA_TENEBRON:
+            case DATA_SHADRON:
+            case DATA_VESPERON:
+                break;
+            default:
+                break;
             }
             return true;
         }
@@ -93,14 +93,14 @@ public:
         {
             switch (Data)
             {
-                case DATA_SARTHARION:
-                    return sartharionGUID;
-                case DATA_TENEBRON:
-                    return tenebronGUID;
-                case DATA_SHADRON:
-                    return shadronGUID;
-                case DATA_VESPERON:
-                    return vesperonGUID;
+            case DATA_SARTHARION:
+                return sartharionGUID;
+            case DATA_TENEBRON:
+                return tenebronGUID;
+            case DATA_SHADRON:
+                return shadronGUID;
+            case DATA_VESPERON:
+                return vesperonGUID;
             }
             return ObjectGuid::Empty;
         }

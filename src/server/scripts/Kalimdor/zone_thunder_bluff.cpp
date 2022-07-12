@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,34 +15,34 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Thunder_Bluff
-SD%Complete: 100
-SDComment: Quest support: 925
-SDCategory: Thunder Bluff
-EndScriptData */
+ /* ScriptData
+ SDName: Thunder_Bluff
+ SD%Complete: 100
+ SDComment: Quest support: 925
+ SDCategory: Thunder Bluff
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 #include "Player.h"
 
-/*#####
-# npc_cairne_bloodhoof
-######*/
+ /*#####
+ # npc_cairne_bloodhoof
+ ######*/
 
 enum CairneBloodhoof
 {
-    SPELL_BERSERKER_CHARGE  = 16636,
-    SPELL_CLEAVE            = 16044,
-    SPELL_MORTAL_STRIKE     = 16856,
-    SPELL_THUNDERCLAP       = 23931,
-    SPELL_UPPERCUT          = 22916
+    SPELL_BERSERKER_CHARGE = 16636,
+    SPELL_CLEAVE = 16044,
+    SPELL_MORTAL_STRIKE = 16856,
+    SPELL_THUNDERCLAP = 23931,
+    SPELL_UPPERCUT = 22916
 };
 
 enum Sounds
 {
-    SOUND_AGGRO             = 5884
+    SOUND_AGGRO = 5884
 };
 
 #define GOSSIP_HCB "I know this is rather silly but a young ward who is a bit shy would like your hoofprint."
@@ -54,7 +54,7 @@ public:
 
     CreatureAI* GetAI(Creature* creature) const override
     {
-        return new npc_cairne_bloodhoofAI (creature);
+        return new npc_cairne_bloodhoofAI(creature);
     }
 
     struct npc_cairne_bloodhoofAI : public ScriptedAI
@@ -99,31 +99,36 @@ public:
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                     DoCast(target, SPELL_BERSERKER_CHARGE);
                 BerserkerChargeTimer = 25000;
-            } else BerserkerChargeTimer -= diff;
+            }
+            else BerserkerChargeTimer -= diff;
 
             if (UppercutTimer <= diff)
             {
                 DoCastVictim(SPELL_UPPERCUT);
                 UppercutTimer = 20000;
-            } else UppercutTimer -= diff;
+            }
+            else UppercutTimer -= diff;
 
             if (ThunderclapTimer <= diff)
             {
                 DoCastVictim(SPELL_THUNDERCLAP);
                 ThunderclapTimer = 15000;
-            } else ThunderclapTimer -= diff;
+            }
+            else ThunderclapTimer -= diff;
 
             if (MortalStrikeTimer <= diff)
             {
                 DoCastVictim(SPELL_MORTAL_STRIKE);
                 MortalStrikeTimer = 15000;
-            } else MortalStrikeTimer -= diff;
+            }
+            else MortalStrikeTimer -= diff;
 
             if (CleaveTimer <= diff)
             {
                 DoCastVictim(SPELL_CLEAVE);
                 CleaveTimer = 7000;
-            } else CleaveTimer -= diff;
+            }
+            else CleaveTimer -= diff;
 
             DoMeleeAttackIfReady();
         }

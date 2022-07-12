@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -32,53 +32,53 @@
 enum Yells
 {
     // Jin'do the Godbreaker
-    SAY_INTRO                       = 0,
-    SAY_AGGRO                       = 1,
-    SAY_ANNOUNCE_SHADOWS_OF_HAKKAR  = 2,
-    SAY_JINDO_SPIRIT_PHASE          = 3,
+    SAY_INTRO = 0,
+    SAY_AGGRO = 1,
+    SAY_ANNOUNCE_SHADOWS_OF_HAKKAR = 2,
+    SAY_JINDO_SPIRIT_PHASE = 3,
 
     // Spirit of Hakkar
-    SAY_HAKKAR_IMPRISONED           = 0,
-    SAY_HAKKAR_FREED                = 1,
+    SAY_HAKKAR_IMPRISONED = 0,
+    SAY_HAKKAR_FREED = 1,
 
     // Jin'do the Godbreaker - Trigger
-    SAY_JINDO_DEFEATED              = 0,
+    SAY_JINDO_DEFEATED = 0,
 
     // Shadow of Hakkar
-    SAY_SHADOW_DEFEATED             = 0
+    SAY_SHADOW_DEFEATED = 0
 };
 
 enum Spells
 {
     // Jin'do the Godbreaker
-    SPELL_DRAIN_SPIRIT_ESSENCE          = 97321,
-    SPELL_ADD_PLAYERS_TO_THREAT_LIST    = 100401,
-    SPELL_SPIRIT_WORLD                  = 98861,
-    SPELL_VANISH                        = 97002,
-    SPELL_SHADOWS_OF_HAKKAR             = 97172,
-    SPELL_DEADZONE                      = 97170,
-    SPELL_SHADOW_SPIKE                  = 97158,
-    SPELL_CALL_SPIRIT                   = 97152,
-    SPELL_TRANSFORM                     = 96716,
+    SPELL_DRAIN_SPIRIT_ESSENCE = 97321,
+    SPELL_ADD_PLAYERS_TO_THREAT_LIST = 100401,
+    SPELL_SPIRIT_WORLD = 98861,
+    SPELL_VANISH = 97002,
+    SPELL_SHADOWS_OF_HAKKAR = 97172,
+    SPELL_DEADZONE = 97170,
+    SPELL_SHADOW_SPIKE = 97158,
+    SPELL_CALL_SPIRIT = 97152,
+    SPELL_TRANSFORM = 96716,
 
     // Hakkar's Spirit
-    SPELL_HAKKAR_BREAKS_FREE            = 97209,
+    SPELL_HAKKAR_BREAKS_FREE = 97209,
 
     // Hakkar's Chains
-    SPELL_BRITTLE_BARRIER               = 97417,
-    SPELL_HAKKARS_CHAINS                = 97022,
-    SPELL_HAKKARS_CHAINS_VISUAL         = 97091,
-    SPELL_ARCANE_EXPLOSION_VISUAL       = 97032,
+    SPELL_BRITTLE_BARRIER = 97417,
+    SPELL_HAKKARS_CHAINS = 97022,
+    SPELL_HAKKARS_CHAINS_VISUAL = 97091,
+    SPELL_ARCANE_EXPLOSION_VISUAL = 97032,
 
     // Spirit Portal
-    SPELL_SUMMON_SPIRIT                 = 97123,
+    SPELL_SUMMON_SPIRIT = 97123,
 
     // Gurubashi Spirit Warrior
-    SPELL_FRENZY                        = 97088,
-    SPELL_SPIRIT_WARRIORS_GAZE          = 97597,
+    SPELL_FRENZY = 97088,
+    SPELL_SPIRIT_WARRIORS_GAZE = 97597,
 
     // Sundered Rift
-    SPELL_SUNDER_RIFT                   = 97320
+    SPELL_SUNDER_RIFT = 97320
 };
 
 enum Events
@@ -101,8 +101,8 @@ enum Events
 enum Phases
 {
     PHASE_PRE_FIGHT = 1,
-    PHASE_ONE       = 2,
-    PHASE_TWO       = 3
+    PHASE_ONE = 2,
+    PHASE_TWO = 3
 };
 
 enum GurubashiSpiritWarriorMask
@@ -128,17 +128,17 @@ enum MovementPoints
 
 enum SummonGroups
 {
-    SUMMON_GROUP_HAKKARS_CHAINS_1   = 0,
-    SUMMON_GROUP_HAKKARS_CHAINS_2   = 1,
-    SUMMON_GROUP_HAKKARS_CHAINS_3   = 2,
-    SUMMON_GROUP_TWISTED_SHADOW     = 3,
-    SUMMON_GROUP_SPIRIT_PORTAL      = 4
+    SUMMON_GROUP_HAKKARS_CHAINS_1 = 0,
+    SUMMON_GROUP_HAKKARS_CHAINS_2 = 1,
+    SUMMON_GROUP_HAKKARS_CHAINS_3 = 2,
+    SUMMON_GROUP_TWISTED_SHADOW = 3,
+    SUMMON_GROUP_SPIRIT_PORTAL = 4
 };
 
 enum ZGPhaseIds
 {
-    PHASE_ID_DEFAULT        = 169,
-    PHASE_ID_SPIRIT_WORLD   = 173
+    PHASE_ID_DEFAULT = 169,
+    PHASE_ID_SPIRIT_WORLD = 173
 };
 
 enum Sounds
@@ -152,9 +152,9 @@ enum Actions
     ACTION_DESPAWN_HAKKAR_AND_JINDO = 1
 };
 
-Position const JindoPhaseTwoMovePosition                = { -11787.0f,  -1695.73f, 52.95971f };
-Position const JindoTheGodBreakerSpiritWorldSummonPos   = { -11786.32f, -1715.629f, 43.72891f, 1.466077f };
-Position const HakkarSummonPos                          = { -11786.46f, -1690.924f, 53.01948f, 1.605703f };
+Position const JindoPhaseTwoMovePosition = { -11787.0f,  -1695.73f, 52.95971f };
+Position const JindoTheGodBreakerSpiritWorldSummonPos = { -11786.32f, -1715.629f, 43.72891f, 1.466077f };
+Position const HakkarSummonPos = { -11786.46f, -1690.924f, 53.01948f, 1.605703f };
 
 Position const GurubashiSpiritWarriorPositions[] =
 {
@@ -166,51 +166,51 @@ Position const GurubashiSpiritWarriorPositions[] =
 
 class FaceToJindoEvent : public BasicEvent
 {
-    public:
-        FaceToJindoEvent(Creature* owner) :  _owner(owner) { }
+public:
+    FaceToJindoEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            _owner->SetFacingTo(4.712389f);
-            return true;
-        }
-    private:
-        Creature* _owner;
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        _owner->SetFacingTo(4.712389f);
+        return true;
+    }
+private:
+    Creature* _owner;
 };
 
 class DelayedTalkEvent : public BasicEvent
 {
-    public:
-        DelayedTalkEvent(Creature* owner, uint8 textId) :  _owner(owner), _textId(textId) { }
+public:
+    DelayedTalkEvent(Creature* owner, uint8 textId) : _owner(owner), _textId(textId) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            if (_owner->IsAIEnabled())
-                _owner->AI()->Talk(_textId);
-            return true;
-        }
-    private:
-        Creature* _owner;
-        uint8 _textId;
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        if (_owner->IsAIEnabled())
+            _owner->AI()->Talk(_textId);
+        return true;
+    }
+private:
+    Creature* _owner;
+    uint8 _textId;
 };
 
 class AttackJindoEvent : public BasicEvent
 {
-    public:
-        AttackJindoEvent(Creature* owner) :  _owner(owner) { }
+public:
+    AttackJindoEvent(Creature* owner) : _owner(owner) { }
 
-        bool Execute(uint64 /*time*/, uint32 /*diff*/) override
-        {
-            _owner->HandleEmoteCommand(EMOTE_ONESHOT_ATTACK1H);
+    bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+    {
+        _owner->HandleEmoteCommand(EMOTE_ONESHOT_ATTACK1H);
 
-            if (InstanceScript* instance = _owner->GetInstanceScript())
-                if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER))
-                    jindo->AI()->DoAction(ACTION_DESPAWN_HAKKAR_AND_JINDO);
+        if (InstanceScript* instance = _owner->GetInstanceScript())
+            if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER))
+                jindo->AI()->DoAction(ACTION_DESPAWN_HAKKAR_AND_JINDO);
 
-            return true;
-        }
-    private:
-        Creature* _owner;
+        return true;
+    }
+private:
+    Creature* _owner;
 };
 
 struct boss_jindo_the_godbreaker : public BossAI
@@ -295,44 +295,44 @@ struct boss_jindo_the_godbreaker : public BossAI
 
         switch (summon->GetEntry())
         {
-            case NPC_HAKKARS_CHAINS:
-                summon->CastSpell(summon, SPELL_HAKKARS_CHAINS_VISUAL);
-                summon->CastSpell(summon, SPELL_BRITTLE_BARRIER);
-                summon->CastSpell(summon, SPELL_HAKKARS_CHAINS);
-                summon->SetReactState(REACT_PASSIVE);
-                summon->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                [[fallthrough]];
-            case NPC_JINDO_THE_GODBREAKER:
-            case NPC_SPIRIT_OF_HAKKAR:
-            case NPC_GURUBASHI_SPIRIT:
-            case NPC_SPIRIT_PORTAL:
-                PhasingHandler::AddPhase(summon, PHASE_ID_SPIRIT_WORLD, true);
-                PhasingHandler::RemovePhase(summon, PHASE_ID_DEFAULT, true);
-                break;
-            case NPC_TWISTED_SPIRIT:
-                if (TempSummon* creature = summon->ToTempSummon())
+        case NPC_HAKKARS_CHAINS:
+            summon->CastSpell(summon, SPELL_HAKKARS_CHAINS_VISUAL);
+            summon->CastSpell(summon, SPELL_BRITTLE_BARRIER);
+            summon->CastSpell(summon, SPELL_HAKKARS_CHAINS);
+            summon->SetReactState(REACT_PASSIVE);
+            summon->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            [[fallthrough]];
+        case NPC_JINDO_THE_GODBREAKER:
+        case NPC_SPIRIT_OF_HAKKAR:
+        case NPC_GURUBASHI_SPIRIT:
+        case NPC_SPIRIT_PORTAL:
+            PhasingHandler::AddPhase(summon, PHASE_ID_SPIRIT_WORLD, true);
+            PhasingHandler::RemovePhase(summon, PHASE_ID_DEFAULT, true);
+            break;
+        case NPC_TWISTED_SPIRIT:
+            if (TempSummon* creature = summon->ToTempSummon())
+            {
+                if (Creature* summoner = creature->GetSummonerCreatureBase())
                 {
-                    if (Creature* summoner = creature->GetSummonerCreatureBase())
-                    {
-                        if (summoner->GetEntry() == NPC_SPIRIT_PORTAL)
-                            if (summon->IsAIEnabled())
-                                summon->AI()->DoZoneInCombat();
-                    }
-                    else
-                    {
-                        PhasingHandler::AddPhase(summon, PHASE_ID_SPIRIT_WORLD, true);
-                        PhasingHandler::RemovePhase(summon, PHASE_ID_DEFAULT, true);
-                        summon->GetMotionMaster()->MoveRandom(5.0f);
-                    }
+                    if (summoner->GetEntry() == NPC_SPIRIT_PORTAL)
+                        if (summon->IsAIEnabled())
+                            summon->AI()->DoZoneInCombat();
                 }
-                break;
-            case NPC_TWISTED_SHADOW:
-                summon->GetMotionMaster()->MoveRandom(5.0f);
-                if (Map* map = summon->GetMap())
-                    map->SummonCreature(NPC_TWISTED_SPIRIT, summon->GetPosition());
-                break;
-            default:
-                break;
+                else
+                {
+                    PhasingHandler::AddPhase(summon, PHASE_ID_SPIRIT_WORLD, true);
+                    PhasingHandler::RemovePhase(summon, PHASE_ID_DEFAULT, true);
+                    summon->GetMotionMaster()->MoveRandom(5.0f);
+                }
+            }
+            break;
+        case NPC_TWISTED_SHADOW:
+            summon->GetMotionMaster()->MoveRandom(5.0f);
+            if (Map* map = summon->GetMap())
+                map->SummonCreature(NPC_TWISTED_SPIRIT, summon->GetPosition());
+            break;
+        default:
+            break;
         }
     }
 
@@ -340,74 +340,74 @@ struct boss_jindo_the_godbreaker : public BossAI
     {
         switch (summon->GetEntry())
         {
-            case NPC_GURUBASHI_SPIRIT_WARRIOR:
-                if (berserkersByMaskMap.find(summon->GetGUID()) != berserkersByMaskMap.end())
+        case NPC_GURUBASHI_SPIRIT_WARRIOR:
+            if (berserkersByMaskMap.find(summon->GetGUID()) != berserkersByMaskMap.end())
+            {
+                uint32 killedSpiritWarriorMask = instance->GetData(DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS);
+                instance->SetData(DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS, killedSpiritWarriorMask | berserkersByMaskMap[summon->GetGUID()]);
+
+                Map* map = me->GetMap();
+                if (!map)
+                    return;
+
+                if (Creature* shadow = map->SummonCreature(NPC_GURUBASHI_SHADOW, summon->GetHomePosition()))
                 {
-                    uint32 killedSpiritWarriorMask = instance->GetData(DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS);
-                    instance->SetData(DATA_KILLED_GURUBASHI_SPIRIT_WARRIORS, killedSpiritWarriorMask | berserkersByMaskMap[summon->GetGUID()]);
-
-                    Map* map = me->GetMap();
-                    if (!map)
-                        return;
-
-                    if (Creature* shadow = map->SummonCreature(NPC_GURUBASHI_SHADOW, summon->GetHomePosition()))
-                    {
-                        shadow->SetReactState(REACT_PASSIVE);
-                        shadow->GetMotionMaster()->MoveRandom(8.0f);
-                    }
-
-                    if (Creature* spirit = map->SummonCreature(NPC_GURUBASHI_SPIRIT, summon->GetHomePosition()))
-                        spirit->GetMotionMaster()->MoveRandom(8.0f);
+                    shadow->SetReactState(REACT_PASSIVE);
+                    shadow->GetMotionMaster()->MoveRandom(8.0f);
                 }
-                break;
-            case NPC_HAKKARS_CHAINS:
-                summon->DespawnOrUnsummon(2s + 500ms);
-                if (Creature* spirit = instance->GetCreature(DATA_SPIRIT_OF_HAKKAR))
+
+                if (Creature* spirit = map->SummonCreature(NPC_GURUBASHI_SPIRIT, summon->GetHomePosition()))
+                    spirit->GetMotionMaster()->MoveRandom(8.0f);
+            }
+            break;
+        case NPC_HAKKARS_CHAINS:
+            summon->DespawnOrUnsummon(2s + 500ms);
+            if (Creature* spirit = instance->GetCreature(DATA_SPIRIT_OF_HAKKAR))
+            {
+                if (_brokenChainsCount < 2)
+                    spirit->PlayDirectSound(SOUND_SPIRIT_OF_HAKKAR_LAUGH);
+                else
                 {
-                    if (_brokenChainsCount < 2)
-                        spirit->PlayDirectSound(SOUND_SPIRIT_OF_HAKKAR_LAUGH);
-                    else
+                    for (ObjectGuid guid : summons)
                     {
-                        for (ObjectGuid guid : summons)
+                        if (Creature* summon = ObjectAccessor::GetCreature(*me, guid))
                         {
-                            if (Creature* summon = ObjectAccessor::GetCreature(*me, guid))
+                            if (summon->GetEntry() != NPC_JINDO_THE_GODBREAKER && summon->GetEntry() != NPC_SPIRIT_OF_HAKKAR
+                                && summon->GetEntry() != NPC_SHADOW_OF_HAKKAR)
                             {
-                                if (summon->GetEntry() != NPC_JINDO_THE_GODBREAKER && summon->GetEntry() != NPC_SPIRIT_OF_HAKKAR
-                                    && summon->GetEntry() != NPC_SHADOW_OF_HAKKAR)
-                                {
-                                    summon->KillSelf();
-                                    summon->DespawnOrUnsummon(1s);
-                                }
+                                summon->KillSelf();
+                                summon->DespawnOrUnsummon(1s);
                             }
                         }
-
-                        if (spirit->IsAIEnabled())
-                            spirit->AI()->Talk(SAY_HAKKAR_FREED);
-
-                        spirit->CastSpell(spirit, SPELL_HAKKAR_BREAKS_FREE);
-
-                        me->KillSelf();
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                        spirit->m_Events.AddEventAtOffset(new FaceToJindoEvent(spirit), 1s + 500ms);
-                        spirit->m_Events.AddEventAtOffset(new AttackJindoEvent(spirit), 19s + 500ms);
-
-                        if (Creature* shadow = instance->GetCreature(DATA_SHADOW_OF_HAKKAR))
-                        {
-                            shadow->m_Events.AddEventAtOffset(new DelayedTalkEvent(shadow, SAY_SHADOW_DEFEATED), 22s + 100ms);
-                            shadow->DespawnOrUnsummon(28s);
-                        }
-
-                        if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER_SPIRIT_WORLD))
-                        {
-                            jindo->InterruptNonMeleeSpells(true);
-                            jindo->m_Events.AddEventAtOffset(new DelayedTalkEvent(jindo, SAY_JINDO_DEFEATED), 18s + 500ms);
-                        }
                     }
-                    _brokenChainsCount++;
+
+                    if (spirit->IsAIEnabled())
+                        spirit->AI()->Talk(SAY_HAKKAR_FREED);
+
+                    spirit->CastSpell(spirit, SPELL_HAKKAR_BREAKS_FREE);
+
+                    me->KillSelf();
+                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                    spirit->m_Events.AddEventAtOffset(new FaceToJindoEvent(spirit), 1s + 500ms);
+                    spirit->m_Events.AddEventAtOffset(new AttackJindoEvent(spirit), 19s + 500ms);
+
+                    if (Creature* shadow = instance->GetCreature(DATA_SHADOW_OF_HAKKAR))
+                    {
+                        shadow->m_Events.AddEventAtOffset(new DelayedTalkEvent(shadow, SAY_SHADOW_DEFEATED), 22s + 100ms);
+                        shadow->DespawnOrUnsummon(28s);
+                    }
+
+                    if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER_SPIRIT_WORLD))
+                    {
+                        jindo->InterruptNonMeleeSpells(true);
+                        jindo->m_Events.AddEventAtOffset(new DelayedTalkEvent(jindo, SAY_JINDO_DEFEATED), 18s + 500ms);
+                    }
                 }
-                break;
-            default:
-                break;
+                _brokenChainsCount++;
+            }
+            break;
+        default:
+            break;
         }
     }
 
@@ -415,21 +415,21 @@ struct boss_jindo_the_godbreaker : public BossAI
     {
         switch (action)
         {
-            case ACTION_TRIGGER_JINDO_INTRO:
-                if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
-                {
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
-                    me->RemoveAurasDueToSpell(SPELL_COSMETIC_ALPHA_STATE_25_PCT);
-                    events.ScheduleEvent(EVENT_TALK_INTRO, 11s, 0, PHASE_PRE_FIGHT);
-                }
-                break;
-            case ACTION_DESPAWN_HAKKAR_AND_JINDO:
-                me->RemoveAurasDueToSpell(SPELL_SPIRIT_WORLD);
-                summons.DespawnEntry(NPC_JINDO_THE_GODBREAKER);
-                summons.DespawnEntry(NPC_SPIRIT_OF_HAKKAR);
-                break;
-            default:
-                break;
+        case ACTION_TRIGGER_JINDO_INTRO:
+            if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
+            {
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+                me->RemoveAurasDueToSpell(SPELL_COSMETIC_ALPHA_STATE_25_PCT);
+                events.ScheduleEvent(EVENT_TALK_INTRO, 11s, 0, PHASE_PRE_FIGHT);
+            }
+            break;
+        case ACTION_DESPAWN_HAKKAR_AND_JINDO:
+            me->RemoveAurasDueToSpell(SPELL_SPIRIT_WORLD);
+            summons.DespawnEntry(NPC_JINDO_THE_GODBREAKER);
+            summons.DespawnEntry(NPC_SPIRIT_OF_HAKKAR);
+            break;
+        default:
+            break;
         }
     }
 
@@ -447,47 +447,47 @@ struct boss_jindo_the_godbreaker : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_TALK_INTRO:
-                    Talk(SAY_INTRO);
-                    break;
-                case EVENT_DRAIN_SPIRIT_ESSENCE:
-                    DoCastSelf(SPELL_DRAIN_SPIRIT_ESSENCE);
-                    events.Repeat(20s);
-                    break;
-                case EVENT_SHADOWS_OF_HAKKAR:
-                    DoCastSelf(SPELL_SHADOWS_OF_HAKKAR);
-                    Talk(SAY_ANNOUNCE_SHADOWS_OF_HAKKAR);
-                    events.Repeat(19s, 20s);
-                    break;
-                case EVENT_DEADZONE:
-                    DoCastSelf(SPELL_DEADZONE);
-                    events.Repeat(19s, 20s);
-                    break;
-                case EVENT_ENTER_SPIRIT_WORLD:
-                    DoCastAOE(SPELL_ADD_PLAYERS_TO_THREAT_LIST);
-                    DoCastAOE(SPELL_SPIRIT_WORLD);
-                    DoCastSelf(SPELL_VANISH);
-                    events.ScheduleEvent(EVENT_TALK_SPIRIT_OF_HAKKAR, 5s, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_SHADOW_SPIKE, 2s + 500ms, 0, PHASE_TWO);
-                    events.ScheduleEvent(EVENT_CALL_SPIRIT, 6s, 0, PHASE_TWO);
-                    break;
-                case EVENT_TALK_SPIRIT_OF_HAKKAR:
-                    if (Creature* hakkar = instance->GetCreature(DATA_SPIRIT_OF_HAKKAR))
-                        if (hakkar->IsAIEnabled())
-                            hakkar->AI()->Talk(SAY_HAKKAR_IMPRISONED);
-                    break;
-                case EVENT_SHADOW_SPIKE:
-                    if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER_SPIRIT_WORLD))
-                        jindo->CastSpell(jindo, SPELL_SHADOW_SPIKE);
-                    events.Repeat(3s + 500ms);
-                    break;
-                case EVENT_CALL_SPIRIT:
-                    if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER_SPIRIT_WORLD))
-                        jindo->CastSpell(jindo, SPELL_CALL_SPIRIT);
-                    events.Repeat(11s);
-                    break;
-                default:
-                    break;
+            case EVENT_TALK_INTRO:
+                Talk(SAY_INTRO);
+                break;
+            case EVENT_DRAIN_SPIRIT_ESSENCE:
+                DoCastSelf(SPELL_DRAIN_SPIRIT_ESSENCE);
+                events.Repeat(20s);
+                break;
+            case EVENT_SHADOWS_OF_HAKKAR:
+                DoCastSelf(SPELL_SHADOWS_OF_HAKKAR);
+                Talk(SAY_ANNOUNCE_SHADOWS_OF_HAKKAR);
+                events.Repeat(19s, 20s);
+                break;
+            case EVENT_DEADZONE:
+                DoCastSelf(SPELL_DEADZONE);
+                events.Repeat(19s, 20s);
+                break;
+            case EVENT_ENTER_SPIRIT_WORLD:
+                DoCastAOE(SPELL_ADD_PLAYERS_TO_THREAT_LIST);
+                DoCastAOE(SPELL_SPIRIT_WORLD);
+                DoCastSelf(SPELL_VANISH);
+                events.ScheduleEvent(EVENT_TALK_SPIRIT_OF_HAKKAR, 5s, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_SHADOW_SPIKE, 2s + 500ms, 0, PHASE_TWO);
+                events.ScheduleEvent(EVENT_CALL_SPIRIT, 6s, 0, PHASE_TWO);
+                break;
+            case EVENT_TALK_SPIRIT_OF_HAKKAR:
+                if (Creature* hakkar = instance->GetCreature(DATA_SPIRIT_OF_HAKKAR))
+                    if (hakkar->IsAIEnabled())
+                        hakkar->AI()->Talk(SAY_HAKKAR_IMPRISONED);
+                break;
+            case EVENT_SHADOW_SPIKE:
+                if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER_SPIRIT_WORLD))
+                    jindo->CastSpell(jindo, SPELL_SHADOW_SPIKE);
+                events.Repeat(3s + 500ms);
+                break;
+            case EVENT_CALL_SPIRIT:
+                if (Creature* jindo = instance->GetCreature(DATA_JINDO_THE_GODBREAKER_SPIRIT_WORLD))
+                    jindo->CastSpell(jindo, SPELL_CALL_SPIRIT);
+                events.Repeat(11s);
+                break;
+            default:
+                break;
             }
         }
 
@@ -584,17 +584,17 @@ struct npc_jindo_gurubashi_spirit_warrior : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_FRENZY:
-                    DoCastSelf(SPELL_FRENZY);
-                    _events.Repeat(5s);
-                    break;
-                case EVENT_SPIRIT_WARRIORS_GAZE:
-                    DoCastAOE(SPELL_SPIRIT_WARRIORS_GAZE);
-                    _events.RescheduleEvent(EVENT_FRENZY, 3s + 700ms);
-                    _events.Repeat(22s);
-                    break;
-                default:
-                    break;
+            case EVENT_FRENZY:
+                DoCastSelf(SPELL_FRENZY);
+                _events.Repeat(5s);
+                break;
+            case EVENT_SPIRIT_WARRIORS_GAZE:
+                DoCastAOE(SPELL_SPIRIT_WARRIORS_GAZE);
+                _events.RescheduleEvent(EVENT_FRENZY, 3s + 700ms);
+                _events.Repeat(22s);
+                break;
+            default:
+                break;
             }
         }
 

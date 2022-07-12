@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -40,18 +40,18 @@ enum Xariona
     EVENT_TWILIGHT_ZONE,
 
     // Spells
-    SPELL_ZERO_POWER                        = 87239,
-    SPELL_ROGUE_CLASS_CRIT_DODGE_DEBUFF     = 73059,
-    SPELL_FURY_OF_THE_TWILIGHT_FLIGHT       = 93554,
-    SPELL_TWILIGHT_BREATH                   = 93544,
-    SPELL_TWILIGHT_BUFFET_TARGETING         = 95385,
-    SPELL_UNLEASHED_MAGIC                   = 93556,
-    SPELL_TWILIGHT_FISSURE                  = 93546,
-    SPELL_VOID_BLAST                        = 93545,
-    SPELL_TWILIGHT_ZONE                     = 93553,
+    SPELL_ZERO_POWER = 87239,
+    SPELL_ROGUE_CLASS_CRIT_DODGE_DEBUFF = 73059,
+    SPELL_FURY_OF_THE_TWILIGHT_FLIGHT = 93554,
+    SPELL_TWILIGHT_BREATH = 93544,
+    SPELL_TWILIGHT_BUFFET_TARGETING = 95385,
+    SPELL_UNLEASHED_MAGIC = 93556,
+    SPELL_TWILIGHT_FISSURE = 93546,
+    SPELL_VOID_BLAST = 93545,
+    SPELL_TWILIGHT_ZONE = 93553,
 
     // Creatures
-    NPC_TWILIGHT_FISSURE                    = 50431,
+    NPC_TWILIGHT_FISSURE = 50431,
 };
 
 struct npc_deepholm_xariona : public ScriptedAI
@@ -86,15 +86,15 @@ struct npc_deepholm_xariona : public ScriptedAI
     {
         switch (summon->GetEntry())
         {
-            case NPC_TWILIGHT_FISSURE:
-                summon->m_Events.AddEventAtOffset([summon]()
+        case NPC_TWILIGHT_FISSURE:
+            summon->m_Events.AddEventAtOffset([summon]()
                 {
                     summon->CastSpell(summon, SPELL_VOID_BLAST);
                     summon->DespawnOrUnsummon(4s);
                 }, 4s); // Tooltip states 5 seconds but sniffs say 4
-                break;
-            default:
-                break;
+            break;
+        default:
+            break;
         }
     }
 
@@ -117,40 +117,40 @@ struct npc_deepholm_xariona : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_FURY_OF_THE_TWILIGHT_FLIGHT:
-                    DoCastSelf(SPELL_FURY_OF_THE_TWILIGHT_FLIGHT);
-                    ++_furyOfTheTwilightFlightCount;
-                    if (_furyOfTheTwilightFlightCount < 2)
-                        _events.Repeat(30s + 500ms);
-                    else
-                        _events.ScheduleEvent(EVENT_UNLEASHED_MAGIC, 32s);
-                    break;
-                case EVENT_TWILIGHT_BREATH:
-                    DoCastVictim(SPELL_TWILIGHT_BREATH);
-                    _events.Repeat(18s, 20s);
-                    break;
-                case EVENT_TWILIGHT_BUFFET:
-                    DoCastAOE(SPELL_TWILIGHT_BUFFET_TARGETING, CastSpellExtraArgs().AddSpellMod(SPELLVALUE_MAX_TARGETS, 1));
-                    _events.Repeat(23s, 25s);
-                    break;
-                case EVENT_UNLEASHED_MAGIC:
-                    DoCastAOE(SPELL_UNLEASHED_MAGIC);
-                    _furyOfTheTwilightFlightCount = 0;
-                    _events.DelayEvents(5s);
-                    _events.ScheduleEvent(EVENT_FURY_OF_THE_TWILIGHT_FLIGHT, 1ms);
-                    break;
-                case EVENT_TWILIGHT_FISSURE:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 45.f, true))
-                        DoCast(target, SPELL_TWILIGHT_FISSURE);
-                    _events.Repeat(29s);
-                    break;
-                case EVENT_TWILIGHT_ZONE:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 55.f, true))
-                        DoCast(target, SPELL_TWILIGHT_ZONE);
-                    _events.Repeat(31s);
-                    break;
-                default:
-                    break;
+            case EVENT_FURY_OF_THE_TWILIGHT_FLIGHT:
+                DoCastSelf(SPELL_FURY_OF_THE_TWILIGHT_FLIGHT);
+                ++_furyOfTheTwilightFlightCount;
+                if (_furyOfTheTwilightFlightCount < 2)
+                    _events.Repeat(30s + 500ms);
+                else
+                    _events.ScheduleEvent(EVENT_UNLEASHED_MAGIC, 32s);
+                break;
+            case EVENT_TWILIGHT_BREATH:
+                DoCastVictim(SPELL_TWILIGHT_BREATH);
+                _events.Repeat(18s, 20s);
+                break;
+            case EVENT_TWILIGHT_BUFFET:
+                DoCastAOE(SPELL_TWILIGHT_BUFFET_TARGETING, CastSpellExtraArgs().AddSpellMod(SPELLVALUE_MAX_TARGETS, 1));
+                _events.Repeat(23s, 25s);
+                break;
+            case EVENT_UNLEASHED_MAGIC:
+                DoCastAOE(SPELL_UNLEASHED_MAGIC);
+                _furyOfTheTwilightFlightCount = 0;
+                _events.DelayEvents(5s);
+                _events.ScheduleEvent(EVENT_FURY_OF_THE_TWILIGHT_FLIGHT, 1ms);
+                break;
+            case EVENT_TWILIGHT_FISSURE:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 45.f, true))
+                    DoCast(target, SPELL_TWILIGHT_FISSURE);
+                _events.Repeat(29s);
+                break;
+            case EVENT_TWILIGHT_ZONE:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 55.f, true))
+                    DoCast(target, SPELL_TWILIGHT_ZONE);
+                _events.Repeat(31s);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -168,13 +168,13 @@ private:
 enum DeepholmTheRealmOfEarth
 {
     // Spells
-    SPELL_CAMERA_1                      = 84364,
-    SPELL_FORCECAST_AGGRA_PING          = 96123,
-    SPELL_FORCECAST_TELEPORT            = 84093,
-    SPELL_EJECT_PASSENGER_2             = 62539,
+    SPELL_CAMERA_1 = 84364,
+    SPELL_FORCECAST_AGGRA_PING = 96123,
+    SPELL_FORCECAST_TELEPORT = 84093,
+    SPELL_EJECT_PASSENGER_2 = 62539,
 
     // Events
-    EVENT_PING_AGGRA                    = 1,
+    EVENT_PING_AGGRA = 1,
     EVENT_APPROACH_MAELSTROM,
 
     // Move Points
@@ -182,7 +182,7 @@ enum DeepholmTheRealmOfEarth
     POINT_ID_LEAVE_PLAYER,
 
     // Creature
-    NPC_WYVERN_TEMPLE_OF_EARTH          = 45024
+    NPC_WYVERN_TEMPLE_OF_EARTH = 45024
 };
 
 struct npc_deepholm_wyvern : public NullCreatureAI
@@ -212,17 +212,17 @@ struct npc_deepholm_wyvern : public NullCreatureAI
 
         switch (pointId)
         {
-            case POINT_ID_INTRO_FLIGHT:
-                if (me->GetEntry() != NPC_WYVERN_TEMPLE_OF_EARTH)
-                    DoCastSelf(SPELL_FORCECAST_TELEPORT);
-                else
-                    DoCastSelf(SPELL_EJECT_PASSENGER_2);
-                break;
-            case POINT_ID_LEAVE_PLAYER:
-                me->DespawnOrUnsummon(3s);
-                break;
-            default:
-                break;
+        case POINT_ID_INTRO_FLIGHT:
+            if (me->GetEntry() != NPC_WYVERN_TEMPLE_OF_EARTH)
+                DoCastSelf(SPELL_FORCECAST_TELEPORT);
+            else
+                DoCastSelf(SPELL_EJECT_PASSENGER_2);
+            break;
+        case POINT_ID_LEAVE_PLAYER:
+            me->DespawnOrUnsummon(3s);
+            break;
+        default:
+            break;
         }
     }
 
@@ -234,19 +234,19 @@ struct npc_deepholm_wyvern : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_PING_AGGRA:
-                    if (Vehicle const* vehicle = me->GetVehicleKit())
-                        if (Unit* aggra = vehicle->GetPassenger(SEAT_1))
-                            DoCast(aggra, SPELL_FORCECAST_AGGRA_PING);
+            case EVENT_PING_AGGRA:
+                if (Vehicle const* vehicle = me->GetVehicleKit())
+                    if (Unit* aggra = vehicle->GetPassenger(SEAT_1))
+                        DoCast(aggra, SPELL_FORCECAST_AGGRA_PING);
 
-                    if (me->GetEntry() != NPC_WYVERN_TEMPLE_OF_EARTH)
-                        _events.ScheduleEvent(EVENT_APPROACH_MAELSTROM, 800ms);
-                    break;
-                case EVENT_APPROACH_MAELSTROM:
-                    me->GetMotionMaster()->MovePath(me->GetEntry() * 100, false);
-                    break;
-                default:
-                    break;
+                if (me->GetEntry() != NPC_WYVERN_TEMPLE_OF_EARTH)
+                    _events.ScheduleEvent(EVENT_APPROACH_MAELSTROM, 800ms);
+                break;
+            case EVENT_APPROACH_MAELSTROM:
+                me->GetMotionMaster()->MovePath(me->GetEntry() * 100, false);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -265,9 +265,9 @@ class spell_deepholm_twilight_buffet_targeting : public SpellScript
 
         // Xariona never hits her current victim with Twilight Buffed
         targets.remove_if([&](WorldObject* target)
-        {
-            return GetCaster()->GetVictim() == target;
-        });
+            {
+                return GetCaster()->GetVictim() == target;
+            });
     }
 
     void HandleDummyEffect(SpellEffIndex effIndex)

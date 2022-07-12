@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -88,25 +88,25 @@ struct Position;
 // Note: These are bitmask values to allow combining, but only a single bit will ever be true in instance script
 enum COSProgressStates : uint32
 {
-    JUST_STARTED            = 0x00001, // dungeon just started, crate count not visible yet; pending chromie interaction
-    CRATES_IN_PROGRESS      = 0x00002, // freshly started dungeon, players are revealing scourge crates
-    CRATES_DONE             = 0x00004, // all crates revealed, chromie spawns at Stratholme entrance; waiting for player input to begin first RP event
-    UTHER_TALK              = 0x00008, // RP event in progress, Uther+Arthas talking
-    PURGE_PENDING           = 0x00010, // RP event done, pending player input to start wave event
-    PURGE_STARTING          = 0x00020, // Arthas entering Stratholme, RP sequence with Mal'ganis
-    WAVES_IN_PROGRESS       = 0x00040, // first section is underway, players are battling waves
-    WAVES_DONE              = 0x00080, // wave section completed; Arthas moving to take position in front of Stratholme Town Hall
-    TOWN_HALL_PENDING       = 0x00100, // Arthas has reached the Town Hall; pending player input to begin escort section
-    TOWN_HALL               = 0x00200, // now escorting Arthas through Stratholme Town Hall
-    TOWN_HALL_COMPLETE      = 0x00400, // Town Hall event complete, third boss defeated; pending player input to begin gauntlet transition
-    GAUNTLET_TRANSITION     = 0x00800, // Arthas is leading players through the secret passage from Town Hall to the gauntlet
-    GAUNTLET_PENDING        = 0x01000, // Pending player input to begin escorting Arthas through the final gauntlet section
-    GAUNTLET_IN_PROGRESS    = 0x02000, // Arthas is being escorted through the gauntlet section
-    GAUNTLET_COMPLETE       = 0x04000, // Arthas has reached the end of the gauntlet section; player input pending to begin Mal'ganis encounter
-    MALGANIS_IN_PROGRESS    = 0x08000, // Arthas has moved into the final square and Mal'ganis encounter begins
-    COMPLETE                = 0x10000, // Mal'ganis encounter is completed; dungeon over
+    JUST_STARTED = 0x00001, // dungeon just started, crate count not visible yet; pending chromie interaction
+    CRATES_IN_PROGRESS = 0x00002, // freshly started dungeon, players are revealing scourge crates
+    CRATES_DONE = 0x00004, // all crates revealed, chromie spawns at Stratholme entrance; waiting for player input to begin first RP event
+    UTHER_TALK = 0x00008, // RP event in progress, Uther+Arthas talking
+    PURGE_PENDING = 0x00010, // RP event done, pending player input to start wave event
+    PURGE_STARTING = 0x00020, // Arthas entering Stratholme, RP sequence with Mal'ganis
+    WAVES_IN_PROGRESS = 0x00040, // first section is underway, players are battling waves
+    WAVES_DONE = 0x00080, // wave section completed; Arthas moving to take position in front of Stratholme Town Hall
+    TOWN_HALL_PENDING = 0x00100, // Arthas has reached the Town Hall; pending player input to begin escort section
+    TOWN_HALL = 0x00200, // now escorting Arthas through Stratholme Town Hall
+    TOWN_HALL_COMPLETE = 0x00400, // Town Hall event complete, third boss defeated; pending player input to begin gauntlet transition
+    GAUNTLET_TRANSITION = 0x00800, // Arthas is leading players through the secret passage from Town Hall to the gauntlet
+    GAUNTLET_PENDING = 0x01000, // Pending player input to begin escorting Arthas through the final gauntlet section
+    GAUNTLET_IN_PROGRESS = 0x02000, // Arthas is being escorted through the gauntlet section
+    GAUNTLET_COMPLETE = 0x04000, // Arthas has reached the end of the gauntlet section; player input pending to begin Mal'ganis encounter
+    MALGANIS_IN_PROGRESS = 0x08000, // Arthas has moved into the final square and Mal'ganis encounter begins
+    COMPLETE = 0x10000, // Mal'ganis encounter is completed; dungeon over
 
-    ALL                     = 0x1FFFF
+    ALL = 0x1FFFF
 };
 COSProgressStates GetStableStateFor(COSProgressStates const state); // defined by instance script
 Position const& GetArthasSnapbackFor(COSProgressStates state); // defined by arthas script

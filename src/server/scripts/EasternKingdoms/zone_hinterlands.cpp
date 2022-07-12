@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,36 +15,36 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Hinterlands
-SD%Complete: 100
-SDComment: Quest support: 836
-SDCategory: The Hinterlands
-EndScriptData */
+ /* ScriptData
+ SDName: Hinterlands
+ SD%Complete: 100
+ SDComment: Quest support: 836
+ SDCategory: The Hinterlands
+ EndScriptData */
 
-/* ContentData
-npc_oox09hl
-EndContentData */
+ /* ContentData
+ npc_oox09hl
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "MotionMaster.h"
 #include "Player.h"
 #include "ScriptedEscortAI.h"
 
-/*######
-## npc_oox09hl
-######*/
+ /*######
+ ## npc_oox09hl
+ ######*/
 
 enum eOOX
 {
-    SAY_OOX_START           = 0,
-    SAY_OOX_AGGRO           = 1,
-    SAY_OOX_AMBUSH          = 2,
-    SAY_OOX_AMBUSH_REPLY    = 3,
-    SAY_OOX_END             = 4,
-    QUEST_RESQUE_OOX_09     = 836,
-    NPC_MARAUDING_OWL       = 7808,
-    NPC_VILE_AMBUSHER       = 7809
+    SAY_OOX_START = 0,
+    SAY_OOX_AGGRO = 1,
+    SAY_OOX_AMBUSH = 2,
+    SAY_OOX_AMBUSH_REPLY = 3,
+    SAY_OOX_END = 4,
+    QUEST_RESQUE_OOX_09 = 836,
+    NPC_MARAUDING_OWL = 7808,
+    NPC_VILE_AMBUSHER = 7809
 };
 
 class npc_oox09hl : public CreatureScript
@@ -86,17 +86,17 @@ public:
         {
             switch (waypointId)
             {
-                case 26:
-                    Talk(SAY_OOX_AMBUSH);
-                    break;
-                case 43:
-                    Talk(SAY_OOX_AMBUSH);
-                    break;
-                case 64:
-                    Talk(SAY_OOX_END);
-                    if (Player* player = GetPlayerForEscort())
-                        player->GroupEventHappens(QUEST_RESQUE_OOX_09, me);
-                    break;
+            case 26:
+                Talk(SAY_OOX_AMBUSH);
+                break;
+            case 43:
+                Talk(SAY_OOX_AMBUSH);
+                break;
+            case 64:
+                Talk(SAY_OOX_END);
+                if (Player* player = GetPlayerForEscort())
+                    player->GroupEventHappens(QUEST_RESQUE_OOX_09, me);
+                break;
             }
         }
 
@@ -104,22 +104,22 @@ public:
         {
             switch (pointId)
             {
-                case 27:
-                    for (uint8 i = 0; i < 3; ++i)
-                    {
-                        const Position src = {147.927444f, -3851.513428f, 130.893f, 0};
-                        Position dst = me->GetRandomPoint(src, 7.0f);
-                        DoSummon(NPC_MARAUDING_OWL, dst, 25000, TEMPSUMMON_CORPSE_TIMED_DESPAWN);
-                    }
-                    break;
-                case 44:
-                    for (uint8 i = 0; i < 3; ++i)
-                    {
-                        const Position src = {-141.151581f, -4291.213867f, 120.130f, 0};
-                        Position dst = me->GetRandomPoint(src, 7.0f);
-                        me->SummonCreature(NPC_VILE_AMBUSHER, dst, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 25000);
-                    }
-                    break;
+            case 27:
+                for (uint8 i = 0; i < 3; ++i)
+                {
+                    const Position src = { 147.927444f, -3851.513428f, 130.893f, 0 };
+                    Position dst = me->GetRandomPoint(src, 7.0f);
+                    DoSummon(NPC_MARAUDING_OWL, dst, 25000, TEMPSUMMON_CORPSE_TIMED_DESPAWN);
+                }
+                break;
+            case 44:
+                for (uint8 i = 0; i < 3; ++i)
+                {
+                    const Position src = { -141.151581f, -4291.213867f, 120.130f, 0 };
+                    Position dst = me->GetRandomPoint(src, 7.0f);
+                    me->SummonCreature(NPC_VILE_AMBUSHER, dst, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 25000);
+                }
+                break;
             }
         }
     };
@@ -136,9 +136,9 @@ public:
 
 enum Sharpbeak
 {
-    NPC_SHARPBEAK_CAMP            = 43161,
-    NPC_SHARPBEAK_JINTHAALOR      = 51125,
-    SPELL_EJECT_ALL_PASSENGERS    = 50630
+    NPC_SHARPBEAK_CAMP = 43161,
+    NPC_SHARPBEAK_JINTHAALOR = 51125,
+    SPELL_EJECT_ALL_PASSENGERS = 50630
 };
 
 Position const campPath[] =
@@ -207,14 +207,14 @@ public:
 
             switch (me->GetEntry())
             {
-                case NPC_SHARPBEAK_CAMP:
-                    me->GetMotionMaster()->MoveSmoothPath(campPathSize, campPath, campPathSize, false);
-                    endPoint = campPathSize;
-                    break;
-                case NPC_SHARPBEAK_JINTHAALOR:
-                    me->GetMotionMaster()->MoveSmoothPath(jinthaalorPathSize, jinthaalorPath, jinthaalorPathSize, false, true);
-                    endPoint = jinthaalorPathSize;
-                    break;
+            case NPC_SHARPBEAK_CAMP:
+                me->GetMotionMaster()->MoveSmoothPath(campPathSize, campPath, campPathSize, false);
+                endPoint = campPathSize;
+                break;
+            case NPC_SHARPBEAK_JINTHAALOR:
+                me->GetMotionMaster()->MoveSmoothPath(jinthaalorPathSize, jinthaalorPath, jinthaalorPathSize, false, true);
+                endPoint = jinthaalorPathSize;
+                break;
             }
         }
 
@@ -225,8 +225,8 @@ public:
                 DoCast(SPELL_EJECT_ALL_PASSENGERS);
             }
         }
-        private:
-            uint8 endPoint;
+    private:
+        uint8 endPoint;
     };
 
     CreatureAI* GetAI(Creature* creature) const override

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -90,152 +90,152 @@ ObjectData const gameObjectData[] =
 
 class instance_black_temple : public InstanceMapScript
 {
-    public:
-        instance_black_temple() : InstanceMapScript(BTScriptName, 564) { }
+public:
+    instance_black_temple() : InstanceMapScript(BTScriptName, 564) { }
 
-        struct instance_black_temple_InstanceMapScript : public InstanceScript
+    struct instance_black_temple_InstanceMapScript : public InstanceScript
+    {
+        instance_black_temple_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_black_temple_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadDoorData(doorData);
-                LoadObjectData(creatureData, gameObjectData);
-                LoadBossBoundaries(boundaries);
-                AkamaState = AKAMA_INTRO;
-                TeronGorefiendIntro = 1;
-                AkamaIllidanIntro = 1;
-            }
-
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                InstanceScript::OnGameObjectCreate(go);
-
-                if (go->GetEntry() == GO_DEN_OF_MORTAL_DOOR)
-                    if (CheckDenOfMortalDoor())
-                        HandleGameObject(ObjectGuid::Empty, true, go);
-            }
-
-            void OnCreatureCreate(Creature* creature) override
-            {
-                InstanceScript::OnCreatureCreate(creature);
-
-                switch (creature->GetEntry())
-                {
-                    case NPC_ASHTONGUE_STALKER:
-                    case NPC_ASHTONGUE_BATTLELORD:
-                    case NPC_ASHTONGUE_MYSTIC:
-                    case NPC_ASHTONGUE_PRIMALIST:
-                    case NPC_ASHTONGUE_STORMCALLER:
-                    case NPC_ASHTONGUE_FERAL_SPIRIT:
-                    case NPC_STORM_FURY:
-                        AshtongueGUIDs.push_back(creature->GetGUID());
-                        if (GetBossState(DATA_SHADE_OF_AKAMA) == DONE)
-                            creature->SetFaction(FACTION_ASHTONGUE_DEATHSWORN);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            uint32 GetData(uint32 type) const override
-            {
-                switch (type)
-                {
-                    case DATA_AKAMA:
-                        return AkamaState;
-                    case DATA_TERON_GOREFIEND_INTRO:
-                        return TeronGorefiendIntro;
-                    case DATA_AKAMA_ILLIDAN_INTRO:
-                        return AkamaIllidanIntro;
-                    default:
-                        return 0;
-                }
-            }
-
-            void SetData(uint32 type, uint32 data) override
-            {
-                switch (type)
-                {
-                    case DATA_AKAMA:
-                        AkamaState = data;
-                        break;
-                    case ACTION_OPEN_DOOR:
-                        if (GameObject* illidanGate = GetGameObject(DATA_GO_ILLIDAN_GATE))
-                            HandleGameObject(ObjectGuid::Empty, true, illidanGate);
-                        break;
-                    case DATA_TERON_GOREFIEND_INTRO:
-                        TeronGorefiendIntro = data;
-                        break;
-                    case DATA_AKAMA_ILLIDAN_INTRO:
-                        AkamaIllidanIntro = data;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_HIGH_WARLORD_NAJENTUS:
-                        if (state == DONE)
-                            if (Creature* trigger = GetCreature(DATA_BLACK_TEMPLE_TRIGGER))
-                                trigger->AI()->Talk(EMOTE_HIGH_WARLORD_NAJENTUS_DIED);
-                        break;
-                    case DATA_SHADE_OF_AKAMA:
-                        if (state == DONE)
-                            for (ObjectGuid ashtongueGuid : AshtongueGUIDs)
-                                if (Creature* ashtongue = instance->GetCreature(ashtongueGuid))
-                                    ashtongue->SetFaction(FACTION_ASHTONGUE_DEATHSWORN);
-                        [[fallthrough]];
-                    case DATA_TERON_GOREFIEND:
-                    case DATA_GURTOGG_BLOODBOIL:
-                    case DATA_RELIQUARY_OF_SOULS:
-                        if (state == DONE && CheckDenOfMortalDoor())
-                        {
-                            if (Creature* trigger = GetCreature(DATA_BLACK_TEMPLE_TRIGGER))
-                                trigger->AI()->Talk(EMOTE_DEN_OF_MORTAL_DOOR_OPEN);
-
-                            if (GameObject* door = GetGameObject(DATA_GO_DEN_OF_MORTAL_DOOR))
-                                HandleGameObject(ObjectGuid::Empty, true, door);
-                        }
-                        break;
-                    case DATA_ILLIDARI_COUNCIL:
-                        if (state == DONE)
-                            if (Creature* akama = GetCreature(DATA_AKAMA))
-                                akama->AI()->DoAction(ACTION_ACTIVE_AKAMA_INTRO);
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-
-            bool CheckDenOfMortalDoor()
-            {
-                for (BTDataTypes boss : {DATA_SHADE_OF_AKAMA, DATA_TERON_GOREFIEND, DATA_RELIQUARY_OF_SOULS, DATA_GURTOGG_BLOODBOIL})
-                    if (GetBossState(boss) != DONE)
-                        return false;
-                return true;
-            }
-
-        protected:
-            GuidVector AshtongueGUIDs;
-            uint8 AkamaState;
-            uint8 TeronGorefiendIntro;
-            uint8 AkamaIllidanIntro;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_black_temple_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadDoorData(doorData);
+            LoadObjectData(creatureData, gameObjectData);
+            LoadBossBoundaries(boundaries);
+            AkamaState = AKAMA_INTRO;
+            TeronGorefiendIntro = 1;
+            AkamaIllidanIntro = 1;
         }
+
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            InstanceScript::OnGameObjectCreate(go);
+
+            if (go->GetEntry() == GO_DEN_OF_MORTAL_DOOR)
+                if (CheckDenOfMortalDoor())
+                    HandleGameObject(ObjectGuid::Empty, true, go);
+        }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            InstanceScript::OnCreatureCreate(creature);
+
+            switch (creature->GetEntry())
+            {
+            case NPC_ASHTONGUE_STALKER:
+            case NPC_ASHTONGUE_BATTLELORD:
+            case NPC_ASHTONGUE_MYSTIC:
+            case NPC_ASHTONGUE_PRIMALIST:
+            case NPC_ASHTONGUE_STORMCALLER:
+            case NPC_ASHTONGUE_FERAL_SPIRIT:
+            case NPC_STORM_FURY:
+                AshtongueGUIDs.push_back(creature->GetGUID());
+                if (GetBossState(DATA_SHADE_OF_AKAMA) == DONE)
+                    creature->SetFaction(FACTION_ASHTONGUE_DEATHSWORN);
+                break;
+            default:
+                break;
+            }
+        }
+
+        uint32 GetData(uint32 type) const override
+        {
+            switch (type)
+            {
+            case DATA_AKAMA:
+                return AkamaState;
+            case DATA_TERON_GOREFIEND_INTRO:
+                return TeronGorefiendIntro;
+            case DATA_AKAMA_ILLIDAN_INTRO:
+                return AkamaIllidanIntro;
+            default:
+                return 0;
+            }
+        }
+
+        void SetData(uint32 type, uint32 data) override
+        {
+            switch (type)
+            {
+            case DATA_AKAMA:
+                AkamaState = data;
+                break;
+            case ACTION_OPEN_DOOR:
+                if (GameObject* illidanGate = GetGameObject(DATA_GO_ILLIDAN_GATE))
+                    HandleGameObject(ObjectGuid::Empty, true, illidanGate);
+                break;
+            case DATA_TERON_GOREFIEND_INTRO:
+                TeronGorefiendIntro = data;
+                break;
+            case DATA_AKAMA_ILLIDAN_INTRO:
+                AkamaIllidanIntro = data;
+                break;
+            default:
+                break;
+            }
+        }
+
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
+            {
+            case DATA_HIGH_WARLORD_NAJENTUS:
+                if (state == DONE)
+                    if (Creature* trigger = GetCreature(DATA_BLACK_TEMPLE_TRIGGER))
+                        trigger->AI()->Talk(EMOTE_HIGH_WARLORD_NAJENTUS_DIED);
+                break;
+            case DATA_SHADE_OF_AKAMA:
+                if (state == DONE)
+                    for (ObjectGuid ashtongueGuid : AshtongueGUIDs)
+                        if (Creature* ashtongue = instance->GetCreature(ashtongueGuid))
+                            ashtongue->SetFaction(FACTION_ASHTONGUE_DEATHSWORN);
+                [[fallthrough]];
+            case DATA_TERON_GOREFIEND:
+            case DATA_GURTOGG_BLOODBOIL:
+            case DATA_RELIQUARY_OF_SOULS:
+                if (state == DONE && CheckDenOfMortalDoor())
+                {
+                    if (Creature* trigger = GetCreature(DATA_BLACK_TEMPLE_TRIGGER))
+                        trigger->AI()->Talk(EMOTE_DEN_OF_MORTAL_DOOR_OPEN);
+
+                    if (GameObject* door = GetGameObject(DATA_GO_DEN_OF_MORTAL_DOOR))
+                        HandleGameObject(ObjectGuid::Empty, true, door);
+                }
+                break;
+            case DATA_ILLIDARI_COUNCIL:
+                if (state == DONE)
+                    if (Creature* akama = GetCreature(DATA_AKAMA))
+                        akama->AI()->DoAction(ACTION_ACTIVE_AKAMA_INTRO);
+                break;
+            default:
+                break;
+            }
+
+            return true;
+        }
+
+        bool CheckDenOfMortalDoor()
+        {
+            for (BTDataTypes boss : {DATA_SHADE_OF_AKAMA, DATA_TERON_GOREFIEND, DATA_RELIQUARY_OF_SOULS, DATA_GURTOGG_BLOODBOIL})
+                if (GetBossState(boss) != DONE)
+                    return false;
+            return true;
+        }
+
+    protected:
+        GuidVector AshtongueGUIDs;
+        uint8 AkamaState;
+        uint8 TeronGorefiendIntro;
+        uint8 AkamaIllidanIntro;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_black_temple_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_black_temple()

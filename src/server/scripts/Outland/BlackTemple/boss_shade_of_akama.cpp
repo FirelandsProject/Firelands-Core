@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -32,116 +32,116 @@
 enum Says
 {
     // Akama
-    SAY_BROKEN_FREE_0  = 0,
-    SAY_BROKEN_FREE_1  = 1,
-    SAY_BROKEN_FREE_2  = 2,
-    SAY_LOW_HEALTH     = 3,
-    SAY_DEAD           = 4,
+    SAY_BROKEN_FREE_0 = 0,
+    SAY_BROKEN_FREE_1 = 1,
+    SAY_BROKEN_FREE_2 = 2,
+    SAY_LOW_HEALTH = 3,
+    SAY_DEAD = 4,
     // Ashtongue Broken
     SAY_BROKEN_SPECIAL = 0,
-    SAY_BROKEN_HAIL    = 1
+    SAY_BROKEN_HAIL = 1
 };
 
 enum Spells
 {
     // Akama
-    SPELL_STEALTH                    = 34189,
-    SPELL_AKAMA_SOUL_CHANNEL         = 40447,
-    SPELL_FIXATE                     = 40607,
-    SPELL_CHAIN_LIGHTNING            = 39945,
-    SPELL_DESTRUCTIVE_POISON         = 40874,
-    SPELL_AKAMA_SOUL_RETRIEVE        = 40902,
+    SPELL_STEALTH = 34189,
+    SPELL_AKAMA_SOUL_CHANNEL = 40447,
+    SPELL_FIXATE = 40607,
+    SPELL_CHAIN_LIGHTNING = 39945,
+    SPELL_DESTRUCTIVE_POISON = 40874,
+    SPELL_AKAMA_SOUL_RETRIEVE = 40902,
     // Shade
-    SPELL_THREAT                     = 41602,
-    SPELL_SHADE_OF_AKAMA_TRIGGER     = 40955,
-    SPELL_AKAMA_SOUL_EXPEL_CHANNEL   = 40927,
+    SPELL_THREAT = 41602,
+    SPELL_SHADE_OF_AKAMA_TRIGGER = 40955,
+    SPELL_AKAMA_SOUL_EXPEL_CHANNEL = 40927,
     // Ashtongue Channeler
-    SPELL_SHADE_SOUL_CHANNEL         = 40401,
-    SPELL_SHADE_SOUL_CHANNEL_2       = 40520,
+    SPELL_SHADE_SOUL_CHANNEL = 40401,
+    SPELL_SHADE_SOUL_CHANNEL_2 = 40520,
     // Creature Spawner
-    SPELL_ASHTONGUE_WAVE_B           = 42035,
-    SPELL_SUMMON_ASHTONGUE_SORCERER  = 40476,
-    SPELL_SUMMON_ASHTONGUE_DEFENDER  = 40474,
+    SPELL_ASHTONGUE_WAVE_B = 42035,
+    SPELL_SUMMON_ASHTONGUE_SORCERER = 40476,
+    SPELL_SUMMON_ASHTONGUE_DEFENDER = 40474,
     // Ashtongue Defender
-    SPELL_DEBILITATING_STRIKE        = 41178,
-    SPELL_HEROIC_STRIKE              = 41975,
-    SPELL_SHIELD_BASH                = 41180,
-    SPELL_WINDFURY                   = 38229,
+    SPELL_DEBILITATING_STRIKE = 41178,
+    SPELL_HEROIC_STRIKE = 41975,
+    SPELL_SHIELD_BASH = 41180,
+    SPELL_WINDFURY = 38229,
     // Ashtongue Rogue
-    SPELL_DEBILITATING_POISON        = 41978,
-    SPELL_EVISCERATE                 = 41177,
+    SPELL_DEBILITATING_POISON = 41978,
+    SPELL_EVISCERATE = 41177,
     // Ashtongue Elementalist
-    SPELL_RAIN_OF_FIRE               = 42023,
-    SPELL_LIGHTNING_BOLT             = 42024,
+    SPELL_RAIN_OF_FIRE = 42023,
+    SPELL_LIGHTNING_BOLT = 42024,
     // Ashtongue Spiritbinder
-    SPELL_SPIRIT_MEND                = 42025,
-    SPELL_CHAIN_HEAL                 = 42027,
-    SPELL_SPIRITBINDER_SPIRIT_HEAL   = 42317
+    SPELL_SPIRIT_MEND = 42025,
+    SPELL_CHAIN_HEAL = 42027,
+    SPELL_SPIRITBINDER_SPIRIT_HEAL = 42317
 };
 
 enum Creatures
 {
-    NPC_ASHTONGUE_CHANNELER    = 23421,
-    NPC_ASHTONGUE_BROKEN       = 23319,
+    NPC_ASHTONGUE_CHANNELER = 23421,
+    NPC_ASHTONGUE_BROKEN = 23319,
     NPC_CREATURE_SPAWNER_AKAMA = 23210
 };
 
 enum Actions
 {
-    ACTION_START_SPAWNING      = 0,
-    ACTION_STOP_SPAWNING       = 1,
-    ACTION_DESPAWN_ALL_SPAWNS  = 2,
+    ACTION_START_SPAWNING = 0,
+    ACTION_STOP_SPAWNING = 1,
+    ACTION_DESPAWN_ALL_SPAWNS = 2,
     ACTION_SHADE_OF_AKAMA_DEAD = 3,
-    ACTION_BROKEN_SPECIAL      = 4,
-    ACTION_BROKEN_EMOTE        = 5,
-    ACTION_BROKEN_HAIL         = 6
+    ACTION_BROKEN_SPECIAL = 4,
+    ACTION_BROKEN_EMOTE = 5,
+    ACTION_BROKEN_HAIL = 6
 };
 
 enum Events
 {
     // Akama
-    EVENT_SHADE_START                    =  1,
-    EVENT_SHADE_CHANNEL                  =  2,
-    EVENT_FIXATE                         =  3,
-    EVENT_CHAIN_LIGHTNING                =  4,
-    EVENT_DESTRUCTIVE_POISON             =  5,
-    EVENT_START_BROKEN_FREE              =  6,
-    EVENT_START_SOUL_RETRIEVE            =  7,
-    EVENT_EVADE_CHECK                    =  8,
-    EVENT_BROKEN_FREE_1                  =  9,
-    EVENT_BROKEN_FREE_2                  = 10,
-    EVENT_BROKEN_FREE_3                  = 11,
-    EVENT_BROKEN_FREE_4                  = 12,
+    EVENT_SHADE_START = 1,
+    EVENT_SHADE_CHANNEL = 2,
+    EVENT_FIXATE = 3,
+    EVENT_CHAIN_LIGHTNING = 4,
+    EVENT_DESTRUCTIVE_POISON = 5,
+    EVENT_START_BROKEN_FREE = 6,
+    EVENT_START_SOUL_RETRIEVE = 7,
+    EVENT_EVADE_CHECK = 8,
+    EVENT_BROKEN_FREE_1 = 9,
+    EVENT_BROKEN_FREE_2 = 10,
+    EVENT_BROKEN_FREE_3 = 11,
+    EVENT_BROKEN_FREE_4 = 12,
     // Shade of Akama
-    EVENT_INITIALIZE_SPAWNERS            = 13,
-    EVENT_START_CHANNELERS_AND_SPAWNERS  = 14,
-    EVENT_ADD_THREAT                     = 15,
+    EVENT_INITIALIZE_SPAWNERS = 13,
+    EVENT_START_CHANNELERS_AND_SPAWNERS = 14,
+    EVENT_ADD_THREAT = 15,
     // Creature spawner
-    EVENT_SPAWN_WAVE_B                   = 16,
-    EVENT_SUMMON_ASHTONGUE_SORCERER      = 17,
-    EVENT_SUMMON_ASHTONGUE_DEFENDER      = 18,
+    EVENT_SPAWN_WAVE_B = 16,
+    EVENT_SUMMON_ASHTONGUE_SORCERER = 17,
+    EVENT_SUMMON_ASHTONGUE_DEFENDER = 18,
     // Ashtongue Defender
-    EVENT_DEBILITATING_STRIKE            = 19,
-    EVENT_HEROIC_STRIKE                  = 20,
-    EVENT_SHIELD_BASH                    = 21,
-    EVENT_WINDFURY                       = 22,
+    EVENT_DEBILITATING_STRIKE = 19,
+    EVENT_HEROIC_STRIKE = 20,
+    EVENT_SHIELD_BASH = 21,
+    EVENT_WINDFURY = 22,
     // Ashtongue Rogue
-    EVENT_DEBILITATING_POISON            = 23,
-    EVENT_EVISCERATE                     = 24,
+    EVENT_DEBILITATING_POISON = 23,
+    EVENT_EVISCERATE = 24,
     // Ashtongue Elementalist
-    EVENT_RAIN_OF_FIRE                   = 25,
-    EVENT_LIGHTNING_BOLT                 = 26,
+    EVENT_RAIN_OF_FIRE = 25,
+    EVENT_LIGHTNING_BOLT = 26,
     // Ashtongue Spiritbinder
-    EVENT_SPIRIT_HEAL                    = 27,
-    EVENT_SPIRIT_MEND_RESET              = 28,
-    EVENT_CHAIN_HEAL_RESET               = 29
+    EVENT_SPIRIT_HEAL = 27,
+    EVENT_SPIRIT_MEND_RESET = 28,
+    EVENT_CHAIN_HEAL_RESET = 29
 };
 
 enum Misc
 {
     AKAMA_CHANNEL_WAYPOINT = 0,
-    AKAMA_INTRO_WAYPOINT   = 1,
-    SUMMON_GROUP_RESET     = 1
+    AKAMA_INTRO_WAYPOINT = 1,
+    SUMMON_GROUP_RESET = 1
 };
 
 Position const AkamaWP[2] =
@@ -194,8 +194,8 @@ Position const BrokenWP[18] =
     { 478.8986f, 370.1895f, 112.7839f }
 };
 
-static float const MIDDLE_OF_ROOM    = 400.0f;
-static float const FACE_THE_DOOR     = 0.08726646f;
+static float const MIDDLE_OF_ROOM = 400.0f;
+static float const FACE_THE_DOOR = 0.08726646f;
 static float const FACE_THE_PLATFORM = 3.118662f;
 
 
@@ -305,37 +305,37 @@ struct boss_shade_of_akama : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_INITIALIZE_SPAWNERS:
-                {
-                    std::list<Creature*> SpawnerList;
-                    me->GetCreatureListWithEntryInGrid(SpawnerList, NPC_CREATURE_SPAWNER_AKAMA);
-                    for (Creature* spawner : SpawnerList)
-                        _spawners.push_back(spawner->GetGUID());
+            case EVENT_INITIALIZE_SPAWNERS:
+            {
+                std::list<Creature*> SpawnerList;
+                me->GetCreatureListWithEntryInGrid(SpawnerList, NPC_CREATURE_SPAWNER_AKAMA);
+                for (Creature* spawner : SpawnerList)
+                    _spawners.push_back(spawner->GetGUID());
 
-                    break;
-                }
-                case EVENT_START_CHANNELERS_AND_SPAWNERS:
-                {
-                    for (ObjectGuid const& summonGuid : summons)
-                        if (Creature* channeler = ObjectAccessor::GetCreature(*me, summonGuid))
-                            channeler->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                break;
+            }
+            case EVENT_START_CHANNELERS_AND_SPAWNERS:
+            {
+                for (ObjectGuid const& summonGuid : summons)
+                    if (Creature* channeler = ObjectAccessor::GetCreature(*me, summonGuid))
+                        channeler->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
-                    for (ObjectGuid const& spawnerGuid : _spawners)
-                        if (Creature* spawner = ObjectAccessor::GetCreature(*me, spawnerGuid))
-                            spawner->AI()->DoAction(ACTION_START_SPAWNING);
+                for (ObjectGuid const& spawnerGuid : _spawners)
+                    if (Creature* spawner = ObjectAccessor::GetCreature(*me, spawnerGuid))
+                        spawner->AI()->DoAction(ACTION_START_SPAWNING);
 
-                    break;
-                }
-                case EVENT_ADD_THREAT:
-                    DoCast(SPELL_THREAT);
-                    events.Repeat(Seconds(3) + Milliseconds(500));
-                    break;
-                case EVENT_EVADE_CHECK:
-                    EnterEvadeModeIfNeeded();
-                    events.Repeat(Seconds(10));
-                    break;
-                default:
-                    break;
+                break;
+            }
+            case EVENT_ADD_THREAT:
+                DoCast(SPELL_THREAT);
+                events.Repeat(Seconds(3) + Milliseconds(500));
+                break;
+            case EVENT_EVADE_CHECK:
+                EnterEvadeModeIfNeeded();
+                events.Repeat(Seconds(10));
+                break;
+            default:
+                break;
             }
         }
 
@@ -457,61 +457,61 @@ struct npc_akama_shade : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_SHADE_START:
-                    _instance->SetBossState(DATA_SHADE_OF_AKAMA, IN_PROGRESS);
-                    me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                    me->RemoveAurasDueToSpell(SPELL_STEALTH);
-                    me->SetWalk(true);
-                    me->GetMotionMaster()->MovePoint(AKAMA_CHANNEL_WAYPOINT, AkamaWP[0], false);
-                    break;
-                case EVENT_SHADE_CHANNEL:
-                    me->SetFacingTo(FACE_THE_PLATFORM);
-                    DoCastSelf(SPELL_AKAMA_SOUL_CHANNEL);
-                    me->SetFaction(FACTION_MONSTER_SPAR_BUDDY);
-                    _events.ScheduleEvent(EVENT_FIXATE, 5s);
-                    break;
-                case EVENT_FIXATE:
-                    DoCast(SPELL_FIXATE);
-                    break;
-                case EVENT_CHAIN_LIGHTNING:
-                    DoCastVictim(SPELL_CHAIN_LIGHTNING);
-                    _events.Repeat(Seconds(8), Seconds(15));
-                    break;
-                case EVENT_DESTRUCTIVE_POISON:
-                    DoCastSelf(SPELL_DESTRUCTIVE_POISON);
-                    _events.Repeat(Seconds(3), Seconds(7));
-                    break;
-                case EVENT_START_SOUL_RETRIEVE:
-                    me->SetFacingTo(FACE_THE_DOOR);
-                    DoCast(SPELL_AKAMA_SOUL_RETRIEVE);
-                    _events.ScheduleEvent(EVENT_START_BROKEN_FREE, 15s);
-                    break;
-                case EVENT_START_BROKEN_FREE:
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
-                    Talk(SAY_BROKEN_FREE_0);
-                    SummonBrokens();
-                    _events.ScheduleEvent(EVENT_BROKEN_FREE_1, Seconds(10));
-                    break;
-                case EVENT_BROKEN_FREE_1:
-                    Talk(SAY_BROKEN_FREE_1);
-                    _events.ScheduleEvent(EVENT_BROKEN_FREE_2, Seconds(12));
-                    break;
-                case EVENT_BROKEN_FREE_2:
-                    Talk(SAY_BROKEN_FREE_2);
-                    _events.ScheduleEvent(EVENT_BROKEN_FREE_3, Seconds(15));
-                    break;
-                case EVENT_BROKEN_FREE_3:
-                    if (Creature* special = ObjectAccessor::GetCreature(*me, _chosen))
-                        special->AI()->Talk(SAY_BROKEN_SPECIAL);
+            case EVENT_SHADE_START:
+                _instance->SetBossState(DATA_SHADE_OF_AKAMA, IN_PROGRESS);
+                me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                me->RemoveAurasDueToSpell(SPELL_STEALTH);
+                me->SetWalk(true);
+                me->GetMotionMaster()->MovePoint(AKAMA_CHANNEL_WAYPOINT, AkamaWP[0], false);
+                break;
+            case EVENT_SHADE_CHANNEL:
+                me->SetFacingTo(FACE_THE_PLATFORM);
+                DoCastSelf(SPELL_AKAMA_SOUL_CHANNEL);
+                me->SetFaction(FACTION_MONSTER_SPAR_BUDDY);
+                _events.ScheduleEvent(EVENT_FIXATE, 5s);
+                break;
+            case EVENT_FIXATE:
+                DoCast(SPELL_FIXATE);
+                break;
+            case EVENT_CHAIN_LIGHTNING:
+                DoCastVictim(SPELL_CHAIN_LIGHTNING);
+                _events.Repeat(Seconds(8), Seconds(15));
+                break;
+            case EVENT_DESTRUCTIVE_POISON:
+                DoCastSelf(SPELL_DESTRUCTIVE_POISON);
+                _events.Repeat(Seconds(3), Seconds(7));
+                break;
+            case EVENT_START_SOUL_RETRIEVE:
+                me->SetFacingTo(FACE_THE_DOOR);
+                DoCast(SPELL_AKAMA_SOUL_RETRIEVE);
+                _events.ScheduleEvent(EVENT_START_BROKEN_FREE, 15s);
+                break;
+            case EVENT_START_BROKEN_FREE:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
+                Talk(SAY_BROKEN_FREE_0);
+                SummonBrokens();
+                _events.ScheduleEvent(EVENT_BROKEN_FREE_1, Seconds(10));
+                break;
+            case EVENT_BROKEN_FREE_1:
+                Talk(SAY_BROKEN_FREE_1);
+                _events.ScheduleEvent(EVENT_BROKEN_FREE_2, Seconds(12));
+                break;
+            case EVENT_BROKEN_FREE_2:
+                Talk(SAY_BROKEN_FREE_2);
+                _events.ScheduleEvent(EVENT_BROKEN_FREE_3, Seconds(15));
+                break;
+            case EVENT_BROKEN_FREE_3:
+                if (Creature* special = ObjectAccessor::GetCreature(*me, _chosen))
+                    special->AI()->Talk(SAY_BROKEN_SPECIAL);
 
-                    _summons.DoAction(ACTION_BROKEN_EMOTE, _pred);
-                    _events.ScheduleEvent(EVENT_BROKEN_FREE_4, Seconds(5));
-                    break;
-                case EVENT_BROKEN_FREE_4:
-                    _summons.DoAction(ACTION_BROKEN_HAIL, _pred);
-                    break;
-                default:
-                    break;
+                _summons.DoAction(ACTION_BROKEN_EMOTE, _pred);
+                _events.ScheduleEvent(EVENT_BROKEN_FREE_4, Seconds(5));
+                break;
+            case EVENT_BROKEN_FREE_4:
+                _summons.DoAction(ACTION_BROKEN_HAIL, _pred);
+                break;
+            default:
+                break;
             }
         }
 
@@ -563,18 +563,18 @@ struct npc_ashtongue_channeler : public PassiveAI
     void Reset() override
     {
         _scheduler.Schedule(Seconds(2), [this](TaskContext channel)
-        {
-            if (Creature* shade = _instance->GetCreature(DATA_SHADE_OF_AKAMA))
             {
-                if (shade->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
-                    DoCastSelf(SPELL_SHADE_SOUL_CHANNEL);
+                if (Creature* shade = _instance->GetCreature(DATA_SHADE_OF_AKAMA))
+                {
+                    if (shade->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
+                        DoCastSelf(SPELL_SHADE_SOUL_CHANNEL);
 
-                else
-                    me->DespawnOrUnsummon(Seconds(3));
-            }
+                    else
+                        me->DespawnOrUnsummon(Seconds(3));
+                }
 
-            channel.Repeat(Seconds(2));
-        });
+                channel.Repeat(Seconds(2));
+            });
         me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
     }
 
@@ -619,27 +619,27 @@ struct npc_creature_generator_akama : public ScriptedAI
     {
         switch (actionId)
         {
-            case ACTION_START_SPAWNING:
-                if (_leftSide)
-                {
-                    _events.ScheduleEvent(EVENT_SPAWN_WAVE_B, Milliseconds(100));
-                    _events.ScheduleEvent(EVENT_SUMMON_ASHTONGUE_SORCERER, 2s, 5s);
-                }
-                else
-                {
-                    _events.ScheduleEvent(EVENT_SPAWN_WAVE_B, 10s);
-                    _events.ScheduleEvent(EVENT_SUMMON_ASHTONGUE_DEFENDER, 2s, 5s);
-                }
-                break;
-            case ACTION_STOP_SPAWNING:
-                _events.Reset();
-                break;
-            case ACTION_DESPAWN_ALL_SPAWNS:
-                _events.Reset();
-                _summons.DespawnAll();
-                break;
-            default:
-                break;
+        case ACTION_START_SPAWNING:
+            if (_leftSide)
+            {
+                _events.ScheduleEvent(EVENT_SPAWN_WAVE_B, Milliseconds(100));
+                _events.ScheduleEvent(EVENT_SUMMON_ASHTONGUE_SORCERER, 2s, 5s);
+            }
+            else
+            {
+                _events.ScheduleEvent(EVENT_SPAWN_WAVE_B, 10s);
+                _events.ScheduleEvent(EVENT_SUMMON_ASHTONGUE_DEFENDER, 2s, 5s);
+            }
+            break;
+        case ACTION_STOP_SPAWNING:
+            _events.Reset();
+            break;
+        case ACTION_DESPAWN_ALL_SPAWNS:
+            _events.Reset();
+            _summons.DespawnAll();
+            break;
+        default:
+            break;
         }
     }
 
@@ -651,20 +651,20 @@ struct npc_creature_generator_akama : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_SPAWN_WAVE_B:
-                    DoCastSelf(SPELL_ASHTONGUE_WAVE_B);
-                    _events.Repeat(Seconds(50), Seconds(60));
-                    break;
-                case EVENT_SUMMON_ASHTONGUE_SORCERER: // left
-                    DoCastSelf(SPELL_SUMMON_ASHTONGUE_SORCERER);
-                    _events.Repeat(Seconds(30), Seconds(35));
-                    break;
-                case EVENT_SUMMON_ASHTONGUE_DEFENDER: // right
-                    DoCastSelf(SPELL_SUMMON_ASHTONGUE_DEFENDER);
-                    _events.Repeat(Seconds(30), Seconds(40));
-                    break;
-                default:
-                    break;
+            case EVENT_SPAWN_WAVE_B:
+                DoCastSelf(SPELL_ASHTONGUE_WAVE_B);
+                _events.Repeat(Seconds(50), Seconds(60));
+                break;
+            case EVENT_SUMMON_ASHTONGUE_SORCERER: // left
+                DoCastSelf(SPELL_SUMMON_ASHTONGUE_SORCERER);
+                _events.Repeat(Seconds(30), Seconds(35));
+                break;
+            case EVENT_SUMMON_ASHTONGUE_DEFENDER: // right
+                DoCastSelf(SPELL_SUMMON_ASHTONGUE_DEFENDER);
+                _events.Repeat(Seconds(30), Seconds(40));
+                break;
+            default:
+                break;
             }
         }
     }
@@ -728,24 +728,24 @@ struct npc_ashtongue_sorcerer : public ScriptedAI
             me->GetMotionMaster()->MovePoint(1, me->GetPositionX() + frand(-8.0f, 8.0f), me->GetPositionY() + frand(-8.0f, 8.0f), me->GetPositionZ());
 
             _scheduler.Schedule(Seconds(1) + Milliseconds(500), [this](TaskContext sorcer_channel)
-            {
-                if (Creature* shade = _instance->GetCreature(DATA_SHADE_OF_AKAMA))
                 {
-                    if (shade->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
+                    if (Creature* shade = _instance->GetCreature(DATA_SHADE_OF_AKAMA))
                     {
-                        me->SetFacingToObject(shade);
-                        DoCastSelf(SPELL_SHADE_SOUL_CHANNEL);
-                        sorcer_channel.Repeat(Seconds(2));
+                        if (shade->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE))
+                        {
+                            me->SetFacingToObject(shade);
+                            DoCastSelf(SPELL_SHADE_SOUL_CHANNEL);
+                            sorcer_channel.Repeat(Seconds(2));
+                        }
+                        else
+                        {
+                            me->InterruptSpell(CURRENT_CHANNELED_SPELL);
+                            _switchToCombat = true;
+                            if (Creature* akama = _instance->GetCreature(DATA_AKAMA_SHADE))
+                                AttackStart(akama);
+                        }
                     }
-                    else
-                    {
-                        me->InterruptSpell(CURRENT_CHANNELED_SPELL);
-                        _switchToCombat = true;
-                        if (Creature* akama = _instance->GetCreature(DATA_AKAMA_SHADE))
-                            AttackStart(akama);
-                    }
-                }
-            });
+                });
         }
     }
 
@@ -807,24 +807,24 @@ struct npc_ashtongue_defender : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_DEBILITATING_STRIKE:
-                    DoCastVictim(SPELL_DEBILITATING_STRIKE);
-                    _events.Repeat(Seconds(20), Seconds(25));
-                    break;
-                case EVENT_HEROIC_STRIKE:
-                    DoCastSelf(SPELL_HEROIC_STRIKE);
-                    _events.Repeat(Seconds(5), Seconds(15));
-                    break;
-                case EVENT_SHIELD_BASH:
-                    DoCastVictim(SPELL_SHIELD_BASH);
-                    _events.Repeat(Seconds(10), Seconds(20));
-                    break;
-                case EVENT_WINDFURY:
-                    DoCastVictim(SPELL_WINDFURY);
-                    _events.Repeat(Seconds(6), Seconds(8));
-                    break;
-                default:
-                    break;
+            case EVENT_DEBILITATING_STRIKE:
+                DoCastVictim(SPELL_DEBILITATING_STRIKE);
+                _events.Repeat(Seconds(20), Seconds(25));
+                break;
+            case EVENT_HEROIC_STRIKE:
+                DoCastSelf(SPELL_HEROIC_STRIKE);
+                _events.Repeat(Seconds(5), Seconds(15));
+                break;
+            case EVENT_SHIELD_BASH:
+                DoCastVictim(SPELL_SHIELD_BASH);
+                _events.Repeat(Seconds(10), Seconds(20));
+                break;
+            case EVENT_WINDFURY:
+                DoCastVictim(SPELL_WINDFURY);
+                _events.Repeat(Seconds(6), Seconds(8));
+                break;
+            default:
+                break;
             }
         }
 
@@ -873,16 +873,16 @@ struct npc_ashtongue_rogue : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_DEBILITATING_POISON:
-                    DoCastVictim(SPELL_DEBILITATING_POISON);
-                    _events.Repeat(Seconds(15), Seconds(20));
-                    break;
-                case EVENT_EVISCERATE:
-                    DoCastVictim(SPELL_EVISCERATE);
-                    _events.Repeat(Seconds(12), Seconds(20));
-                    break;
-                default:
-                    break;
+            case EVENT_DEBILITATING_POISON:
+                DoCastVictim(SPELL_DEBILITATING_POISON);
+                _events.Repeat(Seconds(15), Seconds(20));
+                break;
+            case EVENT_EVISCERATE:
+                DoCastVictim(SPELL_EVISCERATE);
+                _events.Repeat(Seconds(12), Seconds(20));
+                break;
+            default:
+                break;
             }
         }
 
@@ -931,16 +931,16 @@ struct npc_ashtongue_elementalist : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_RAIN_OF_FIRE:
-                    DoCastVictim(SPELL_RAIN_OF_FIRE);
-                    _events.Repeat(Seconds(15), Seconds(20));
-                    break;
-                case EVENT_LIGHTNING_BOLT:
-                    DoCastVictim(SPELL_LIGHTNING_BOLT);
-                    _events.Repeat(Seconds(8), Seconds(15));
-                    break;
-                default:
-                    break;
+            case EVENT_RAIN_OF_FIRE:
+                DoCastVictim(SPELL_RAIN_OF_FIRE);
+                _events.Repeat(Seconds(15), Seconds(20));
+                break;
+            case EVENT_LIGHTNING_BOLT:
+                DoCastVictim(SPELL_LIGHTNING_BOLT);
+                _events.Repeat(Seconds(8), Seconds(15));
+                break;
+            default:
+                break;
             }
         }
 
@@ -1014,18 +1014,18 @@ struct npc_ashtongue_spiritbinder : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_SPIRIT_HEAL:
-                    DoCastSelf(SPELL_SPIRITBINDER_SPIRIT_HEAL);
-                    _events.Repeat(Seconds(13), Seconds(16));
-                    break;
-                case EVENT_SPIRIT_MEND_RESET:
-                    _spiritMend = false;
-                    break;
-                case EVENT_CHAIN_HEAL_RESET:
-                    _chainHeal = false;
-                    break;
-                default:
-                    break;
+            case EVENT_SPIRIT_HEAL:
+                DoCastSelf(SPELL_SPIRITBINDER_SPIRIT_HEAL);
+                _events.Repeat(Seconds(13), Seconds(16));
+                break;
+            case EVENT_SPIRIT_MEND_RESET:
+                _spiritMend = false;
+                break;
+            case EVENT_CHAIN_HEAL_RESET:
+                _chainHeal = false;
+                break;
+            default:
+                break;
             }
         }
 
@@ -1062,18 +1062,18 @@ struct npc_ashtongue_broken : public ScriptedAI
     {
         switch (actionId)
         {
-            case ACTION_BROKEN_SPECIAL:
-                Talk(SAY_BROKEN_SPECIAL);
-                break;
-            case ACTION_BROKEN_HAIL:
-                me->SetFaction(FACTION_ASHTONGUE_DEATHSWORN);
-                Talk(SAY_BROKEN_HAIL);
-                break;
-            case ACTION_BROKEN_EMOTE:
-                me->SetByteValue(UNIT_FIELD_BYTES_1, UNIT_BYTES_1_OFFSET_STAND_STATE, UNIT_STAND_STATE_KNEEL);
-                break;
-            default:
-                break;
+        case ACTION_BROKEN_SPECIAL:
+            Talk(SAY_BROKEN_SPECIAL);
+            break;
+        case ACTION_BROKEN_HAIL:
+            me->SetFaction(FACTION_ASHTONGUE_DEATHSWORN);
+            Talk(SAY_BROKEN_HAIL);
+            break;
+        case ACTION_BROKEN_EMOTE:
+            me->SetByteValue(UNIT_FIELD_BYTES_1, UNIT_BYTES_1_OFFSET_STAND_STATE, UNIT_STAND_STATE_KNEEL);
+            break;
+        default:
+            break;
         }
     }
 

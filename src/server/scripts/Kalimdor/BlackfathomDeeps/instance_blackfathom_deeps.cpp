@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Instance_Blackfathom_Deeps
-SD%Complete: 50
-SDComment:
-SDCategory: Blackfathom Deeps
-EndScriptData */
+ /* ScriptData
+ SDName: Instance_Blackfathom_Deeps
+ SD%Complete: 50
+ SDComment:
+ SDCategory: Blackfathom Deeps
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "blackfathom_deeps.h"
@@ -66,12 +66,12 @@ public:
         {
             switch (creature->GetEntry())
             {
-                case NPC_TWILIGHT_LORD_KELRIS:
-                    twilightLordKelrisGUID = creature->GetGUID();
-                    break;
-                case NPC_LORGUS_JETT:
-                    creature->SetHomePosition(LorgusPosition[urand(0, 3)]);
-                    break;
+            case NPC_TWILIGHT_LORD_KELRIS:
+                twilightLordKelrisGUID = creature->GetGUID();
+                break;
+            case NPC_LORGUS_JETT:
+                creature->SetHomePosition(LorgusPosition[urand(0, 3)]);
+                break;
             }
         }
 
@@ -79,33 +79,33 @@ public:
         {
             switch (go->GetEntry())
             {
-                case GO_FIRE_OF_AKU_MAI_1:
-                    shrine1GUID = go->GetGUID();
-                    break;
-                case GO_FIRE_OF_AKU_MAI_2:
-                    shrine2GUID = go->GetGUID();
-                    break;
-                case GO_FIRE_OF_AKU_MAI_3:
-                    shrine3GUID = go->GetGUID();
-                    break;
-                case GO_FIRE_OF_AKU_MAI_4:
-                    shrine4GUID = go->GetGUID();
-                    break;
-                case GO_SHRINE_OF_GELIHAST:
-                    shrineOfGelihastGUID = go->GetGUID();
-                    if (GetBossState(DATA_GELIHAST) != DONE)
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                    break;
-                case GO_ALTAR_OF_THE_DEEPS:
-                    altarOfTheDeepsGUID = go->GetGUID();
-                    if (GetBossState(DATA_AKU_MAI) != DONE)
-                        go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                    break;
-                case GO_AKU_MAI_DOOR:
-                    if (GetBossState(DATA_AKU_MAI) == DONE)
-                        HandleGameObject(ObjectGuid::Empty, true, go);
-                    mainDoorGUID = go->GetGUID();
-                    break;
+            case GO_FIRE_OF_AKU_MAI_1:
+                shrine1GUID = go->GetGUID();
+                break;
+            case GO_FIRE_OF_AKU_MAI_2:
+                shrine2GUID = go->GetGUID();
+                break;
+            case GO_FIRE_OF_AKU_MAI_3:
+                shrine3GUID = go->GetGUID();
+                break;
+            case GO_FIRE_OF_AKU_MAI_4:
+                shrine4GUID = go->GetGUID();
+                break;
+            case GO_SHRINE_OF_GELIHAST:
+                shrineOfGelihastGUID = go->GetGUID();
+                if (GetBossState(DATA_GELIHAST) != DONE)
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_ALTAR_OF_THE_DEEPS:
+                altarOfTheDeepsGUID = go->GetGUID();
+                if (GetBossState(DATA_AKU_MAI) != DONE)
+                    go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_AKU_MAI_DOOR:
+                if (GetBossState(DATA_AKU_MAI) == DONE)
+                    HandleGameObject(ObjectGuid::Empty, true, go);
+                mainDoorGUID = go->GetGUID();
+                break;
             }
         }
 
@@ -113,50 +113,50 @@ public:
         {
             switch (type)
             {
-                case DATA_FIRE:
-                    countFires = data;
-                    switch (countFires)
+            case DATA_FIRE:
+                countFires = data;
+                switch (countFires)
+                {
+                case 1:
+                    if (GameObject* go = instance->GetGameObject(shrine1GUID))
                     {
-                        case 1:
-                            if (GameObject* go = instance->GetGameObject(shrine1GUID))
-                            {
-                                for (uint8 i = 0; i < 4; ++i)
-                                    go->SummonCreature(NPC_AKU_MAI_SNAPJAW, SpawnsLocation[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                            }
-                            break;
-                        case 2:
-                            if (GameObject* go = instance->GetGameObject(shrine1GUID))
-                            {
-                                for (uint8 i = 0; i < 2; ++i)
-                                {
-                                    go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[0], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                                    go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                                    go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                                    go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[3], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                                }
-                            }
-                            break;
-                        case 3:
-                            if (GameObject* go = instance->GetGameObject(shrine1GUID))
-                            {
-                                go->SummonCreature(NPC_AKU_MAI_SERVANT, SpawnsLocation[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                                go->SummonCreature(NPC_AKU_MAI_SERVANT, SpawnsLocation[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                            }
-                            break;
-                        case 4:
-                            if (GameObject* go = instance->GetGameObject(shrine1GUID))
-                            {
-                                for (uint8 i = 0; i < 4; ++i)
-                                    go->SummonCreature(NPC_BARBED_CRUSTACEAN, SpawnsLocation[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                            }
-                            break;
+                        for (uint8 i = 0; i < 4; ++i)
+                            go->SummonCreature(NPC_AKU_MAI_SNAPJAW, SpawnsLocation[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
                     }
                     break;
-                case DATA_EVENT:
-                    deathTimes = data;
-                    if (deathTimes == 18)
-                        HandleGameObject(mainDoorGUID, true);
+                case 2:
+                    if (GameObject* go = instance->GetGameObject(shrine1GUID))
+                    {
+                        for (uint8 i = 0; i < 2; ++i)
+                        {
+                            go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[0], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                            go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                            go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                            go->SummonCreature(NPC_MURKSHALLOW_SOFTSHELL, SpawnsLocation[3], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                        }
+                    }
                     break;
+                case 3:
+                    if (GameObject* go = instance->GetGameObject(shrine1GUID))
+                    {
+                        go->SummonCreature(NPC_AKU_MAI_SERVANT, SpawnsLocation[1], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                        go->SummonCreature(NPC_AKU_MAI_SERVANT, SpawnsLocation[2], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                    }
+                    break;
+                case 4:
+                    if (GameObject* go = instance->GetGameObject(shrine1GUID))
+                    {
+                        for (uint8 i = 0; i < 4; ++i)
+                            go->SummonCreature(NPC_BARBED_CRUSTACEAN, SpawnsLocation[i], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                    }
+                    break;
+                }
+                break;
+            case DATA_EVENT:
+                deathTimes = data;
+                if (deathTimes == 18)
+                    HandleGameObject(mainDoorGUID, true);
+                break;
             }
         }
 
@@ -167,21 +167,21 @@ public:
 
             switch (type)
             {
-                case DATA_GELIHAST:
-                    if (state == DONE)
-                        if (GameObject* go = instance->GetGameObject(shrineOfGelihastGUID))
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                    break;
-                case DATA_AKU_MAI:
-                    if (state == DONE)
-                        if (GameObject* go = instance->GetGameObject(altarOfTheDeepsGUID))
-                        {
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                            go->SummonCreature(NPC_MORRIDUNE, SpawnsLocation[4], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
-                        }
-                    break;
-                default:
-                    break;
+            case DATA_GELIHAST:
+                if (state == DONE)
+                    if (GameObject* go = instance->GetGameObject(shrineOfGelihastGUID))
+                        go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case DATA_AKU_MAI:
+                if (state == DONE)
+                    if (GameObject* go = instance->GetGameObject(altarOfTheDeepsGUID))
+                    {
+                        go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                        go->SummonCreature(NPC_MORRIDUNE, SpawnsLocation[4], TEMPSUMMON_CORPSE_TIMED_DESPAWN, 300000);
+                    }
+                break;
+            default:
+                break;
             }
 
             return true;
@@ -191,10 +191,10 @@ public:
         {
             switch (type)
             {
-                case DATA_FIRE:
-                    return countFires;
-                case DATA_EVENT:
-                    return deathTimes;
+            case DATA_FIRE:
+                return countFires;
+            case DATA_EVENT:
+                return deathTimes;
             }
 
             return 0;
@@ -204,20 +204,20 @@ public:
         {
             switch (data)
             {
-                case DATA_TWILIGHT_LORD_KELRIS:
-                    return twilightLordKelrisGUID;
-                case DATA_SHRINE1:
-                    return shrine1GUID;
-                case DATA_SHRINE2:
-                    return shrine2GUID;
-                case DATA_SHRINE3:
-                    return shrine3GUID;
-                case DATA_SHRINE4:
-                    return shrine4GUID;
-                case DATA_SHRINE_OF_GELIHAST:
-                    return shrineOfGelihastGUID;
-                case DATA_MAINDOOR:
-                    return mainDoorGUID;
+            case DATA_TWILIGHT_LORD_KELRIS:
+                return twilightLordKelrisGUID;
+            case DATA_SHRINE1:
+                return shrine1GUID;
+            case DATA_SHRINE2:
+                return shrine2GUID;
+            case DATA_SHRINE3:
+                return shrine3GUID;
+            case DATA_SHRINE4:
+                return shrine4GUID;
+            case DATA_SHRINE_OF_GELIHAST:
+                return shrineOfGelihastGUID;
+            case DATA_MAINDOOR:
+                return mainDoorGUID;
             }
 
             return ObjectGuid::Empty;

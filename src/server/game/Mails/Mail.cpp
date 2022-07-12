@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -126,7 +126,7 @@ void MailDraft::deleteIncludedItems(CharacterDatabaseTransaction& trans, bool in
         if (inDB)
         {
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_INSTANCE);
-            stmt->setUInt32(0, item->GetGUID().GetCounter());
+            stmt->SetData(0, item->GetGUID().GetCounter());
             trans->Append(stmt);
         }
 
@@ -166,8 +166,8 @@ void MailDraft::SendReturnToSender(uint32 sender_acc, ObjectGuid::LowType sender
             item->SaveToDB(trans);                      // item not in inventory and can be save standalone
             // owner in data will set at mail receive and item extracting
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ITEM_OWNER);
-            stmt->setUInt32(0, receiver_guid);
-            stmt->setUInt32(1, item->GetGUID().GetCounter());
+            stmt->SetData(0, receiver_guid);
+            stmt->SetData(1, item->GetGUID().GetCounter());
             trans->Append(stmt);
         }
     }
@@ -214,29 +214,29 @@ void MailDraft::SendMailTo(CharacterDatabaseTransaction& trans, MailReceiver con
     // Add to DB
     uint8 index = 0;
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_MAIL);
-    stmt->setUInt32(index, mailId);
-    stmt->setUInt8(++index, uint8(sender.GetMailMessageType()));
-    stmt->setInt8(++index, int8(sender.GetStationery()));
-    stmt->setUInt16(++index, GetMailTemplateId());
-    stmt->setUInt32(++index, sender.GetSenderId());
-    stmt->setUInt32(++index, receiver.GetPlayerGUIDLow());
-    stmt->setString(++index, GetSubject());
-    stmt->setString(++index, GetBody());
-    stmt->setBool(++index, !m_items.empty());
-    stmt->setUInt64(++index, uint64(expire_time));
-    stmt->setUInt64(++index, uint64(deliver_time));
-    stmt->setUInt64(++index, m_money);
-    stmt->setUInt64(++index, m_COD);
-    stmt->setUInt8(++index, uint8(checked));
+    stmt->SetData(index, mailId);
+    stmt->SetData(++index, uint8(sender.GetMailMessageType()));
+    stmt->SetData(++index, int8(sender.GetStationery()));
+    stmt->SetData(++index, GetMailTemplateId());
+    stmt->SetData(++index, sender.GetSenderId());
+    stmt->SetData(++index, receiver.GetPlayerGUIDLow());
+    stmt->SetData(++index, GetSubject());
+    stmt->SetData(++index, GetBody());
+    stmt->SetData(++index, !m_items.empty());
+    stmt->SetData(++index, uint64(expire_time));
+    stmt->SetData(++index, uint64(deliver_time));
+    stmt->SetData(++index, m_money);
+    stmt->SetData(++index, m_COD);
+    stmt->SetData(++index, uint8(checked));
     trans->Append(stmt);
 
     for (MailItemMap::const_iterator mailItemIter = m_items.begin(); mailItemIter != m_items.end(); ++mailItemIter)
     {
         Item* pItem = mailItemIter->second;
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_MAIL_ITEM);
-        stmt->setUInt32(0, mailId);
-        stmt->setUInt32(1, pItem->GetGUID().GetCounter());
-        stmt->setUInt32(2, receiver.GetPlayerGUIDLow());
+        stmt->SetData(0, mailId);
+        stmt->SetData(1, pItem->GetGUID().GetCounter());
+        stmt->SetData(2, receiver.GetPlayerGUIDLow());
         trans->Append(stmt);
     }
 

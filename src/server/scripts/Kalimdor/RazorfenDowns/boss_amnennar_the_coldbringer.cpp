@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,26 +21,26 @@
 
 enum Say
 {
-    SAY_AGGRO               = 0,
-    SAY_SUMMON60            = 1,
-    SAY_SUMMON30            = 2,
-    SAY_HP                  = 3,
-    SAY_KILL                = 4
+    SAY_AGGRO = 0,
+    SAY_SUMMON60 = 1,
+    SAY_SUMMON30 = 2,
+    SAY_HP = 3,
+    SAY_KILL = 4
 };
 
 enum Spells
 {
-    SPELL_AMNENNARSWRATH    = 13009,
-    SPELL_FROSTBOLT         = 15530,
-    SPELL_FROST_NOVA        = 15531,
-    SPELL_FROST_SPECTRES    = 12642
+    SPELL_AMNENNARSWRATH = 13009,
+    SPELL_FROSTBOLT = 15530,
+    SPELL_FROST_NOVA = 15531,
+    SPELL_FROST_SPECTRES = 12642
 };
 
 enum Events
 {
-    EVENT_AMNENNARSWRATH    = 1,
-    EVENT_FROSTBOLT         = 2,
-    EVENT_FROST_NOVA        = 3
+    EVENT_AMNENNARSWRATH = 1,
+    EVENT_FROSTBOLT = 2,
+    EVENT_FROST_NOVA = 3
 };
 
 class boss_amnennar_the_coldbringer : public CreatureScript
@@ -102,18 +102,18 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_AMNENNARSWRATH:
-                        DoCastVictim(SPELL_AMNENNARSWRATH);
-                        events.ScheduleEvent(EVENT_AMNENNARSWRATH, 12000);
-                        break;
-                    case EVENT_FROSTBOLT:
-                        DoCastVictim(SPELL_FROSTBOLT);
-                        events.ScheduleEvent(EVENT_FROSTBOLT, 8000);
-                        break;
-                    case EVENT_FROST_NOVA:
-                        DoCast(me, SPELL_FROST_NOVA);
-                        events.ScheduleEvent(EVENT_FROST_NOVA, 15000);
-                        break;
+                case EVENT_AMNENNARSWRATH:
+                    DoCastVictim(SPELL_AMNENNARSWRATH);
+                    events.ScheduleEvent(EVENT_AMNENNARSWRATH, 12000);
+                    break;
+                case EVENT_FROSTBOLT:
+                    DoCastVictim(SPELL_FROSTBOLT);
+                    events.ScheduleEvent(EVENT_FROSTBOLT, 8000);
+                    break;
+                case EVENT_FROST_NOVA:
+                    DoCast(me, SPELL_FROST_NOVA);
+                    events.ScheduleEvent(EVENT_FROST_NOVA, 15000);
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

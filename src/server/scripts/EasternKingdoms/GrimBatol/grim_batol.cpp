@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -37,16 +37,16 @@ enum TwilightBeguiler
     EVENT_CHAINED_MIND,
 
     // Phases
-    PHASE_COSMETIC                      = 1,
-    PHASE_COMBAT                        = 2,
+    PHASE_COSMETIC = 1,
+    PHASE_COMBAT = 2,
 
     // Spells
-    SPELL_GRONN_KNOCKBACK_COSMETIC      = 76138,
-    SPELL_BEGUILE                       = 76151,
-    SPELL_ENSLAVE_GRONN_COSMETIC_RIGHT  = 74867,
-    SPELL_ENSLAVE_GRONN_COSMETIC_LEFT   = 74884,
-    SPELL_DECEITFUL_BLAST               = 76715,
-    SPELL_CHAINED_MIND                  = 76711
+    SPELL_GRONN_KNOCKBACK_COSMETIC = 76138,
+    SPELL_BEGUILE = 76151,
+    SPELL_ENSLAVE_GRONN_COSMETIC_RIGHT = 74867,
+    SPELL_ENSLAVE_GRONN_COSMETIC_LEFT = 74884,
+    SPELL_DECEITFUL_BLAST = 76715,
+    SPELL_CHAINED_MIND = 76711
 };
 
 struct npc_grim_batol_twilight_beguiler : public ScriptedAI
@@ -92,45 +92,45 @@ struct npc_grim_batol_twilight_beguiler : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_BEGUILE:
-                    DoCastSelf(SPELL_BEGUILE);
-                    break;
-                case EVENT_MOVE_TO_HOME_POSITION:
-                    me->GetMotionMaster()->MoveTargetedHome();
-                    break;
-                case EVENT_ENSLAVE_GRONN_COSMETIC:
-                    if (Creature* gronn = me->FindNearestCreature(NPC_ENSLAVED_GRONN_BRUTE, 30.0f, true))
-                    {
-                        Position pos = gronn->GetHomePosition();
-                        pos.SetOrientation(pos.GetOrientation() + (float)M_PI / 1.5f);
+            case EVENT_BEGUILE:
+                DoCastSelf(SPELL_BEGUILE);
+                break;
+            case EVENT_MOVE_TO_HOME_POSITION:
+                me->GetMotionMaster()->MoveTargetedHome();
+                break;
+            case EVENT_ENSLAVE_GRONN_COSMETIC:
+                if (Creature* gronn = me->FindNearestCreature(NPC_ENSLAVED_GRONN_BRUTE, 30.0f, true))
+                {
+                    Position pos = gronn->GetHomePosition();
+                    pos.SetOrientation(pos.GetOrientation() + (float)M_PI / 1.5f);
 
-                        if (pos.HasInLine(&me->GetHomePosition(), 15.0f, 0.f))
-                            DoCastSelf(SPELL_ENSLAVE_GRONN_COSMETIC_LEFT);
-                        else
-                        {
-                            pos = gronn->GetHomePosition();
-                            pos.SetOrientation(pos.GetOrientation() - (float)M_PI / 1.5f);
-                            if (pos.HasInLine(&me->GetHomePosition(), 15.0f, 0.f))
-                                DoCastSelf(SPELL_ENSLAVE_GRONN_COSMETIC_RIGHT);
-                        }
-                    }
-                    break;
-                case EVENT_DECEITFUL_BLAST:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 25.0f, true))
-                        DoCast(target, SPELL_DECEITFUL_BLAST);
-
-                    if (_events.GetTimeUntilEvent(EVENT_CHAINED_MIND) > 4 * IN_MILLISECONDS)
-                        _events.Repeat(1s, 3s);
+                    if (pos.HasInLine(&me->GetHomePosition(), 15.0f, 0.f))
+                        DoCastSelf(SPELL_ENSLAVE_GRONN_COSMETIC_LEFT);
                     else
-                        _events.Repeat(11s, 12s);
-                    break;
-                case EVENT_CHAINED_MIND:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 25.0f, true))
-                        DoCast(target, SPELL_CHAINED_MIND);
-                    _events.Repeat(18s, 27s);
-                    break;
-                default:
-                    break;
+                    {
+                        pos = gronn->GetHomePosition();
+                        pos.SetOrientation(pos.GetOrientation() - (float)M_PI / 1.5f);
+                        if (pos.HasInLine(&me->GetHomePosition(), 15.0f, 0.f))
+                            DoCastSelf(SPELL_ENSLAVE_GRONN_COSMETIC_RIGHT);
+                    }
+                }
+                break;
+            case EVENT_DECEITFUL_BLAST:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 25.0f, true))
+                    DoCast(target, SPELL_DECEITFUL_BLAST);
+
+                if (_events.GetTimeUntilEvent(EVENT_CHAINED_MIND) > 4 * IN_MILLISECONDS)
+                    _events.Repeat(1s, 3s);
+                else
+                    _events.Repeat(11s, 12s);
+                break;
+            case EVENT_CHAINED_MIND:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 25.0f, true))
+                    DoCast(target, SPELL_CHAINED_MIND);
+                _events.Repeat(18s, 27s);
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();
@@ -142,29 +142,29 @@ private:
 
 enum BatteredRedDrake
 {
-    SPELL_NET                               = 79377,
-    SPELL_NET_SCRIPT                        = 79374,
-    SPELL_BOMBING_RUN_PROTECTION_TRIGGER    = 80364,
-    SPELL_GEAR_SCALING_TRIGGER              = 73917,
-    SPELL_EJECT_ALL_PASSENGERS              = 68576,
+    SPELL_NET = 79377,
+    SPELL_NET_SCRIPT = 79374,
+    SPELL_BOMBING_RUN_PROTECTION_TRIGGER = 80364,
+    SPELL_GEAR_SCALING_TRIGGER = 73917,
+    SPELL_EJECT_ALL_PASSENGERS = 68576,
 
-    ANIM_KIT_ID_LIFTOFF                     = 1009,
+    ANIM_KIT_ID_LIFTOFF = 1009,
 
-    EVENT_SET_HOVERING                      = 1,
+    EVENT_SET_HOVERING = 1,
     EVENT_PREPARE_BOMBARDMENT,
     EVENT_FLY_BOMBARDMENT,
     EVENT_FLY_AWAY,
 
-    SAY_WHISPER_BOMBARDMENT                 = 0,
-    SAY_ANNOUNCE_BOMBARDMENT                = 1,
+    SAY_WHISPER_BOMBARDMENT = 0,
+    SAY_ANNOUNCE_BOMBARDMENT = 1,
 
-    SPLINE_CHAIN_BOMBARDMENT                = 1,
-    SPLINE_CHAIN_ESCAPE_BOMBARDMENT         = 2,
+    SPLINE_CHAIN_BOMBARDMENT = 1,
+    SPLINE_CHAIN_ESCAPE_BOMBARDMENT = 2,
 
-    POINT_EJECT_PLAYER                      = 1
+    POINT_EJECT_PLAYER = 1
 };
 
-struct npc_grim_batol_battered_red_drake: public VehicleAI
+struct npc_grim_batol_battered_red_drake : public VehicleAI
 {
     npc_grim_batol_battered_red_drake(Creature* creature) : VehicleAI(creature), _instance(me->GetInstanceScript()) { }
 
@@ -199,12 +199,12 @@ struct npc_grim_batol_battered_red_drake: public VehicleAI
 
         switch (pointId)
         {
-            case POINT_EJECT_PLAYER:
-                DoCastSelf(SPELL_EJECT_ALL_PASSENGERS);
-                _events.ScheduleEvent(EVENT_FLY_AWAY, 2s + 500ms);
-                break;
-            default:
-                break;
+        case POINT_EJECT_PLAYER:
+            DoCastSelf(SPELL_EJECT_ALL_PASSENGERS);
+            _events.ScheduleEvent(EVENT_FLY_AWAY, 2s + 500ms);
+            break;
+        default:
+            break;
         }
     }
 
@@ -241,28 +241,28 @@ struct npc_grim_batol_battered_red_drake: public VehicleAI
         {
             switch (eventId)
             {
-                case EVENT_SET_HOVERING:
-                    if (Player* player = ObjectAccessor::FindConnectedPlayer(_playerGuid))
-                        DoCast(player, SPELL_GEAR_SCALING_TRIGGER, true);
+            case EVENT_SET_HOVERING:
+                if (Player* player = ObjectAccessor::FindConnectedPlayer(_playerGuid))
+                    DoCast(player, SPELL_GEAR_SCALING_TRIGGER, true);
 
-                    break;
-                case EVENT_PREPARE_BOMBARDMENT:
-                    if (Player* player = ObjectAccessor::FindConnectedPlayer(_playerGuid))
-                    {
-                        Talk(SAY_WHISPER_BOMBARDMENT, player);
-                        Talk(SAY_ANNOUNCE_BOMBARDMENT, player);
-                        _events.ScheduleEvent(EVENT_FLY_BOMBARDMENT, 2s);
-                    }
-                    break;
-                case EVENT_FLY_BOMBARDMENT:
-                    me->GetMotionMaster()->MoveAlongSplineChain(POINT_EJECT_PLAYER, SPLINE_CHAIN_BOMBARDMENT, false);
-                    break;
-                case EVENT_FLY_AWAY:
-                    me->GetMotionMaster()->MoveAlongSplineChain(0, SPLINE_CHAIN_ESCAPE_BOMBARDMENT, false);
-                    me->DespawnOrUnsummon(6s + 700ms);
-                    break;
-                default:
-                    break;
+                break;
+            case EVENT_PREPARE_BOMBARDMENT:
+                if (Player* player = ObjectAccessor::FindConnectedPlayer(_playerGuid))
+                {
+                    Talk(SAY_WHISPER_BOMBARDMENT, player);
+                    Talk(SAY_ANNOUNCE_BOMBARDMENT, player);
+                    _events.ScheduleEvent(EVENT_FLY_BOMBARDMENT, 2s);
+                }
+                break;
+            case EVENT_FLY_BOMBARDMENT:
+                me->GetMotionMaster()->MoveAlongSplineChain(POINT_EJECT_PLAYER, SPLINE_CHAIN_BOMBARDMENT, false);
+                break;
+            case EVENT_FLY_AWAY:
+                me->GetMotionMaster()->MoveAlongSplineChain(0, SPLINE_CHAIN_ESCAPE_BOMBARDMENT, false);
+                me->DespawnOrUnsummon(6s + 700ms);
+                break;
+            default:
+                break;
             }
         }
         DoMeleeAttackIfReady();

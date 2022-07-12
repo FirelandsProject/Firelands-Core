@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -31,74 +31,74 @@ namespace WorldPackets
 
 enum BG_BFG_WorldStates
 {
-    BG_BFG_OP_OCCUPIED_BASES_HORDE  = 1778,
-    BG_BFG_OP_OCCUPIED_BASES_ALLY   = 1779,
-    BG_BFG_OP_RESOURCES_ALLY        = 1776,
-    BG_BFG_OP_RESOURCES_HORDE       = 1777,
-    BG_BFG_OP_RESOURCES_MAX         = 1780,
-    BG_BFG_OP_RESOURCES_WARNING     = 1955
+    BG_BFG_OP_OCCUPIED_BASES_HORDE = 1778,
+    BG_BFG_OP_OCCUPIED_BASES_ALLY = 1779,
+    BG_BFG_OP_RESOURCES_ALLY = 1776,
+    BG_BFG_OP_RESOURCES_HORDE = 1777,
+    BG_BFG_OP_RESOURCES_MAX = 1780,
+    BG_BFG_OP_RESOURCES_WARNING = 1955
 };
 
-const uint32 BG_BFG_OP_NODESTATES[3]    = { 1767, 1782, 1772 };
-const uint32 BG_BFG_OP_NODEICONS[3]     = { 1842, 1846, 1845 };
+const uint32 BG_BFG_OP_NODESTATES[3] = { 1767, 1782, 1772 };
+const uint32 BG_BFG_OP_NODEICONS[3] = { 1842, 1846, 1845 };
 
 enum BG_BFG_NodeObjectId
 {
-    BG_BFG_OBJECTID_NODE_BANNER_0     = 208779, // Lighthouse banner
-    BG_BFG_OBJECTID_NODE_BANNER_1     = 208782, // Mine banner
-    BG_BFG_OBJECTID_NODE_BANNER_2     = 208785  // Waterworks banner
+    BG_BFG_OBJECTID_NODE_BANNER_0 = 208779, // Lighthouse banner
+    BG_BFG_OBJECTID_NODE_BANNER_1 = 208782, // Mine banner
+    BG_BFG_OBJECTID_NODE_BANNER_2 = 208785  // Waterworks banner
 };
 
 enum BG_BFG_ObjectType
 {
-    BG_BFG_OBJECT_BANNER_NEUTRAL            = 0,
-    BG_BFG_OBJECT_BANNER_CONT_A             = 1,
-    BG_BFG_OBJECT_BANNER_CONT_H             = 2,
-    BG_BFG_OBJECT_BANNER_ALLY               = 3,
-    BG_BFG_OBJECT_BANNER_HORDE              = 4,
-    BG_BFG_OBJECT_AURA_ALLY                 = 5,
-    BG_BFG_OBJECT_AURA_HORDE                = 6,
-    BG_BFG_OBJECT_AURA_CONTESTED            = 7,
+    BG_BFG_OBJECT_BANNER_NEUTRAL = 0,
+    BG_BFG_OBJECT_BANNER_CONT_A = 1,
+    BG_BFG_OBJECT_BANNER_CONT_H = 2,
+    BG_BFG_OBJECT_BANNER_ALLY = 3,
+    BG_BFG_OBJECT_BANNER_HORDE = 4,
+    BG_BFG_OBJECT_AURA_ALLY = 5,
+    BG_BFG_OBJECT_AURA_HORDE = 6,
+    BG_BFG_OBJECT_AURA_CONTESTED = 7,
     //gates
-    BG_BFG_OBJECT_GATE_A                    = 40,
-    BG_BFG_OBJECT_GATE_H                    = 41,
+    BG_BFG_OBJECT_GATE_A = 40,
+    BG_BFG_OBJECT_GATE_H = 41,
     //buffs
-    BG_BFG_OBJECT_SPEEDBUFF_LIGHTHOUSE      = 42,
-    BG_BFG_OBJECT_REGENBUFF_LIGHTHOUSE      = 43,
-    BG_BFG_OBJECT_BERSERKBUFF_LIGHTHOUSE    = 45,
-    BG_BFG_OBJECT_SPEEDBUFF_WATERWORKS      = 46,
-    BG_BFG_OBJECT_REGENBUFF_WATERWORKS      = 47,
-    BG_BFG_OBJECT_BERSERKBUFF_WATERWORKS    = 48,
-    BG_BFG_OBJECT_SPEEDBUFF_MINE            = 49,
-    BG_BFG_OBJECT_REGENBUFF_MINE            = 50,
-    BG_BFG_OBJECT_BERSERKBUFF_MINE          = 51,
-    BG_BFG_OBJECT_MAX                       = 52
+    BG_BFG_OBJECT_SPEEDBUFF_LIGHTHOUSE = 42,
+    BG_BFG_OBJECT_REGENBUFF_LIGHTHOUSE = 43,
+    BG_BFG_OBJECT_BERSERKBUFF_LIGHTHOUSE = 45,
+    BG_BFG_OBJECT_SPEEDBUFF_WATERWORKS = 46,
+    BG_BFG_OBJECT_REGENBUFF_WATERWORKS = 47,
+    BG_BFG_OBJECT_BERSERKBUFF_WATERWORKS = 48,
+    BG_BFG_OBJECT_SPEEDBUFF_MINE = 49,
+    BG_BFG_OBJECT_REGENBUFF_MINE = 50,
+    BG_BFG_OBJECT_BERSERKBUFF_MINE = 51,
+    BG_BFG_OBJECT_MAX = 52
 };
 
 enum BG_BFG_ObjectTypes
 {
-    BG_BFG_OBJECTID_BANNER_A            = 208673,
-    BG_BFG_OBJECTID_BANNER_CONT_A       = 208763,
-    BG_BFG_OBJECTID_BANNER_H            = 208748,
-    BG_BFG_OBJECTID_BANNER_CONT_H       = 208733,
+    BG_BFG_OBJECTID_BANNER_A = 208673,
+    BG_BFG_OBJECTID_BANNER_CONT_A = 208763,
+    BG_BFG_OBJECTID_BANNER_H = 208748,
+    BG_BFG_OBJECTID_BANNER_CONT_H = 208733,
 
-    BG_BFG_RBG_OBJECTID_BANNER_A        = 208673, //406012,
-    BG_BFG_RBG_OBJECTID_BANNER_CONT_A   = 208763, //406013,
-    BG_BFG_RBG_OBJECTID_BANNER_H        = 208748, //406014,
-    BG_BFG_RBG_OBJECTID_BANNER_CONT_H   = 208733, //406015,
+    BG_BFG_RBG_OBJECTID_BANNER_A = 208673, //406012,
+    BG_BFG_RBG_OBJECTID_BANNER_CONT_A = 208763, //406013,
+    BG_BFG_RBG_OBJECTID_BANNER_H = 208748, //406014,
+    BG_BFG_RBG_OBJECTID_BANNER_CONT_H = 208733, //406015,
 
-    BG_BFG_OBJECTID_AURA_A              = 180100,
-    BG_BFG_OBJECTID_AURA_H              = 180101,
-    BG_BFG_OBJECTID_AURA_C              = 180102,
+    BG_BFG_OBJECTID_AURA_A = 180100,
+    BG_BFG_OBJECTID_AURA_H = 180101,
+    BG_BFG_OBJECTID_AURA_C = 180102,
 
-    BG_BFG_OBJECTID_GATE_A              = 207177,
-    BG_BFG_OBJECTID_GATE_H              = 207178
+    BG_BFG_OBJECTID_GATE_A = 207177,
+    BG_BFG_OBJECTID_GATE_H = 207178
 };
 
 enum BG_BFG_BattlegroundBuffObjects
 {
     // Sniffed
-    BG_OBJECTID_FOODBUFF_ENTRY  = 180145, // Mine
+    BG_OBJECTID_FOODBUFF_ENTRY = 180145, // Mine
 
 };
 
@@ -109,58 +109,58 @@ enum BG_BFG_Timers
 
 enum BG_BFG_Score
 {
-    BG_BFG_WARNING_NEAR_VICTORY_SCORE   = 1800,
-    BG_BFG_MAX_TEAM_SCORE               = 2000
+    BG_BFG_WARNING_NEAR_VICTORY_SCORE = 1800,
+    BG_BFG_MAX_TEAM_SCORE = 2000
 };
 
 /* Do not change below, or this thing will go boom! */
 enum BG_BFG_BattlegroundNodes
 {
-    BG_BFG_NODE_LIGHTHOUSE      = 0,
-    BG_BFG_NODE_WATERWORKS      = 1,
-    BG_BFG_NODE_MINE            = 2,
+    BG_BFG_NODE_LIGHTHOUSE = 0,
+    BG_BFG_NODE_WATERWORKS = 1,
+    BG_BFG_NODE_MINE = 2,
 
-    BG_BFG_DYNAMIC_NODES_COUNT  = 3, // Dynamic nodes that can be captured
+    BG_BFG_DYNAMIC_NODES_COUNT = 3, // Dynamic nodes that can be captured
 
-    BG_BFG_SPIRIT_ALIANCE       = 3,
-    BG_BFG_SPIRIT_HORDE         = 4,
+    BG_BFG_SPIRIT_ALIANCE = 3,
+    BG_BFG_SPIRIT_HORDE = 4,
 
-    BG_BFG_ALL_NODES_COUNT      = 5 // All nodes (dynamic and static)
+    BG_BFG_ALL_NODES_COUNT = 5 // All nodes (dynamic and static)
 };
 
 enum BG_BFG_BroadcastTexts
 {
-    BG_BFG_TEXT_ALLIANCE_NEAR_VICTORY   = 63126,
-    BG_BFG_TEXT_HORDE_NEAR_VICTORY      = 63128
+    BG_BFG_TEXT_ALLIANCE_NEAR_VICTORY = 63126,
+    BG_BFG_TEXT_HORDE_NEAR_VICTORY = 63128
 };
 
 enum BG_BFG_NodeStatus
 {
-    BG_BFG_NODE_TYPE_NEUTRAL                = 0,
-    BG_BFG_NODE_TYPE_CONTESTED              = 1,
-    BG_BFG_NODE_STATUS_ALLY_CONTESTED       = 1,
-    BG_BFG_NODE_STATUS_HORDE_CONTESTED      = 2,
-    BG_BFG_NODE_TYPE_OCCUPIED               = 3,
-    BG_BFG_NODE_STATUS_ALLY_OCCUPIED        = 3,
-    BG_BFG_NODE_STATUS_HORDE_OCCUPIED       = 4
+    BG_BFG_NODE_TYPE_NEUTRAL = 0,
+    BG_BFG_NODE_TYPE_CONTESTED = 1,
+    BG_BFG_NODE_STATUS_ALLY_CONTESTED = 1,
+    BG_BFG_NODE_STATUS_HORDE_CONTESTED = 2,
+    BG_BFG_NODE_TYPE_OCCUPIED = 3,
+    BG_BFG_NODE_STATUS_ALLY_OCCUPIED = 3,
+    BG_BFG_NODE_STATUS_HORDE_OCCUPIED = 4
 };
 
 enum BG_BFG_Sounds
 {
-    BG_BFG_SOUND_NODE_CLAIMED               = 8192,
-    BG_BFG_SOUND_NODE_CAPTURED_ALLIANCE     = 8173,
-    BG_BFG_SOUND_NODE_CAPTURED_HORDE        = 8213,
-    BG_BFG_SOUND_NODE_ASSAULTED_ALLIANCE    = 8212,
-    BG_BFG_SOUND_NODE_ASSAULTED_HORDE       = 8174,
-    BG_BFG_SOUND_NEAR_VICTORY               = 8456
+    BG_BFG_SOUND_NODE_CLAIMED = 8192,
+    BG_BFG_SOUND_NODE_CAPTURED_ALLIANCE = 8173,
+    BG_BFG_SOUND_NODE_CAPTURED_HORDE = 8213,
+    BG_BFG_SOUND_NODE_ASSAULTED_ALLIANCE = 8212,
+    BG_BFG_SOUND_NODE_ASSAULTED_HORDE = 8174,
+    BG_BFG_SOUND_NEAR_VICTORY = 8456
 };
 
 enum BG_BFG_Objectives
 {
-    BG_OBJECTIVE_ASSAULT_BASE   = 122,
-    BG_OBJECTIVE_DEFEND_BASE    = 123,
-    BFG_OBJECTIVE_ASSAULT_BASE  = 370,
-    BFG_OBJECTIVE_DEFEND_BASE   = 371,
+    BG_OBJECTIVE_ASSAULT_BASE = 122,
+    BG_OBJECTIVE_DEFEND_BASE = 123,
+    BFG_OBJECTIVE_ASSAULT_BASE = 370,
+    BFG_OBJECTIVE_DEFEND_BASE = 371,
 };
 
 /* Holiday/Reg Honor/Rep gains */
@@ -240,94 +240,94 @@ class BattlegroundBFGScore final : public BattlegroundScore
 {
     friend class BattlegroundBFG;
 
-    protected:
-        BattlegroundBFGScore(ObjectGuid playerGuid, uint32 team) : BattlegroundScore(playerGuid, team), BasesAssaulted(0), BasesDefended(0) { }
+protected:
+    BattlegroundBFGScore(ObjectGuid playerGuid, uint32 team) : BattlegroundScore(playerGuid, team), BasesAssaulted(0), BasesDefended(0) { }
 
-        void UpdateScore(uint32 type, uint32 value) override
+    void UpdateScore(uint32 type, uint32 value) override
+    {
+        switch (type)
         {
-            switch (type)
-            {
-                case SCORE_BASES_ASSAULTED:
-                    BasesAssaulted += value;
-                    break;
-                case SCORE_BASES_DEFENDED:
-                    BasesDefended += value;
-                    break;
-                default:
-                    BattlegroundScore::UpdateScore(type, value);
-                    break;
-            }
+        case SCORE_BASES_ASSAULTED:
+            BasesAssaulted += value;
+            break;
+        case SCORE_BASES_DEFENDED:
+            BasesDefended += value;
+            break;
+        default:
+            BattlegroundScore::UpdateScore(type, value);
+            break;
         }
+    }
 
-        void BuildObjectivesBlock(WorldPacket& data, ByteBuffer& content) final override;
+    void BuildObjectivesBlock(WorldPacket& data, ByteBuffer& content) final override;
 
-        uint32 GetAttr1() const final override { return BasesAssaulted; }
-        uint32 GetAttr2() const final override { return BasesDefended; }
+    uint32 GetAttr1() const final override { return BasesAssaulted; }
+    uint32 GetAttr2() const final override { return BasesDefended; }
 
-        uint32 BasesAssaulted;
-        uint32 BasesDefended;
+    uint32 BasesAssaulted;
+    uint32 BasesDefended;
 };
 
 class BattlegroundBFG : public Battleground
 {
-    public:
-        BattlegroundBFG();
-        ~BattlegroundBFG();
+public:
+    BattlegroundBFG();
+    ~BattlegroundBFG();
 
-        void AddPlayer(Player* player) override;
-        void StartingEventCloseDoors() override;
-        void StartingEventOpenDoors() override;
-        void RemovePlayer(Player* player, ObjectGuid guid, uint32 team) override;
-        void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
-        bool SetupBattleground() override;
-        void Reset() override;
-        void EndBattleground(uint32 winner) override;
-        WorldSafeLocsEntry const* GetClosestGraveyard(Player* player) override;
+    void AddPlayer(Player* player) override;
+    void StartingEventCloseDoors() override;
+    void StartingEventOpenDoors() override;
+    void RemovePlayer(Player* player, ObjectGuid guid, uint32 team) override;
+    void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
+    bool SetupBattleground() override;
+    void Reset() override;
+    void EndBattleground(uint32 winner) override;
+    WorldSafeLocsEntry const* GetClosestGraveyard(Player* player) override;
 
-        /* Scorekeeping */
-        bool UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true) override;
+    /* Scorekeeping */
+    bool UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor = true) override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& data) override;
 
-        /* Nodes occupying */
-        void EventPlayerClickedOnFlag(Player* source, GameObject* target_obj) override;
+    /* Nodes occupying */
+    void EventPlayerClickedOnFlag(Player* source, GameObject* target_obj) override;
 
-        /* achievement req. */
-        bool IsAllNodesControlledByTeam(uint32 team) const override;
-        bool CheckAchievementCriteriaMeet(uint32 /*criteriaId*/, Player const* /*player*/, Unit const* /*target*/ = nullptr, uint32 /*miscvalue1*/ = 0) override;
+    /* achievement req. */
+    bool IsAllNodesControlledByTeam(uint32 team) const override;
+    bool CheckAchievementCriteriaMeet(uint32 /*criteriaId*/, Player const* /*player*/, Unit const* /*target*/ = nullptr, uint32 /*miscvalue1*/ = 0) override;
 
-        uint32 GetPrematureWinner() override;
+    uint32 GetPrematureWinner() override;
 
-    private:
-        void PostUpdateImpl(uint32 diff) override;
-        /* Gameobject spawning/despawning */
-        void _CreateBanner(uint8 node, uint8 type, uint8 teamIndex, bool delay);
-        void _DelBanner(uint8 node, uint8 type, uint8 teamIndex);
-        void _SendNodeUpdate(uint8 node);
+private:
+    void PostUpdateImpl(uint32 diff) override;
+    /* Gameobject spawning/despawning */
+    void _CreateBanner(uint8 node, uint8 type, uint8 teamIndex, bool delay);
+    void _DelBanner(uint8 node, uint8 type, uint8 teamIndex);
+    void _SendNodeUpdate(uint8 node);
 
-        /* Creature spawning/despawning */
-        /// @todo working, scripted peons spawning
-        void _NodeOccupied(uint8 node, Team team);
-        void _NodeDeOccupied(uint8 node);
+    /* Creature spawning/despawning */
+    /// @todo working, scripted peons spawning
+    void _NodeOccupied(uint8 node, Team team);
+    void _NodeDeOccupied(uint8 node);
 
-        /* Nodes info:
-        * 0: neutral
-        * 1: ally contested
-        * 2: horde contested
-        * 3: ally occupied
-        * 4: horde occupied
-        */
+    /* Nodes info:
+    * 0: neutral
+    * 1: ally contested
+    * 2: horde contested
+    * 3: ally occupied
+    * 4: horde occupied
+    */
 
-        uint8                   m_Nodes[BG_BFG_DYNAMIC_NODES_COUNT];
-        uint8                   m_prevNodes[BG_BFG_DYNAMIC_NODES_COUNT];
-        BG_BFG_BannerTimer      m_BannerTimers[BG_BFG_DYNAMIC_NODES_COUNT];
-        uint32                  m_NodeTimers[BG_BFG_DYNAMIC_NODES_COUNT];
-        uint32                  m_lastTick[BG_TEAMS_COUNT];
-        uint32                  m_HonorScoreTics[BG_TEAMS_COUNT];
-        bool                    m_IsInformedNearVictory;
-        uint32                  m_HonorTics;
-        // need for achievements
-        bool                    m_TeamScores500Disadvantage[BG_TEAMS_COUNT];
+    uint8                   m_Nodes[BG_BFG_DYNAMIC_NODES_COUNT];
+    uint8                   m_prevNodes[BG_BFG_DYNAMIC_NODES_COUNT];
+    BG_BFG_BannerTimer      m_BannerTimers[BG_BFG_DYNAMIC_NODES_COUNT];
+    uint32                  m_NodeTimers[BG_BFG_DYNAMIC_NODES_COUNT];
+    uint32                  m_lastTick[BG_TEAMS_COUNT];
+    uint32                  m_HonorScoreTics[BG_TEAMS_COUNT];
+    bool                    m_IsInformedNearVictory;
+    uint32                  m_HonorTics;
+    // need for achievements
+    bool                    m_TeamScores500Disadvantage[BG_TEAMS_COUNT];
 };
 
 #endif

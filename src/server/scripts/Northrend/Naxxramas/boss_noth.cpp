@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -41,23 +41,23 @@ enum Events
 
 enum Talk
 {
-    SAY_AGGRO               = 0,
-    SAY_SUMMON              = 1,
-    SAY_SLAY                = 2,
-    SAY_DEATH               = 3,
+    SAY_AGGRO = 0,
+    SAY_SUMMON = 1,
+    SAY_SLAY = 2,
+    SAY_DEATH = 3,
 
-    EMOTE_SUMMON            = 4, // ground phase
-    EMOTE_SUMMON_WAVE       = 5, // balcony phase
-    EMOTE_TELEPORT_1        = 6, // ground to balcony
-    EMOTE_TELEPORT_2        = 7  // balcony to ground
+    EMOTE_SUMMON = 4, // ground phase
+    EMOTE_SUMMON_WAVE = 5, // balcony phase
+    EMOTE_TELEPORT_1 = 6, // ground to balcony
+    EMOTE_TELEPORT_2 = 7  // balcony to ground
 };
 
 enum Spells
 {
-    SPELL_CURSE         = 29213, // 25-man: 54835
-    SPELL_CRIPPLE       = 29212, // 25-man: 54814
+    SPELL_CURSE = 29213, // 25-man: 54835
+    SPELL_CRIPPLE = 29212, // 25-man: 54814
 
-    SPELL_TELEPORT      = 29216, // ground to balcony
+    SPELL_TELEPORT = 29216, // ground to balcony
     SPELL_TELEPORT_BACK = 29231  // balcony to ground
 };
 
@@ -136,15 +136,15 @@ public:
                 uint8 timeGround;
                 switch (balconyCount)
                 {
-                    case 0:
-                        timeGround =  90;
-                        break;
-                    case 1:
-                        timeGround = 110;
-                        break;
-                    case 2:
-                    default:
-                        timeGround = 180;
+                case 0:
+                    timeGround = 90;
+                    break;
+                case 1:
+                    timeGround = 110;
+                    break;
+                case 2:
+                default:
+                    timeGround = 180;
                 }
                 events.ScheduleEvent(EVENT_GROUND_ATTACKABLE, Seconds(2), 0, PHASE_GROUND);
                 events.ScheduleEvent(EVENT_BALCONY, Seconds(timeGround), 0, PHASE_GROUND);
@@ -220,92 +220,92 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_CURSE:
+                case EVENT_CURSE:
+                {
+                    DoCastAOE(SPELL_CURSE);
+                    events.Repeat(randtime(Seconds(50), Seconds(70)));
+                    break;
+                }
+                case EVENT_WARRIOR:
+                    Talk(SAY_SUMMON);
+                    Talk(EMOTE_SUMMON);
+
+                    CastSummon(RAID_MODE(2, 3), 0, 0);
+
+                    events.Repeat(Seconds(40));
+                    break;
+                case EVENT_BLINK:
+                    DoCastAOE(SPELL_CRIPPLE, true);
+                    DoCastAOE(SPELL_BLINK);
+                    ResetThreatList();
+                    justBlinked = true;
+
+                    events.Repeat(Seconds(40));
+                    break;
+                case EVENT_BALCONY:
+                    events.SetPhase(PHASE_BALCONY);
+                    me->SetReactState(REACT_PASSIVE);
+                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                    me->SetImmuneToPC(true);
+                    me->AttackStop();
+                    me->StopMoving();
+                    me->RemoveAllAuras();
+
+                    events.ScheduleEvent(EVENT_BALCONY_TELEPORT, Seconds(3), 0, PHASE_BALCONY);
+                    events.ScheduleEvent(EVENT_WAVE, randtime(Seconds(5), Seconds(8)), 0, PHASE_BALCONY);
+
+                    uint8 timeBalcony;
+                    switch (balconyCount)
                     {
-                        DoCastAOE(SPELL_CURSE);
-                        events.Repeat(randtime(Seconds(50), Seconds(70)));
+                    case 0:
+                        timeBalcony = 70;
+                        break;
+                    case 1:
+                        timeBalcony = 97;
+                        break;
+                    case 2:
+                    default:
+                        timeBalcony = 120;
                         break;
                     }
-                    case EVENT_WARRIOR:
-                        Talk(SAY_SUMMON);
-                        Talk(EMOTE_SUMMON);
-
-                        CastSummon(RAID_MODE(2, 3), 0, 0);
-
-                        events.Repeat(Seconds(40));
+                    events.ScheduleEvent(EVENT_GROUND, Seconds(timeBalcony), 0, PHASE_BALCONY);
+                    break;
+                case EVENT_BALCONY_TELEPORT:
+                    Talk(EMOTE_TELEPORT_1);
+                    DoCastAOE(SPELL_TELEPORT);
+                    break;
+                case EVENT_WAVE:
+                    Talk(EMOTE_SUMMON_WAVE);
+                    switch (balconyCount)
+                    {
+                    case 0:
+                        CastSummon(0, RAID_MODE(2, 4), 0);
                         break;
-                    case EVENT_BLINK:
-                        DoCastAOE(SPELL_CRIPPLE, true);
-                        DoCastAOE(SPELL_BLINK);
-                        ResetThreatList();
-                        justBlinked = true;
+                    case 1:
+                        CastSummon(0, RAID_MODE(1, 2), RAID_MODE(1, 2));
+                        break;
+                    case 2:
+                        CastSummon(0, 0, RAID_MODE(2, 4));
+                        break;
+                    default:
+                        CastSummon(0, RAID_MODE(5, 10), RAID_MODE(5, 10));
+                        break;
+                    }
+                    events.Repeat(randtime(Seconds(30), Seconds(45)));
+                    break;
+                case EVENT_GROUND:
+                    ++balconyCount;
 
-                        events.Repeat(Seconds(40));
-                        break;
-                    case EVENT_BALCONY:
-                        events.SetPhase(PHASE_BALCONY);
-                        me->SetReactState(REACT_PASSIVE);
-                        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                        me->SetImmuneToPC(true);
-                        me->AttackStop();
-                        me->StopMoving();
-                        me->RemoveAllAuras();
+                    DoCastAOE(SPELL_TELEPORT_BACK);
+                    Talk(EMOTE_TELEPORT_2);
 
-                        events.ScheduleEvent(EVENT_BALCONY_TELEPORT, Seconds(3), 0, PHASE_BALCONY);
-                        events.ScheduleEvent(EVENT_WAVE, randtime(Seconds(5), Seconds(8)), 0, PHASE_BALCONY);
-
-                        uint8 timeBalcony;
-                        switch (balconyCount)
-                        {
-                            case 0:
-                                timeBalcony = 70;
-                                break;
-                            case 1:
-                                timeBalcony = 97;
-                                break;
-                            case 2:
-                            default:
-                                timeBalcony = 120;
-                                break;
-                        }
-                        events.ScheduleEvent(EVENT_GROUND, Seconds(timeBalcony), 0, PHASE_BALCONY);
-                        break;
-                    case EVENT_BALCONY_TELEPORT:
-                        Talk(EMOTE_TELEPORT_1);
-                        DoCastAOE(SPELL_TELEPORT);
-                        break;
-                    case EVENT_WAVE:
-                        Talk(EMOTE_SUMMON_WAVE);
-                        switch (balconyCount)
-                        {
-                            case 0:
-                                CastSummon(0, RAID_MODE(2, 4), 0);
-                                break;
-                            case 1:
-                                CastSummon(0, RAID_MODE(1, 2), RAID_MODE(1, 2));
-                                break;
-                            case 2:
-                                CastSummon(0, 0, RAID_MODE(2, 4));
-                                break;
-                            default:
-                                CastSummon(0, RAID_MODE(5, 10), RAID_MODE(5, 10));
-                                break;
-                        }
-                        events.Repeat(randtime(Seconds(30), Seconds(45)));
-                        break;
-                    case EVENT_GROUND:
-                        ++balconyCount;
-
-                        DoCastAOE(SPELL_TELEPORT_BACK);
-                        Talk(EMOTE_TELEPORT_2);
-
-                        EnterPhaseGround();
-                        break;
-                    case EVENT_GROUND_ATTACKABLE:
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                        me->SetImmuneToPC(false);
-                        me->SetReactState(REACT_AGGRESSIVE);
-                        break;
+                    EnterPhaseGround();
+                    break;
+                case EVENT_GROUND_ATTACKABLE:
+                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                    me->SetImmuneToPC(false);
+                    me->SetReactState(REACT_AGGRESSIVE);
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -327,14 +327,14 @@ public:
             }
         }
 
-        private:
-            uint32 balconyCount;
+    private:
+        uint32 balconyCount;
 
-            bool justBlinked;
+        bool justBlinked;
 
-            uint32 _SummonWarriorSpells[N_WARRIOR_SPELLS];
-            uint32 _SummonChampionSpells[N_CHAMPION_SPELLS];
-            uint32 _SummonGuardianSpells[N_GUARDIAN_SPELLS];
+        uint32 _SummonWarriorSpells[N_WARRIOR_SPELLS];
+        uint32 _SummonChampionSpells[N_CHAMPION_SPELLS];
+        uint32 _SummonGuardianSpells[N_GUARDIAN_SPELLS];
     };
 
     CreatureAI* GetAI(Creature* creature) const override

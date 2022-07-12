@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -90,7 +90,7 @@ bool CyclicMovementGenerator<Creature>::DoUpdate(Creature* creature, uint32 diff
         if (_moveTimer.Passed())
         {
             _moveTimer.Reset(0);
-            StartMovement(creature); 
+            StartMovement(creature);
         }
     }
 
@@ -118,9 +118,9 @@ void CyclicMovementGenerator<Creature>::StartMovement(Creature* creature)
     path.reserve(_path->Nodes.size() + 1);
     path.push_back(PositionToVector3(creature->GetPosition()));
     std::transform(_path->Nodes.begin(), _path->Nodes.end(), std::back_inserter(path), [](WaypointNode const& node)
-    {
-        return G3D::Vector3(node.X, node.Y, node.Z);
-    });
+        {
+            return G3D::Vector3(node.X, node.Y, node.Z);
+        });
 
     if (flying || (_enforceFlight.has_value() && *_enforceFlight))
     {

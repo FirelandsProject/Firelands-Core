@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -103,7 +103,7 @@ enum MovementStatusElements
     MSEFlushBits,       // flushes bits
     MSEEnd,             // marks end of parsing
     MSEExtraElement,    // Used to signalize reading into ExtraMovementStatusElement, element sequence inside it is declared as separate array
-                        // Allowed internal elements are: GUID markers (not transport), MSEExtraFloat, MSEExtraInt8
+    // Allowed internal elements are: GUID markers (not transport), MSEExtraFloat, MSEExtraInt8
     MSEExtraFloat,
     MSEExtraInt8,
     MSEExtraTwoBits,

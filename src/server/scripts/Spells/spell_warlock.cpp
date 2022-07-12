@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Scripts for spells with SPELLFAMILY_WARLOCK and SPELLFAMILY_GENERIC spells used by warlock players.
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "spell_warl_".
- */
+ /*
+  * Scripts for spells with SPELLFAMILY_WARLOCK and SPELLFAMILY_GENERIC spells used by warlock players.
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "spell_warl_".
+  */
 
 #include "ScriptMgr.h"
 #include "Creature.h"
@@ -35,95 +35,95 @@
 
 enum WarlockSpells
 {
-    SPELL_WARLOCK_AFTERMATH_STUN                    = 85387,
-    SPELL_WARLOCK_BANE_OF_DOOM_EFFECT               = 18662,
-    SPELL_WARLOCK_BURNING_EMBERS_DAMAGE             = 85421,
-    SPELL_WARLOCK_CREATE_HEALTHSTONE                = 34130,
-    SPELL_WARLOCK_CORRUPTION_TRIGGERED              = 87389,
-    SPELL_WARLOCK_CURSE_OF_DOOM_EFFECT              = 18662,
-    SPELL_WARLOCK_DEMONIC_CIRCLE_ALLOW_CAST         = 62388,
-    SPELL_WARLOCK_DEMONIC_CIRCLE_SUMMON             = 48018,
-    SPELL_WARLOCK_DEMONIC_CIRCLE_TELEPORT           = 48020,
-    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELGUARD      = 54508,
-    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELHUNTER     = 54509,
-    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_IMP           = 54444,
-    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_SUCCUBUS      = 54435,
-    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_VOIDWALKER    = 54443,
-    SPELL_WARLOCK_DEMON_SOUL_IMP                    = 79459,
-    SPELL_WARLOCK_DEMON_SOUL_FELHUNTER              = 79460,
-    SPELL_WARLOCK_DEMON_SOUL_FELGUARD               = 79462,
-    SPELL_WARLOCK_DEMON_SOUL_SUCCUBUS               = 79463,
-    SPELL_WARLOCK_DEMON_SOUL_VOIDWALKER             = 79464,
-    SPELL_WARLOCK_DRAIN_LIFE                        = 689,
-    SPELL_WARLOCK_DRAIN_LIFE_HEAL                   = 89653,
-    SPELL_WARLOCK_DRAIN_LIFE_SOULBURN               = 89420,
-    SPELL_WARLOCK_FEL_ARMOR_HEAL                    = 96379,
-    SPELL_WARLOCK_FEL_SYNERGY_HEAL                  = 54181,
-    SPELL_WARLOCK_GLYPH_OF_SHADOWFLAME              = 63311,
-    SPELL_WARLOCK_GLYPH_OF_SIPHON_LIFE              = 63106,
-    SPELL_WARLOCK_GLYPH_OF_SOUL_SWAP                = 56226,
-    SPELL_WARLOCK_GLYPH_OF_SUCCUBUS                 = 56250,
-    SPELL_WARLOCK_HAUNT                             = 48181,
-    SPELL_WARLOCK_HAUNT_HEAL                        = 48210,
-    SPELL_WARLOCK_HEALTHSTONE                       = 6262,
-    SPELL_WARLOCK_IMMOLATE                          = 348,
-    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_BUFF_R1    = 60955,
-    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_BUFF_R2    = 60956,
-    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_R1         = 18703,
-    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_R2         = 18704,
-    SPELL_WARLOCK_IMPROVED_SOUL_FIRE_PCT            = 85383,
-    SPELL_WARLOCK_IMPROVED_SOUL_FIRE_STATE          = 85385,
-    SPELL_WARLOCK_JINX_AOE_R1                       = 85547,
-    SPELL_WARLOCK_JINX_AOE_R2                       = 86105,
-    SPELL_WARLOCK_JINX_TRIGGERED_RAGE               = 85539,
-    SPELL_WARLOCK_JINX_TRIGGERED_ENERGY             = 85540,
-    SPELL_WARLOCK_JINX_TRIGGERED_RUNIC_POWER        = 85541,
-    SPELL_WARLOCK_JINX_TRIGGERED_FOCUS              = 85542,
-    SPELL_WARLOCK_JINX_R1                           = 18179,
-    SPELL_WARLOCK_LIFE_TAP_ENERGIZE                 = 31818,
-    SPELL_WARLOCK_LIFE_TAP_ENERGIZE_2               = 32553,
-    SPELL_WARLOCK_NETHER_WARD                       = 91711,
-    SPELL_WARLOCK_NETHER_TALENT                     = 91713,
-    SPELL_WARLOCK_PANDEMIC_SCRIPT_EFFECT            = 92931,
-    SPELL_WARLOCK_RAIN_OF_FIRE                      = 42223,
-    SPELL_WARLOCK_SHADOW_TRANCE                     = 17941,
-    SPELL_WARLOCK_SEARING_PAIN                      = 5676,
-    SPELL_WARLOCK_SEED_OF_CORRUPTION                = 27243,
-    SPELL_WARLOCK_SEED_OF_CORRUPTION_TRIGGERED      = 87385,
-    SPELL_WARLOCK_SEED_OF_CORRUPTION_VISUAL         = 37826,
-    SPELL_WARLOCK_SIPHON_LIFE_HEAL                  = 63106,
-    SPELL_WARLOCK_SHADOW_WARD                       = 6229,
-    SPELL_WARLOCK_SOULBURN_HEALTHSTONE              = 79437,
-    SPELL_WARLOCK_SOULBURN_DEMONIC_CIRCLE           = 79438,
-    SPELL_WARLOCK_SOULBURN_SEARING_PAIN             = 79440,
+    SPELL_WARLOCK_AFTERMATH_STUN = 85387,
+    SPELL_WARLOCK_BANE_OF_DOOM_EFFECT = 18662,
+    SPELL_WARLOCK_BURNING_EMBERS_DAMAGE = 85421,
+    SPELL_WARLOCK_CREATE_HEALTHSTONE = 34130,
+    SPELL_WARLOCK_CORRUPTION_TRIGGERED = 87389,
+    SPELL_WARLOCK_CURSE_OF_DOOM_EFFECT = 18662,
+    SPELL_WARLOCK_DEMONIC_CIRCLE_ALLOW_CAST = 62388,
+    SPELL_WARLOCK_DEMONIC_CIRCLE_SUMMON = 48018,
+    SPELL_WARLOCK_DEMONIC_CIRCLE_TELEPORT = 48020,
+    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELGUARD = 54508,
+    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELHUNTER = 54509,
+    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_IMP = 54444,
+    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_SUCCUBUS = 54435,
+    SPELL_WARLOCK_DEMONIC_EMPOWERMENT_VOIDWALKER = 54443,
+    SPELL_WARLOCK_DEMON_SOUL_IMP = 79459,
+    SPELL_WARLOCK_DEMON_SOUL_FELHUNTER = 79460,
+    SPELL_WARLOCK_DEMON_SOUL_FELGUARD = 79462,
+    SPELL_WARLOCK_DEMON_SOUL_SUCCUBUS = 79463,
+    SPELL_WARLOCK_DEMON_SOUL_VOIDWALKER = 79464,
+    SPELL_WARLOCK_DRAIN_LIFE = 689,
+    SPELL_WARLOCK_DRAIN_LIFE_HEAL = 89653,
+    SPELL_WARLOCK_DRAIN_LIFE_SOULBURN = 89420,
+    SPELL_WARLOCK_FEL_ARMOR_HEAL = 96379,
+    SPELL_WARLOCK_FEL_SYNERGY_HEAL = 54181,
+    SPELL_WARLOCK_GLYPH_OF_SHADOWFLAME = 63311,
+    SPELL_WARLOCK_GLYPH_OF_SIPHON_LIFE = 63106,
+    SPELL_WARLOCK_GLYPH_OF_SOUL_SWAP = 56226,
+    SPELL_WARLOCK_GLYPH_OF_SUCCUBUS = 56250,
+    SPELL_WARLOCK_HAUNT = 48181,
+    SPELL_WARLOCK_HAUNT_HEAL = 48210,
+    SPELL_WARLOCK_HEALTHSTONE = 6262,
+    SPELL_WARLOCK_IMMOLATE = 348,
+    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_BUFF_R1 = 60955,
+    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_BUFF_R2 = 60956,
+    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_R1 = 18703,
+    SPELL_WARLOCK_IMPROVED_HEALTH_FUNNEL_R2 = 18704,
+    SPELL_WARLOCK_IMPROVED_SOUL_FIRE_PCT = 85383,
+    SPELL_WARLOCK_IMPROVED_SOUL_FIRE_STATE = 85385,
+    SPELL_WARLOCK_JINX_AOE_R1 = 85547,
+    SPELL_WARLOCK_JINX_AOE_R2 = 86105,
+    SPELL_WARLOCK_JINX_TRIGGERED_RAGE = 85539,
+    SPELL_WARLOCK_JINX_TRIGGERED_ENERGY = 85540,
+    SPELL_WARLOCK_JINX_TRIGGERED_RUNIC_POWER = 85541,
+    SPELL_WARLOCK_JINX_TRIGGERED_FOCUS = 85542,
+    SPELL_WARLOCK_JINX_R1 = 18179,
+    SPELL_WARLOCK_LIFE_TAP_ENERGIZE = 31818,
+    SPELL_WARLOCK_LIFE_TAP_ENERGIZE_2 = 32553,
+    SPELL_WARLOCK_NETHER_WARD = 91711,
+    SPELL_WARLOCK_NETHER_TALENT = 91713,
+    SPELL_WARLOCK_PANDEMIC_SCRIPT_EFFECT = 92931,
+    SPELL_WARLOCK_RAIN_OF_FIRE = 42223,
+    SPELL_WARLOCK_SHADOW_TRANCE = 17941,
+    SPELL_WARLOCK_SEARING_PAIN = 5676,
+    SPELL_WARLOCK_SEED_OF_CORRUPTION = 27243,
+    SPELL_WARLOCK_SEED_OF_CORRUPTION_TRIGGERED = 87385,
+    SPELL_WARLOCK_SEED_OF_CORRUPTION_VISUAL = 37826,
+    SPELL_WARLOCK_SIPHON_LIFE_HEAL = 63106,
+    SPELL_WARLOCK_SHADOW_WARD = 6229,
+    SPELL_WARLOCK_SOULBURN_HEALTHSTONE = 79437,
+    SPELL_WARLOCK_SOULBURN_DEMONIC_CIRCLE = 79438,
+    SPELL_WARLOCK_SOULBURN_SEARING_PAIN = 79440,
     SPELL_WARLOCK_SOULBURN_DUMMY_SEED_OF_CORRUPTION = 93313,
-    SPELL_WARLOCK_SOUL_HARVEST_ENERGIZE             = 101977,
-    SPELL_WARLOCK_SOUL_SHARD                        = 87388,
-    SPELL_WARLOCK_SOUL_SHARD_ENERGIZE               = 95810,
-    SPELL_WARLOCK_SOULSHATTER_EFFECT                = 32835,
-    SPELL_WARLOCK_SOUL_SWAP_CD_MARKER               = 94229,
-    SPELL_WARLOCK_SOUL_SWAP_OVERRIDE                = 86211,
-    SPELL_WARLOCK_SOUL_SWAP_MOD_COST                = 92794,
-    SPELL_WARLOCK_SOUL_SWAP_DOT_MARKER              = 92795,
-    SPELL_WARLOCK_UNSTABLE_AFFLICTION               = 30108,
-    SPELL_WARLOCK_UNSTABLE_AFFLICTION_DISPEL        = 31117
+    SPELL_WARLOCK_SOUL_HARVEST_ENERGIZE = 101977,
+    SPELL_WARLOCK_SOUL_SHARD = 87388,
+    SPELL_WARLOCK_SOUL_SHARD_ENERGIZE = 95810,
+    SPELL_WARLOCK_SOULSHATTER_EFFECT = 32835,
+    SPELL_WARLOCK_SOUL_SWAP_CD_MARKER = 94229,
+    SPELL_WARLOCK_SOUL_SWAP_OVERRIDE = 86211,
+    SPELL_WARLOCK_SOUL_SWAP_MOD_COST = 92794,
+    SPELL_WARLOCK_SOUL_SWAP_DOT_MARKER = 92795,
+    SPELL_WARLOCK_UNSTABLE_AFFLICTION = 30108,
+    SPELL_WARLOCK_UNSTABLE_AFFLICTION_DISPEL = 31117
 };
 
 enum WarlockSpellIcons
 {
-    WARLOCK_ICON_ID_IMPROVED_LIFE_TAP               = 208,
-    WARLOCK_ICON_ID_MANA_FEED                       = 1982,
-	WARLOCK_ICON_ID_DEATHS_EMBRACE                  = 3223,
-	WARLOCK_ICON_ID_SOUL_SIPHON                     = 5001,
-    WARLOCK_ICON_ID_SOULBURN_SEED_OF_CORRUPTION     = 1932,
-    WARLOCK_ICON_ID_FIRE_AND_BRIMSTONE              = 3173,
-    WARLOCK_ICON_ID_JINX                            = 5002
+    WARLOCK_ICON_ID_IMPROVED_LIFE_TAP = 208,
+    WARLOCK_ICON_ID_MANA_FEED = 1982,
+    WARLOCK_ICON_ID_DEATHS_EMBRACE = 3223,
+    WARLOCK_ICON_ID_SOUL_SIPHON = 5001,
+    WARLOCK_ICON_ID_SOULBURN_SEED_OF_CORRUPTION = 1932,
+    WARLOCK_ICON_ID_FIRE_AND_BRIMSTONE = 3173,
+    WARLOCK_ICON_ID_JINX = 5002
 };
 
 enum MiscSpells
 {
-    SPELL_GEN_REPLENISHMENT                         = 57669,
-    SPELL_PRIEST_SHADOW_WORD_DEATH                  = 32409
+    SPELL_GEN_REPLENISHMENT = 57669,
+    SPELL_PRIEST_SHADOW_WORD_DEATH = 32409
 };
 
 // -85113 - Aftermath
@@ -356,23 +356,23 @@ class spell_warl_demon_soul : public SpellScript
                 CreatureTemplate const* ci = sObjectMgr->GetCreatureTemplate(targetCreature->GetEntry());
                 switch (ci->family)
                 {
-                    case CREATURE_FAMILY_SUCCUBUS:
-                        caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_SUCCUBUS);
-                        break;
-                    case CREATURE_FAMILY_VOIDWALKER:
-                        caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_VOIDWALKER);
-                        break;
-                    case CREATURE_FAMILY_FELGUARD:
-                        caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_FELGUARD);
-                        break;
-                    case CREATURE_FAMILY_FELHUNTER:
-                        caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_FELHUNTER);
-                        break;
-                    case CREATURE_FAMILY_IMP:
-                        caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_IMP);
-                        break;
-                    default:
-                        break;
+                case CREATURE_FAMILY_SUCCUBUS:
+                    caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_SUCCUBUS);
+                    break;
+                case CREATURE_FAMILY_VOIDWALKER:
+                    caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_VOIDWALKER);
+                    break;
+                case CREATURE_FAMILY_FELGUARD:
+                    caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_FELGUARD);
+                    break;
+                case CREATURE_FAMILY_FELHUNTER:
+                    caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_FELHUNTER);
+                    break;
+                case CREATURE_FAMILY_IMP:
+                    caster->CastSpell(caster, SPELL_WARLOCK_DEMON_SOUL_IMP);
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -410,27 +410,27 @@ class spell_warl_demonic_empowerment : public SpellScript
                 ASSERT(ci);
                 switch (ci->family)
                 {
-                    case CREATURE_FAMILY_SUCCUBUS:
-                        targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_SUCCUBUS, true);
-                        break;
-                    case CREATURE_FAMILY_VOIDWALKER:
-                    {
-                        SpellInfo const* spellInfo = sSpellMgr->AssertSpellInfo(SPELL_WARLOCK_DEMONIC_EMPOWERMENT_VOIDWALKER);
-                        int32 hp = int32(targetCreature->CountPctFromMaxHealth(GetCaster()->CalculateSpellDamage(targetCreature, spellInfo, 0)));
-                        targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_VOIDWALKER, CastSpellExtraArgs(true).AddSpellBP0(hp));
-                        break;
-                    }
-                    case CREATURE_FAMILY_FELGUARD:
-                        targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELGUARD, true);
-                        break;
-                    case CREATURE_FAMILY_FELHUNTER:
-                        targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELHUNTER, true);
-                        break;
-                    case CREATURE_FAMILY_IMP:
-                        targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_IMP, true);
-                        break;
-                    default:
-                        break;
+                case CREATURE_FAMILY_SUCCUBUS:
+                    targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_SUCCUBUS, true);
+                    break;
+                case CREATURE_FAMILY_VOIDWALKER:
+                {
+                    SpellInfo const* spellInfo = sSpellMgr->AssertSpellInfo(SPELL_WARLOCK_DEMONIC_EMPOWERMENT_VOIDWALKER);
+                    int32 hp = int32(targetCreature->CountPctFromMaxHealth(GetCaster()->CalculateSpellDamage(targetCreature, spellInfo, 0)));
+                    targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_VOIDWALKER, CastSpellExtraArgs(true).AddSpellBP0(hp));
+                    break;
+                }
+                case CREATURE_FAMILY_FELGUARD:
+                    targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELGUARD, true);
+                    break;
+                case CREATURE_FAMILY_FELHUNTER:
+                    targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_FELHUNTER, true);
+                    break;
+                case CREATURE_FAMILY_IMP:
+                    targetCreature->CastSpell(targetCreature, SPELL_WARLOCK_DEMONIC_EMPOWERMENT_IMP, true);
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -921,7 +921,7 @@ class spell_warl_shadow_trance_proc : public AuraScript
     {
         OnEffectProc.Register(&spell_warl_shadow_trance_proc::OnProc, EFFECT_0, SPELL_AURA_DUMMY);
     }
-        };
+};
 
 // 6229 - Shadow Ward
 class spell_warl_shadow_ward : public AuraScript
@@ -929,7 +929,7 @@ class spell_warl_shadow_ward : public AuraScript
     void CalculateAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& canBeRecalculated)
     {
         canBeRecalculated = false;
-        if (Unit * caster = GetCaster())
+        if (Unit* caster = GetCaster())
         {
             // +80.7% from sp bonus
             float bonus = 0.807f;
@@ -967,124 +967,124 @@ class spell_warl_soul_leech : public AuraScript
 // 86121 - Soul Swap
 class spell_warl_soul_swap : public SpellScriptLoader
 {
-    public:
-        spell_warl_soul_swap() : SpellScriptLoader("spell_warl_soul_swap") { }
+public:
+    spell_warl_soul_swap() : SpellScriptLoader("spell_warl_soul_swap") { }
 
-        class spell_warl_soul_swap_SpellScript : public SpellScript
+    class spell_warl_soul_swap_SpellScript : public SpellScript
+    {
+        bool Validate(SpellInfo const* /*spellInfo*/) override
         {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo(
+            return ValidateSpellInfo(
                 {
                     SPELL_WARLOCK_GLYPH_OF_SOUL_SWAP,
                     SPELL_WARLOCK_SOUL_SWAP_CD_MARKER,
                     SPELL_WARLOCK_SOUL_SWAP_OVERRIDE
                 });
-            }
-
-            void HandleHit(SpellEffIndex /*effIndex*/)
-            {
-                GetCaster()->CastSpell(GetCaster(), SPELL_WARLOCK_SOUL_SWAP_OVERRIDE, true);
-                GetHitUnit()->CastSpell(GetCaster(), SPELL_WARLOCK_SOUL_SWAP_DOT_MARKER, true);
-            }
-
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_warl_soul_swap_SpellScript::HandleHit, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_warl_soul_swap_SpellScript();
         }
+
+        void HandleHit(SpellEffIndex /*effIndex*/)
+        {
+            GetCaster()->CastSpell(GetCaster(), SPELL_WARLOCK_SOUL_SWAP_OVERRIDE, true);
+            GetHitUnit()->CastSpell(GetCaster(), SPELL_WARLOCK_SOUL_SWAP_DOT_MARKER, true);
+        }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_warl_soul_swap_SpellScript::HandleHit, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_warl_soul_swap_SpellScript();
+    }
 };
 
 // 86211 - Soul Swap Override - Also acts as a dot container
 class spell_warl_soul_swap_override : public SpellScriptLoader
 {
-    public:
-        static char constexpr const ScriptName[] = "spell_warl_soul_swap_override";
+public:
+    static char constexpr const ScriptName[] = "spell_warl_soul_swap_override";
 
-        spell_warl_soul_swap_override() : SpellScriptLoader(ScriptName) { }
+    spell_warl_soul_swap_override() : SpellScriptLoader(ScriptName) { }
 
-        class spell_warl_soul_swap_override_AuraScript : public AuraScript
+    class spell_warl_soul_swap_override_AuraScript : public AuraScript
+    {
+        bool Load() override
         {
-            bool Load() override
-            {
-                _swapCaster = nullptr;
-                return true;
-            }
-
-            //! Forced to, pure virtual functions must have a body when linking
-            void Register() override { }
-
-        public:
-            void AddDot(uint32 id)                          { _dotList.push_back(id); }
-            std::list<uint32> const GetDotList() const      { return _dotList; }
-            Unit* GetOriginalSwapSource() const             { return _swapCaster; }
-            void SetOriginalSwapSource(Unit* victim)        { _swapCaster = victim; }
-
-        private:
-            std::list<uint32> _dotList;
-            Unit* _swapCaster;
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_warl_soul_swap_override_AuraScript();
+            _swapCaster = nullptr;
+            return true;
         }
+
+        //! Forced to, pure virtual functions must have a body when linking
+        void Register() override { }
+
+    public:
+        void AddDot(uint32 id) { _dotList.push_back(id); }
+        std::list<uint32> const GetDotList() const { return _dotList; }
+        Unit* GetOriginalSwapSource() const { return _swapCaster; }
+        void SetOriginalSwapSource(Unit* victim) { _swapCaster = victim; }
+
+    private:
+        std::list<uint32> _dotList;
+        Unit* _swapCaster;
+    };
+
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_warl_soul_swap_override_AuraScript();
+    }
 };
 char constexpr const spell_warl_soul_swap_override::ScriptName[];
 
 //! Soul Swap Copy Spells - 92795 - Simply copies spell IDs.
 class spell_warl_soul_swap_dot_marker : public SpellScriptLoader
 {
-    public:
-        spell_warl_soul_swap_dot_marker() : SpellScriptLoader("spell_warl_soul_swap_dot_marker") { }
+public:
+    spell_warl_soul_swap_dot_marker() : SpellScriptLoader("spell_warl_soul_swap_dot_marker") { }
 
-        class spell_warl_soul_swap_dot_marker_SpellScript : public SpellScript
+    class spell_warl_soul_swap_dot_marker_SpellScript : public SpellScript
+    {
+        typedef spell_warl_soul_swap_override::spell_warl_soul_swap_override_AuraScript SoulSwapOverrideAuraScript;
+
+        void HandleHit(SpellEffIndex effIndex)
         {
-            typedef spell_warl_soul_swap_override::spell_warl_soul_swap_override_AuraScript SoulSwapOverrideAuraScript;
+            Unit* swapVictim = GetCaster();
+            Unit* warlock = GetHitUnit();
+            if (!warlock || !swapVictim)
+                return;
 
-            void HandleHit(SpellEffIndex effIndex)
+            flag96 classMask = GetSpellInfo()->Effects[effIndex].SpellClassMask;
+
+            Unit::AuraApplicationMap const& appliedAuras = swapVictim->GetAppliedAuras();
+            SoulSwapOverrideAuraScript* swapSpellScript = nullptr;
+            if (Aura* swapOverrideAura = warlock->GetAura(SPELL_WARLOCK_SOUL_SWAP_OVERRIDE))
+                swapSpellScript = swapOverrideAura->GetScript<SoulSwapOverrideAuraScript>(spell_warl_soul_swap_override::ScriptName);
+
+            if (swapSpellScript == nullptr)
+                return;
+
+            for (Unit::AuraApplicationMap::const_iterator itr = appliedAuras.begin(); itr != appliedAuras.end(); ++itr)
             {
-                Unit* swapVictim = GetCaster();
-                Unit* warlock    = GetHitUnit();
-                if (!warlock || !swapVictim)
-                    return;
-
-                flag96 classMask = GetSpellInfo()->Effects[effIndex].SpellClassMask;
-
-                Unit::AuraApplicationMap const& appliedAuras = swapVictim->GetAppliedAuras();
-                SoulSwapOverrideAuraScript* swapSpellScript = nullptr;
-                if (Aura* swapOverrideAura = warlock->GetAura(SPELL_WARLOCK_SOUL_SWAP_OVERRIDE))
-                    swapSpellScript = swapOverrideAura->GetScript<SoulSwapOverrideAuraScript>(spell_warl_soul_swap_override::ScriptName);
-
-                if (swapSpellScript == nullptr)
-                    return;
-
-                for (Unit::AuraApplicationMap::const_iterator itr = appliedAuras.begin(); itr != appliedAuras.end(); ++itr)
-                {
-                    SpellInfo const* spellProto = itr->second->GetBase()->GetSpellInfo();
-                    if (itr->second->GetBase()->GetCaster() == warlock)
-                        if (spellProto->SpellFamilyName == SPELLFAMILY_WARLOCK && (spellProto->SpellFamilyFlags & classMask))
-                            swapSpellScript->AddDot(itr->first);
-                }
-
-                swapSpellScript->SetOriginalSwapSource(swapVictim);
+                SpellInfo const* spellProto = itr->second->GetBase()->GetSpellInfo();
+                if (itr->second->GetBase()->GetCaster() == warlock)
+                    if (spellProto->SpellFamilyName == SPELLFAMILY_WARLOCK && (spellProto->SpellFamilyFlags & classMask))
+                        swapSpellScript->AddDot(itr->first);
             }
 
-            void Register() override
-            {
-                OnEffectHitTarget.Register(&spell_warl_soul_swap_dot_marker_SpellScript::HandleHit, EFFECT_0, SPELL_EFFECT_DUMMY);
-            }
-        };
-
-        SpellScript* GetSpellScript() const override
-        {
-            return new spell_warl_soul_swap_dot_marker_SpellScript();
+            swapSpellScript->SetOriginalSwapSource(swapVictim);
         }
+
+        void Register() override
+        {
+            OnEffectHitTarget.Register(&spell_warl_soul_swap_dot_marker_SpellScript::HandleHit, EFFECT_0, SPELL_EFFECT_DUMMY);
+        }
+    };
+
+    SpellScript* GetSpellScript() const override
+    {
+        return new spell_warl_soul_swap_dot_marker_SpellScript();
+    }
 };
 
 // 86213 - Soul Swap Exhale
@@ -1095,15 +1095,15 @@ public:
 
     class spell_warl_soul_swap_exhale_SpellScript : public SpellScript
     {
-             typedef spell_warl_soul_swap_override::spell_warl_soul_swap_override_AuraScript SoulSwapOverrideAuraScript;
+        typedef spell_warl_soul_swap_override::spell_warl_soul_swap_override_AuraScript SoulSwapOverrideAuraScript;
 
         bool Validate(SpellInfo const* /*spellInfo*/) override
         {
             return ValidateSpellInfo(
-            {
-                SPELL_WARLOCK_SOUL_SWAP_MOD_COST,
-                SPELL_WARLOCK_SOUL_SWAP_OVERRIDE
-            });
+                {
+                    SPELL_WARLOCK_SOUL_SWAP_MOD_COST,
+                    SPELL_WARLOCK_SOUL_SWAP_OVERRIDE
+                });
         }
 
         SpellCastResult CheckCast()
@@ -1345,20 +1345,20 @@ class spell_warl_soulburn : public AuraScript
 
         switch (spellInfo->Id)
         {
-            case SPELL_WARLOCK_HEALTHSTONE:
-                target->CastSpell(target, SPELL_WARLOCK_SOULBURN_HEALTHSTONE, aurEff);
-                break;
-            case SPELL_WARLOCK_DEMONIC_CIRCLE_TELEPORT:
-                target->CastSpell(target, SPELL_WARLOCK_SOULBURN_DEMONIC_CIRCLE, aurEff);
-                break;
-            case SPELL_WARLOCK_SEARING_PAIN:
-                target->CastSpell(target, SPELL_WARLOCK_SOULBURN_SEARING_PAIN, aurEff);
-                break;
-            case SPELL_WARLOCK_SEED_OF_CORRUPTION:
-                target->ToPlayer()->SetLastSoulburnSpell(spellInfo);
-                break;
-            default:
-                break;
+        case SPELL_WARLOCK_HEALTHSTONE:
+            target->CastSpell(target, SPELL_WARLOCK_SOULBURN_HEALTHSTONE, aurEff);
+            break;
+        case SPELL_WARLOCK_DEMONIC_CIRCLE_TELEPORT:
+            target->CastSpell(target, SPELL_WARLOCK_SOULBURN_DEMONIC_CIRCLE, aurEff);
+            break;
+        case SPELL_WARLOCK_SEARING_PAIN:
+            target->CastSpell(target, SPELL_WARLOCK_SOULBURN_SEARING_PAIN, aurEff);
+            break;
+        case SPELL_WARLOCK_SEED_OF_CORRUPTION:
+            target->ToPlayer()->SetLastSoulburnSpell(spellInfo);
+            break;
+        default:
+            break;
         }
     }
 
@@ -1548,20 +1548,20 @@ class spell_warl_curse_of_weakness : public AuraScript
             {
                 switch (target->getClass())
                 {
-                    case CLASS_WARRIOR:
-                        _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_RAGE;
-                        break;
-                    case CLASS_ROGUE:
-                        _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_ENERGY;
-                        break;
-                    case CLASS_DEATH_KNIGHT:
-                        _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_RUNIC_POWER;
-                        break;
-                    case CLASS_HUNTER:
-                        _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_FOCUS;
-                        break;
-                    default:
-                        break;
+                case CLASS_WARRIOR:
+                    _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_RAGE;
+                    break;
+                case CLASS_ROGUE:
+                    _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_ENERGY;
+                    break;
+                case CLASS_DEATH_KNIGHT:
+                    _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_RUNIC_POWER;
+                    break;
+                case CLASS_HUNTER:
+                    _debuffSpellId = SPELL_WARLOCK_JINX_TRIGGERED_FOCUS;
+                    break;
+                default:
+                    break;
                 }
 
                 if (_debuffSpellId)

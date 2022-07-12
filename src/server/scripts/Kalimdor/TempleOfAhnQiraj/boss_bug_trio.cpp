@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: boss_kri, boss_yauj, boss_vem : The Bug Trio
-SD%Complete: 100
-SDComment:
-SDCategory: Temple of Ahn'Qiraj
-EndScriptData */
+ /* ScriptData
+ SDName: boss_kri, boss_yauj, boss_vem : The Bug Trio
+ SD%Complete: 100
+ SDComment:
+ SDCategory: Temple of Ahn'Qiraj
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -31,16 +31,16 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_CLEAVE       = 26350,
+    SPELL_CLEAVE = 26350,
     SPELL_TOXIC_VOLLEY = 25812,
     SPELL_POISON_CLOUD = 38718, //Only Spell with right dmg.
-    SPELL_ENRAGE       = 34624, //Changed cause 25790 is cast on gamers too. Same prob with old explosion of twin emperors.
+    SPELL_ENRAGE = 34624, //Changed cause 25790 is cast on gamers too. Same prob with old explosion of twin emperors.
 
-    SPELL_CHARGE       = 26561,
-    SPELL_KNOCKBACK    = 26027,
+    SPELL_CHARGE = 26561,
+    SPELL_KNOCKBACK = 26027,
 
-    SPELL_HEAL         = 25807,
-    SPELL_FEAR         = 19408
+    SPELL_HEAL = 25807,
+    SPELL_FEAR = 19408
 };
 
 class boss_kri : public CreatureScript
@@ -97,14 +97,16 @@ public:
             {
                 DoCastVictim(SPELL_CLEAVE);
                 Cleave_Timer = urand(5000, 12000);
-            } else Cleave_Timer -= diff;
+            }
+            else Cleave_Timer -= diff;
 
             //ToxicVolley_Timer
             if (ToxicVolley_Timer <= diff)
             {
                 DoCastVictim(SPELL_TOXIC_VOLLEY);
                 ToxicVolley_Timer = urand(10000, 15000);
-            } else ToxicVolley_Timer -= diff;
+            }
+            else ToxicVolley_Timer -= diff;
 
             if (!HealthAbovePct(5) && !Death)
             {
@@ -123,7 +125,8 @@ public:
                         VemDead = true;
                     }
                     Check_Timer = 2000;
-                } else Check_Timer -=diff;
+                }
+                else Check_Timer -= diff;
             }
 
             DoMeleeAttackIfReady();
@@ -194,7 +197,8 @@ public:
                 }
 
                 Charge_Timer = urand(8000, 16000);
-            } else Charge_Timer -= diff;
+            }
+            else Charge_Timer -= diff;
 
             //KnockBack_Timer
             if (KnockBack_Timer <= diff)
@@ -203,14 +207,16 @@ public:
                 if (GetThreat(me->GetVictim()))
                     ModifyThreatByPercent(me->GetVictim(), -80);
                 KnockBack_Timer = urand(15000, 25000);
-            } else KnockBack_Timer -= diff;
+            }
+            else KnockBack_Timer -= diff;
 
             //Enrage_Timer
             if (!Enraged && Enrage_Timer <= diff)
             {
                 DoCast(me, SPELL_ENRAGE);
                 Enraged = true;
-            } else Charge_Timer -= diff;
+            }
+            else Charge_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }
@@ -282,28 +288,30 @@ public:
                 DoCastVictim(SPELL_FEAR);
                 ResetThreatList();
                 Fear_Timer = 20000;
-            } else Fear_Timer -= diff;
+            }
+            else Fear_Timer -= diff;
 
             //Casting Heal to other twins or herself.
             if (Heal_Timer <= diff)
             {
                 switch (urand(0, 2))
                 {
-                    case 0:
-                        if (Creature* kri = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_KRI)))
-                            DoCast(kri, SPELL_HEAL);
-                        break;
-                    case 1:
-                        if (Creature* vem = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_VEM)))
-                            DoCast(vem, SPELL_HEAL);
-                        break;
-                    case 2:
-                        DoCast(me, SPELL_HEAL);
-                        break;
+                case 0:
+                    if (Creature* kri = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_KRI)))
+                        DoCast(kri, SPELL_HEAL);
+                    break;
+                case 1:
+                    if (Creature* vem = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_VEM)))
+                        DoCast(vem, SPELL_HEAL);
+                    break;
+                case 2:
+                    DoCast(me, SPELL_HEAL);
+                    break;
                 }
 
                 Heal_Timer = 15000 + rand32() % 15000;
-            } else Heal_Timer -= diff;
+            }
+            else Heal_Timer -= diff;
 
             //Checking if Vem is dead. If yes we will enrage.
             if (Check_Timer <= diff)
@@ -317,7 +325,8 @@ public:
                     }
                 }
                 Check_Timer = 2000;
-            } else Check_Timer -= diff;
+            }
+            else Check_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

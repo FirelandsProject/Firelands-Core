@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,27 +21,27 @@
 
 enum Spells
 {
-    SPELL_REPENTANCE    = 29511,
-    SPELL_HOLYFIRE      = 29522,
-    SPELL_HOLYWRATH     = 32445,
-    SPELL_HOLYGROUND    = 29523,
-    SPELL_BERSERK       = 26662
+    SPELL_REPENTANCE = 29511,
+    SPELL_HOLYFIRE = 29522,
+    SPELL_HOLYWRATH = 32445,
+    SPELL_HOLYGROUND = 29523,
+    SPELL_BERSERK = 26662
 };
 
 enum Yells
 {
-    SAY_AGGRO           = 0,
-    SAY_SLAY            = 1,
-    SAY_REPENTANCE      = 2,
-    SAY_DEATH           = 3
+    SAY_AGGRO = 0,
+    SAY_SLAY = 1,
+    SAY_REPENTANCE = 2,
+    SAY_DEATH = 3
 };
 
 enum Events
 {
-    EVENT_REPENTANCE    = 1,
-    EVENT_HOLYFIRE      = 2,
-    EVENT_HOLYWRATH     = 3,
-    EVENT_ENRAGE        = 4
+    EVENT_REPENTANCE = 1,
+    EVENT_HOLYFIRE = 2,
+    EVENT_HOLYWRATH = 3,
+    EVENT_ENRAGE = 4
 };
 
 class boss_maiden_of_virtue : public CreatureScript
@@ -91,26 +91,26 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_REPENTANCE:
-                        DoCastVictim(SPELL_REPENTANCE);
-                        Talk(SAY_REPENTANCE);
-                        events.Repeat(Seconds(35));
-                        break;
-                    case EVENT_HOLYFIRE:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50, true))
-                            DoCast(target, SPELL_HOLYFIRE);
-                        events.Repeat(Seconds(8), Seconds(19));
-                        break;
-                    case EVENT_HOLYWRATH:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 80, true))
-                            DoCast(target, SPELL_HOLYWRATH);
-                        events.Repeat(Seconds(15), Seconds(25));
-                        break;
-                    case EVENT_ENRAGE:
-                        DoCastSelf(SPELL_BERSERK, true);
-                        break;
-                    default:
-                        break;
+                case EVENT_REPENTANCE:
+                    DoCastVictim(SPELL_REPENTANCE);
+                    Talk(SAY_REPENTANCE);
+                    events.Repeat(Seconds(35));
+                    break;
+                case EVENT_HOLYFIRE:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50, true))
+                        DoCast(target, SPELL_HOLYFIRE);
+                    events.Repeat(Seconds(8), Seconds(19));
+                    break;
+                case EVENT_HOLYWRATH:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 80, true))
+                        DoCast(target, SPELL_HOLYWRATH);
+                    events.Repeat(Seconds(15), Seconds(25));
+                    break;
+                case EVENT_ENRAGE:
+                    DoCastSelf(SPELL_BERSERK, true);
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

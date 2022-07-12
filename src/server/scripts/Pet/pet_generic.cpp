@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,17 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "npc_pet_gen_".
- */
+ /*
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "npc_pet_gen_".
+  */
 
- /* ContentData
- npc_pet_gen_baby_blizzard_bear     100%    Baby Blizzard Bear sits down occasionally
- npc_pet_gen_egbert                 100%    Egbert run's around
- npc_pet_gen_pandaren_monk          100%    Pandaren Monk drinks and bows with you
- npc_pet_gen_mojo                   100%    Mojo follows you when you kiss it
- EndContentData */
+  /* ContentData
+  npc_pet_gen_baby_blizzard_bear     100%    Baby Blizzard Bear sits down occasionally
+  npc_pet_gen_egbert                 100%    Egbert run's around
+  npc_pet_gen_pandaren_monk          100%    Pandaren Monk drinks and bows with you
+  npc_pet_gen_mojo                   100%    Mojo follows you when you kiss it
+  EndContentData */
 
 #include "ScriptMgr.h"
 #include "DBCStructure.h"
@@ -259,158 +259,158 @@ public:
 
 enum Mojo
 {
-    SAY_MOJO                = 0,
+    SAY_MOJO = 0,
 
-    SPELL_FEELING_FROGGY    = 43906,
-    SPELL_SEDUCTION_VISUAL  = 43919
+    SPELL_FEELING_FROGGY = 43906,
+    SPELL_SEDUCTION_VISUAL = 43919
 };
 
 class npc_pet_gen_mojo : public CreatureScript
 {
-    public:
-        npc_pet_gen_mojo() : CreatureScript("npc_pet_gen_mojo") { }
+public:
+    npc_pet_gen_mojo() : CreatureScript("npc_pet_gen_mojo") { }
 
-        struct npc_pet_gen_mojoAI : public ScriptedAI
+    struct npc_pet_gen_mojoAI : public ScriptedAI
+    {
+        npc_pet_gen_mojoAI(Creature* creature) : ScriptedAI(creature)
         {
-            npc_pet_gen_mojoAI(Creature* creature) : ScriptedAI(creature)
-            {
-            }
-
-            void Reset() override
-            {
-                _victimGUID.Clear();
-
-                if (Unit* owner = me->GetOwner())
-                    me->GetMotionMaster()->MoveFollow(owner, 0.0f, 0.0f);
-            }
-
-            void JustEngagedWith(Unit* /*who*/) override { }
-            void UpdateAI(uint32 /*diff*/) override { }
-
-            void ReceiveEmote(Player* player, uint32 emote) override
-            {
-                me->HandleEmoteCommand(emote);
-                Unit* owner = me->GetOwner();
-                if (emote != TEXT_EMOTE_KISS || !owner || owner->GetTypeId() != TYPEID_PLAYER ||
-                    owner->ToPlayer()->GetTeam() != player->GetTeam())
-                {
-                    return;
-                }
-
-                Talk(SAY_MOJO, player);
-
-                if (_victimGUID)
-                    if (Player* victim = ObjectAccessor::GetPlayer(*me, _victimGUID))
-                        victim->RemoveAura(SPELL_FEELING_FROGGY);
-
-                _victimGUID = player->GetGUID();
-
-                DoCast(player, SPELL_FEELING_FROGGY, true);
-                DoCast(me, SPELL_SEDUCTION_VISUAL, true);
-                me->GetMotionMaster()->MoveFollow(player, 0.0f, 0.0f);
-            }
-
-        private:
-            ObjectGuid _victimGUID;
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new npc_pet_gen_mojoAI(creature);
         }
+
+        void Reset() override
+        {
+            _victimGUID.Clear();
+
+            if (Unit* owner = me->GetOwner())
+                me->GetMotionMaster()->MoveFollow(owner, 0.0f, 0.0f);
+        }
+
+        void JustEngagedWith(Unit* /*who*/) override { }
+        void UpdateAI(uint32 /*diff*/) override { }
+
+        void ReceiveEmote(Player* player, uint32 emote) override
+        {
+            me->HandleEmoteCommand(emote);
+            Unit* owner = me->GetOwner();
+            if (emote != TEXT_EMOTE_KISS || !owner || owner->GetTypeId() != TYPEID_PLAYER ||
+                owner->ToPlayer()->GetTeam() != player->GetTeam())
+            {
+                return;
+            }
+
+            Talk(SAY_MOJO, player);
+
+            if (_victimGUID)
+                if (Player* victim = ObjectAccessor::GetPlayer(*me, _victimGUID))
+                    victim->RemoveAura(SPELL_FEELING_FROGGY);
+
+            _victimGUID = player->GetGUID();
+
+            DoCast(player, SPELL_FEELING_FROGGY, true);
+            DoCast(me, SPELL_SEDUCTION_VISUAL, true);
+            me->GetMotionMaster()->MoveFollow(player, 0.0f, 0.0f);
+        }
+
+    private:
+        ObjectGuid _victimGUID;
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new npc_pet_gen_mojoAI(creature);
+    }
 };
 
 // Lil' Ragnaros
 enum LilRagnaros
 {
-    SPELL_DND_LR_2                      = 95804, // Root and emerge effect
-    SPELL_DND_SUMMON_BASIC_CAMPFIRE     = 95811,
-    SPELL_DND_LR                        = 95802,
-    SPELL_SCORCHLING                    = 45887,
-    SPELL_DND_LR_1                      = 95803, // Submerge effect
-    SPELL_DND_DESPAWN_BASIC_CAMPFIRE    = 95813,
+    SPELL_DND_LR_2 = 95804, // Root and emerge effect
+    SPELL_DND_SUMMON_BASIC_CAMPFIRE = 95811,
+    SPELL_DND_LR = 95802,
+    SPELL_SCORCHLING = 45887,
+    SPELL_DND_LR_1 = 95803, // Submerge effect
+    SPELL_DND_DESPAWN_BASIC_CAMPFIRE = 95813,
 
-    EVENT_CHECK_PLAYER_DISTANCE         = 1,
+    EVENT_CHECK_PLAYER_DISTANCE = 1,
 };
 
 class npc_pet_gen_lil_ragnaros : public CreatureScript
 {
-    public:
-        npc_pet_gen_lil_ragnaros() : CreatureScript("npc_pet_gen_lil_ragnaros") { }
+public:
+    npc_pet_gen_lil_ragnaros() : CreatureScript("npc_pet_gen_lil_ragnaros") { }
 
-        struct npc_pet_gen_lil_ragnarosAI : public ScriptedAI
+    struct npc_pet_gen_lil_ragnarosAI : public ScriptedAI
+    {
+        npc_pet_gen_lil_ragnarosAI(Creature* creature) : ScriptedAI(creature)
         {
-            npc_pet_gen_lil_ragnarosAI(Creature* creature) : ScriptedAI(creature)
-            {
-                Initialize();
-            }
+            Initialize();
+        }
 
-            void Initialize()
-            {
-                _submerged = false;
-            }
+        void Initialize()
+        {
+            _submerged = false;
+        }
 
-            void IsSummonedBy(Unit* /*summoner*/) override
-            {
-                DoCastSelf(SPELL_DND_LR_2, true);
-                DoCastSelf(SPELL_DND_SUMMON_BASIC_CAMPFIRE, true);
-                DoCastSelf(SPELL_DND_LR, true);
-                DoCastSelf(SPELL_SCORCHLING, true);
-                _events.ScheduleEvent(EVENT_CHECK_PLAYER_DISTANCE, Seconds(1));
-            }
+        void IsSummonedBy(Unit* /*summoner*/) override
+        {
+            DoCastSelf(SPELL_DND_LR_2, true);
+            DoCastSelf(SPELL_DND_SUMMON_BASIC_CAMPFIRE, true);
+            DoCastSelf(SPELL_DND_LR, true);
+            DoCastSelf(SPELL_SCORCHLING, true);
+            _events.ScheduleEvent(EVENT_CHECK_PLAYER_DISTANCE, Seconds(1));
+        }
 
-            void UpdateAI(uint32 diff) override
-            {
-                _events.Update(diff);
+        void UpdateAI(uint32 diff) override
+        {
+            _events.Update(diff);
 
-                if (uint32 eventId = _events.ExecuteEvent())
+            if (uint32 eventId = _events.ExecuteEvent())
+            {
+                switch (eventId)
                 {
-                    switch (eventId)
+                case EVENT_CHECK_PLAYER_DISTANCE:
+                    if (Unit* owner = me->GetCharmerOrOwner())
                     {
-                        case EVENT_CHECK_PLAYER_DISTANCE:
-                            if (Unit* owner = me->GetCharmerOrOwner())
-                            {
-                                if (me->GetDistance(owner) >= 20.0f && !_submerged)
-                                {
-                                    me->RemoveAllAuras();
-                                    DoCastSelf(SPELL_DND_LR_1, true);
-                                    DoCastSelf(SPELL_DND_DESPAWN_BASIC_CAMPFIRE, true);
-                                    _submerged = true;
-                                }
-                                else if (me->GetDistance(owner) <= 5.0f && _submerged)
-                                {
-                                    me->RemoveAurasDueToSpell(SPELL_DND_LR_1);
-                                    DoCastSelf(SPELL_DND_LR_2, true);
-                                    DoCastSelf(SPELL_DND_SUMMON_BASIC_CAMPFIRE, true);
-                                    DoCastSelf(SPELL_DND_LR, true);
-                                    DoCastSelf(SPELL_SCORCHLING, true);
-                                    _submerged = false;
-                                }
-                            }
-                            _events.Repeat(Seconds(1));
-                            break;
-                        default:
-                            break;
+                        if (me->GetDistance(owner) >= 20.0f && !_submerged)
+                        {
+                            me->RemoveAllAuras();
+                            DoCastSelf(SPELL_DND_LR_1, true);
+                            DoCastSelf(SPELL_DND_DESPAWN_BASIC_CAMPFIRE, true);
+                            _submerged = true;
+                        }
+                        else if (me->GetDistance(owner) <= 5.0f && _submerged)
+                        {
+                            me->RemoveAurasDueToSpell(SPELL_DND_LR_1);
+                            DoCastSelf(SPELL_DND_LR_2, true);
+                            DoCastSelf(SPELL_DND_SUMMON_BASIC_CAMPFIRE, true);
+                            DoCastSelf(SPELL_DND_LR, true);
+                            DoCastSelf(SPELL_SCORCHLING, true);
+                            _submerged = false;
+                        }
                     }
+                    _events.Repeat(Seconds(1));
+                    break;
+                default:
+                    break;
                 }
             }
-        private:
-            EventMap _events;
-            bool _submerged;
-        };
-
-        CreatureAI* GetAI(Creature* creature) const override
-        {
-            return new npc_pet_gen_lil_ragnarosAI(creature);
         }
+    private:
+        EventMap _events;
+        bool _submerged;
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new npc_pet_gen_lil_ragnarosAI(creature);
+    }
 };
 
 enum SoulTrader
 {
-    SAY_SOUL_TRADER_INTRO           = 0,
+    SAY_SOUL_TRADER_INTRO = 0,
 
-    SPELL_ETHEREAL_ONSUMMON         = 50052,
-    SPELL_ETHEREAL_PET_REMOVE_AURA  = 50055
+    SPELL_ETHEREAL_ONSUMMON = 50052,
+    SPELL_ETHEREAL_PET_REMOVE_AURA = 50055
 };
 
 struct npc_pet_gen_soul_trader : public ScriptedAI

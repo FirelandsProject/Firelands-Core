@@ -1,5 +1,5 @@
 /*
- * This file is part of the AzerothCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
@@ -76,9 +76,9 @@ static_assert(sizeof(sAuthLogonChallenge_C) == (1 + 1 + 2 + 4 + 1 + 1 + 1 + 2 + 
 typedef struct AUTH_LOGON_PROOF_C
 {
     uint8   cmd;
-    Acore::Crypto::SRP6::EphemeralKey A;
-    Acore::Crypto::SHA1::Digest clientM;
-    Acore::Crypto::SHA1::Digest crc_hash;
+    Firelands::Crypto::SRP6::EphemeralKey A;
+    Firelands::Crypto::SHA1::Digest clientM;
+    Firelands::Crypto::SHA1::Digest crc_hash;
     uint8   number_of_keys;
     uint8   securityFlags;
 } sAuthLogonProof_C;
@@ -88,7 +88,7 @@ typedef struct AUTH_LOGON_PROOF_S
 {
     uint8   cmd;
     uint8   error;
-    Acore::Crypto::SHA1::Digest M2;
+    Firelands::Crypto::SHA1::Digest M2;
     uint32  AccountFlags;
     uint32  SurveyId;
     uint16  LoginFlags;
@@ -99,7 +99,7 @@ typedef struct AUTH_LOGON_PROOF_S_OLD
 {
     uint8   cmd;
     uint8   error;
-    Acore::Crypto::SHA1::Digest M2;
+    Firelands::Crypto::SHA1::Digest M2;
     uint32  unk2;
 } sAuthLogonProof_S_Old;
 static_assert(sizeof(sAuthLogonProof_S_Old) == (1 + 1 + 20 + 4));
@@ -108,7 +108,7 @@ typedef struct AUTH_RECONNECT_PROOF_C
 {
     uint8   cmd;
     uint8   R1[16];
-    Acore::Crypto::SHA1::Digest R2, R3;
+    Firelands::Crypto::SHA1::Digest R2, R3;
     uint8   number_of_keys;
 } sAuthReconnectProof_C;
 static_assert(sizeof(sAuthReconnectProof_C) == (1 + 16 + 20 + 20 + 1));
@@ -126,11 +126,11 @@ std::unordered_map<uint8, AuthHandler> AuthSession::InitHandlers()
 {
     std::unordered_map<uint8, AuthHandler> handlers;
 
-    handlers[AUTH_LOGON_CHALLENGE] =        { STATUS_CHALLENGE,         AUTH_LOGON_CHALLENGE_INITIAL_SIZE, &AuthSession::HandleLogonChallenge };
-    handlers[AUTH_LOGON_PROOF] =            { STATUS_LOGON_PROOF,       sizeof(AUTH_LOGON_PROOF_C),        &AuthSession::HandleLogonProof };
-    handlers[AUTH_RECONNECT_CHALLENGE] =    { STATUS_CHALLENGE,         AUTH_LOGON_CHALLENGE_INITIAL_SIZE, &AuthSession::HandleReconnectChallenge };
-    handlers[AUTH_RECONNECT_PROOF] =        { STATUS_RECONNECT_PROOF,   sizeof(AUTH_RECONNECT_PROOF_C),    &AuthSession::HandleReconnectProof };
-    handlers[REALM_LIST] =                  { STATUS_AUTHED,            REALM_LIST_PACKET_SIZE,            &AuthSession::HandleRealmList };
+    handlers[AUTH_LOGON_CHALLENGE] = { STATUS_CHALLENGE,         AUTH_LOGON_CHALLENGE_INITIAL_SIZE, &AuthSession::HandleLogonChallenge };
+    handlers[AUTH_LOGON_PROOF] = { STATUS_LOGON_PROOF,       sizeof(AUTH_LOGON_PROOF_C),        &AuthSession::HandleLogonProof };
+    handlers[AUTH_RECONNECT_CHALLENGE] = { STATUS_CHALLENGE,         AUTH_LOGON_CHALLENGE_INITIAL_SIZE, &AuthSession::HandleReconnectChallenge };
+    handlers[AUTH_RECONNECT_PROOF] = { STATUS_RECONNECT_PROOF,   sizeof(AUTH_RECONNECT_PROOF_C),    &AuthSession::HandleReconnectProof };
+    handlers[REALM_LIST] = { STATUS_AUTHED,            REALM_LIST_PACKET_SIZE,            &AuthSession::HandleRealmList };
 
     return handlers;
 }
@@ -396,7 +396,7 @@ void AuthSession::LogonChallengeCallback(PreparedQueryResult result)
 
         if (auto const& secret = sSecretMgr->GetSecret(SECRET_TOTP_MASTER_KEY))
         {
-            bool success = Acore::Crypto::AEDecrypt<Acore::Crypto::AES>(*_totpSecret, *secret);
+            bool success = Firelands::Crypto::AEDecrypt<Firelands::Crypto::AES>(*_totpSecret, *secret);
             if (!success)
             {
                 pkt << uint8(WOW_FAIL_DB_BUSY);
@@ -408,8 +408,8 @@ void AuthSession::LogonChallengeCallback(PreparedQueryResult result)
     }
 
     _srp6.emplace(_accountInfo.Login,
-        fields[12].Get<Binary, Acore::Crypto::SRP6::SALT_LENGTH>(),
-        fields[13].Get<Binary, Acore::Crypto::SRP6::VERIFIER_LENGTH>());
+        fields[12].Get<Binary, Firelands::Crypto::SRP6::SALT_LENGTH>(),
+        fields[13].Get<Binary, Firelands::Crypto::SRP6::VERIFIER_LENGTH>());
 
     // Fill the response packet with the result
     if (AuthHelper::IsAcceptedClientBuild(_build))
@@ -484,8 +484,8 @@ bool AuthSession::HandleLogonProof()
             std::string token(reinterpret_cast<char*>(GetReadBuffer().GetReadPointer() + sizeof(sAuthLogonProof_C) + sizeof(size)), size);
             GetReadBuffer().ReadCompleted(sizeof(size) + size);
 
-            uint32 incomingToken = *Acore::StringTo<uint32>(token);
-            tokenSuccess = Acore::Crypto::TOTP::ValidateToken(*_totpSecret, incomingToken);
+            uint32 incomingToken = *Firelands::StringTo<uint32>(token);
+            tokenSuccess = Firelands::Crypto::TOTP::ValidateToken(*_totpSecret, incomingToken);
             memset(_totpSecret->data(), 0, _totpSecret->size());
         }
         else if (!sentToken && !_totpSecret)
@@ -525,7 +525,7 @@ bool AuthSession::HandleLogonProof()
         LoginDatabase.DirectExecute(stmt);
 
         // Finish SRP6 and send the final result to the client
-        Acore::Crypto::SHA1::Digest M2 = Acore::Crypto::SRP6::GetSessionVerifier(logonProof->A, logonProof->clientM, _sessionKey);
+        Firelands::Crypto::SHA1::Digest M2 = Firelands::Crypto::SRP6::GetSessionVerifier(logonProof->A, logonProof->clientM, _sessionKey);
 
         ByteBuffer packet;
         if (_expversion & POST_BC_EXP_FLAG)                 // 2.x and 3.x clients
@@ -670,7 +670,7 @@ void AuthSession::ReconnectChallengeCallback(PreparedQueryResult result)
 
     _accountInfo.LoadResult(fields);
     _sessionKey = fields[11].Get<Binary, SESSION_KEY_LENGTH>();
-    Acore::Crypto::GetRandomBytes(_reconnectProof);
+    Firelands::Crypto::GetRandomBytes(_reconnectProof);
     _status = STATUS_RECONNECT_PROOF;
 
     pkt << uint8(WOW_SUCCESS);
@@ -693,7 +693,7 @@ bool AuthSession::HandleReconnectProof()
     BigNumber t1;
     t1.SetBinary(reconnectProof->R1, 16);
 
-    Acore::Crypto::SHA1 sha;
+    Firelands::Crypto::SHA1 sha;
     sha.UpdateData(_accountInfo.Login);
     sha.UpdateData(t1.ToByteArray<16>());
     sha.UpdateData(_reconnectProof);
@@ -842,13 +842,13 @@ void AuthSession::RealmListCallback(PreparedQueryResult result)
     _status = STATUS_AUTHED;
 }
 
-bool AuthSession::VerifyVersion(uint8 const* a, int32 aLength, Acore::Crypto::SHA1::Digest const& versionProof, bool isReconnect)
+bool AuthSession::VerifyVersion(uint8 const* a, int32 aLength, Firelands::Crypto::SHA1::Digest const& versionProof, bool isReconnect)
 {
     if (!sConfigMgr->GetOption<bool>("StrictVersionCheck", false))
         return true;
 
-    Acore::Crypto::SHA1::Digest zeros{};
-    Acore::Crypto::SHA1::Digest const* versionHash{ nullptr };
+    Firelands::Crypto::SHA1::Digest zeros{};
+    Firelands::Crypto::SHA1::Digest const* versionHash{ nullptr };
 
     if (!isReconnect)
     {
@@ -870,7 +870,7 @@ bool AuthSession::VerifyVersion(uint8 const* a, int32 aLength, Acore::Crypto::SH
     else
         versionHash = &zeros;
 
-    Acore::Crypto::SHA1 version;
+    Firelands::Crypto::SHA1 version;
     version.UpdateData(a, aLength);
     version.UpdateData(*versionHash);
     version.Finalize();

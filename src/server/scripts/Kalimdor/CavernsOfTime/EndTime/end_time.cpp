@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -45,25 +45,25 @@ enum Actions
 enum Texts
 {
     // Nozdormu
-    SAY_ENCOUNTER_INTRO     = 0,
-    SAY_ENCOUNTER_OUTRO_1   = 1,
-    SAY_ENCOUNTER_OUTRO_2   = 2,
-    SAY_ENCOUNTER_OUTRO_3   = 3,
-    SAY_ENCOUNTER_OUTRO_4   = 4
+    SAY_ENCOUNTER_INTRO = 0,
+    SAY_ENCOUNTER_OUTRO_1 = 1,
+    SAY_ENCOUNTER_OUTRO_2 = 2,
+    SAY_ENCOUNTER_OUTRO_3 = 3,
+    SAY_ENCOUNTER_OUTRO_4 = 4
 };
 
 enum GossipMenuIds
 {
-    GOSSIP_MENU_ID_NOZDORMU                 = 13360,
-    GOSSIP_MENU_OPTION_ID_WELL_OF_ETERNITY  = 0
+    GOSSIP_MENU_ID_NOZDORMU = 13360,
+    GOSSIP_MENU_OPTION_ID_WELL_OF_ETERNITY = 0
 };
 
-Position const NozdormuEncounterTeleportPosition    = { 4033.37f, -294.457f, 181.613f, 5.8119464f };
-Position const NozdormuDefeatTeleportPosition       = { 4138.48f, -429.436f, 122.259f, 5.8119464f };
+Position const NozdormuEncounterTeleportPosition = { 4033.37f, -294.457f, 181.613f, 5.8119464f };
+Position const NozdormuDefeatTeleportPosition = { 4138.48f, -429.436f, 122.259f, 5.8119464f };
 
 struct npc_end_time_nozdormu : public NullCreatureAI
 {
-    npc_end_time_nozdormu(Creature* creature) : NullCreatureAI(creature),  _instance(nullptr), _introDone(false) { }
+    npc_end_time_nozdormu(Creature* creature) : NullCreatureAI(creature), _instance(nullptr), _introDone(false) { }
 
     void InitializeAI() override
     {
@@ -94,21 +94,21 @@ struct npc_end_time_nozdormu : public NullCreatureAI
     {
         switch (action)
         {
-            case ACTION_ENCOUNTER_INTRO:
-                if (!_introDone)
-                {
-                    _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_INTRO, 8s + 400ms);
-                    _introDone = true;
-                }
-                break;
-            case ACTION_ENCOUNTER_OUTRO:
-                me->setActive(true);
-                me->NearTeleportTo(NozdormuDefeatTeleportPosition);
-                _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_1, 8s + 700ms);
-                me->setActive(false);
-                break;
-            default:
-                break;
+        case ACTION_ENCOUNTER_INTRO:
+            if (!_introDone)
+            {
+                _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_INTRO, 8s + 400ms);
+                _introDone = true;
+            }
+            break;
+        case ACTION_ENCOUNTER_OUTRO:
+            me->setActive(true);
+            me->NearTeleportTo(NozdormuDefeatTeleportPosition);
+            _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_1, 8s + 700ms);
+            me->setActive(false);
+            break;
+        default:
+            break;
         }
     }
 
@@ -120,30 +120,30 @@ struct npc_end_time_nozdormu : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_TALK_ENCOUNTER_INTRO:
-                    Talk(SAY_ENCOUNTER_INTRO);
-                    me->setActive(true);
-                    me->NearTeleportTo(NozdormuEncounterTeleportPosition);
-                    me->setActive(false);
-                    break;
-                case EVENT_TALK_ENCOUNTER_OUTRO_1:
-                    Talk(SAY_ENCOUNTER_OUTRO_1);
-                    _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_2, 17s);
-                    break;
-                case EVENT_TALK_ENCOUNTER_OUTRO_2:
-                    Talk(SAY_ENCOUNTER_OUTRO_2);
-                    _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_3, 17s);
-                    break;
-                case EVENT_TALK_ENCOUNTER_OUTRO_3:
-                    Talk(SAY_ENCOUNTER_OUTRO_3);
-                    _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_4, 14s);
-                    break;
-                case EVENT_TALK_ENCOUNTER_OUTRO_4:
-                    Talk(SAY_ENCOUNTER_OUTRO_4);
-                    me->SetFacingTo(3.1765f);
-                    break;
-                default:
-                    break;
+            case EVENT_TALK_ENCOUNTER_INTRO:
+                Talk(SAY_ENCOUNTER_INTRO);
+                me->setActive(true);
+                me->NearTeleportTo(NozdormuEncounterTeleportPosition);
+                me->setActive(false);
+                break;
+            case EVENT_TALK_ENCOUNTER_OUTRO_1:
+                Talk(SAY_ENCOUNTER_OUTRO_1);
+                _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_2, 17s);
+                break;
+            case EVENT_TALK_ENCOUNTER_OUTRO_2:
+                Talk(SAY_ENCOUNTER_OUTRO_2);
+                _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_3, 17s);
+                break;
+            case EVENT_TALK_ENCOUNTER_OUTRO_3:
+                Talk(SAY_ENCOUNTER_OUTRO_3);
+                _events.ScheduleEvent(EVENT_TALK_ENCOUNTER_OUTRO_4, 14s);
+                break;
+            case EVENT_TALK_ENCOUNTER_OUTRO_4:
+                Talk(SAY_ENCOUNTER_OUTRO_4);
+                me->SetFacingTo(3.1765f);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -161,7 +161,7 @@ enum TimeTransitDeviceAreaIds
 
 enum TimeTransitDeviceSpells
 {
-    SPELL_TELEPORT_TO_ENTRANCE          = 102564,
+    SPELL_TELEPORT_TO_ENTRANCE = 102564,
     SPELL_TELEPORT_TO_BLUE_DRAGONSHRINE = 102126
 };
 
@@ -172,9 +172,9 @@ enum TimeTransitGossipMenuIds
 
 enum TimeTransitGossipIndexes
 {
-    GOSSIP_INDEX_TELEPORT_TO_ENTRYWAY_OF_TIME               = 0,
-    GOSSIP_INDEX_TELEPORT_TO_BLUE_DRAGONSHRINE_FIRST_ECHO   = 3,
-    GOSSIP_INDEX_TELEPORT_TO_BLUE_DRAGONSHRINE_SECOND_ECHO  = 7
+    GOSSIP_INDEX_TELEPORT_TO_ENTRYWAY_OF_TIME = 0,
+    GOSSIP_INDEX_TELEPORT_TO_BLUE_DRAGONSHRINE_FIRST_ECHO = 3,
+    GOSSIP_INDEX_TELEPORT_TO_BLUE_DRAGONSHRINE_SECOND_ECHO = 7
 };
 
 static std::unordered_map<uint32 /*gossipMenuId*/, uint32 /*teleportSpellId*/> TransitDeviceTeleportSpells =

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -380,21 +380,21 @@ void WorldPackets::Movement::MonsterMove::InitializeSplineData(::Movement::MoveS
 
     switch (moveSpline.splineflags & ::Movement::MoveSplineFlag::Mask_Final_Facing)
     {
-        case ::Movement::MoveSplineFlag::Final_Point:
-            movementSpline.Face = ::Movement::MONSTER_MOVE_FACING_SPOT;
-            movementSpline.FaceSpot = Position(moveSpline.facing.f.x, moveSpline.facing.f.y, moveSpline.facing.f.z);
-            break;
-        case ::Movement::MoveSplineFlag::Final_Target:
-            movementSpline.Face = ::Movement::MONSTER_MOVE_FACING_TARGET;
-            movementSpline.FaceGUID = moveSpline.facing.target;
-            break;
-        case ::Movement::MoveSplineFlag::Final_Angle:
-            movementSpline.Face = ::Movement::MONSTER_MOVE_FACING_ANGLE;
-            movementSpline.FaceDirection = moveSpline.facing.angle;
-            break;
-        default:
-            movementSpline.Face = ::Movement::MONSTER_MOVE_NORMAL;
-            break;
+    case ::Movement::MoveSplineFlag::Final_Point:
+        movementSpline.Face = ::Movement::MONSTER_MOVE_FACING_SPOT;
+        movementSpline.FaceSpot = Position(moveSpline.facing.f.x, moveSpline.facing.f.y, moveSpline.facing.f.z);
+        break;
+    case ::Movement::MoveSplineFlag::Final_Target:
+        movementSpline.Face = ::Movement::MONSTER_MOVE_FACING_TARGET;
+        movementSpline.FaceGUID = moveSpline.facing.target;
+        break;
+    case ::Movement::MoveSplineFlag::Final_Angle:
+        movementSpline.Face = ::Movement::MONSTER_MOVE_FACING_ANGLE;
+        movementSpline.FaceDirection = moveSpline.facing.angle;
+        break;
+    default:
+        movementSpline.Face = ::Movement::MONSTER_MOVE_NORMAL;
+        break;
     }
 
     if (splineFlags.animation)
@@ -498,19 +498,19 @@ ByteBuffer& WorldPackets::operator<<(ByteBuffer& data, Movement::MovementSpline 
 
     switch (movementSpline.Face)
     {
-        case ::Movement::MONSTER_MOVE_NORMAL:
-            break;
-        case ::Movement::MONSTER_MOVE_FACING_SPOT:
-            data << movementSpline.FaceSpot;
-            break;
-        case ::Movement::MONSTER_MOVE_FACING_TARGET:
-            data << movementSpline.FaceGUID;
-            break;
-        case ::Movement::MONSTER_MOVE_FACING_ANGLE:
-            data << float(movementSpline.FaceDirection);
-            break;
-        default:
-            return data;
+    case ::Movement::MONSTER_MOVE_NORMAL:
+        break;
+    case ::Movement::MONSTER_MOVE_FACING_SPOT:
+        data << movementSpline.FaceSpot;
+        break;
+    case ::Movement::MONSTER_MOVE_FACING_TARGET:
+        data << movementSpline.FaceGUID;
+        break;
+    case ::Movement::MONSTER_MOVE_FACING_ANGLE:
+        data << float(movementSpline.FaceDirection);
+        break;
+    default:
+        return data;
     }
 
     data << int32(movementSpline.Flags);

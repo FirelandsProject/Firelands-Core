@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-Name: Boss_Shirrak_the_dead_watcher
-%Complete: 80
-Comment: InhibitMagic should stack slower far from the boss, proper Visual for Focus Fire, heroic implemented
-Category: Auchindoun, Auchenai Crypts
-EndScriptData */
+ /* ScriptData
+ Name: Boss_Shirrak_the_dead_watcher
+ %Complete: 80
+ Comment: InhibitMagic should stack slower far from the boss, proper Visual for Focus Fire, heroic implemented
+ Category: Auchindoun, Auchenai Crypts
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "auchenai_crypts.h"
@@ -31,23 +31,23 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_INHIBITMAGIC          = 32264,
-    SPELL_ATTRACTMAGIC          = 32265,
-    SPELL_CARNIVOROUSBITE       = 36383,
+    SPELL_INHIBITMAGIC = 32264,
+    SPELL_ATTRACTMAGIC = 32265,
+    SPELL_CARNIVOROUSBITE = 36383,
 
-    SPELL_FIERY_BLAST           = 32302,
+    SPELL_FIERY_BLAST = 32302,
 
-    SPELL_FOCUS_FIRE_VISUAL     = 42075 //need to find better visual
+    SPELL_FOCUS_FIRE_VISUAL = 42075 //need to find better visual
 };
 
 enum Say
 {
-    EMOTE_FOCUSED               = 0
+    EMOTE_FOCUSED = 0
 };
 
 enum Creatures
 {
-    NPC_FOCUS_FIRE            = 18374
+    NPC_FOCUS_FIRE = 18374
 };
 
 class boss_shirrak_the_dead_watcher : public CreatureScript
@@ -126,7 +126,8 @@ public:
                                 me->AddAura(SPELL_INHIBITMAGIC, i_pl);
                         }
                 Inhibitmagic_Timer = 3000 + (rand32() % 1000);
-            } else Inhibitmagic_Timer -= diff;
+            }
+            else Inhibitmagic_Timer -= diff;
 
             //Return since we have no target
             if (!UpdateVictim())
@@ -138,14 +139,16 @@ public:
                 DoCast(me, SPELL_ATTRACTMAGIC);
                 Attractmagic_Timer = 30000;
                 Carnivorousbite_Timer = 1500;
-            } else Attractmagic_Timer -= diff;
+            }
+            else Attractmagic_Timer -= diff;
 
             //Carnivorousbite_Timer
             if (Carnivorousbite_Timer <= diff)
             {
                 DoCast(me, SPELL_CARNIVOROUSBITE);
                 Carnivorousbite_Timer = 10000;
-            } else Carnivorousbite_Timer -= diff;
+            }
+            else Carnivorousbite_Timer -= diff;
 
             //FocusFire_Timer
             if (FocusFire_Timer <= diff)
@@ -159,7 +162,8 @@ public:
                     Talk(EMOTE_FOCUSED, target);
                 }
                 FocusFire_Timer = 15000 + (rand32() % 5000);
-            } else FocusFire_Timer -= diff;
+            }
+            else FocusFire_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }
@@ -216,7 +220,8 @@ public:
                 else if (fiery2) fiery2 = false;
 
                 FieryBlast_Timer = 1000;
-            } else FieryBlast_Timer -= diff;
+            }
+            else FieryBlast_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

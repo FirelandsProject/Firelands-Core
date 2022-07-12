@@ -37,23 +37,15 @@ namespace Firelands
 
 } // namespace Firelands
 
-#if FIRELANDS_COMPILER == FIRELANDS_COMPILER_MICROSOFT
-#define ASSERT_BEGIN __pragma(warning(push)) __pragma(warning(disable: 4127))
-#define ASSERT_END __pragma(warning(pop))
-#else
-#define ASSERT_BEGIN
-#define ASSERT_END
-#endif
-
 #if FIRELANDS_PLATFORM == FIRELANDS_PLATFORM_WINDOWS
 #define EXCEPTION_ASSERTION_FAILURE 0xC0000420L
 #endif
 
-#define WPAssert(cond, ...) ASSERT_BEGIN do { if (!(cond)) Firelands::Assert(__FILE__, __LINE__, __FUNCTION__, #cond, ##__VA_ARGS__); } while(0) ASSERT_END
-#define WPFatal(cond, ...) ASSERT_BEGIN do { if (!(cond)) Firelands::Fatal(__FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__); } while(0) ASSERT_END
-#define WPError(cond, msg) ASSERT_BEGIN do { if (!(cond)) Firelands::Error(__FILE__, __LINE__, __FUNCTION__, (msg)); } while(0) ASSERT_END
-#define WPWarning(cond, msg) ASSERT_BEGIN do { if (!(cond)) Firelands::Warning(__FILE__, __LINE__, __FUNCTION__, (msg)); } while(0) ASSERT_END
-#define WPAbort() ASSERT_BEGIN do { Firelands::Abort(__FILE__, __LINE__, __FUNCTION__); } while(0) ASSERT_END
+#define WPAssert(cond, ...) do { if (!(cond)) Firelands::Assert(__FILE__, __LINE__, __FUNCTION__, #cond, ##__VA_ARGS__); } while(0)
+#define WPFatal(cond, ...) do { if (!(cond)) Firelands::Fatal(__FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__); } while(0)
+#define WPError(cond, msg) do { if (!(cond)) Firelands::Error(__FILE__, __LINE__, __FUNCTION__, (msg)); } while(0)
+#define WPWarning(cond, msg) do { if (!(cond)) Firelands::Warning(__FILE__, __LINE__, __FUNCTION__, (msg)); } while(0)
+#define WPAbort() do { Firelands::Abort(__FILE__, __LINE__, __FUNCTION__); } while(0)
 
 #ifdef PERFORMANCE_PROFILING
 #define ASSERT(cond, ...) ((void)0)

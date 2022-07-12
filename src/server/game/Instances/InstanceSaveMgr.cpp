@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -132,15 +132,15 @@ void InstanceSaveManager::DeleteInstanceFromDB(uint32 instanceid)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_INSTANCE_BY_INSTANCE);
-    stmt->setUInt32(0, instanceid);
+    stmt->SetData(0, instanceid);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_INSTANCE_BY_INSTANCE);
-    stmt->setUInt32(0, instanceid);
+    stmt->SetData(0, instanceid);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_INSTANCE_BY_INSTANCE);
-    stmt->setUInt32(0, instanceid);
+    stmt->SetData(0, instanceid);
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -157,8 +157,8 @@ void InstanceSaveManager::RemoveInstanceSave(uint32 InstanceId)
         {
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_INSTANCE_RESETTIME);
 
-            stmt->setUInt64(0, uint64(resettime));
-            stmt->setUInt32(1, InstanceId);
+            stmt->SetData(0, uint64(resettime));
+            stmt->SetData(1, InstanceId);
 
             CharacterDatabase.Execute(stmt);
         }
@@ -209,12 +209,12 @@ void InstanceSave::SaveToDB()
     }
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_INSTANCE_SAVE);
-    stmt->setUInt32(0, m_instanceid);
-    stmt->setUInt16(1, GetMapId());
-    stmt->setUInt64(2, uint64(GetResetTimeForDB()));
-    stmt->setUInt8(3, uint8(GetDifficulty()));
-    stmt->setUInt32(4, completedEncounters);
-    stmt->setString(5, data);
+    stmt->SetData(0, m_instanceid);
+    stmt->SetData(1, GetMapId());
+    stmt->SetData(2, uint64(GetResetTimeForDB()));
+    stmt->SetData(3, uint8(GetDifficulty()));
+    stmt->SetData(4, completedEncounters);
+    stmt->SetData(5, data);
     CharacterDatabase.Execute(stmt);
 }
 
@@ -360,8 +360,8 @@ void InstanceSaveManager::LoadResetTimes()
                 LOG_ERROR("misc", "InstanceSaveManager::LoadResetTimes: invalid mapid(%u)/difficulty(%u) pair in instance_reset!", mapid, difficulty);
 
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GLOBAL_INSTANCE_RESETTIME);
-                stmt->setUInt16(0, uint16(mapid));
-                stmt->setUInt8(1, uint8(difficulty));
+                stmt->SetData(0, uint16(mapid));
+                stmt->SetData(1, uint8(difficulty));
                 CharacterDatabase.DirectExecute(stmt);
                 continue;
             }
@@ -371,9 +371,9 @@ void InstanceSaveManager::LoadResetTimes()
             if (oldresettime != newresettime)
             {
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GLOBAL_INSTANCE_RESETTIME);
-                stmt->setUInt64(0, uint64(newresettime));
-                stmt->setUInt16(1, uint16(mapid));
-                stmt->setUInt8(2, uint8(difficulty));
+                stmt->SetData(0, uint64(newresettime));
+                stmt->SetData(1, uint16(mapid));
+                stmt->SetData(2, uint8(difficulty));
                 CharacterDatabase.DirectExecute(stmt);
             }
 
@@ -404,9 +404,9 @@ void InstanceSaveManager::LoadResetTimes()
             t = today + period + diff;
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GLOBAL_INSTANCE_RESETTIME);
-            stmt->setUInt16(0, uint16(mapid));
-            stmt->setUInt8(1, uint8(difficulty));
-            stmt->setUInt64(2, uint64(t));
+            stmt->SetData(0, uint16(mapid));
+            stmt->SetData(1, uint8(difficulty));
+            stmt->SetData(2, uint64(t));
             CharacterDatabase.DirectExecute(stmt);
         }
 
@@ -418,9 +418,9 @@ void InstanceSaveManager::LoadResetTimes()
             t += ((today - t) / period + 1) * period + diff;
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GLOBAL_INSTANCE_RESETTIME);
-            stmt->setUInt64(0, uint64(t));
-            stmt->setUInt16(1, uint16(mapid));
-            stmt->setUInt8(2, uint8(difficulty));
+            stmt->SetData(0, uint64(t));
+            stmt->SetData(1, uint16(mapid));
+            stmt->SetData(2, uint8(difficulty));
             CharacterDatabase.DirectExecute(stmt);
         }
 
@@ -644,23 +644,23 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
         CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_EXPIRED_CHAR_INSTANCE_BY_MAP_DIFF);
-        stmt->setUInt16(0, uint16(mapid));
-        stmt->setUInt8(1, uint8(difficulty));
+        stmt->SetData(0, uint16(mapid));
+        stmt->SetData(1, uint8(difficulty));
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_INSTANCE_BY_MAP_DIFF);
-        stmt->setUInt16(0, uint16(mapid));
-        stmt->setUInt8(1, uint8(difficulty));
+        stmt->SetData(0, uint16(mapid));
+        stmt->SetData(1, uint8(difficulty));
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_EXPIRED_INSTANCE_BY_MAP_DIFF);
-        stmt->setUInt16(0, uint16(mapid));
-        stmt->setUInt8(1, uint8(difficulty));
+        stmt->SetData(0, uint16(mapid));
+        stmt->SetData(1, uint8(difficulty));
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_EXPIRE_CHAR_INSTANCE_BY_MAP_DIFF);
-        stmt->setUInt16(0, uint16(mapid));
-        stmt->setUInt8(1, uint8(difficulty));
+        stmt->SetData(0, uint16(mapid));
+        stmt->SetData(1, uint8(difficulty));
         trans->Append(stmt);
 
         CharacterDatabase.CommitTransaction(trans);
@@ -680,9 +680,9 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
         // Update it in the DB
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GLOBAL_INSTANCE_RESETTIME);
 
-        stmt->setUInt64(0, uint64(next_reset));
-        stmt->setUInt16(1, uint16(mapid));
-        stmt->setUInt8(2, uint8(difficulty));
+        stmt->SetData(0, uint64(next_reset));
+        stmt->SetData(1, uint16(mapid));
+        stmt->SetData(2, uint8(difficulty));
 
         CharacterDatabase.Execute(stmt);
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-Name: bf_commandscript
-%Complete: 100
-Comment: All bf related commands
-Category: commandscripts
-EndScriptData */
+ /* ScriptData
+ Name: bf_commandscript
+ %Complete: 100
+ Comment: All bf related commands
+ Category: commandscripts
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "BattlefieldMgr.h"

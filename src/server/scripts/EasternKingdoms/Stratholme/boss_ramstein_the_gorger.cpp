@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Ramstein_The_Gorger
-SD%Complete: 70
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Ramstein_The_Gorger
+ SD%Complete: 70
+ SDComment:
+ SDCategory: Stratholme
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "InstanceScript.h"
@@ -30,13 +30,13 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_TRAMPLE           = 5568,
-    SPELL_KNOCKOUT          = 17307
+    SPELL_TRAMPLE = 5568,
+    SPELL_KNOCKOUT = 17307
 };
 
 enum CreatureId
 {
-    NPC_MINDLESS_UNDEAD     = 11030
+    NPC_MINDLESS_UNDEAD = 11030
 };
 
 class boss_ramstein_the_gorger : public CreatureScript
@@ -76,7 +76,7 @@ public:
         {
             for (uint8 i = 0; i < 30; ++i)
             {
-                if (Creature* mob = me->SummonCreature(NPC_MINDLESS_UNDEAD, 3969.35f+irand(-10, 10), -3391.87f+irand(-10, 10), 119.11f, 5.91f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1800000))
+                if (Creature* mob = me->SummonCreature(NPC_MINDLESS_UNDEAD, 3969.35f + irand(-10, 10), -3391.87f + irand(-10, 10), 119.11f, 5.91f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1800000))
                     mob->AI()->AttackStart(me->SelectNearestTarget(100.0f));
             }
 
@@ -94,14 +94,16 @@ public:
             {
                 DoCast(me, SPELL_TRAMPLE);
                 Trample_Timer = 7000;
-            } else Trample_Timer -= diff;
+            }
+            else Trample_Timer -= diff;
 
             //Knockout
             if (Knockout_Timer <= diff)
             {
                 DoCastVictim(SPELL_KNOCKOUT);
                 Knockout_Timer = 10000;
-            } else Knockout_Timer -= diff;
+            }
+            else Knockout_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

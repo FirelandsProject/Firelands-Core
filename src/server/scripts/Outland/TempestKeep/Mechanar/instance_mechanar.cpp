@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,43 +29,43 @@ static DoorData const doorData[] =
 
 class instance_mechanar : public InstanceMapScript
 {
-    public:
-        instance_mechanar(): InstanceMapScript(MechanarScriptName, 554) { }
+public:
+    instance_mechanar() : InstanceMapScript(MechanarScriptName, 554) { }
 
-        struct instance_mechanar_InstanceMapScript : public InstanceScript
+    struct instance_mechanar_InstanceMapScript : public InstanceScript
+    {
+        instance_mechanar_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_mechanar_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
-            {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadDoorData(doorData);
-            }
-
-            bool SetBossState(uint32 type, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(type, state))
-                    return false;
-
-                switch (type)
-                {
-                    case DATA_GATEWATCHER_GYROKILL:
-                    case DATA_GATEWATCHER_IRON_HAND:
-                    case DATA_MECHANOLORD_CAPACITUS:
-                    case DATA_NETHERMANCER_SEPRETHREA:
-                    case DATA_PATHALEON_THE_CALCULATOR:
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_mechanar_InstanceMapScript(map);
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadDoorData(doorData);
         }
+
+        bool SetBossState(uint32 type, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(type, state))
+                return false;
+
+            switch (type)
+            {
+            case DATA_GATEWATCHER_GYROKILL:
+            case DATA_GATEWATCHER_IRON_HAND:
+            case DATA_MECHANOLORD_CAPACITUS:
+            case DATA_NETHERMANCER_SEPRETHREA:
+            case DATA_PATHALEON_THE_CALCULATOR:
+                break;
+            default:
+                break;
+            }
+
+            return true;
+        }
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_mechanar_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_mechanar()

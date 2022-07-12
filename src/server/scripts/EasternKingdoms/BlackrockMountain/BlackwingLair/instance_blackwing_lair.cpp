@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -63,7 +63,7 @@ Position const SummonPosition[8] =
     {-7584.175781f, -989.6691289f, 407.199585f, 4.527447f},
 };
 
-uint32 const Entry[5] = {12422, 12458, 12416, 12420, 12459};
+uint32 const Entry[5] = { 12422, 12458, 12416, 12420, 12459 };
 
 class instance_blackwing_lair : public InstanceMapScript
 {
@@ -90,15 +90,15 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_BLACKWING_DRAGON:
-                case NPC_BLACKWING_TASKMASTER:
-                case NPC_BLACKWING_LEGIONAIRE:
-                case NPC_BLACKWING_WARLOCK:
-                    if (Creature* razor = GetCreature(DATA_RAZORGORE_THE_UNTAMED))
-                        razor->AI()->JustSummoned(creature);
-                    break;
-                default:
-                    break;
+            case NPC_BLACKWING_DRAGON:
+            case NPC_BLACKWING_TASKMASTER:
+            case NPC_BLACKWING_LEGIONAIRE:
+            case NPC_BLACKWING_WARLOCK:
+                if (Creature* razor = GetCreature(DATA_RAZORGORE_THE_UNTAMED))
+                    razor->AI()->JustSummoned(creature);
+                break;
+            default:
+                break;
             }
         }
 
@@ -132,24 +132,24 @@ public:
 
             switch (bossId)
             {
-                case DATA_BROODLORD_LASHLAYER:
-                    if (GetBossState(DATA_VAELASTRAZ_THE_CORRUPT) != DONE)
-                        return false;
-                    break;
-                case DATA_FIREMAW:
-                case DATA_EBONROC:
-                case DATA_FLAMEGOR:
-                    if (GetBossState(DATA_BROODLORD_LASHLAYER) != DONE)
-                        return false;
-                    break;
-                case DATA_CHROMAGGUS:
-                    if (GetBossState(DATA_FIREMAW) != DONE
-                        || GetBossState(DATA_EBONROC) != DONE
-                        || GetBossState(DATA_FLAMEGOR) != DONE)
-                        return false;
-                    break;
-                default:
-                    break;
+            case DATA_BROODLORD_LASHLAYER:
+                if (GetBossState(DATA_VAELASTRAZ_THE_CORRUPT) != DONE)
+                    return false;
+                break;
+            case DATA_FIREMAW:
+            case DATA_EBONROC:
+            case DATA_FLAMEGOR:
+                if (GetBossState(DATA_BROODLORD_LASHLAYER) != DONE)
+                    return false;
+                break;
+            case DATA_CHROMAGGUS:
+                if (GetBossState(DATA_FIREMAW) != DONE
+                    || GetBossState(DATA_EBONROC) != DONE
+                    || GetBossState(DATA_FLAMEGOR) != DONE)
+                    return false;
+                break;
+            default:
+                break;
             }
 
             return true;
@@ -162,30 +162,30 @@ public:
 
             switch (type)
             {
-                case DATA_RAZORGORE_THE_UNTAMED:
-                    if (state == DONE)
-                    {
-                        for (GuidList::const_iterator itr = EggList.begin(); itr != EggList.end(); ++itr)
-                            if (GameObject* egg = instance->GetGameObject(*itr))
-                                egg->SetLootState(GO_JUST_DEACTIVATED);
-                    }
-                    SetData(DATA_EGG_EVENT, NOT_STARTED);
+            case DATA_RAZORGORE_THE_UNTAMED:
+                if (state == DONE)
+                {
+                    for (GuidList::const_iterator itr = EggList.begin(); itr != EggList.end(); ++itr)
+                        if (GameObject* egg = instance->GetGameObject(*itr))
+                            egg->SetLootState(GO_JUST_DEACTIVATED);
+                }
+                SetData(DATA_EGG_EVENT, NOT_STARTED);
+                break;
+            case DATA_NEFARIAN:
+                switch (state)
+                {
+                case NOT_STARTED:
+                    if (Creature* nefarian = GetCreature(DATA_NEFARIAN))
+                        nefarian->DespawnOrUnsummon();
                     break;
-                case DATA_NEFARIAN:
-                    switch (state)
-                    {
-                        case NOT_STARTED:
-                            if (Creature* nefarian = GetCreature(DATA_NEFARIAN))
-                                nefarian->DespawnOrUnsummon();
-                            break;
-                        case FAIL:
-                            _events.ScheduleEvent(EVENT_RESPAWN_NEFARIUS, 15 * IN_MILLISECONDS * MINUTE);
-                            SetBossState(DATA_NEFARIAN, NOT_STARTED);
-                            break;
-                        default:
-                            break;
-                    }
+                case FAIL:
+                    _events.ScheduleEvent(EVENT_RESPAWN_NEFARIUS, 15 * IN_MILLISECONDS * MINUTE);
+                    SetBossState(DATA_NEFARIAN, NOT_STARTED);
                     break;
+                default:
+                    break;
+                }
+                break;
             }
             return true;
         }
@@ -196,31 +196,31 @@ public:
             {
                 switch (data)
                 {
-                    case IN_PROGRESS:
-                        _events.ScheduleEvent(EVENT_RAZOR_SPAWN, 45 * IN_MILLISECONDS);
-                        EggEvent = data;
-                        EggCount = 0;
-                        break;
-                    case NOT_STARTED:
-                        _events.CancelEvent(EVENT_RAZOR_SPAWN);
-                        EggEvent = data;
-                        EggCount = 0;
-                        break;
-                    case SPECIAL:
-                        if (++EggCount == 15)
+                case IN_PROGRESS:
+                    _events.ScheduleEvent(EVENT_RAZOR_SPAWN, 45 * IN_MILLISECONDS);
+                    EggEvent = data;
+                    EggCount = 0;
+                    break;
+                case NOT_STARTED:
+                    _events.CancelEvent(EVENT_RAZOR_SPAWN);
+                    EggEvent = data;
+                    EggCount = 0;
+                    break;
+                case SPECIAL:
+                    if (++EggCount == 15)
+                    {
+                        if (Creature* razor = GetCreature(DATA_RAZORGORE_THE_UNTAMED))
                         {
-                            if (Creature* razor = GetCreature(DATA_RAZORGORE_THE_UNTAMED))
-                            {
-                                SetData(DATA_EGG_EVENT, DONE);
-                                razor->RemoveAurasDueToSpell(42013); // MindControl
-                                DoRemoveAurasDueToSpellOnPlayers(42013);
-                            }
-                            _events.ScheduleEvent(EVENT_RAZOR_PHASE_TWO, 1 * IN_MILLISECONDS);
-                            _events.CancelEvent(EVENT_RAZOR_SPAWN);
+                            SetData(DATA_EGG_EVENT, DONE);
+                            razor->RemoveAurasDueToSpell(42013); // MindControl
+                            DoRemoveAurasDueToSpellOnPlayers(42013);
                         }
-                        if (EggEvent == NOT_STARTED)
-                            SetData(DATA_EGG_EVENT, IN_PROGRESS);
-                        break;
+                        _events.ScheduleEvent(EVENT_RAZOR_PHASE_TWO, 1 * IN_MILLISECONDS);
+                        _events.CancelEvent(EVENT_RAZOR_SPAWN);
+                    }
+                    if (EggEvent == NOT_STARTED)
+                        SetData(DATA_EGG_EVENT, IN_PROGRESS);
+                    break;
                 }
             }
         }
@@ -243,26 +243,26 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_RAZOR_SPAWN:
-                        for (uint8 i = urand(2, 5); i > 0 ; --i)
-                            if (Creature* summon = instance->SummonCreature(Entry[urand(0, 4)], SummonPosition[urand(0, 7)]))
-                                summon->SetInCombatWithZone();
-                        _events.ScheduleEvent(EVENT_RAZOR_SPAWN, urand(12, 17) * IN_MILLISECONDS);
-                        break;
-                    case EVENT_RAZOR_PHASE_TWO:
-                        _events.CancelEvent(EVENT_RAZOR_SPAWN);
-                        if (Creature* razor = GetCreature(DATA_RAZORGORE_THE_UNTAMED))
-                            razor->AI()->DoAction(ACTION_PHASE_TWO);
-                        break;
-                    case EVENT_RESPAWN_NEFARIUS:
-                        if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS))
-                        {
-                            nefarius->setActive(true);
-                            nefarius->SetFarVisible(true);
-                            nefarius->Respawn();
-                            nefarius->GetMotionMaster()->MoveTargetedHome();
-                        }
-                        break;
+                case EVENT_RAZOR_SPAWN:
+                    for (uint8 i = urand(2, 5); i > 0; --i)
+                        if (Creature* summon = instance->SummonCreature(Entry[urand(0, 4)], SummonPosition[urand(0, 7)]))
+                            summon->SetInCombatWithZone();
+                    _events.ScheduleEvent(EVENT_RAZOR_SPAWN, urand(12, 17) * IN_MILLISECONDS);
+                    break;
+                case EVENT_RAZOR_PHASE_TWO:
+                    _events.CancelEvent(EVENT_RAZOR_SPAWN);
+                    if (Creature* razor = GetCreature(DATA_RAZORGORE_THE_UNTAMED))
+                        razor->AI()->DoAction(ACTION_PHASE_TWO);
+                    break;
+                case EVENT_RESPAWN_NEFARIUS:
+                    if (Creature* nefarius = GetCreature(DATA_LORD_VICTOR_NEFARIUS))
+                    {
+                        nefarius->setActive(true);
+                        nefarius->SetFarVisible(true);
+                        nefarius->Respawn();
+                        nefarius->GetMotionMaster()->MoveTargetedHome();
+                    }
+                    break;
                 }
             }
         }

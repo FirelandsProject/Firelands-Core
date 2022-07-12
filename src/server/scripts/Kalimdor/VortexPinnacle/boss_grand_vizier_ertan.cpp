@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,20 +30,20 @@
 enum Spells
 {
     // Grandvizier Ertan
-    SPELL_STORMS_EDGE_PERIODIC              = 86295,
-    SPELL_LIGHTNING_BOLT                    = 86331,
-    SPELL_SUMMON_TEMPEST                    = 86340,
-    SPELL_STORMS_EDGE_VISUAL                = 86329,
-    SPELL_STORMS_EDGE_PERIODIC_2            = 86310,
-    SPELL_STORMS_EDGE_TRIGGERED_1           = 86284,
-    SPELL_STORMS_EDGE_SCRIPT                = 86299
+    SPELL_STORMS_EDGE_PERIODIC = 86295,
+    SPELL_LIGHTNING_BOLT = 86331,
+    SPELL_SUMMON_TEMPEST = 86340,
+    SPELL_STORMS_EDGE_VISUAL = 86329,
+    SPELL_STORMS_EDGE_PERIODIC_2 = 86310,
+    SPELL_STORMS_EDGE_TRIGGERED_1 = 86284,
+    SPELL_STORMS_EDGE_SCRIPT = 86299
 };
 
 enum Texts
 {
     // Grand Vizier Ertan
-    SAY_AGGRO                   = 0,
-    SAY_ANNOUNCE_STORMS_EDGE    = 1
+    SAY_AGGRO = 0,
+    SAY_ANNOUNCE_STORMS_EDGE = 1
 };
 
 enum Events
@@ -68,8 +68,8 @@ enum Actions
 enum Points
 {
     // Ertan's Vortex
-    POINT_NONE      = 0,
-    POINT_ROTATE    = 1
+    POINT_NONE = 0,
+    POINT_ROTATE = 1
 };
 
 static constexpr uint8 MaxVortexPoints = 8;
@@ -110,8 +110,8 @@ struct boss_grand_vizier_ertan : public BossAI
         Talk(SAY_AGGRO);
 
         for (uint8 i = 0; i < MaxVortexPoints; i++)
-            if (Creature * ertansVortex = DoSummon(NPC_ERTANS_VORTEX, ErtansVortexPoints[i], 0, TEMPSUMMON_MANUAL_DESPAWN))
-                ertansVortex->GetMotionMaster()->MovePoint(POINT_ROTATE + i, ErtansVortexPoints[i + 1  < MaxVortexPoints ? i + 1 : 0]);
+            if (Creature* ertansVortex = DoSummon(NPC_ERTANS_VORTEX, ErtansVortexPoints[i], 0, TEMPSUMMON_MANUAL_DESPAWN))
+                ertansVortex->GetMotionMaster()->MovePoint(POINT_ROTATE + i, ErtansVortexPoints[i + 1 < MaxVortexPoints ? i + 1 : 0]);
 
         events.ScheduleEvent(EVENT_STORMS_EDGE, 24s);
         events.ScheduleEvent(EVENT_LIGHTNING_BOLT, 1ms);
@@ -147,35 +147,35 @@ struct boss_grand_vizier_ertan : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_SUMMON_TEMPEST:
-                    DoCast(me, SPELL_SUMMON_TEMPEST);
-                    events.Repeat(17s);
-                    break;
-                case EVENT_STORMS_EDGE:
-                {
-                    Talk(SAY_ANNOUNCE_STORMS_EDGE);
-                    DoCastSelf(SPELL_STORMS_EDGE_VISUAL);
-                    EntryCheckPredicate pred(NPC_ERTANS_VORTEX);
-                    summons.DoAction(ACTION_STORMS_EDGE, pred, 8);
-                    events.ScheduleEvent(EVENT_STORMS_EDGE_AURA, 3s);
-                    events.Repeat(31s);
-                    break;
-                }
-                case EVENT_STORMS_EDGE_AURA:
-                    me->RemoveAurasDueToSpell(SPELL_STORMS_EDGE_PERIODIC);
-                    DoCastSelf(SPELL_STORMS_EDGE_PERIODIC_2);
-                    events.ScheduleEvent(EVENT_END_STORMS_EDGE, 6s);
-                    break;
-                case EVENT_END_STORMS_EDGE:
-                    me->RemoveAurasDueToSpell(SPELL_STORMS_EDGE_PERIODIC_2);
-                    DoCastSelf(SPELL_STORMS_EDGE_PERIODIC);
-                    break;
-                case EVENT_LIGHTNING_BOLT:
-                    DoCastVictim(SPELL_LIGHTNING_BOLT);
-                    events.Repeat(2s + 400ms);
-                    break;
-                default:
-                    break;
+            case EVENT_SUMMON_TEMPEST:
+                DoCast(me, SPELL_SUMMON_TEMPEST);
+                events.Repeat(17s);
+                break;
+            case EVENT_STORMS_EDGE:
+            {
+                Talk(SAY_ANNOUNCE_STORMS_EDGE);
+                DoCastSelf(SPELL_STORMS_EDGE_VISUAL);
+                EntryCheckPredicate pred(NPC_ERTANS_VORTEX);
+                summons.DoAction(ACTION_STORMS_EDGE, pred, 8);
+                events.ScheduleEvent(EVENT_STORMS_EDGE_AURA, 3s);
+                events.Repeat(31s);
+                break;
+            }
+            case EVENT_STORMS_EDGE_AURA:
+                me->RemoveAurasDueToSpell(SPELL_STORMS_EDGE_PERIODIC);
+                DoCastSelf(SPELL_STORMS_EDGE_PERIODIC_2);
+                events.ScheduleEvent(EVENT_END_STORMS_EDGE, 6s);
+                break;
+            case EVENT_END_STORMS_EDGE:
+                me->RemoveAurasDueToSpell(SPELL_STORMS_EDGE_PERIODIC_2);
+                DoCastSelf(SPELL_STORMS_EDGE_PERIODIC);
+                break;
+            case EVENT_LIGHTNING_BOLT:
+                DoCastVictim(SPELL_LIGHTNING_BOLT);
+                events.Repeat(2s + 400ms);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -189,12 +189,12 @@ struct npc_ertan_ertans_vortex : public NullCreatureAI
     {
         switch (action)
         {
-            case ACTION_STORMS_EDGE:
-                me->GetMotionMaster()->MovePoint(POINT_NONE, ErtansVortexMiddlePoints[_nextPointId]);
-                _events.ScheduleEvent(EVENT_MOVE_POINT, 9s);
-                break;
-            default:
-                break;
+        case ACTION_STORMS_EDGE:
+            me->GetMotionMaster()->MovePoint(POINT_NONE, ErtansVortexMiddlePoints[_nextPointId]);
+            _events.ScheduleEvent(EVENT_MOVE_POINT, 9s);
+            break;
+        default:
+            break;
         }
     }
 
@@ -215,11 +215,11 @@ struct npc_ertan_ertans_vortex : public NullCreatureAI
         {
             switch (eventId)
             {
-                case EVENT_MOVE_POINT:
-                    me->GetMotionMaster()->MovePoint(_nextPointId + 1, ErtansVortexPoints[_nextPointId]);
-                    break;
-                default:
-                    break;
+            case EVENT_MOVE_POINT:
+                me->GetMotionMaster()->MovePoint(_nextPointId + 1, ErtansVortexPoints[_nextPointId]);
+                break;
+            default:
+                break;
             }
         }
     }

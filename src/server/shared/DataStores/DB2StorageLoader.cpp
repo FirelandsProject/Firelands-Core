@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -566,7 +566,7 @@ char* DB2DatabaseLoader::Load(const char* format, int32 preparedStatement, uint3
 void DB2DatabaseLoader::LoadStrings(const char* format, int32 preparedStatement, uint32 locale, char**& indexTable, std::list<char*>& stringPool)
 {
     HotfixDatabasePreparedStatement* stmt = HotfixDatabase.GetPreparedStatement(HotfixDatabaseStatements(preparedStatement));
-    stmt->setString(0, localeNames[locale]);
+    stmt->SetData(0, localeNames[locale]);
     PreparedQueryResult result = HotfixDatabase.Query(stmt);
     if (!result)
         return;

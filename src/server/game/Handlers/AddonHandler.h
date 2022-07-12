@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,14 +24,14 @@
 
 class AddonHandler
 {
-    public:
-        static AddonHandler* instance();
+public:
+    static AddonHandler* instance();
 
-        bool BuildAddonPacket(WorldPacket* Source, WorldPacket* Target);
+    bool BuildAddonPacket(WorldPacket* Source, WorldPacket* Target);
 
-    private:
-        AddonHandler() { }
-        ~AddonHandler() { }
+private:
+    AddonHandler() { }
+    ~AddonHandler() { }
 };
 #define sAddOnHandler AddonHandler::instance()
 #endif

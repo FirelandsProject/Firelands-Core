@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,17 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Silithus
-SD%Complete: 100
-SDComment: Quest support: 7785, 8304.
-SDCategory: Silithus
-EndScriptData */
+ /* ScriptData
+ SDName: Silithus
+ SD%Complete: 100
+ SDComment: Quest support: 7785, 8304.
+ SDCategory: Silithus
+ EndScriptData */
 
-/* ContentData
-npcs_rutgar_and_frankal
-go_wind_stone
-EndContentData */
+ /* ContentData
+ npcs_rutgar_and_frankal
+ go_wind_stone
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "CreatureAIImpl.h"
@@ -39,62 +39,62 @@ EndContentData */
 #include "ScriptedGossip.h"
 #include "TemporarySummon.h"
 
-/*#####
-# Quest: A Pawn on the Eternal Board
-#####*/
+ /*#####
+ # Quest: A Pawn on the Eternal Board
+ #####*/
 
 enum EternalBoard
 {
     QUEST_A_PAWN_ON_THE_ETERNAL_BOARD = 8519,
 
-    EVENT_AREA_RADIUS                 = 65,     // 65yds
-    EVENT_COOLDOWN                    = 500000, // in ms. appears after event completed or failed (should be = Adds despawn time)
+    EVENT_AREA_RADIUS = 65,     // 65yds
+    EVENT_COOLDOWN = 500000, // in ms. appears after event completed or failed (should be = Adds despawn time)
 
-    NPC_ANACHRONOS                    = 15381,
-    NPC_FANDRAL_STAGHELM              = 15382,
-    NPC_ARYGOS                        = 15380,
-    NPC_MERITHRA_OF_THE_DREAM         = 15378,
-    NPC_CAELESTRASZ                   = 15379,
+    NPC_ANACHRONOS = 15381,
+    NPC_FANDRAL_STAGHELM = 15382,
+    NPC_ARYGOS = 15380,
+    NPC_MERITHRA_OF_THE_DREAM = 15378,
+    NPC_CAELESTRASZ = 15379,
 
-    ANACHRONOS_SAY_1                  = 0,
-    ANACHRONOS_SAY_2                  = 1,
-    ANACHRONOS_SAY_3                  = 2,
-    ANACHRONOS_SAY_4                  = 3,
-    ANACHRONOS_SAY_5                  = 4,
-    ANACHRONOS_SAY_6                  = 5,
-    ANACHRONOS_SAY_7                  = 6,
-    ANACHRONOS_SAY_8                  = 7,
-    ANACHRONOS_SAY_9                  = 8,
-    ANACHRONOS_SAY_10                 = 9,
-    ANACHRONOS_EMOTE_1                = 10,
-    ANACHRONOS_EMOTE_2                = 11,
-    ANACHRONOS_EMOTE_3                = 12,
+    ANACHRONOS_SAY_1 = 0,
+    ANACHRONOS_SAY_2 = 1,
+    ANACHRONOS_SAY_3 = 2,
+    ANACHRONOS_SAY_4 = 3,
+    ANACHRONOS_SAY_5 = 4,
+    ANACHRONOS_SAY_6 = 5,
+    ANACHRONOS_SAY_7 = 6,
+    ANACHRONOS_SAY_8 = 7,
+    ANACHRONOS_SAY_9 = 8,
+    ANACHRONOS_SAY_10 = 9,
+    ANACHRONOS_EMOTE_1 = 10,
+    ANACHRONOS_EMOTE_2 = 11,
+    ANACHRONOS_EMOTE_3 = 12,
 
-    FANDRAL_SAY_1                     = 0,
-    FANDRAL_SAY_2                     = 1,
-    FANDRAL_SAY_3                     = 2,
-    FANDRAL_SAY_4                     = 3,
-    FANDRAL_SAY_5                     = 4,
-    FANDRAL_SAY_6                     = 5,
-    FANDRAL_EMOTE_1                   = 6,
-    FANDRAL_EMOTE_2                   = 7,
+    FANDRAL_SAY_1 = 0,
+    FANDRAL_SAY_2 = 1,
+    FANDRAL_SAY_3 = 2,
+    FANDRAL_SAY_4 = 3,
+    FANDRAL_SAY_5 = 4,
+    FANDRAL_SAY_6 = 5,
+    FANDRAL_EMOTE_1 = 6,
+    FANDRAL_EMOTE_2 = 7,
 
-    CAELESTRASZ_SAY_1                 = 0,
-    CAELESTRASZ_SAY_2                 = 1,
-    CAELESTRASZ_YELL_1                = 2,
+    CAELESTRASZ_SAY_1 = 0,
+    CAELESTRASZ_SAY_2 = 1,
+    CAELESTRASZ_YELL_1 = 2,
 
-    ARYGOS_SAY_1                      = 0,
-    ARYGOS_YELL_1                     = 1,
-    ARYGOS_EMOTE_1                    = 2,
+    ARYGOS_SAY_1 = 0,
+    ARYGOS_YELL_1 = 1,
+    ARYGOS_EMOTE_1 = 2,
 
-    MERITHRA_SAY_1                    = 0,
-    MERITHRA_SAY_2                    = 1,
-    MERITHRA_YELL_1                   = 2,
-    MERITHRA_EMOTE_1                  = 3,
+    MERITHRA_SAY_1 = 0,
+    MERITHRA_SAY_2 = 1,
+    MERITHRA_YELL_1 = 2,
+    MERITHRA_EMOTE_1 = 3,
 
-    GO_GATE_OF_AHN_QIRAJ              = 176146,
-    GO_GLYPH_OF_AHN_QIRAJ             = 176148,
-    GO_ROOTS_OF_AHN_QIRAJ             = 176147
+    GO_GATE_OF_AHN_QIRAJ = 176146,
+    GO_GLYPH_OF_AHN_QIRAJ = 176148,
+    GO_ROOTS_OF_AHN_QIRAJ = 176147
 };
 
 struct QuestCinematic
@@ -104,7 +104,7 @@ struct QuestCinematic
 };
 
 // Creature 0 - Anachronos, 1 - Fandral, 2 - Arygos, 3 - Merithra, 4 - Caelestrasz
-static QuestCinematic EventAnim[]=
+static QuestCinematic EventAnim[] =
 {
     {ANACHRONOS_SAY_1,  0, 2000},
     {FANDRAL_SAY_1,     1, 4000},
@@ -287,22 +287,22 @@ static SpawnSpells SpawnCast[4] =
 
 enum AnachronosTheAncient
 {
-    NPC_QIRAJI_WASP                  = 15414,
-    NPC_QIRAJI_TANK                  = 15422,
-    NPC_KALDOREI_INFANTRY            = 15423,
-    NPC_ANUBISATH_CONQUEROR          = 15424,
-    SPELL_ARCANE_CHANNELING          = 23017,
-    SPELL_NOXIOUS_BREATH             = 24818,
+    NPC_QIRAJI_WASP = 15414,
+    NPC_QIRAJI_TANK = 15422,
+    NPC_KALDOREI_INFANTRY = 15423,
+    NPC_ANUBISATH_CONQUEROR = 15424,
+    SPELL_ARCANE_CHANNELING = 23017,
+    SPELL_NOXIOUS_BREATH = 24818,
     SPELL_GREEN_DRAGON_TRANSFORM_DND = 25105,
-    SPELL_RED_DRAGON_TRANSFORM_DND   = 25106,
-    SPELL_BLUE_DRAGON_TRANSFORM_DND  = 25107,
-    SPELL_TIME_STOP                  = 25158,
-    SPELL_CALL_PRISMATIC_BARRIER     = 25159,
-    SPELL_CALL_GLYPHS_OF_WARDING     = 25166,
-    SPELL_CALL_ANCIENTS              = 25167,
-    SPELL_THROW_HAMMER               = 33806,
-    SPELL_FROST_BREATH               = 50505,
-    SPELL_FLAME_BREATH               = 54293
+    SPELL_RED_DRAGON_TRANSFORM_DND = 25106,
+    SPELL_BLUE_DRAGON_TRANSFORM_DND = 25107,
+    SPELL_TIME_STOP = 25158,
+    SPELL_CALL_PRISMATIC_BARRIER = 25159,
+    SPELL_CALL_GLYPHS_OF_WARDING = 25166,
+    SPELL_CALL_ANCIENTS = 25167,
+    SPELL_THROW_HAMMER = 33806,
+    SPELL_FROST_BREATH = 50505,
+    SPELL_FLAME_BREATH = 54293
 };
 
 class npc_anachronos_the_ancient : public CreatureScript
@@ -372,249 +372,249 @@ public:
             {
                 switch (AnimationCount)
                 {
-                    case 0:
-                        Talk(ANACHRONOS_SAY_1, Fandral);
-                        break;
-                    case 1:
-                        Fandral->SetTarget(me->GetGUID());
-                        Fandral->AI()->Talk(FANDRAL_SAY_1, me);
-                        break;
-                    case 2:
-                        Fandral->SetTarget(ObjectGuid::Empty);
-                        Merithra->AI()->Talk(MERITHRA_EMOTE_1);
-                        break;
-                    case 3:
-                        Merithra->AI()->Talk(MERITHRA_SAY_1);
-                        break;
-                    case 4:
-                        Arygos->AI()->Talk(ARYGOS_EMOTE_1);
-                        break;
-                    case 5:
-                        Caelestrasz->SetTarget(Fandral->GetGUID());
-                        Caelestrasz->AI()->Talk(CAELESTRASZ_SAY_1);
-                        break;
-                    case 6:
-                        Merithra->AI()->Talk(MERITHRA_SAY_2);
-                        break;
-                    case 7:
-                        Caelestrasz->SetTarget(ObjectGuid::Empty);
-                        Merithra->GetMotionMaster()->MoveCharge(-8065, 1530, 2.61f, 10);
-                        break;
-                    case 8:
-                        Merithra->AI()->Talk(MERITHRA_YELL_1);
-                        break;
-                    case 9:
-                        Merithra->CastSpell(Merithra, SPELL_GREEN_DRAGON_TRANSFORM_DND, true);
-                        break;
-                    case 10:
-                        Merithra->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
-                        Merithra->SetDisableGravity(true);
-                        Merithra->GetMotionMaster()->MoveCharge(-8065, 1530, 6.61f, 3);
-                        break;
-                    case 11:
-                        Merithra->CastSpell(Merithra, SPELL_NOXIOUS_BREATH, false);
-                        break;
-                    case 12:
-                        Merithra->GetMotionMaster()->MoveCharge(-8100, 1530, 50, 42);
-                        break;
-                    case 13:
-                        break;
-                    case 14:
-                        Arygos->AI()->Talk(ARYGOS_SAY_1);
-                        Merithra->SetVisible(false);
-                        break;
-                    case 15:
-                        Arygos->GetMotionMaster()->MoveCharge(-8065, 1530, 2.61f, 10);
-                        Merithra->GetMotionMaster()->MoveCharge(-8034.535f, 1535.14f, 2.61f, 42);
-                        break;
-                    case 16:
-                        Arygos->AI()->Talk(ARYGOS_YELL_1);
-                        break;
-                    case 17:
-                        Arygos->CastSpell(Arygos, SPELL_BLUE_DRAGON_TRANSFORM_DND, true);
-                        break;
-                    case 18:
-                        Arygos->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
-                        Arygos->SetDisableGravity(true);
-                        Arygos->GetMotionMaster()->MoveCharge(-8065, 1530, 6.61f, 42);
-                        break;
-                    case 19:
-                        Arygos->CastSpell(Arygos, SPELL_FROST_BREATH, false);
-                        break;
-                    case 20:
-                        Arygos->GetMotionMaster()->MoveCharge(-8095, 1530, 50, 42);
-                        break;
-                    case 21:
-                        break;
-                    case 22:
-                        Caelestrasz->AI()->Talk(CAELESTRASZ_SAY_2, Fandral);
-                        break;
-                    case 23:
-                        Caelestrasz->GetMotionMaster()->MoveCharge(-8065, 1530, 2.61f, 10);
-                        Arygos->SetVisible(false);
-                        Arygos->GetMotionMaster()->MoveCharge(-8034.535f, 1535.14f, 2.61f, 10);
-                        break;
-                    case 24:
-                        Caelestrasz->AI()->Talk(CAELESTRASZ_YELL_1);
-                        break;
-                    case 25:
-                        Caelestrasz->CastSpell(Caelestrasz, SPELL_RED_DRAGON_TRANSFORM_DND, true);
-                        break;
-                    case 26:
-                        Caelestrasz->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
-                        Caelestrasz->SetDisableGravity(true);
-                        Caelestrasz->GetMotionMaster()->MoveCharge(-8065, 1530, 7.61f, 4);
-                        break;
-                    case 27:
-                        Caelestrasz->CastSpell(Caelestrasz, SPELL_FLAME_BREATH, false);
-                        break;
-                    case 28:
-                        Talk(ANACHRONOS_SAY_2, Fandral);
-                        break;
-                    case 29:
-                        Caelestrasz->GetMotionMaster()->MoveCharge(-8095, 1530, 50, 42);
-                        Fandral->AI()->Talk(FANDRAL_SAY_2);
-                        break;
-                    case 30:
-                        break;
-                    case 31:
-                        Talk(ANACHRONOS_SAY_3, Fandral);
-                        break;
-                    case 32:
-                        Caelestrasz->SetVisible(false);
-                        Caelestrasz->GetMotionMaster()->MoveCharge(-8034.535f, 1535.14f, 2.61f, 42);
-                        Fandral->GetMotionMaster()->MoveCharge(-8108, 1529, 2.77f, 8);
-                        me->GetMotionMaster()->MoveCharge(-8113, 1525, 2.77f, 8);
-                        break;//both run to the gate
-                    case 33:
-                        Talk(ANACHRONOS_SAY_4);
-                        Caelestrasz->GetMotionMaster()->MoveCharge(-8050, 1473, 65, 15);
-                        break; //Text: sands will stop
-                    case 34:
-                        DoCast(player, SPELL_ARCANE_CHANNELING, true);//Arcane Channeling
-                        break;
-                    case 35:
-                        me->CastSpell({ -8088, 1520.43f, 2.67f }, SPELL_TIME_STOP, true);
-                        break;
-                    case 36:
-                        DoCast(player, SPELL_CALL_PRISMATIC_BARRIER, true);
-                        break;
-                    case 37:
-                        me->SummonGameObject(GO_GATE_OF_AHN_QIRAJ, Position(-8130.f, 1525.f, 17.5f, 0.f), QuaternionData(), 0);
-                        break;
-                    case 38:
-                        DoCast(player, SPELL_CALL_GLYPHS_OF_WARDING, true);
-                        me->SummonGameObject(GO_GLYPH_OF_AHN_QIRAJ, Position(-8130.f, 1525.f, 17.5f, 0.f), QuaternionData(), 0);
-                        break;
-                    case 39:
-                        Talk(ANACHRONOS_SAY_5, Fandral);
-                        break;
-                    case 40:
-                        Fandral->CastSpell(me, SPELL_CALL_ANCIENTS, true);
-                        break;
-                    case 41:
-                        Fandral->SummonGameObject(GO_ROOTS_OF_AHN_QIRAJ, Position(-8130.f, 1525.f, 17.5f, 0.f), QuaternionData(), 0);
-                        Fandral->AI()->Talk(FANDRAL_SAY_3);
-                        break;
-                    case 42:
-                        me->CastStop();
-                        Fandral->AI()->Talk(FANDRAL_EMOTE_1);
-                        break;
-                    case 43:
-                        Fandral->CastStop();
-                        break;
-                    case 44:
-                        Talk(ANACHRONOS_SAY_6);
-                        break;
-                    case 45:
-                        Talk(ANACHRONOS_SAY_7);
-                        break;
-                    case 46:
-                        Talk(ANACHRONOS_SAY_8);
-                        me->GetMotionMaster()->MoveCharge(-8110, 1527, 2.77f, 4);
-                        break;
-                    case 47:
-                        Talk(ANACHRONOS_EMOTE_1);
-                        break;
-                    case 48:
-                        Fandral->AI()->Talk(FANDRAL_SAY_4, me);
-                        break;
-                    case 49:
-                        Fandral->AI()->Talk(FANDRAL_SAY_5, me);
-                        break;
-                    case 50:
-                        Fandral->AI()->Talk(FANDRAL_EMOTE_2);
-                        Fandral->CastSpell({ -8127, 1525, 17.5f }, SPELL_THROW_HAMMER, true);
-                        break;
-                    case 51:
+                case 0:
+                    Talk(ANACHRONOS_SAY_1, Fandral);
+                    break;
+                case 1:
+                    Fandral->SetTarget(me->GetGUID());
+                    Fandral->AI()->Talk(FANDRAL_SAY_1, me);
+                    break;
+                case 2:
+                    Fandral->SetTarget(ObjectGuid::Empty);
+                    Merithra->AI()->Talk(MERITHRA_EMOTE_1);
+                    break;
+                case 3:
+                    Merithra->AI()->Talk(MERITHRA_SAY_1);
+                    break;
+                case 4:
+                    Arygos->AI()->Talk(ARYGOS_EMOTE_1);
+                    break;
+                case 5:
+                    Caelestrasz->SetTarget(Fandral->GetGUID());
+                    Caelestrasz->AI()->Talk(CAELESTRASZ_SAY_1);
+                    break;
+                case 6:
+                    Merithra->AI()->Talk(MERITHRA_SAY_2);
+                    break;
+                case 7:
+                    Caelestrasz->SetTarget(ObjectGuid::Empty);
+                    Merithra->GetMotionMaster()->MoveCharge(-8065, 1530, 2.61f, 10);
+                    break;
+                case 8:
+                    Merithra->AI()->Talk(MERITHRA_YELL_1);
+                    break;
+                case 9:
+                    Merithra->CastSpell(Merithra, SPELL_GREEN_DRAGON_TRANSFORM_DND, true);
+                    break;
+                case 10:
+                    Merithra->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
+                    Merithra->SetDisableGravity(true);
+                    Merithra->GetMotionMaster()->MoveCharge(-8065, 1530, 6.61f, 3);
+                    break;
+                case 11:
+                    Merithra->CastSpell(Merithra, SPELL_NOXIOUS_BREATH, false);
+                    break;
+                case 12:
+                    Merithra->GetMotionMaster()->MoveCharge(-8100, 1530, 50, 42);
+                    break;
+                case 13:
+                    break;
+                case 14:
+                    Arygos->AI()->Talk(ARYGOS_SAY_1);
+                    Merithra->SetVisible(false);
+                    break;
+                case 15:
+                    Arygos->GetMotionMaster()->MoveCharge(-8065, 1530, 2.61f, 10);
+                    Merithra->GetMotionMaster()->MoveCharge(-8034.535f, 1535.14f, 2.61f, 42);
+                    break;
+                case 16:
+                    Arygos->AI()->Talk(ARYGOS_YELL_1);
+                    break;
+                case 17:
+                    Arygos->CastSpell(Arygos, SPELL_BLUE_DRAGON_TRANSFORM_DND, true);
+                    break;
+                case 18:
+                    Arygos->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
+                    Arygos->SetDisableGravity(true);
+                    Arygos->GetMotionMaster()->MoveCharge(-8065, 1530, 6.61f, 42);
+                    break;
+                case 19:
+                    Arygos->CastSpell(Arygos, SPELL_FROST_BREATH, false);
+                    break;
+                case 20:
+                    Arygos->GetMotionMaster()->MoveCharge(-8095, 1530, 50, 42);
+                    break;
+                case 21:
+                    break;
+                case 22:
+                    Caelestrasz->AI()->Talk(CAELESTRASZ_SAY_2, Fandral);
+                    break;
+                case 23:
+                    Caelestrasz->GetMotionMaster()->MoveCharge(-8065, 1530, 2.61f, 10);
+                    Arygos->SetVisible(false);
+                    Arygos->GetMotionMaster()->MoveCharge(-8034.535f, 1535.14f, 2.61f, 10);
+                    break;
+                case 24:
+                    Caelestrasz->AI()->Talk(CAELESTRASZ_YELL_1);
+                    break;
+                case 25:
+                    Caelestrasz->CastSpell(Caelestrasz, SPELL_RED_DRAGON_TRANSFORM_DND, true);
+                    break;
+                case 26:
+                    Caelestrasz->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
+                    Caelestrasz->SetDisableGravity(true);
+                    Caelestrasz->GetMotionMaster()->MoveCharge(-8065, 1530, 7.61f, 4);
+                    break;
+                case 27:
+                    Caelestrasz->CastSpell(Caelestrasz, SPELL_FLAME_BREATH, false);
+                    break;
+                case 28:
+                    Talk(ANACHRONOS_SAY_2, Fandral);
+                    break;
+                case 29:
+                    Caelestrasz->GetMotionMaster()->MoveCharge(-8095, 1530, 50, 42);
+                    Fandral->AI()->Talk(FANDRAL_SAY_2);
+                    break;
+                case 30:
+                    break;
+                case 31:
+                    Talk(ANACHRONOS_SAY_3, Fandral);
+                    break;
+                case 32:
+                    Caelestrasz->SetVisible(false);
+                    Caelestrasz->GetMotionMaster()->MoveCharge(-8034.535f, 1535.14f, 2.61f, 42);
+                    Fandral->GetMotionMaster()->MoveCharge(-8108, 1529, 2.77f, 8);
+                    me->GetMotionMaster()->MoveCharge(-8113, 1525, 2.77f, 8);
+                    break;//both run to the gate
+                case 33:
+                    Talk(ANACHRONOS_SAY_4);
+                    Caelestrasz->GetMotionMaster()->MoveCharge(-8050, 1473, 65, 15);
+                    break; //Text: sands will stop
+                case 34:
+                    DoCast(player, SPELL_ARCANE_CHANNELING, true);//Arcane Channeling
+                    break;
+                case 35:
+                    me->CastSpell({ -8088, 1520.43f, 2.67f }, SPELL_TIME_STOP, true);
+                    break;
+                case 36:
+                    DoCast(player, SPELL_CALL_PRISMATIC_BARRIER, true);
+                    break;
+                case 37:
+                    me->SummonGameObject(GO_GATE_OF_AHN_QIRAJ, Position(-8130.f, 1525.f, 17.5f, 0.f), QuaternionData(), 0);
+                    break;
+                case 38:
+                    DoCast(player, SPELL_CALL_GLYPHS_OF_WARDING, true);
+                    me->SummonGameObject(GO_GLYPH_OF_AHN_QIRAJ, Position(-8130.f, 1525.f, 17.5f, 0.f), QuaternionData(), 0);
+                    break;
+                case 39:
+                    Talk(ANACHRONOS_SAY_5, Fandral);
+                    break;
+                case 40:
+                    Fandral->CastSpell(me, SPELL_CALL_ANCIENTS, true);
+                    break;
+                case 41:
+                    Fandral->SummonGameObject(GO_ROOTS_OF_AHN_QIRAJ, Position(-8130.f, 1525.f, 17.5f, 0.f), QuaternionData(), 0);
+                    Fandral->AI()->Talk(FANDRAL_SAY_3);
+                    break;
+                case 42:
+                    me->CastStop();
+                    Fandral->AI()->Talk(FANDRAL_EMOTE_1);
+                    break;
+                case 43:
+                    Fandral->CastStop();
+                    break;
+                case 44:
+                    Talk(ANACHRONOS_SAY_6);
+                    break;
+                case 45:
+                    Talk(ANACHRONOS_SAY_7);
+                    break;
+                case 46:
+                    Talk(ANACHRONOS_SAY_8);
+                    me->GetMotionMaster()->MoveCharge(-8110, 1527, 2.77f, 4);
+                    break;
+                case 47:
+                    Talk(ANACHRONOS_EMOTE_1);
+                    break;
+                case 48:
+                    Fandral->AI()->Talk(FANDRAL_SAY_4, me);
+                    break;
+                case 49:
+                    Fandral->AI()->Talk(FANDRAL_SAY_5, me);
+                    break;
+                case 50:
+                    Fandral->AI()->Talk(FANDRAL_EMOTE_2);
+                    Fandral->CastSpell({ -8127, 1525, 17.5f }, SPELL_THROW_HAMMER, true);
+                    break;
+                case 51:
+                {
+                    uint32 entries[4] = { NPC_KALDOREI_INFANTRY, NPC_ANUBISATH_CONQUEROR, NPC_QIRAJI_WASP, NPC_QIRAJI_TANK };
+                    Unit* mob = nullptr;
+                    for (uint8 i = 0; i < 4; ++i)
                     {
-                        uint32 entries[4] = { NPC_KALDOREI_INFANTRY, NPC_ANUBISATH_CONQUEROR, NPC_QIRAJI_WASP, NPC_QIRAJI_TANK };
-                        Unit* mob = nullptr;
-                        for (uint8 i = 0; i < 4; ++i)
+                        mob = player->FindNearestCreature(entries[i], 50);
+                        while (mob)
                         {
-                            mob = player->FindNearestCreature(entries[i], 50);
-                            while (mob)
-                            {
-                                mob->RemoveFromWorld();
-                                mob = player->FindNearestCreature(NPC_KALDOREI_INFANTRY, 50);
-                            }
+                            mob->RemoveFromWorld();
+                            mob = player->FindNearestCreature(NPC_KALDOREI_INFANTRY, 50);
                         }
-                        break;
                     }
-                    case 52:
-                        Fandral->GetMotionMaster()->MoveCharge(-8028.75f, 1538.795f, 2.61f, 4);
-                        Fandral->AI()->Talk(ANACHRONOS_SAY_9, me);
-                        break;
-                    case 53:
-                        Fandral->AI()->Talk(FANDRAL_SAY_6);
-                        break;
-                    case 54:
-                        Talk(ANACHRONOS_EMOTE_2);
-                        break;
-                    case 55:
-                        Fandral->SetVisible(false);
-                        break;
-                    case 56:
-                        Talk(ANACHRONOS_EMOTE_3);
-                        me->GetMotionMaster()->MoveCharge(-8116, 1522, 3.65f, 4);
-                        break;
-                    case 57:
-                        me->GetMotionMaster()->MoveCharge(-8116.7f, 1527, 3.7f, 4);
-                        break;
-                    case 58:
-                        me->GetMotionMaster()->MoveCharge(-8112.67f, 1529.9f, 2.86f, 4);
-                        break;
-                    case 59:
-                        me->GetMotionMaster()->MoveCharge(-8117.99f, 1532.24f, 3.94f, 4);
-                        break;
-                    case 60:
-                        Talk(ANACHRONOS_SAY_10, player);
-                        me->GetMotionMaster()->MoveCharge(-8113.46f, 1524.16f, 2.89f, 4);
-                        break;
-                    case 61:
-                        me->GetMotionMaster()->MoveCharge(-8057.1f, 1470.32f, 2.61f, 6);
-                        if (player->IsInRange(me, 0, 15))
-                            player->GroupEventHappens(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD, me);
-                        break;
-                    case 62:
-                        me->SetDisplayId(15500);
-                        break;
-                    case 63:
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
-                        me->SetDisableGravity(true);
-                        break;
-                    case 64:
-                        me->GetMotionMaster()->MoveCharge(-8000, 1400, 150, 9);
-                        break;
-                    case 65:
-                        me->SetVisible(false);
-                        if (Creature* AnachronosQuestTrigger = (ObjectAccessor::GetCreature(*me, AnachronosQuestTriggerGUID)))
-                        {
-                            Talk(ARYGOS_YELL_1);
-                            AnachronosQuestTrigger->AI()->EnterEvadeMode();
-                            eventEnd=true;
-                        }
-                        break;
+                    break;
+                }
+                case 52:
+                    Fandral->GetMotionMaster()->MoveCharge(-8028.75f, 1538.795f, 2.61f, 4);
+                    Fandral->AI()->Talk(ANACHRONOS_SAY_9, me);
+                    break;
+                case 53:
+                    Fandral->AI()->Talk(FANDRAL_SAY_6);
+                    break;
+                case 54:
+                    Talk(ANACHRONOS_EMOTE_2);
+                    break;
+                case 55:
+                    Fandral->SetVisible(false);
+                    break;
+                case 56:
+                    Talk(ANACHRONOS_EMOTE_3);
+                    me->GetMotionMaster()->MoveCharge(-8116, 1522, 3.65f, 4);
+                    break;
+                case 57:
+                    me->GetMotionMaster()->MoveCharge(-8116.7f, 1527, 3.7f, 4);
+                    break;
+                case 58:
+                    me->GetMotionMaster()->MoveCharge(-8112.67f, 1529.9f, 2.86f, 4);
+                    break;
+                case 59:
+                    me->GetMotionMaster()->MoveCharge(-8117.99f, 1532.24f, 3.94f, 4);
+                    break;
+                case 60:
+                    Talk(ANACHRONOS_SAY_10, player);
+                    me->GetMotionMaster()->MoveCharge(-8113.46f, 1524.16f, 2.89f, 4);
+                    break;
+                case 61:
+                    me->GetMotionMaster()->MoveCharge(-8057.1f, 1470.32f, 2.61f, 6);
+                    if (player->IsInRange(me, 0, 15))
+                        player->GroupEventHappens(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD, me);
+                    break;
+                case 62:
+                    me->SetDisplayId(15500);
+                    break;
+                case 63:
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_LIFTOFF);
+                    me->SetDisableGravity(true);
+                    break;
+                case 64:
+                    me->GetMotionMaster()->MoveCharge(-8000, 1400, 150, 9);
+                    break;
+                case 65:
+                    me->SetVisible(false);
+                    if (Creature* AnachronosQuestTrigger = (ObjectAccessor::GetCreature(*me, AnachronosQuestTriggerGUID)))
+                    {
+                        Talk(ARYGOS_YELL_1);
+                        AnachronosQuestTrigger->AI()->EnterEvadeMode();
+                        eventEnd = true;
+                    }
+                    break;
                 }
             }
             ++AnimationCount;
@@ -643,8 +643,8 @@ public:
 enum QirajWarSpawn
 {
     SPELL_STONED_CHANNEL_CAST_VISUAL = 15533,
-    SPELL_SUMMON_POISON_CLOUD        = 24319,
-    SPELL_STONED                     = 33652
+    SPELL_SUMMON_POISON_CLOUD = 24319,
+    SPELL_STONED = 33652
 };
 
 class npc_qiraj_war_spawn : public CreatureScript
@@ -711,17 +711,20 @@ public:
                     DoCast(me, SpawnCast[1].SpellId);
                     DoCast(me, SPELL_SUMMON_POISON_CLOUD);
                     SpellTimer1 = SpawnCast[1].Timer2;
-                } else SpellTimer1 -= diff;
+                }
+                else SpellTimer1 -= diff;
                 if (SpellTimer2 <= diff)
                 {
                     DoCast(me, SpawnCast[2].SpellId);
                     SpellTimer2 = SpawnCast[2].Timer2;
-                } else SpellTimer2 -= diff;
+                }
+                else SpellTimer2 -= diff;
                 if (SpellTimer3 <= diff)
                 {
                     DoCast(me, SpawnCast[3].SpellId);
                     SpellTimer3 = SpawnCast[3].Timer2;
-                } else SpellTimer3 -= diff;
+                }
+                else SpellTimer3 -= diff;
             }
             if (me->GetEntry() == NPC_KALDOREI_INFANTRY || me->GetEntry() == NPC_ANUBISATH_CONQUEROR || me->GetEntry() == NPC_QIRAJI_TANK || me->GetEntry() == NPC_QIRAJI_WASP)
             {
@@ -731,7 +734,8 @@ public:
                     me->AttackStop();
                     DoCast(me, SPELL_STONED_CHANNEL_CAST_VISUAL);
                     SpellTimer4 = SpawnCast[0].Timer2;
-                } else SpellTimer4 -= diff;
+                }
+                else SpellTimer4 -= diff;
             }
             if (!hasTarget)
             {
@@ -871,14 +875,14 @@ public:
 
                 Group::MemberSlotList const& members = EventGroup->GetMemberSlots();
 
-                for (Group::member_citerator itr = members.begin(); itr!= members.end(); ++itr)
+                for (Group::member_citerator itr = members.begin(); itr != members.end(); ++itr)
                 {
                     groupMember = ObjectAccessor::GetPlayer(*me, itr->guid);
                     if (!groupMember)
                         continue;
                     if (!groupMember->IsWithinDistInMap(me, EVENT_AREA_RADIUS) && groupMember->GetQuestStatus(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD) == QUEST_STATUS_INCOMPLETE)
                     {
-                         groupMember->FailQuest(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD);
+                        groupMember->FailQuest(QUEST_A_PAWN_ON_THE_ETERNAL_BOARD);
                         ++FailedMemberCount;
                     }
                     ++GroupMemberCount;
@@ -910,7 +914,8 @@ public:
                 {
                     Talk(WavesInfo[WaveCount].WaveTextId);
                     Announced = true;
-                } else AnnounceTimer -= diff;
+                }
+                else AnnounceTimer -= diff;
 
                 if (WaveTimer <= diff)
                     SummonNextWave();
@@ -943,9 +948,9 @@ void npc_qiraj_war_spawn::npc_qiraj_war_spawnAI::JustDied(Unit* /*killer*/)
 
 enum CrystallineTear
 {
-    ARYGOS_GNOME_FORM                  = 15418,
-    CAELESTRASZ_NIGHT_ELF_FORM         = 15419,
-    MERITHRA_NIGHT_ELF_FORM            = 15420,
+    ARYGOS_GNOME_FORM = 15418,
+    CAELESTRASZ_NIGHT_ELF_FORM = 15419,
+    MERITHRA_NIGHT_ELF_FORM = 15420,
     ANACHRONOS_QUEST_TRIGGER_INVISIBLE = 15454
 };
 
@@ -1024,357 +1029,357 @@ public:
 
 enum WSSpells
 {
-    AURA_TWILIGHT_SET      = 24746,
-    AURA_MEDALLION         = 24748,
-    AURA_RING              = 24782,
+    AURA_TWILIGHT_SET = 24746,
+    AURA_MEDALLION = 24748,
+    AURA_RING = 24782,
 
-    SPELL_TEMPLAR_RANDOM   = 24745,
-    SPELL_TEMPLAR_FIRE     = 24747,
-    SPELL_TEMPLAR_AIR      = 24757,
-    SPELL_TEMPLAR_EARTH    = 24759,
-    SPELL_TEMPLAR_WATER    = 24761,
+    SPELL_TEMPLAR_RANDOM = 24745,
+    SPELL_TEMPLAR_FIRE = 24747,
+    SPELL_TEMPLAR_AIR = 24757,
+    SPELL_TEMPLAR_EARTH = 24759,
+    SPELL_TEMPLAR_WATER = 24761,
 
-    SPELL_DUKE_RANDOM      = 24762,
-    SPELL_DUKE_FIRE        = 24766,
-    SPELL_DUKE_AIR         = 24769,
-    SPELL_DUKE_EARTH       = 24771,
-    SPELL_DUKE_WATER       = 24773,
+    SPELL_DUKE_RANDOM = 24762,
+    SPELL_DUKE_FIRE = 24766,
+    SPELL_DUKE_AIR = 24769,
+    SPELL_DUKE_EARTH = 24771,
+    SPELL_DUKE_WATER = 24773,
 
-    SPELL_ROYAL_RANDOM     = 24785,
-    SPELL_ROYAL_FIRE       = 24787,
-    SPELL_ROYAL_AIR        = 24791,
-    SPELL_ROYAL_EARTH      = 24792,
-    SPELL_ROYAL_WATER      = 24793,
+    SPELL_ROYAL_RANDOM = 24785,
+    SPELL_ROYAL_FIRE = 24787,
+    SPELL_ROYAL_AIR = 24791,
+    SPELL_ROYAL_EARTH = 24792,
+    SPELL_ROYAL_WATER = 24793,
 
-    SPELL_PUNISHMENT       = 24803,
-    SPELL_SPAWN_IN         = 25035
+    SPELL_PUNISHMENT = 24803,
+    SPELL_SPAWN_IN = 25035
 };
 
 enum WSGossip
 {
-    OPTION_ID_WS_RANDOM    = 0,
-    OPTION_ID_1_CRIMSON    = 1,
-    OPTION_ID_2_AZURE      = 2,
-    OPTION_ID_3_EARTHEN    = 3,
-    OPTION_ID_4_HOARY      = 4,
-    OPTION_ID_1_CYNDERS    = 1,
-    OPTION_ID_2_FATHOMS    = 2,
-    OPTION_ID_3_SHARDS     = 3,
-    OPTION_ID_4_ZEPHYRS    = 4,
+    OPTION_ID_WS_RANDOM = 0,
+    OPTION_ID_1_CRIMSON = 1,
+    OPTION_ID_2_AZURE = 2,
+    OPTION_ID_3_EARTHEN = 3,
+    OPTION_ID_4_HOARY = 4,
+    OPTION_ID_1_CYNDERS = 1,
+    OPTION_ID_2_FATHOMS = 2,
+    OPTION_ID_3_SHARDS = 3,
+    OPTION_ID_4_ZEPHYRS = 4,
     OPTION_ID_1_SKALDRENOX = 1,
-    OPTION_ID_2_SKWOL      = 2,
-    OPTION_ID_3_KAZUM      = 3,
-    OPTION_ID_4_WHIRLAXIS  = 4,
-    GOSSIP_ID_LESSER_WS    = 6540,
-    GOSSIP_ID_WIND_STONE   = 6542,
-    GOSSIP_ID_GREATER_WS   = 6543
+    OPTION_ID_2_SKWOL = 2,
+    OPTION_ID_3_KAZUM = 3,
+    OPTION_ID_4_WHIRLAXIS = 4,
+    GOSSIP_ID_LESSER_WS = 6540,
+    GOSSIP_ID_WIND_STONE = 6542,
+    GOSSIP_ID_GREATER_WS = 6543
 };
 
 enum WSCreatures
 {
-    NPC_TEMPLAR_FIRE       = 15209,
-    NPC_TEMPLAR_WATER      = 15211,
-    NPC_TEMPLAR_AIR        = 15212,
-    NPC_TEMPLAR_EARTH      = 15307,
+    NPC_TEMPLAR_FIRE = 15209,
+    NPC_TEMPLAR_WATER = 15211,
+    NPC_TEMPLAR_AIR = 15212,
+    NPC_TEMPLAR_EARTH = 15307,
 
-    NPC_DUKE_FIRE          = 15206,
-    NPC_DUKE_WATER         = 15207,
-    NPC_DUKE_EARTH         = 15208,
-    NPC_DUKE_AIR           = 15220,
+    NPC_DUKE_FIRE = 15206,
+    NPC_DUKE_WATER = 15207,
+    NPC_DUKE_EARTH = 15208,
+    NPC_DUKE_AIR = 15220,
 
-    NPC_ROYAL_FIRE         = 15203,
-    NPC_ROYAL_AIR          = 15204,
-    NPC_ROYAL_EARTH        = 15205,
-    NPC_ROYAL_WATER        = 15305
+    NPC_ROYAL_FIRE = 15203,
+    NPC_ROYAL_AIR = 15204,
+    NPC_ROYAL_EARTH = 15205,
+    NPC_ROYAL_WATER = 15305
 };
 
 enum WSItems
 {
-    ITEM_TEMPLAR_FIRE      = 20416,
-    ITEM_TEMPLAR_AIR       = 20418,
-    ITEM_TEMPLAR_EARTH     = 20419,
-    ITEM_TEMPLAR_WATER     = 20420,
+    ITEM_TEMPLAR_FIRE = 20416,
+    ITEM_TEMPLAR_AIR = 20418,
+    ITEM_TEMPLAR_EARTH = 20419,
+    ITEM_TEMPLAR_WATER = 20420,
 
-    ITEM_DUKE_FIRE         = 20432,
-    ITEM_DUKE_AIR          = 20433,
-    ITEM_DUKE_EARTH        = 20435,
-    ITEM_DUKE_WATER        = 20436,
+    ITEM_DUKE_FIRE = 20432,
+    ITEM_DUKE_AIR = 20433,
+    ITEM_DUKE_EARTH = 20435,
+    ITEM_DUKE_WATER = 20436,
 
-    ITEM_ROYAL_FIRE        = 20447,
-    ITEM_ROYAL_AIR         = 20448,
-    ITEM_ROYAL_EARTH       = 20449,
-    ITEM_ROYAL_WATER       = 20450
+    ITEM_ROYAL_FIRE = 20447,
+    ITEM_ROYAL_AIR = 20448,
+    ITEM_ROYAL_EARTH = 20449,
+    ITEM_ROYAL_WATER = 20450
 };
 
 enum WS
 {
-    TEMPLAR                = 0,
-    DUKE                   = 1,
-    ROYAL                  = 2,
+    TEMPLAR = 0,
+    DUKE = 1,
+    ROYAL = 2,
 
-    FIRE                   = 0x1,
-    WATER                  = 0x2,
-    EARTH                  = 0x4,
-    AIR                    = 0x8
+    FIRE = 0x1,
+    WATER = 0x2,
+    EARTH = 0x4,
+    AIR = 0x8
 };
 
 enum WSTexts
 {
-    SAY_TEMPLAR_AGGRO      = 0,
-    SAY_DUKE_AGGRO         = 0,
-    YELL_ROYAL_AGGRO       = 0
+    SAY_TEMPLAR_AGGRO = 0,
+    SAY_DUKE_AGGRO = 0,
+    YELL_ROYAL_AGGRO = 0
 };
 
 class go_wind_stone : public GameObjectScript
 {
-    public:
-        go_wind_stone() : GameObjectScript("go_wind_stone") { }
+public:
+    go_wind_stone() : GameObjectScript("go_wind_stone") { }
 
-        struct go_wind_stoneAI : public GameObjectAI
+    struct go_wind_stoneAI : public GameObjectAI
+    {
+        go_wind_stoneAI(GameObject* go) : GameObjectAI(go) { }
+
+        bool GossipHello(Player* player) override
         {
-            go_wind_stoneAI(GameObject* go) : GameObjectAI(go) { }
+            uint8 rank = GetPlayerRank(player);
 
-            bool GossipHello(Player* player) override
+            uint32 gossipId = me->GetGOInfo()->GetGossipMenuId();
+            switch (gossipId)
             {
-                uint8 rank = GetPlayerRank(player);
-
-                uint32 gossipId = me->GetGOInfo()->GetGossipMenuId();
-                switch (gossipId)
-                {
-                    case GOSSIP_ID_LESSER_WS:
-                    {
-                        if (rank >= 1) // 1 or 2 or 3
-                            AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_WS_RANDOM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-                        else
-                        {
-                            me->CastSpell(player, SPELL_PUNISHMENT);
-                            break;
-                        }
-
-                        uint8 item = GetItems(player, TEMPLAR);
-                        if (item & FIRE)
-                            AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_1_CRIMSON, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
-                        if (item & WATER)
-                            AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_2_AZURE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
-                        if (item & EARTH)
-                            AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_3_EARTHEN, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
-                        if (item & AIR)
-                            AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_4_HOARY, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
-                        break;
-                    }
-                    case GOSSIP_ID_WIND_STONE:
-                    {
-                        if (rank >= 2) // 2 or 3
-                            AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_WS_RANDOM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
-                        else
-                        {
-                            me->CastSpell(player, SPELL_PUNISHMENT);
-                            break;
-                        }
-
-                        uint8 item = GetItems(player, DUKE);
-                        if (item & FIRE)
-                            AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_1_CYNDERS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
-                        if (item & WATER)
-                            AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_2_FATHOMS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
-                        if (item & EARTH)
-                            AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_3_SHARDS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 9);
-                        if (item & AIR)
-                            AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_4_ZEPHYRS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
-                        break;
-                    }
-                    case GOSSIP_ID_GREATER_WS:
-                    {
-                        if (rank == 3) // 3
-                            AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_WS_RANDOM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
-                        else
-                        {
-                            me->CastSpell(player, SPELL_PUNISHMENT);
-                            break;
-                        }
-
-                        uint8 item = GetItems(player, ROYAL);
-                        if (item & FIRE)
-                            AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_1_SKALDRENOX, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
-                        if (item & WATER)
-                            AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_2_SKWOL, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
-                        if (item & EARTH)
-                            AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_3_KAZUM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
-                        if (item & AIR)
-                            AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_4_WHIRLAXIS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
-                        break;
-                    }
-                    default:
-                        break;
-                }
-
-                SendGossipMenuFor(player, player->GetGossipTextId(gossipId, me), me->GetGUID());
-                return true;
-            }
-
-            bool GossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
+            case GOSSIP_ID_LESSER_WS:
             {
-                uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
-                ClearGossipMenuFor(player);
-                player->PlayerTalkClass->SendCloseGossip();
-
-                switch (action)
-                {
-                    case GOSSIP_ACTION_INFO_DEF + 1:
-                        SummonNPC(me, player, RAND(NPC_TEMPLAR_WATER, NPC_TEMPLAR_FIRE, NPC_TEMPLAR_EARTH, NPC_TEMPLAR_AIR), SPELL_TEMPLAR_RANDOM);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 2:
-                        SummonNPC(me, player, NPC_TEMPLAR_FIRE, SPELL_TEMPLAR_FIRE);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 3:
-                        SummonNPC(me, player, NPC_TEMPLAR_WATER, SPELL_TEMPLAR_WATER);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 4:
-                        SummonNPC(me, player, NPC_TEMPLAR_EARTH, SPELL_TEMPLAR_EARTH);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 5:
-                        SummonNPC(me, player, NPC_TEMPLAR_AIR, SPELL_TEMPLAR_AIR);
-                        break;
-
-                    case GOSSIP_ACTION_INFO_DEF + 6:
-                        SummonNPC(me, player, RAND(NPC_DUKE_FIRE, NPC_DUKE_WATER, NPC_DUKE_EARTH, NPC_DUKE_AIR), SPELL_DUKE_RANDOM);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 7:
-                        SummonNPC(me, player, NPC_DUKE_FIRE, SPELL_DUKE_FIRE);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 8:
-                        SummonNPC(me, player, NPC_DUKE_WATER, SPELL_DUKE_WATER);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 9:
-                        SummonNPC(me, player, NPC_DUKE_EARTH, SPELL_DUKE_EARTH);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 10:
-                        SummonNPC(me, player, NPC_DUKE_AIR, SPELL_DUKE_AIR);
-                        break;
-
-                    case GOSSIP_ACTION_INFO_DEF + 11:
-                        SummonNPC(me, player, RAND(NPC_ROYAL_FIRE, NPC_ROYAL_AIR, NPC_ROYAL_EARTH, NPC_ROYAL_WATER), SPELL_ROYAL_RANDOM);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 12:
-                        SummonNPC(me, player, NPC_ROYAL_FIRE, SPELL_ROYAL_FIRE);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 13:
-                        SummonNPC(me, player, NPC_ROYAL_WATER, SPELL_ROYAL_WATER);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 14:
-                        SummonNPC(me, player, NPC_ROYAL_EARTH, SPELL_ROYAL_EARTH);
-                        break;
-                    case GOSSIP_ACTION_INFO_DEF + 15:
-                        SummonNPC(me, player, NPC_ROYAL_AIR, SPELL_ROYAL_AIR);
-                        break;
-
-                    default:
-                        break;
-                }
-                return true;
-            }
-
-        private:
-            uint8 GetPlayerRank(Player* player) const // For random summoning
-            {
-                bool setAura = player->HasAura(AURA_TWILIGHT_SET);
-                bool medallionAura = player->HasAura(AURA_MEDALLION);
-                bool ringAura = player->HasAura(AURA_RING);
-
-                if (setAura && medallionAura && ringAura)
-                    return 3;
-                else if (setAura && medallionAura)
-                    return 2;
-                else if (setAura)
-                    return 1;
+                if (rank >= 1) // 1 or 2 or 3
+                    AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_WS_RANDOM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
                 else
-                    return 0;
-            }
-
-            uint8 GetItems(Player* player, WS type) const
-            {
-                uint8 result = 0x0;
-
-                switch (type)
                 {
-                    case TEMPLAR:
-                    {
-                        if (player->HasItemCount(ITEM_TEMPLAR_FIRE))
-                            result |= FIRE;
-                        if (player->HasItemCount(ITEM_TEMPLAR_WATER))
-                            result |= WATER;
-                        if (player->HasItemCount(ITEM_TEMPLAR_EARTH))
-                            result |= EARTH;
-                        if (player->HasItemCount(ITEM_TEMPLAR_AIR))
-                            result |= AIR;
-                        break;
-                    }
-                    case DUKE:
-                    {
-                        if (player->HasItemCount(ITEM_DUKE_FIRE))
-                            result |= FIRE;
-                        if (player->HasItemCount(ITEM_DUKE_WATER))
-                            result |= WATER;
-                        if (player->HasItemCount(ITEM_DUKE_EARTH))
-                            result |= EARTH;
-                        if (player->HasItemCount(ITEM_DUKE_AIR))
-                            result |= AIR;
-                        break;
-                    }
-                    case ROYAL:
-                    {
-                        if (player->HasItemCount(ITEM_ROYAL_FIRE))
-                            result |= FIRE;
-                        if (player->HasItemCount(ITEM_ROYAL_WATER))
-                            result |= WATER;
-                        if (player->HasItemCount(ITEM_ROYAL_EARTH))
-                            result |= EARTH;
-                        if (player->HasItemCount(ITEM_ROYAL_AIR))
-                            result |= AIR;
-                        break;
-                    }
-                    default:
-                        break;
+                    me->CastSpell(player, SPELL_PUNISHMENT);
+                    break;
                 }
-                return result;
-            }
 
-            void SummonNPC(GameObject* go, Player* player, uint32 npc, uint32 spell) const
+                uint8 item = GetItems(player, TEMPLAR);
+                if (item & FIRE)
+                    AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_1_CRIMSON, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+                if (item & WATER)
+                    AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_2_AZURE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+                if (item & EARTH)
+                    AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_3_EARTHEN, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+                if (item & AIR)
+                    AddGossipItemFor(player, GOSSIP_ID_LESSER_WS, OPTION_ID_4_HOARY, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
+                break;
+            }
+            case GOSSIP_ID_WIND_STONE:
             {
-                go->CastSpell(player, spell);
-                TempSummon* summons = go->SummonCreature(npc, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ(), player->GetOrientation() - float(M_PI), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 10 * 60 * 1000);
-                summons->CastSpell(summons, SPELL_SPAWN_IN, false);
-                switch (summons->GetEntry())
+                if (rank >= 2) // 2 or 3
+                    AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_WS_RANDOM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
+                else
                 {
-                    case NPC_TEMPLAR_FIRE:
-                    case NPC_TEMPLAR_WATER:
-                    case NPC_TEMPLAR_AIR:
-                    case NPC_TEMPLAR_EARTH:
-                        summons->AI()->Talk(SAY_TEMPLAR_AGGRO, player);
-                        break;
-
-                    case NPC_DUKE_FIRE:
-                    case NPC_DUKE_WATER:
-                    case NPC_DUKE_EARTH:
-                    case NPC_DUKE_AIR:
-                        summons->AI()->Talk(SAY_DUKE_AGGRO, player);
-                        break;
-                    case NPC_ROYAL_FIRE:
-                    case NPC_ROYAL_AIR:
-                    case NPC_ROYAL_EARTH:
-                    case NPC_ROYAL_WATER:
-                        summons->AI()->Talk(YELL_ROYAL_AGGRO, player);
-                        break;
+                    me->CastSpell(player, SPELL_PUNISHMENT);
+                    break;
                 }
-                summons->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                summons->EngageWithTarget(player);
-            }
-        };
 
-        GameObjectAI* GetAI(GameObject* go) const override
-        {
-            return new go_wind_stoneAI(go);
+                uint8 item = GetItems(player, DUKE);
+                if (item & FIRE)
+                    AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_1_CYNDERS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
+                if (item & WATER)
+                    AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_2_FATHOMS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
+                if (item & EARTH)
+                    AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_3_SHARDS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 9);
+                if (item & AIR)
+                    AddGossipItemFor(player, GOSSIP_ID_WIND_STONE, OPTION_ID_4_ZEPHYRS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
+                break;
+            }
+            case GOSSIP_ID_GREATER_WS:
+            {
+                if (rank == 3) // 3
+                    AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_WS_RANDOM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
+                else
+                {
+                    me->CastSpell(player, SPELL_PUNISHMENT);
+                    break;
+                }
+
+                uint8 item = GetItems(player, ROYAL);
+                if (item & FIRE)
+                    AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_1_SKALDRENOX, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
+                if (item & WATER)
+                    AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_2_SKWOL, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
+                if (item & EARTH)
+                    AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_3_KAZUM, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
+                if (item & AIR)
+                    AddGossipItemFor(player, GOSSIP_ID_GREATER_WS, OPTION_ID_4_WHIRLAXIS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
+                break;
+            }
+            default:
+                break;
+            }
+
+            SendGossipMenuFor(player, player->GetGossipTextId(gossipId, me), me->GetGUID());
+            return true;
         }
+
+        bool GossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
+        {
+            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            ClearGossipMenuFor(player);
+            player->PlayerTalkClass->SendCloseGossip();
+
+            switch (action)
+            {
+            case GOSSIP_ACTION_INFO_DEF + 1:
+                SummonNPC(me, player, RAND(NPC_TEMPLAR_WATER, NPC_TEMPLAR_FIRE, NPC_TEMPLAR_EARTH, NPC_TEMPLAR_AIR), SPELL_TEMPLAR_RANDOM);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 2:
+                SummonNPC(me, player, NPC_TEMPLAR_FIRE, SPELL_TEMPLAR_FIRE);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 3:
+                SummonNPC(me, player, NPC_TEMPLAR_WATER, SPELL_TEMPLAR_WATER);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 4:
+                SummonNPC(me, player, NPC_TEMPLAR_EARTH, SPELL_TEMPLAR_EARTH);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 5:
+                SummonNPC(me, player, NPC_TEMPLAR_AIR, SPELL_TEMPLAR_AIR);
+                break;
+
+            case GOSSIP_ACTION_INFO_DEF + 6:
+                SummonNPC(me, player, RAND(NPC_DUKE_FIRE, NPC_DUKE_WATER, NPC_DUKE_EARTH, NPC_DUKE_AIR), SPELL_DUKE_RANDOM);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 7:
+                SummonNPC(me, player, NPC_DUKE_FIRE, SPELL_DUKE_FIRE);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 8:
+                SummonNPC(me, player, NPC_DUKE_WATER, SPELL_DUKE_WATER);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 9:
+                SummonNPC(me, player, NPC_DUKE_EARTH, SPELL_DUKE_EARTH);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 10:
+                SummonNPC(me, player, NPC_DUKE_AIR, SPELL_DUKE_AIR);
+                break;
+
+            case GOSSIP_ACTION_INFO_DEF + 11:
+                SummonNPC(me, player, RAND(NPC_ROYAL_FIRE, NPC_ROYAL_AIR, NPC_ROYAL_EARTH, NPC_ROYAL_WATER), SPELL_ROYAL_RANDOM);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 12:
+                SummonNPC(me, player, NPC_ROYAL_FIRE, SPELL_ROYAL_FIRE);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 13:
+                SummonNPC(me, player, NPC_ROYAL_WATER, SPELL_ROYAL_WATER);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 14:
+                SummonNPC(me, player, NPC_ROYAL_EARTH, SPELL_ROYAL_EARTH);
+                break;
+            case GOSSIP_ACTION_INFO_DEF + 15:
+                SummonNPC(me, player, NPC_ROYAL_AIR, SPELL_ROYAL_AIR);
+                break;
+
+            default:
+                break;
+            }
+            return true;
+        }
+
+    private:
+        uint8 GetPlayerRank(Player* player) const // For random summoning
+        {
+            bool setAura = player->HasAura(AURA_TWILIGHT_SET);
+            bool medallionAura = player->HasAura(AURA_MEDALLION);
+            bool ringAura = player->HasAura(AURA_RING);
+
+            if (setAura && medallionAura && ringAura)
+                return 3;
+            else if (setAura && medallionAura)
+                return 2;
+            else if (setAura)
+                return 1;
+            else
+                return 0;
+        }
+
+        uint8 GetItems(Player* player, WS type) const
+        {
+            uint8 result = 0x0;
+
+            switch (type)
+            {
+            case TEMPLAR:
+            {
+                if (player->HasItemCount(ITEM_TEMPLAR_FIRE))
+                    result |= FIRE;
+                if (player->HasItemCount(ITEM_TEMPLAR_WATER))
+                    result |= WATER;
+                if (player->HasItemCount(ITEM_TEMPLAR_EARTH))
+                    result |= EARTH;
+                if (player->HasItemCount(ITEM_TEMPLAR_AIR))
+                    result |= AIR;
+                break;
+            }
+            case DUKE:
+            {
+                if (player->HasItemCount(ITEM_DUKE_FIRE))
+                    result |= FIRE;
+                if (player->HasItemCount(ITEM_DUKE_WATER))
+                    result |= WATER;
+                if (player->HasItemCount(ITEM_DUKE_EARTH))
+                    result |= EARTH;
+                if (player->HasItemCount(ITEM_DUKE_AIR))
+                    result |= AIR;
+                break;
+            }
+            case ROYAL:
+            {
+                if (player->HasItemCount(ITEM_ROYAL_FIRE))
+                    result |= FIRE;
+                if (player->HasItemCount(ITEM_ROYAL_WATER))
+                    result |= WATER;
+                if (player->HasItemCount(ITEM_ROYAL_EARTH))
+                    result |= EARTH;
+                if (player->HasItemCount(ITEM_ROYAL_AIR))
+                    result |= AIR;
+                break;
+            }
+            default:
+                break;
+            }
+            return result;
+        }
+
+        void SummonNPC(GameObject* go, Player* player, uint32 npc, uint32 spell) const
+        {
+            go->CastSpell(player, spell);
+            TempSummon* summons = go->SummonCreature(npc, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ(), player->GetOrientation() - float(M_PI), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 10 * 60 * 1000);
+            summons->CastSpell(summons, SPELL_SPAWN_IN, false);
+            switch (summons->GetEntry())
+            {
+            case NPC_TEMPLAR_FIRE:
+            case NPC_TEMPLAR_WATER:
+            case NPC_TEMPLAR_AIR:
+            case NPC_TEMPLAR_EARTH:
+                summons->AI()->Talk(SAY_TEMPLAR_AGGRO, player);
+                break;
+
+            case NPC_DUKE_FIRE:
+            case NPC_DUKE_WATER:
+            case NPC_DUKE_EARTH:
+            case NPC_DUKE_AIR:
+                summons->AI()->Talk(SAY_DUKE_AGGRO, player);
+                break;
+            case NPC_ROYAL_FIRE:
+            case NPC_ROYAL_AIR:
+            case NPC_ROYAL_EARTH:
+            case NPC_ROYAL_WATER:
+                summons->AI()->Talk(YELL_ROYAL_AGGRO, player);
+                break;
+            }
+            summons->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+            summons->EngageWithTarget(player);
+        }
+    };
+
+    GameObjectAI* GetAI(GameObject* go) const override
+    {
+        return new go_wind_stoneAI(go);
+    }
 };
 
 void AddSC_silithus()

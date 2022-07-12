@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// This is where scripts' loading functions should be declared:
-// Auchindoun - Auchenai Crypts
+ // This is where scripts' loading functions should be declared:
+ // Auchindoun - Auchenai Crypts
 void AddSC_boss_shirrak_the_dead_watcher();
 void AddSC_boss_exarch_maladaar();
 void AddSC_instance_auchenai_crypts();

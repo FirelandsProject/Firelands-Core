@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,7 +23,7 @@
 enum EagleSpirit
 {
     SPELL_EJECT_ALL_PASSENGERS = 50630,
-    SPELL_SPIRIT_FORM          = 69324
+    SPELL_SPIRIT_FORM = 69324
 };
 
 Position const EagleSpiritflightPath[] =
@@ -61,17 +61,17 @@ struct npc_mulgore_eagle_spirit : public ScriptedAI
 enum OurTribeImprisoned
 {
     // Move Points
-    POINT_ID_BRAVE_ESCAPED  = 1,
+    POINT_ID_BRAVE_ESCAPED = 1,
 
     // Spells
-    SPELL_UNLOCKING         = 71725,
+    SPELL_UNLOCKING = 71725,
 
     // Events
-    EVENT_TALK_FREED        = 1,
-    EVENT_ESCAPE            = 2,
+    EVENT_TALK_FREED = 1,
+    EVENT_ESCAPE = 2,
 
     // Texts
-    SAY_BRAVE_FREED         = 0
+    SAY_BRAVE_FREED = 0
 };
 
 static std::array<Position, 4> CapturedBraveEscapePoints =
@@ -105,23 +105,23 @@ struct npc_mulgore_captured_brave : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_TALK_FREED:
-                    Talk(SAY_BRAVE_FREED);
-                    _events.ScheduleEvent(EVENT_ESCAPE, 4s);
-                    break;
-                case EVENT_ESCAPE:
-                {
-                    Position dest = CapturedBraveEscapePoints.front();
-                    for (uint8 i = 1; i < CapturedBraveEscapePoints.size(); ++i)
-                        if (me->GetExactDist(CapturedBraveEscapePoints[i]) <= me->GetExactDist(dest))
-                            dest = CapturedBraveEscapePoints[i];
+            case EVENT_TALK_FREED:
+                Talk(SAY_BRAVE_FREED);
+                _events.ScheduleEvent(EVENT_ESCAPE, 4s);
+                break;
+            case EVENT_ESCAPE:
+            {
+                Position dest = CapturedBraveEscapePoints.front();
+                for (uint8 i = 1; i < CapturedBraveEscapePoints.size(); ++i)
+                    if (me->GetExactDist(CapturedBraveEscapePoints[i]) <= me->GetExactDist(dest))
+                        dest = CapturedBraveEscapePoints[i];
 
-                    me->setActive(true); // Ensure that the npc is always updating even when moving out of grid update range
-                    me->GetMotionMaster()->MovePoint(POINT_ID_BRAVE_ESCAPED, dest);
-                    break;
-                }
-                default:
-                    break;
+                me->setActive(true); // Ensure that the npc is always updating even when moving out of grid update range
+                me->GetMotionMaster()->MovePoint(POINT_ID_BRAVE_ESCAPED, dest);
+                break;
+            }
+            default:
+                break;
             }
         }
     }
@@ -144,13 +144,13 @@ enum RiteOfHonor
     SAY_AGGRO = 0,
 
     // Events
-    EVENT_QUILLHORN     = 1,
-    EVENT_TORCH_TOSS    = 2,
+    EVENT_QUILLHORN = 1,
+    EVENT_TORCH_TOSS = 2,
 
     // Spells
-    SPELL_QUILLHORN     = 81691,
-    SPELL_TORCH_TOSS    = 81695,
-    SPELL_IMMOLATION    = 69316
+    SPELL_QUILLHORN = 81691,
+    SPELL_TORCH_TOSS = 81695,
+    SPELL_IMMOLATION = 69316
 };
 
 struct npc_mulgore_chief_squealer_thornmantle : public ScriptedAI
@@ -190,16 +190,16 @@ struct npc_mulgore_chief_squealer_thornmantle : public ScriptedAI
         {
             switch (eventId)
             {
-                case EVENT_QUILLHORN:
-                    DoCastVictim(SPELL_QUILLHORN);
-                    _events.ScheduleEvent(EVENT_TORCH_TOSS, 2s + 500ms);
-                    _events.Repeat(60s);
-                    break;
-                case EVENT_TORCH_TOSS:
-                    DoCastVictim(SPELL_TORCH_TOSS);
-                    break;
-                default:
-                    break;
+            case EVENT_QUILLHORN:
+                DoCastVictim(SPELL_QUILLHORN);
+                _events.ScheduleEvent(EVENT_TORCH_TOSS, 2s + 500ms);
+                _events.Repeat(60s);
+                break;
+            case EVENT_TORCH_TOSS:
+                DoCastVictim(SPELL_TORCH_TOSS);
+                break;
+            default:
+                break;
             }
 
             if (me->HasUnitState(UNIT_STATE_CASTING))

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -28,9 +28,9 @@ uint32 const EncounterCount = 3;
 enum ANDataTypes
 {
     // Encounter States/Boss GUIDs
-    DATA_KRIKTHIR                   = 0,
-    DATA_HADRONOX                   = 1,
-    DATA_ANUBARAK                   = 2,
+    DATA_KRIKTHIR = 0,
+    DATA_HADRONOX = 1,
+    DATA_ANUBARAK = 2,
 
     // Additional Data
     DATA_WATCHER_NARJIL,
@@ -43,27 +43,27 @@ enum ANDataTypes
 
 enum ANCreatureIds
 {
-    NPC_KRIKTHIR                    = 28684,
-    NPC_HADRONOX                    = 28921,
-    NPC_ANUBARAK                    = 29120,
+    NPC_KRIKTHIR = 28684,
+    NPC_HADRONOX = 28921,
+    NPC_ANUBARAK = 29120,
 
-    NPC_WATCHER_NARJIL              = 28729,
-    NPC_WATCHER_GASHRA              = 28730,
-    NPC_WATCHER_SILTHIK             = 28731
+    NPC_WATCHER_NARJIL = 28729,
+    NPC_WATCHER_GASHRA = 28730,
+    NPC_WATCHER_SILTHIK = 28731
 };
 
 // These are passed as -action to AI's DoAction to differentiate between them and boss scripts' own actions
 enum ANInstanceActions
 {
-    ACTION_GATEWATCHER_GREET        = 1
+    ACTION_GATEWATCHER_GREET = 1
 };
 
 enum ANGameObjectIds
 {
-    GO_KRIKTHIR_DOOR                = 192395,
-    GO_ANUBARAK_DOOR_1              = 192396,
-    GO_ANUBARAK_DOOR_2              = 192397,
-    GO_ANUBARAK_DOOR_3              = 192398
+    GO_KRIKTHIR_DOOR = 192395,
+    GO_ANUBARAK_DOOR_1 = 192396,
+    GO_ANUBARAK_DOOR_2 = 192397,
+    GO_ANUBARAK_DOOR_3 = 192398
 };
 
 template <class AI, class T>

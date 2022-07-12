@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -38,17 +38,17 @@ bool ItemTemplate::CanChangeEquipStateInCombat() const
 {
     switch (GetInventoryType())
     {
-        case INVTYPE_RELIC:
-        case INVTYPE_SHIELD:
-        case INVTYPE_HOLDABLE:
-            return true;
+    case INVTYPE_RELIC:
+    case INVTYPE_SHIELD:
+    case INVTYPE_HOLDABLE:
+        return true;
     }
 
     switch (GetClass())
     {
-        case ITEM_CLASS_WEAPON:
-        case ITEM_CLASS_PROJECTILE:
-            return true;
+    case ITEM_CLASS_WEAPON:
+    case ITEM_CLASS_PROJECTILE:
+        return true;
     }
 
     return false;
@@ -59,20 +59,20 @@ float ItemTemplate::GetItemLevelIncludingQuality() const
     float itemLevel(GetBaseItemLevel());
     switch (GetQuality())
     {
-        case ITEM_QUALITY_POOR:
-        case ITEM_QUALITY_NORMAL:
-        case ITEM_QUALITY_UNCOMMON:
-        case ITEM_QUALITY_ARTIFACT:
-        case ITEM_QUALITY_HEIRLOOM:
-            itemLevel -= 13.f; // leaving this as a separate statement since we do not know the real behavior in this case
-            break;
-        case ITEM_QUALITY_RARE:
-            itemLevel -= 13.f;
-            break;
-        case ITEM_QUALITY_EPIC:
-        case ITEM_QUALITY_LEGENDARY:
-        default:
-            break;
+    case ITEM_QUALITY_POOR:
+    case ITEM_QUALITY_NORMAL:
+    case ITEM_QUALITY_UNCOMMON:
+    case ITEM_QUALITY_ARTIFACT:
+    case ITEM_QUALITY_HEIRLOOM:
+        itemLevel -= 13.f; // leaving this as a separate statement since we do not know the real behavior in this case
+        break;
+    case ITEM_QUALITY_RARE:
+        itemLevel -= 13.f;
+        break;
+    case ITEM_QUALITY_EPIC:
+    case ITEM_QUALITY_LEGENDARY:
+    default:
+        break;
     }
 
     return std::max<float>(0.f, itemLevel);
@@ -96,20 +96,20 @@ uint32 ItemTemplate::GetSkill() const
 
     switch (GetClass())
     {
-        case ITEM_CLASS_WEAPON:
-            if (GetSubClass() >= MAX_ITEM_SUBCLASS_WEAPON)
-                return 0;
-            else
-                return itemWeaponSkills[GetSubClass()];
-
-        case ITEM_CLASS_ARMOR:
-            if (GetSubClass() >= MAX_ITEM_SUBCLASS_ARMOR)
-                return 0;
-            else
-                return itemArmorSkills[GetSubClass()];
-
-        default:
+    case ITEM_CLASS_WEAPON:
+        if (GetSubClass() >= MAX_ITEM_SUBCLASS_WEAPON)
             return 0;
+        else
+            return itemWeaponSkills[GetSubClass()];
+
+    case ITEM_CLASS_ARMOR:
+        if (GetSubClass() >= MAX_ITEM_SUBCLASS_ARMOR)
+            return 0;
+        else
+            return itemArmorSkills[GetSubClass()];
+
+    default:
+        return 0;
     }
 }
 
@@ -120,47 +120,47 @@ uint32 GetItemScalingModifier(uint32 maxIlvl, ItemQualities quality, InventoryTy
     switch (invType)
     {
         // Items of that type don`t have points
-        case INVTYPE_NON_EQUIP:
-        case INVTYPE_BAG:
-        case INVTYPE_TABARD:
-        case INVTYPE_AMMO:
-        case INVTYPE_QUIVER:
-        case INVTYPE_RELIC:
-            break;
-            // Select point coefficient
-        case INVTYPE_HEAD:
-        case INVTYPE_BODY:
-        case INVTYPE_CHEST:
-        case INVTYPE_LEGS:
-        case INVTYPE_2HWEAPON:
-        case INVTYPE_ROBE:
-            suffixFactor = 0;
-            break;
-        case INVTYPE_SHOULDERS:
-        case INVTYPE_WAIST:
-        case INVTYPE_FEET:
-        case INVTYPE_HANDS:
-        case INVTYPE_TRINKET:
-            suffixFactor = 1;
-            break;
-        case INVTYPE_NECK:
-        case INVTYPE_WRISTS:
-        case INVTYPE_FINGER:
-        case INVTYPE_SHIELD:
-        case INVTYPE_CLOAK:
-        case INVTYPE_HOLDABLE:
-            suffixFactor = 2;
-            break;
-        case INVTYPE_WEAPON:
-        case INVTYPE_WEAPONMAINHAND:
-        case INVTYPE_WEAPONOFFHAND:
-            suffixFactor = 3;
-            break;
-        case INVTYPE_RANGED:
-        case INVTYPE_THROWN:
-        case INVTYPE_RANGEDRIGHT:
-            suffixFactor = 4;
-            break;
+    case INVTYPE_NON_EQUIP:
+    case INVTYPE_BAG:
+    case INVTYPE_TABARD:
+    case INVTYPE_AMMO:
+    case INVTYPE_QUIVER:
+    case INVTYPE_RELIC:
+        break;
+        // Select point coefficient
+    case INVTYPE_HEAD:
+    case INVTYPE_BODY:
+    case INVTYPE_CHEST:
+    case INVTYPE_LEGS:
+    case INVTYPE_2HWEAPON:
+    case INVTYPE_ROBE:
+        suffixFactor = 0;
+        break;
+    case INVTYPE_SHOULDERS:
+    case INVTYPE_WAIST:
+    case INVTYPE_FEET:
+    case INVTYPE_HANDS:
+    case INVTYPE_TRINKET:
+        suffixFactor = 1;
+        break;
+    case INVTYPE_NECK:
+    case INVTYPE_WRISTS:
+    case INVTYPE_FINGER:
+    case INVTYPE_SHIELD:
+    case INVTYPE_CLOAK:
+    case INVTYPE_HOLDABLE:
+        suffixFactor = 2;
+        break;
+    case INVTYPE_WEAPON:
+    case INVTYPE_WEAPONMAINHAND:
+    case INVTYPE_WEAPONOFFHAND:
+        suffixFactor = 3;
+        break;
+    case INVTYPE_RANGED:
+    case INVTYPE_THROWN:
+    case INVTYPE_RANGEDRIGHT:
+        suffixFactor = 4;
+        break;
     }
 
     if (suffixFactor > 4)
@@ -172,15 +172,15 @@ uint32 GetItemScalingModifier(uint32 maxIlvl, ItemQualities quality, InventoryTy
 
     switch (quality)
     {
-        case ITEM_QUALITY_UNCOMMON:
-            return randPropEntry->UncommonPropertiesPoints[suffixFactor];
-        case ITEM_QUALITY_RARE:
-            return randPropEntry->RarePropertiesPoints[suffixFactor];
-        case ITEM_QUALITY_EPIC:
-        case ITEM_QUALITY_LEGENDARY:
-            return randPropEntry->EpicPropertiesPoints[suffixFactor];
-        default:
-            return 0;
+    case ITEM_QUALITY_UNCOMMON:
+        return randPropEntry->UncommonPropertiesPoints[suffixFactor];
+    case ITEM_QUALITY_RARE:
+        return randPropEntry->RarePropertiesPoints[suffixFactor];
+    case ITEM_QUALITY_EPIC:
+    case ITEM_QUALITY_LEGENDARY:
+        return randPropEntry->EpicPropertiesPoints[suffixFactor];
+    default:
+        return 0;
     }
 
     return 0;
@@ -293,45 +293,45 @@ bool ItemTemplate::GetWeaponDamage(Player const* owner, float& minValue, float& 
 
     switch (GetInventoryType())
     {
-        case INVTYPE_AMMO:
-            store = &sItemDamageAmmoStore;
+    case INVTYPE_AMMO:
+        store = &sItemDamageAmmoStore;
+        break;
+    case INVTYPE_2HWEAPON:
+        if (GetFlags2() & ITEM_FLAG2_CASTER_WEAPON)
+            store = &sItemDamageTwoHandCasterStore;
+        else
+            store = &sItemDamageTwoHandStore;
+        break;
+    case INVTYPE_RANGED:
+    case INVTYPE_THROWN:
+    case INVTYPE_RANGEDRIGHT:
+        switch (GetSubClass())
+        {
+        case ITEM_SUBCLASS_WEAPON_WAND:
+            store = &sItemDamageWandStore;
             break;
-        case INVTYPE_2HWEAPON:
-            if (GetFlags2() & ITEM_FLAG2_CASTER_WEAPON)
-                store = &sItemDamageTwoHandCasterStore;
-            else
-                store = &sItemDamageTwoHandStore;
+        case ITEM_SUBCLASS_WEAPON_THROWN:
+            store = &sItemDamageThrownStore;
             break;
-        case INVTYPE_RANGED:
-        case INVTYPE_THROWN:
-        case INVTYPE_RANGEDRIGHT:
-            switch (GetSubClass())
-            {
-                case ITEM_SUBCLASS_WEAPON_WAND:
-                    store = &sItemDamageWandStore;
-                    break;
-                case ITEM_SUBCLASS_WEAPON_THROWN:
-                    store = &sItemDamageThrownStore;
-                    break;
-                case ITEM_SUBCLASS_WEAPON_BOW:
-                case ITEM_SUBCLASS_WEAPON_GUN:
-                case ITEM_SUBCLASS_WEAPON_CROSSBOW:
-                    store = &sItemDamageRangedStore;
-                    break;
-                default:
-                    return false;
-            }
-            break;
-        case INVTYPE_WEAPON:
-        case INVTYPE_WEAPONMAINHAND:
-        case INVTYPE_WEAPONOFFHAND:
-            if (GetFlags2() & ITEM_FLAG2_CASTER_WEAPON)
-                store = &sItemDamageOneHandCasterStore;
-            else
-                store = &sItemDamageOneHandStore;
+        case ITEM_SUBCLASS_WEAPON_BOW:
+        case ITEM_SUBCLASS_WEAPON_GUN:
+        case ITEM_SUBCLASS_WEAPON_CROSSBOW:
+            store = &sItemDamageRangedStore;
             break;
         default:
             return false;
+        }
+        break;
+    case INVTYPE_WEAPON:
+    case INVTYPE_WEAPONMAINHAND:
+    case INVTYPE_WEAPONOFFHAND:
+        if (GetFlags2() & ITEM_FLAG2_CASTER_WEAPON)
+            store = &sItemDamageOneHandCasterStore;
+        else
+            store = &sItemDamageOneHandStore;
+        break;
+    default:
+        return false;
     }
 
     if (!store)

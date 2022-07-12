@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -108,505 +108,505 @@ ObjectData const objectData[] =
 
 class instance_naxxramas : public InstanceMapScript
 {
-    public:
-        instance_naxxramas() : InstanceMapScript("instance_naxxramas", 533) { }
+public:
+    instance_naxxramas() : InstanceMapScript("instance_naxxramas", 533) { }
 
-        struct instance_naxxramas_InstanceMapScript : public InstanceScript
+    struct instance_naxxramas_InstanceMapScript : public InstanceScript
+    {
+        instance_naxxramas_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
         {
-            instance_naxxramas_InstanceMapScript(InstanceMap* map) : InstanceScript(map)
+            SetHeaders(DataHeader);
+            SetBossNumber(EncounterCount);
+            LoadBossBoundaries(boundaries);
+            LoadDoorData(doorData);
+            LoadObjectData(nullptr, objectData);
+
+            hadSapphironBirth = false;
+            CurrentWingTaunt = SAY_KELTHUZAD_FIRST_WING_TAUNT;
+
+            playerDied = 0;
+        }
+
+        void OnCreatureCreate(Creature* creature) override
+        {
+            switch (creature->GetEntry())
             {
-                SetHeaders(DataHeader);
-                SetBossNumber(EncounterCount);
-                LoadBossBoundaries(boundaries);
-                LoadDoorData(doorData);
-                LoadObjectData(nullptr, objectData);
+            case NPC_ANUBREKHAN:
+                AnubRekhanGUID = creature->GetGUID();
+                break;
+            case NPC_FAERLINA:
+                FaerlinaGUID = creature->GetGUID();
+                break;
+            case NPC_RAZUVIOUS:
+                RazuviousGUID = creature->GetGUID();
+                break;
+            case NPC_GOTHIK:
+                GothikGUID = creature->GetGUID();
+                break;
+            case NPC_THANE:
+                ThaneGUID = creature->GetGUID();
+                break;
+            case NPC_LADY:
+                LadyGUID = creature->GetGUID();
+                break;
+            case NPC_BARON:
+                BaronGUID = creature->GetGUID();
+                break;
+            case NPC_SIR:
+                SirGUID = creature->GetGUID();
+                break;
+            case NPC_GLUTH:
+                GluthGUID = creature->GetGUID();
+                break;
+            case NPC_HEIGAN:
+                HeiganGUID = creature->GetGUID();
+                break;
+            case NPC_THADDIUS:
+                ThaddiusGUID = creature->GetGUID();
+                break;
+            case NPC_FEUGEN:
+                FeugenGUID = creature->GetGUID();
+                break;
+            case NPC_STALAGG:
+                StalaggGUID = creature->GetGUID();
+                break;
+            case NPC_SAPPHIRON:
+                SapphironGUID = creature->GetGUID();
+                break;
+            case NPC_KEL_THUZAD:
+                KelthuzadGUID = creature->GetGUID();
+                break;
+            case NPC_LICH_KING:
+                LichKingGUID = creature->GetGUID();
+                break;
+            default:
+                break;
+            }
+        }
 
-                hadSapphironBirth       = false;
-                CurrentWingTaunt        = SAY_KELTHUZAD_FIRST_WING_TAUNT;
-
-                playerDied              = 0;
+        void OnGameObjectCreate(GameObject* go) override
+        {
+            switch (go->GetEntry())
+            {
+            case GO_GOTHIK_GATE:
+                GothikGateGUID = go->GetGUID();
+                break;
+            case GO_HORSEMEN_CHEST:
+            case GO_HORSEMEN_CHEST_HERO:
+                HorsemenChestGUID = go->GetGUID();
+                break;
+            case GO_KELTHUZAD_PORTAL01:
+                PortalsGUID[0] = go->GetGUID();
+                break;
+            case GO_KELTHUZAD_PORTAL02:
+                PortalsGUID[1] = go->GetGUID();
+                break;
+            case GO_KELTHUZAD_PORTAL03:
+                PortalsGUID[2] = go->GetGUID();
+                break;
+            case GO_KELTHUZAD_PORTAL04:
+                PortalsGUID[3] = go->GetGUID();
+                break;
+            case GO_KELTHUZAD_TRIGGER:
+                KelthuzadTriggerGUID = go->GetGUID();
+                break;
+            case GO_ROOM_KELTHUZAD:
+                KelthuzadDoorGUID = go->GetGUID();
+                break;
+            case GO_NAXX_PORTAL_ARACHNID:
+                if (GetBossState(BOSS_MAEXXNA) == DONE)
+                    go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_NAXX_PORTAL_CONSTRUCT:
+                if (GetBossState(BOSS_THADDIUS) == DONE)
+                    go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_NAXX_PORTAL_PLAGUE:
+                if (GetBossState(BOSS_LOATHEB) == DONE)
+                    go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_NAXX_PORTAL_MILITARY:
+                if (GetBossState(BOSS_HORSEMEN) == DONE)
+                    go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_KELTHUZAD_THRONE:
+                if (GetBossState(BOSS_KELTHUZAD) == DONE)
+                    go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            case GO_BIRTH:
+                if (hadSapphironBirth || GetBossState(BOSS_SAPPHIRON) == DONE)
+                {
+                    hadSapphironBirth = true;
+                    go->Delete();
+                }
+                break;
+            default:
+                break;
             }
 
-            void OnCreatureCreate(Creature* creature) override
+            InstanceScript::OnGameObjectCreate(go);
+        }
+
+        void OnUnitDeath(Unit* unit) override
+        {
+            if (unit->GetTypeId() == TYPEID_PLAYER && IsEncounterInProgress())
             {
-                switch (creature->GetEntry())
-                {
-                    case NPC_ANUBREKHAN:
-                        AnubRekhanGUID = creature->GetGUID();
-                        break;
-                    case NPC_FAERLINA:
-                        FaerlinaGUID = creature->GetGUID();
-                        break;
-                    case NPC_RAZUVIOUS:
-                        RazuviousGUID = creature->GetGUID();
-                        break;
-                    case NPC_GOTHIK:
-                        GothikGUID = creature->GetGUID();
-                        break;
-                    case NPC_THANE:
-                        ThaneGUID = creature->GetGUID();
-                        break;
-                    case NPC_LADY:
-                        LadyGUID = creature->GetGUID();
-                        break;
-                    case NPC_BARON:
-                        BaronGUID = creature->GetGUID();
-                        break;
-                    case NPC_SIR:
-                        SirGUID = creature->GetGUID();
-                        break;
-                    case NPC_GLUTH:
-                        GluthGUID = creature->GetGUID();
-                        break;
-                    case NPC_HEIGAN:
-                        HeiganGUID = creature->GetGUID();
-                        break;
-                    case NPC_THADDIUS:
-                        ThaddiusGUID = creature->GetGUID();
-                        break;
-                    case NPC_FEUGEN:
-                        FeugenGUID = creature->GetGUID();
-                        break;
-                    case NPC_STALAGG:
-                        StalaggGUID = creature->GetGUID();
-                        break;
-                    case NPC_SAPPHIRON:
-                        SapphironGUID = creature->GetGUID();
-                        break;
-                    case NPC_KEL_THUZAD:
-                        KelthuzadGUID = creature->GetGUID();
-                        break;
-                    case NPC_LICH_KING:
-                        LichKingGUID = creature->GetGUID();
-                        break;
-                    default:
-                        break;
-                }
+                playerDied = 1;
+                SaveToDB();
             }
 
-            void OnGameObjectCreate(GameObject* go) override
-            {
-                switch (go->GetEntry())
+            if (Creature* creature = unit->ToCreature())
+                if (creature->GetEntry() == NPC_BIGGLESWORTH)
                 {
-                    case GO_GOTHIK_GATE:
-                        GothikGateGUID = go->GetGUID();
-                        break;
-                    case GO_HORSEMEN_CHEST:
-                    case GO_HORSEMEN_CHEST_HERO:
-                        HorsemenChestGUID = go->GetGUID();
-                        break;
-                    case GO_KELTHUZAD_PORTAL01:
-                        PortalsGUID[0] = go->GetGUID();
-                        break;
-                    case GO_KELTHUZAD_PORTAL02:
-                        PortalsGUID[1] = go->GetGUID();
-                        break;
-                    case GO_KELTHUZAD_PORTAL03:
-                        PortalsGUID[2] = go->GetGUID();
-                        break;
-                    case GO_KELTHUZAD_PORTAL04:
-                        PortalsGUID[3] = go->GetGUID();
-                        break;
-                    case GO_KELTHUZAD_TRIGGER:
-                        KelthuzadTriggerGUID = go->GetGUID();
-                        break;
-                    case GO_ROOM_KELTHUZAD:
-                        KelthuzadDoorGUID = go->GetGUID();
-                        break;
-                    case GO_NAXX_PORTAL_ARACHNID:
-                        if (GetBossState(BOSS_MAEXXNA) == DONE)
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    case GO_NAXX_PORTAL_CONSTRUCT:
-                        if (GetBossState(BOSS_THADDIUS) == DONE)
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    case GO_NAXX_PORTAL_PLAGUE:
-                        if (GetBossState(BOSS_LOATHEB) == DONE)
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    case GO_NAXX_PORTAL_MILITARY:
-                        if (GetBossState(BOSS_HORSEMEN) == DONE)
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    case GO_KELTHUZAD_THRONE:
-                        if (GetBossState(BOSS_KELTHUZAD) == DONE)
-                            go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    case GO_BIRTH:
-                        if (hadSapphironBirth || GetBossState(BOSS_SAPPHIRON) == DONE)
-                        {
-                            hadSapphironBirth = true;
-                            go->Delete();
-                        }
-                        break;
-                    default:
-                        break;
+                    // Loads Kel'Thuzad's grid. We need this as he must be active in order for his texts to work.
+                    instance->LoadGrid(3749.67f, -5114.06f);
+                    if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
+                        kelthuzad->AI()->Talk(SAY_KELTHUZAD_CAT_DIED);
                 }
+        }
 
-                InstanceScript::OnGameObjectCreate(go);
+        void SetData(uint32 id, uint32 value) override
+        {
+            switch (id)
+            {
+            case DATA_GOTHIK_GATE:
+                if (GameObject* gate = instance->GetGameObject(GothikGateGUID))
+                    gate->SetGoState(GOState(value));
+                break;
+            case DATA_HAD_SAPPHIRON_BIRTH:
+                hadSapphironBirth = (value == 1u);
+                break;
+            default:
+                break;
+            }
+        }
+
+        uint32 GetData(uint32 id) const override
+        {
+            switch (id)
+            {
+            case DATA_HAD_SAPPHIRON_BIRTH:
+                return hadSapphironBirth ? 1u : 0u;
+            default:
+                break;
             }
 
-            void OnUnitDeath(Unit* unit) override
-            {
-                if (unit->GetTypeId() == TYPEID_PLAYER && IsEncounterInProgress())
-                {
-                    playerDied = 1;
-                    SaveToDB();
-                }
+            return 0;
+        }
 
-                if (Creature* creature = unit->ToCreature())
-                    if (creature->GetEntry() == NPC_BIGGLESWORTH)
+        ObjectGuid GetGuidData(uint32 id) const override
+        {
+            switch (id)
+            {
+            case DATA_ANUBREKHAN:
+                return AnubRekhanGUID;
+            case DATA_FAERLINA:
+                return FaerlinaGUID;
+            case DATA_RAZUVIOUS:
+                return RazuviousGUID;
+            case DATA_GOTHIK:
+                return GothikGUID;
+            case DATA_THANE:
+                return ThaneGUID;
+            case DATA_LADY:
+                return LadyGUID;
+            case DATA_BARON:
+                return BaronGUID;
+            case DATA_SIR:
+                return SirGUID;
+            case DATA_HEIGAN:
+                return HeiganGUID;
+            case DATA_GLUTH:
+                return GluthGUID;
+            case DATA_FEUGEN:
+                return FeugenGUID;
+            case DATA_STALAGG:
+                return StalaggGUID;
+            case DATA_THADDIUS:
+                return ThaddiusGUID;
+            case DATA_SAPPHIRON:
+                return SapphironGUID;
+            case DATA_KELTHUZAD:
+                return KelthuzadGUID;
+            case DATA_KELTHUZAD_PORTAL01:
+                return PortalsGUID[0];
+            case DATA_KELTHUZAD_PORTAL02:
+                return PortalsGUID[1];
+            case DATA_KELTHUZAD_PORTAL03:
+                return PortalsGUID[2];
+            case DATA_KELTHUZAD_PORTAL04:
+                return PortalsGUID[3];
+            case DATA_KELTHUZAD_TRIGGER:
+                return KelthuzadTriggerGUID;
+            case DATA_LICH_KING:
+                return LichKingGUID;
+            }
+
+            return ObjectGuid::Empty;
+        }
+
+        bool SetBossState(uint32 id, EncounterState state) override
+        {
+            if (!InstanceScript::SetBossState(id, state))
+                return false;
+
+            switch (id)
+            {
+            case BOSS_MAEXXNA:
+                if (state == DONE)
+                {
+                    if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_ARACHNID))
+                        teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+
+                    events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
+                }
+                break;
+            case BOSS_LOATHEB:
+                if (state == DONE)
+                {
+                    if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_PLAGUE))
+                        teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+
+                    events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
+                }
+                break;
+            case BOSS_THADDIUS:
+                if (state == DONE)
+                {
+                    if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_CONSTRUCT))
+                        teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+
+                    events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
+                }
+                break;
+            case BOSS_GOTHIK:
+                if (state == DONE)
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_KORTHAZZ, Seconds(10));
+                break;
+            case BOSS_HORSEMEN:
+                if (state == DONE)
+                {
+                    if (GameObject* horsemenChest = instance->GetGameObject(HorsemenChestGUID))
                     {
-                        // Loads Kel'Thuzad's grid. We need this as he must be active in order for his texts to work.
-                        instance->LoadGrid(3749.67f, -5114.06f);
-                        if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
-                            kelthuzad->AI()->Talk(SAY_KELTHUZAD_CAT_DIED);
+                        horsemenChest->SetRespawnTime(horsemenChest->GetRespawnDelay());
+                        horsemenChest->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
                     }
+
+                    if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_MILITARY))
+                        teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+
+                    events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
+                }
+                break;
+            case BOSS_SAPPHIRON:
+                if (state == DONE)
+                    events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD, Seconds(6));
+                HandleGameObject(KelthuzadDoorGUID, false);
+                break;
+            case BOSS_KELTHUZAD:
+                if (state == DONE)
+                    if (GameObject* throne = GetGameObject(DATA_KELTHUZAD_THRONE))
+                        throne->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                break;
+            default:
+                break;
             }
 
-            void SetData(uint32 id, uint32 value) override
+            return true;
+        }
+
+        void Update(uint32 diff) override
+        {
+            events.Update(diff);
+
+            while (uint32 eventId = events.ExecuteEvent())
             {
-                switch (id)
+                switch (eventId)
                 {
-                    case DATA_GOTHIK_GATE:
-                        if (GameObject* gate = instance->GetGameObject(GothikGateGUID))
-                            gate->SetGoState(GOState(value));
-                        break;
-                    case DATA_HAD_SAPPHIRON_BIRTH:
-                        hadSapphironBirth = (value == 1u);
-                        break;
-                    default:
-                        break;
+                case EVENT_DIALOGUE_GOTHIK_KORTHAZZ:
+                    if (Creature* korthazz = instance->GetCreature(ThaneGUID))
+                        korthazz->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_ZELIEK, Seconds(5));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_ZELIEK:
+                    if (Creature* zeliek = instance->GetCreature(SirGUID))
+                        zeliek->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_BLAUMEUX, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_BLAUMEUX:
+                    if (Creature* blaumeux = instance->GetCreature(LadyGUID))
+                        blaumeux->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_RIVENDARE, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_RIVENDARE:
+                    if (Creature* rivendare = instance->GetCreature(BaronGUID))
+                        rivendare->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_BLAUMEUX2, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_BLAUMEUX2:
+                    if (Creature* blaumeux = instance->GetCreature(LadyGUID))
+                        blaumeux->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_ZELIEK2, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_ZELIEK2:
+                    if (Creature* zeliek = instance->GetCreature(SirGUID))
+                        zeliek->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_KORTHAZZ2, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_KORTHAZZ2:
+                    if (Creature* korthazz = instance->GetCreature(ThaneGUID))
+                        korthazz->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
+                    events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_RIVENDARE2, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_GOTHIK_RIVENDARE2:
+                    if (Creature* rivendare = instance->GetCreature(BaronGUID))
+                        rivendare->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
+                    break;
+                case EVENT_KELTHUZAD_WING_TAUNT:
+                    // Loads Kel'Thuzad's grid. We need this as he must be active in order for his texts to work.
+                    instance->LoadGrid(3749.67f, -5114.06f);
+                    if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
+                        kelthuzad->AI()->Talk(CurrentWingTaunt);
+                    ++CurrentWingTaunt;
+                    break;
+                case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD:
+                    if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
+                        kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD);
+                    events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_LICHKING, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_SAPPHIRON_LICHKING:
+                    if (Creature* lichKing = instance->GetCreature(LichKingGUID))
+                        lichKing->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_LICH_KING);
+                    events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD2, Seconds(16));
+                    break;
+                case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD2:
+                    if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
+                        kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD2);
+                    events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_LICHKING2, Seconds(9));
+                    break;
+                case EVENT_DIALOGUE_SAPPHIRON_LICHKING2:
+                    if (Creature* lichKing = instance->GetCreature(LichKingGUID))
+                        lichKing->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_LICH_KING2);
+                    events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD3, Seconds(12));
+                    break;
+                case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD3:
+                    if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
+                        kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD3);
+                    events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD4, Seconds(6));
+                    break;
+                case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD4:
+                    if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
+                        kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD4);
+                    HandleGameObject(KelthuzadDoorGUID, true);
+                    break;
+                default:
+                    break;
                 }
             }
+        }
 
-            uint32 GetData(uint32 id) const override
+        // This Function is called in CheckAchievementCriteriaMeet and CheckAchievementCriteriaMeet is called before SetBossState(bossId, DONE),
+        // so to check if all bosses are done the checker must exclude 1 boss, the last done, if there is at most 1 encouter in progress when is
+        // called this function then all bosses are done. The one boss that check is the boss that calls this function, so it is dead.
+        bool AreAllEncountersDone()
+        {
+            uint32 numBossAlive = 0;
+            for (uint32 i = 0; i < EncounterCount; ++i)
+                if (GetBossState(i) != DONE)
+                    numBossAlive++;
+
+            if (numBossAlive > 1)
+                return false;
+            return true;
+        }
+
+        bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target = nullptr*/, uint32 /*miscvalue1 = 0*/) override
+        {
+            switch (criteria_id)
             {
-                switch (id)
-                {
-                    case DATA_HAD_SAPPHIRON_BIRTH:
-                        return hadSapphironBirth ? 1u : 0u;
-                    default:
-                        break;
-                }
-
-                return 0;
-            }
-
-            ObjectGuid GetGuidData(uint32 id) const override
-            {
-                switch (id)
-                {
-                    case DATA_ANUBREKHAN:
-                        return AnubRekhanGUID;
-                    case DATA_FAERLINA:
-                        return FaerlinaGUID;
-                    case DATA_RAZUVIOUS:
-                        return RazuviousGUID;
-                    case DATA_GOTHIK:
-                        return GothikGUID;
-                    case DATA_THANE:
-                        return ThaneGUID;
-                    case DATA_LADY:
-                        return LadyGUID;
-                    case DATA_BARON:
-                        return BaronGUID;
-                    case DATA_SIR:
-                        return SirGUID;
-                    case DATA_HEIGAN:
-                        return HeiganGUID;
-                    case DATA_GLUTH:
-                        return GluthGUID;
-                    case DATA_FEUGEN:
-                        return FeugenGUID;
-                    case DATA_STALAGG:
-                        return StalaggGUID;
-                    case DATA_THADDIUS:
-                        return ThaddiusGUID;
-                    case DATA_SAPPHIRON:
-                        return SapphironGUID;
-                    case DATA_KELTHUZAD:
-                        return KelthuzadGUID;
-                    case DATA_KELTHUZAD_PORTAL01:
-                        return PortalsGUID[0];
-                    case DATA_KELTHUZAD_PORTAL02:
-                        return PortalsGUID[1];
-                    case DATA_KELTHUZAD_PORTAL03:
-                        return PortalsGUID[2];
-                    case DATA_KELTHUZAD_PORTAL04:
-                        return PortalsGUID[3];
-                    case DATA_KELTHUZAD_TRIGGER:
-                        return KelthuzadTriggerGUID;
-                    case DATA_LICH_KING:
-                        return LichKingGUID;
-                }
-
-                return ObjectGuid::Empty;
-            }
-
-            bool SetBossState(uint32 id, EncounterState state) override
-            {
-                if (!InstanceScript::SetBossState(id, state))
+                // And They Would All Go Down Together (kill 4HM within 15sec of each other)
+            case 7600: // 25-man
+            case 7601: // 10-man
+                if (criteria_id + instance->GetSpawnMode() == 7601)
                     return false;
-
-                switch (id)
-                {
-                    case BOSS_MAEXXNA:
-                        if (state == DONE)
-                        {
-                            if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_ARACHNID))
-                                teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-
-                            events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
-                        }
-                        break;
-                    case BOSS_LOATHEB:
-                        if (state == DONE)
-                        {
-                            if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_PLAGUE))
-                                teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-
-                            events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
-                        }
-                        break;
-                    case BOSS_THADDIUS:
-                        if (state == DONE)
-                        {
-                            if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_CONSTRUCT))
-                                teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-
-                            events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
-                        }
-                        break;
-                    case BOSS_GOTHIK:
-                        if (state == DONE)
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_KORTHAZZ, Seconds(10));
-                        break;
-                    case BOSS_HORSEMEN:
-                        if (state == DONE)
-                        {
-                            if (GameObject* horsemenChest = instance->GetGameObject(HorsemenChestGUID))
-                            {
-                                horsemenChest->SetRespawnTime(horsemenChest->GetRespawnDelay());
-                                horsemenChest->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                            }
-
-                            if (GameObject* teleporter = GetGameObject(DATA_NAXX_PORTAL_MILITARY))
-                                teleporter->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-
-                            events.ScheduleEvent(EVENT_KELTHUZAD_WING_TAUNT, Seconds(6));
-                        }
-                        break;
-                    case BOSS_SAPPHIRON:
-                        if (state == DONE)
-                            events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD, Seconds(6));
-                        HandleGameObject(KelthuzadDoorGUID, false);
-                        break;
-                    case BOSS_KELTHUZAD:
-                        if (state == DONE)
-                            if (GameObject* throne = GetGameObject(DATA_KELTHUZAD_THRONE))
-                                throne->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-
-            void Update(uint32 diff) override
-            {
-                events.Update(diff);
-
-                while (uint32 eventId = events.ExecuteEvent())
-                {
-                    switch (eventId)
-                    {
-                        case EVENT_DIALOGUE_GOTHIK_KORTHAZZ:
-                            if (Creature* korthazz = instance->GetCreature(ThaneGUID))
-                                korthazz->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_ZELIEK, Seconds(5));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_ZELIEK:
-                            if (Creature* zeliek = instance->GetCreature(SirGUID))
-                                zeliek->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_BLAUMEUX, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_BLAUMEUX:
-                            if (Creature* blaumeux = instance->GetCreature(LadyGUID))
-                                blaumeux->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_RIVENDARE, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_RIVENDARE:
-                            if (Creature* rivendare = instance->GetCreature(BaronGUID))
-                                rivendare->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_BLAUMEUX2, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_BLAUMEUX2:
-                            if (Creature* blaumeux = instance->GetCreature(LadyGUID))
-                                blaumeux->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_ZELIEK2, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_ZELIEK2:
-                            if (Creature* zeliek = instance->GetCreature(SirGUID))
-                                zeliek->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_KORTHAZZ2, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_KORTHAZZ2:
-                            if (Creature* korthazz = instance->GetCreature(ThaneGUID))
-                                korthazz->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
-                            events.ScheduleEvent(EVENT_DIALOGUE_GOTHIK_RIVENDARE2, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_GOTHIK_RIVENDARE2:
-                            if (Creature* rivendare = instance->GetCreature(BaronGUID))
-                                rivendare->AI()->Talk(SAY_DIALOGUE_GOTHIK_HORSEMAN2);
-                            break;
-                        case EVENT_KELTHUZAD_WING_TAUNT:
-                            // Loads Kel'Thuzad's grid. We need this as he must be active in order for his texts to work.
-                            instance->LoadGrid(3749.67f, -5114.06f);
-                            if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
-                                kelthuzad->AI()->Talk(CurrentWingTaunt);
-                            ++CurrentWingTaunt;
-                            break;
-                        case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD:
-                            if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
-                                kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD);
-                            events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_LICHKING, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_SAPPHIRON_LICHKING:
-                            if (Creature* lichKing = instance->GetCreature(LichKingGUID))
-                                lichKing->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_LICH_KING);
-                            events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD2, Seconds(16));
-                            break;
-                        case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD2:
-                            if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
-                                kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD2);
-                            events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_LICHKING2, Seconds(9));
-                            break;
-                        case EVENT_DIALOGUE_SAPPHIRON_LICHKING2:
-                            if (Creature* lichKing = instance->GetCreature(LichKingGUID))
-                                lichKing->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_LICH_KING2);
-                            events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD3, Seconds(12));
-                            break;
-                        case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD3:
-                            if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
-                                kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD3);
-                            events.ScheduleEvent(EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD4, Seconds(6));
-                            break;
-                        case EVENT_DIALOGUE_SAPPHIRON_KELTHUZAD4:
-                            if (Creature* kelthuzad = instance->GetCreature(KelthuzadGUID))
-                                kelthuzad->AI()->Talk(SAY_DIALOGUE_SAPPHIRON_KELTHUZAD4);
-                            HandleGameObject(KelthuzadDoorGUID, true);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            // This Function is called in CheckAchievementCriteriaMeet and CheckAchievementCriteriaMeet is called before SetBossState(bossId, DONE),
-            // so to check if all bosses are done the checker must exclude 1 boss, the last done, if there is at most 1 encouter in progress when is
-            // called this function then all bosses are done. The one boss that check is the boss that calls this function, so it is dead.
-            bool AreAllEncountersDone()
-            {
-                uint32 numBossAlive = 0;
-                for (uint32 i = 0; i < EncounterCount; ++i)
-                    if (GetBossState(i) != DONE)
-                        numBossAlive++;
-
-                if (numBossAlive > 1)
-                    return false;
-                return true;
-            }
-
-            bool CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target = nullptr*/, uint32 /*miscvalue1 = 0*/) override
-            {
-                switch (criteria_id)
-                {
-                    // And They Would All Go Down Together (kill 4HM within 15sec of each other)
-                    case 7600: // 25-man
-                    case 7601: // 10-man
-                        if (criteria_id + instance->GetSpawnMode() == 7601)
-                            return false;
-                        if (Creature* baron = instance->GetCreature(BaronGUID)) // it doesn't matter which one we use, really
-                            return (baron->AI()->GetData(DATA_HORSEMEN_CHECK_ACHIEVEMENT_CREDIT) == 1u);
-                        return false;
-                    // Difficulty checks are done on DB.
-                    // Criteria for achievement 2186: The Immortal (25-man)
-                    case 13233: // The Four Horsemen
-                    case 13234: // Maexxna
-                    case 13235: // Thaddius
-                    case 13236: // Loatheb
-                    case 7616:  // Kel'Thuzad
-                    // Criteria for achievement 2187: The Undying (10-man)
-                    case 13237: // The Four Horsemen
-                    case 13238: // Maexxna
-                    case 13239: // Loatheb
-                    case 13240: // Thaddius
-                    case 7617:  // Kel'Thuzad
-                        if (AreAllEncountersDone() && !playerDied)
-                            return true;
-                        return false;
-                }
-
+                if (Creature* baron = instance->GetCreature(BaronGUID)) // it doesn't matter which one we use, really
+                    return (baron->AI()->GetData(DATA_HORSEMEN_CHECK_ACHIEVEMENT_CREDIT) == 1u);
+                return false;
+                // Difficulty checks are done on DB.
+                // Criteria for achievement 2186: The Immortal (25-man)
+            case 13233: // The Four Horsemen
+            case 13234: // Maexxna
+            case 13235: // Thaddius
+            case 13236: // Loatheb
+            case 7616:  // Kel'Thuzad
+                // Criteria for achievement 2187: The Undying (10-man)
+            case 13237: // The Four Horsemen
+            case 13238: // Maexxna
+            case 13239: // Loatheb
+            case 13240: // Thaddius
+            case 7617:  // Kel'Thuzad
+                if (AreAllEncountersDone() && !playerDied)
+                    return true;
                 return false;
             }
 
-        protected:
-            /* The Arachnid Quarter */
-            // Anub'rekhan
-            ObjectGuid AnubRekhanGUID;
-            // Grand Widow Faerlina
-            ObjectGuid FaerlinaGUID;
-
-            /* The Plague Quarter */
-            // Heigan the Unclean
-            ObjectGuid HeiganGUID;
-
-            /* The Military Quarter */
-            // Instructor Razuvious
-            ObjectGuid RazuviousGUID;
-            // Gothik the Harvester
-            ObjectGuid GothikGUID;
-            ObjectGuid GothikGateGUID;
-            // The Four Horsemen
-            ObjectGuid ThaneGUID;
-            ObjectGuid LadyGUID;
-            ObjectGuid BaronGUID;
-            ObjectGuid SirGUID;
-            ObjectGuid HorsemenChestGUID;
-
-            /* The Construct Quarter */
-            // Gluth
-            ObjectGuid GluthGUID;
-            // Thaddius
-            ObjectGuid ThaddiusGUID;
-            ObjectGuid FeugenGUID;
-            ObjectGuid StalaggGUID;
-
-            /* Frostwyrm Lair */
-            // Sapphiron
-            ObjectGuid SapphironGUID;
-            // Kel'Thuzad
-            ObjectGuid KelthuzadGUID;
-            ObjectGuid KelthuzadTriggerGUID;
-            ObjectGuid PortalsGUID[4];
-            ObjectGuid KelthuzadDoorGUID;
-            ObjectGuid LichKingGUID;
-            bool hadSapphironBirth;
-            uint8 CurrentWingTaunt;
-
-            /* The Immortal / The Undying */
-            uint32 playerDied;
-
-            EventMap events;
-        };
-
-        InstanceScript* GetInstanceScript(InstanceMap* map) const override
-        {
-            return new instance_naxxramas_InstanceMapScript(map);
+            return false;
         }
+
+    protected:
+        /* The Arachnid Quarter */
+        // Anub'rekhan
+        ObjectGuid AnubRekhanGUID;
+        // Grand Widow Faerlina
+        ObjectGuid FaerlinaGUID;
+
+        /* The Plague Quarter */
+        // Heigan the Unclean
+        ObjectGuid HeiganGUID;
+
+        /* The Military Quarter */
+        // Instructor Razuvious
+        ObjectGuid RazuviousGUID;
+        // Gothik the Harvester
+        ObjectGuid GothikGUID;
+        ObjectGuid GothikGateGUID;
+        // The Four Horsemen
+        ObjectGuid ThaneGUID;
+        ObjectGuid LadyGUID;
+        ObjectGuid BaronGUID;
+        ObjectGuid SirGUID;
+        ObjectGuid HorsemenChestGUID;
+
+        /* The Construct Quarter */
+        // Gluth
+        ObjectGuid GluthGUID;
+        // Thaddius
+        ObjectGuid ThaddiusGUID;
+        ObjectGuid FeugenGUID;
+        ObjectGuid StalaggGUID;
+
+        /* Frostwyrm Lair */
+        // Sapphiron
+        ObjectGuid SapphironGUID;
+        // Kel'Thuzad
+        ObjectGuid KelthuzadGUID;
+        ObjectGuid KelthuzadTriggerGUID;
+        ObjectGuid PortalsGUID[4];
+        ObjectGuid KelthuzadDoorGUID;
+        ObjectGuid LichKingGUID;
+        bool hadSapphironBirth;
+        uint8 CurrentWingTaunt;
+
+        /* The Immortal / The Undying */
+        uint32 playerDied;
+
+        EventMap events;
+    };
+
+    InstanceScript* GetInstanceScript(InstanceMap* map) const override
+    {
+        return new instance_naxxramas_InstanceMapScript(map);
+    }
 };
 
 void AddSC_instance_naxxramas()

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,28 +23,28 @@
 #include "World.h"
 #include "WorldPacket.h"
 
-// initial packet data (notify type and channel name)
+ // initial packet data (notify type and channel name)
 template<class PacketModifier>
 class ChannelNameBuilder
 {
-    public:
-        ChannelNameBuilder(Channel const* source, PacketModifier const& modifier)
-            : _source(source), _modifier(modifier){ }
+public:
+    ChannelNameBuilder(Channel const* source, PacketModifier const& modifier)
+        : _source(source), _modifier(modifier) { }
 
-        void operator()(WorldPacket& data, LocaleConstant locale) const
-        {
-            // LocalizedPacketDo sends client DBC locale, we need to get available to server locale
-            LocaleConstant localeIdx = sWorld->GetAvailableDbcLocale(locale);
+    void operator()(WorldPacket& data, LocaleConstant locale) const
+    {
+        // LocalizedPacketDo sends client DBC locale, we need to get available to server locale
+        LocaleConstant localeIdx = sWorld->GetAvailableDbcLocale(locale);
 
-            data.Initialize(SMSG_CHANNEL_NOTIFY, 60); // guess size
-            data << uint8(_modifier.NotificationType);
-            data << _source->GetName(localeIdx);
-            _modifier.Append(data);
-        }
+        data.Initialize(SMSG_CHANNEL_NOTIFY, 60); // guess size
+        data << uint8(_modifier.NotificationType);
+        data << _source->GetName(localeIdx);
+        _modifier.Append(data);
+    }
 
-        private:
-            Channel const* _source;
-            PacketModifier _modifier;
+private:
+    Channel const* _source;
+    PacketModifier _modifier;
 };
 
 struct JoinedAppend

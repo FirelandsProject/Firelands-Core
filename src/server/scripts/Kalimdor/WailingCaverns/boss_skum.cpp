@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -59,12 +59,12 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_CHAINED_BOLT:
-                        DoCastVictim(SPELL_CHAINED_BOLT);
-                        events.Repeat(randtime(Seconds(3), Seconds(4)));
-                        break;
-                    default:
-                        break;
+                case EVENT_CHAINED_BOLT:
+                    DoCastVictim(SPELL_CHAINED_BOLT);
+                    events.Repeat(randtime(Seconds(3), Seconds(4)));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

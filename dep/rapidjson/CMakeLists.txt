@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -12,11 +12,11 @@ add_library(rapidjson INTERFACE)
 
 target_include_directories(rapidjson
   INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR})
+  ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(rapidjson
   INTERFACE
-    -DRAPIDJSON_HAS_STDSTRING
-    -DRAPIDJSON_SSE2
-    -DRAPIDJSON_48BITPOINTER_OPTIMIZATION=0
-    -DRAPIDJSON_ASSERT=WPAssert)
+  -DRAPIDJSON_HAS_STDSTRING
+  -DRAPIDJSON_SSE2
+  -DRAPIDJSON_48BITPOINTER_OPTIMIZATION=0
+  -DRAPIDJSON_ASSERT=WPAssert)

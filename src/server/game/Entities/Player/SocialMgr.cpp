@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,7 +24,7 @@
 #include "WorldPacket.h"
 #include "WorldSession.h"
 
-PlayerSocial::PlayerSocial(): _playerGUID()
+PlayerSocial::PlayerSocial() : _playerGUID()
 {
 }
 
@@ -51,9 +51,9 @@ bool PlayerSocial::AddToSocialList(ObjectGuid const& friendGuid, SocialFlag flag
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_SOCIAL_FLAGS);
 
-        stmt->setUInt8(0, itr->second.Flags);
-        stmt->setUInt32(1, GetPlayerGUID().GetCounter());
-        stmt->setUInt32(2, friendGuid.GetCounter());
+        stmt->SetData(0, itr->second.Flags);
+        stmt->SetData(1, GetPlayerGUID().GetCounter());
+        stmt->SetData(2, friendGuid.GetCounter());
 
         CharacterDatabase.Execute(stmt);
     }
@@ -63,9 +63,9 @@ bool PlayerSocial::AddToSocialList(ObjectGuid const& friendGuid, SocialFlag flag
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHARACTER_SOCIAL);
 
-        stmt->setUInt32(0, GetPlayerGUID().GetCounter());
-        stmt->setUInt32(1, friendGuid.GetCounter());
-        stmt->setUInt8(2, flag);
+        stmt->SetData(0, GetPlayerGUID().GetCounter());
+        stmt->SetData(1, friendGuid.GetCounter());
+        stmt->SetData(2, flag);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -85,8 +85,8 @@ void PlayerSocial::RemoveFromSocialList(ObjectGuid const& friendGuid, SocialFlag
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHARACTER_SOCIAL);
 
-        stmt->setUInt32(0, GetPlayerGUID().GetCounter());
-        stmt->setUInt32(1, friendGuid.GetCounter());
+        stmt->SetData(0, GetPlayerGUID().GetCounter());
+        stmt->SetData(1, friendGuid.GetCounter());
 
         CharacterDatabase.Execute(stmt);
 
@@ -96,9 +96,9 @@ void PlayerSocial::RemoveFromSocialList(ObjectGuid const& friendGuid, SocialFlag
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_SOCIAL_FLAGS);
 
-        stmt->setUInt8(0, itr->second.Flags);
-        stmt->setUInt32(1, GetPlayerGUID());
-        stmt->setUInt32(2, friendGuid);
+        stmt->SetData(0, itr->second.Flags);
+        stmt->SetData(1, GetPlayerGUID());
+        stmt->SetData(2, friendGuid);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -115,9 +115,9 @@ void PlayerSocial::SetFriendNote(ObjectGuid const& friendGuid, std::string const
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_SOCIAL_NOTE);
 
-    stmt->setString(0, itr->second.Note);
-    stmt->setUInt32(1, GetPlayerGUID().GetCounter());
-    stmt->setUInt32(2, friendGuid.GetCounter());
+    stmt->SetData(0, itr->second.Note);
+    stmt->SetData(1, GetPlayerGUID().GetCounter());
+    stmt->SetData(2, friendGuid.GetCounter());
 
     CharacterDatabase.Execute(stmt);
 }
@@ -249,25 +249,25 @@ void SocialMgr::SendFriendStatus(Player* player, FriendsResult result, ObjectGui
     data << friendGuid;
     switch (result)
     {
-        case FRIEND_ADDED_OFFLINE:
-        case FRIEND_ADDED_ONLINE:
-            data << fi.Note;
-            break;
-        default:
-            break;
+    case FRIEND_ADDED_OFFLINE:
+    case FRIEND_ADDED_ONLINE:
+        data << fi.Note;
+        break;
+    default:
+        break;
     }
 
     switch (result)
     {
-        case FRIEND_ADDED_ONLINE:
-        case FRIEND_ONLINE:
-            data << uint8(fi.Status);
-            data << uint32(fi.Area);
-            data << uint32(fi.Level);
-            data << uint32(fi.Class);
-            break;
-        default:
-            break;
+    case FRIEND_ADDED_ONLINE:
+    case FRIEND_ONLINE:
+        data << uint8(fi.Status);
+        data << uint32(fi.Area);
+        data << uint32(fi.Level);
+        data << uint32(fi.Class);
+        break;
+    default:
+        break;
     }
 
     if (broadcast)
@@ -318,8 +318,7 @@ PlayerSocial* SocialMgr::LoadFromDB(PreparedQueryResult result, ObjectGuid const
 
             uint8 flag = fields[1].GetUInt8();
             social->_playerSocialMap[friendGuid] = FriendInfo(flag, fields[2].GetString());
-        }
-        while (result->NextRow());
+        } while (result->NextRow());
     }
 
     return social;

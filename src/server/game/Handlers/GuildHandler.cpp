@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -885,8 +885,8 @@ void WorldSession::HandleGuildRenameRequest(WorldPacket& recvPacket)
     {
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GUILD_NAME);
 
-        stmt->setUInt32(1, pGuild->GetId());
-        stmt->setString(0, newName);
+        stmt->SetData(1, pGuild->GetId());
+        stmt->SetData(0, newName);
 
         _queryProcessor.AddCallback(CharacterDatabase.AsyncQuery(stmt).WithPreparedCallback(std::bind(&WorldSession::HandleGuildRenameCallback, this, newName, std::placeholders::_1)));
 

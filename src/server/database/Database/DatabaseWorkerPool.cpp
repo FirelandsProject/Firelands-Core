@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -54,8 +54,8 @@ DatabaseWorkerPool<T>::DatabaseWorkerPool()
     _async_threads(0), _synch_threads(0)
 {
     WPFatal(mysql_thread_safe(), "Used MySQL library isn't thread-safe.");
-    WPFatal(mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION, "FirelandsCore does not support MySQL versions below 5.1");
-    WPFatal(mysql_get_client_version() == MYSQL_VERSION_ID, "Used MySQL library version (%s id %lu) does not match the version id used to compile FirelandsCore (id %u).",
+    WPFatal(mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION, "Firelands Core does not support MySQL versions below 5.1");
+    WPFatal(mysql_get_client_version() == MYSQL_VERSION_ID, "Used MySQL library version (%s id %lu) does not match the version id used to compile Firelands Core (id %u).",
         mysql_get_client_info(), mysql_get_client_version(), MYSQL_VERSION_ID);
 }
 
@@ -382,7 +382,7 @@ uint32 DatabaseWorkerPool<T>::OpenConnections(InternalIndex type, uint8 numConne
         }
         else if (connection->GetServerVersion() < MIN_MYSQL_SERVER_VERSION)
         {
-            LOG_ERROR("sql.driver", "FirelandsCore does not support MySQL versions below 5.1");
+            LOG_ERROR("sql.driver", "Firelands Core does not support MySQL versions below 5.1");
             return 1;
         }
         else

@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -27,25 +27,25 @@ Category: Tanaris, ZulFarrak
 
 enum Says
 {
-    SAY_SANCT_INVADE    = 0,
-    SAY_WARD            = 1,
-    SAY_KILL            = 2
+    SAY_SANCT_INVADE = 0,
+    SAY_WARD = 1,
+    SAY_KILL = 2
 };
 
 enum Spells
 {
-    SPELL_SHADOW_BOLT               = 12739,
-    SPELL_SHADOWBOLT_VOLLEY         = 15245,
-    SPELL_WARD_OF_ZUM_RAH           = 11086,
-    SPELL_HEALING_WAVE              = 12491
+    SPELL_SHADOW_BOLT = 12739,
+    SPELL_SHADOWBOLT_VOLLEY = 15245,
+    SPELL_WARD_OF_ZUM_RAH = 11086,
+    SPELL_HEALING_WAVE = 12491
 };
 
 enum Events
 {
-    EVENT_SHADOW_BOLT           = 1,
-    EVENT_SHADOWBOLT_VOLLEY     = 2,
-    EVENT_WARD_OF_ZUM_RAH       = 3,
-    EVENT_HEALING_WAVE          = 4
+    EVENT_SHADOW_BOLT = 1,
+    EVENT_SHADOWBOLT_VOLLEY = 2,
+    EVENT_WARD_OF_ZUM_RAH = 3,
+    EVENT_HEALING_WAVE = 4
 };
 
 class boss_zum_rah : public CreatureScript
@@ -101,23 +101,23 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_SHADOW_BOLT:
-                        DoCastVictim(SPELL_SHADOW_BOLT);
-                        events.ScheduleEvent(EVENT_SHADOW_BOLT, 4000);
-                        break;
-                    case EVENT_WARD_OF_ZUM_RAH:
-                        DoCast(me,SPELL_WARD_OF_ZUM_RAH);
-                        break;
-                    case EVENT_HEALING_WAVE:
-                        DoCast(me,SPELL_HEALING_WAVE);
-                        break;
-                    case EVENT_SHADOWBOLT_VOLLEY:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-                            DoCast(target, SPELL_SHADOWBOLT_VOLLEY);
-                        events.ScheduleEvent(EVENT_SHADOWBOLT_VOLLEY, 9000);
-                        break;
-                    default:
-                        break;
+                case EVENT_SHADOW_BOLT:
+                    DoCastVictim(SPELL_SHADOW_BOLT);
+                    events.ScheduleEvent(EVENT_SHADOW_BOLT, 4000);
+                    break;
+                case EVENT_WARD_OF_ZUM_RAH:
+                    DoCast(me, SPELL_WARD_OF_ZUM_RAH);
+                    break;
+                case EVENT_HEALING_WAVE:
+                    DoCast(me, SPELL_HEALING_WAVE);
+                    break;
+                case EVENT_SHADOWBOLT_VOLLEY:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
+                        DoCast(target, SPELL_SHADOWBOLT_VOLLEY);
+                    events.ScheduleEvent(EVENT_SHADOWBOLT_VOLLEY, 9000);
+                    break;
+                default:
+                    break;
                 }
             }
 
@@ -144,10 +144,10 @@ public:
             DoMeleeAttackIfReady();
         }
 
-        private:
-            bool _ward80;
-            bool _ward40;
-            bool _heal30;
+    private:
+        bool _ward80;
+        bool _ward40;
+        bool _heal30;
 
     };
 

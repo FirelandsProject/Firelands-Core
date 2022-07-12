@@ -1,4 +1,4 @@
-# This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -11,38 +11,37 @@
 add_subdirectory(threads)
 
 if(SERVERS OR TOOLS)
-  add_subdirectory(boost)
-  add_subdirectory(zlib)
-  add_subdirectory(bzip2)
-  add_subdirectory(g3dlite)
-  add_subdirectory(recastnavigation)
-  add_subdirectory(jemalloc)
-  add_subdirectory(fmt)
-  add_subdirectory(SFMT)
-  add_subdirectory(utf8cpp)
-  add_subdirectory(valgrind)
-  add_subdirectory(openssl)
+    add_subdirectory(boost)
+    add_subdirectory(zlib)
+    add_subdirectory(bzip2)
+    add_subdirectory(g3dlite)
+    add_subdirectory(recastnavigation)
+    add_subdirectory(jemalloc)
+    add_subdirectory(fmt)
+    add_subdirectory(SFMT)
+    add_subdirectory(argon2)
+    add_subdirectory(utf8cpp)
+    add_subdirectory(valgrind)
+    add_subdirectory(openssl)
 endif()
 
 if(SERVERS)
-  add_subdirectory(mysql)
-  add_subdirectory(readline)
-  add_subdirectory(gsoap)
-  add_subdirectory(libzmq)
-  add_subdirectory(zmqpp)
-  add_subdirectory(rapidjson)
-  add_subdirectory(efsw)
+    add_subdirectory(mysql)
+    add_subdirectory(readline)
+    add_subdirectory(gsoap)
+    add_subdirectory(rapidjson)
+    add_subdirectory(efsw)
 endif()
 
 if(TOOLS)
-  add_subdirectory(StormLib)
+    add_subdirectory(StormLib)
 endif()
 
 if(BUILD_TESTING)
-  include(FetchContent)
-  FetchContent_Declare(Catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG        v2.13.0
-    GIT_SHALLOW    1)
-  FetchContent_MakeAvailable(Catch2)
+    include(FetchContent)
+    FetchContent_Declare(Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v2.13.0
+        GIT_SHALLOW 1)
+    FetchContent_MakeAvailable(Catch2)
 endif()

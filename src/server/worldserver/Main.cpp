@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,7 +24,6 @@
 #include "AsyncAcceptor.h"
 #include "Banner.h"
 #include "BattlegroundMgr.h"
-#include "BattlenetServerManager.h"
 #include "BigNumber.h"
 #include "CliRunnable.h"
 #include "Configuration/Config.h"
@@ -52,7 +51,6 @@
 #include "World.h"
 #include "WorldSocket.h"
 #include "WorldSocketMgr.h"
-#include "ZmqContext.h"
 #include <openssl/opensslv.h>
 #include <openssl/crypto.h>
 #include <boost/asio/signal_set.hpp>
@@ -76,8 +74,8 @@ namespace fs = boost::filesystem;
 #ifdef _WIN32
 #include "ServiceWin32.h"
 char serviceName[] = "worldserver";
-char serviceLongName[] = "FirelandsCore world service";
-char serviceDescription[] = "FirelandsCore World of Warcraft emulator world service";
+char serviceLongName[] = "Firelands Core world service";
+char serviceDescription[] = "Firelands Core World of Warcraft emulator world service";
 /*
  * -1 - not in service mode
  *  0 - stopped
@@ -390,8 +388,6 @@ extern int main(int argc, char** argv)
     sIpcContext->Initialize();
     LOG_INFO("server.worldserver", "%s (worldserver-daemon) ready...", GitRevision::GetFullVersion());
 
-    sBattlenetServer.InitializeConnection();
-
 
     sScriptMgr->OnStartup();
 
@@ -405,8 +401,6 @@ extern int main(int argc, char** argv)
     sScriptMgr->OnShutdown();
 
     sIpcContext->Close();
-
-    sBattlenetServer.CloseConnection();
 
     // set server offline
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = flag | %u WHERE id = '%d'", REALM_FLAG_OFFLINE, realm.Id.Realm);
@@ -518,7 +512,7 @@ void SignalHandler(boost::system::error_code const& error, int /*signalNumber*/)
 {
     if (!error)
         World::StopNow(SHUTDOWN_EXIT_CODE);
-}
+    }
 
 void FreezeDetector::Handler(std::weak_ptr<FreezeDetector> freezeDetectorRef, boost::system::error_code const& error)
 {
@@ -710,7 +704,7 @@ variables_map GetConsoleArguments(int argc, char** argv, fs::path& configFile, s
     {
         store(command_line_parser(argc, argv).options(all).allow_unregistered().run(), vm);
         notify(vm);
-    }
+}
     catch (std::exception& e) {
         std::cerr << e.what() << "\n";
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -329,7 +329,7 @@ public:
             targetGuid = target->GetGUID().GetCounter();
 
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_BANINFO);
-        stmt->setUInt32(0, targetGuid);
+        stmt->SetData(0, targetGuid);
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
         if (!result)
         {
@@ -406,7 +406,7 @@ public:
         else
         {
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_BANNED_BY_USERNAME);
-            stmt->setString(0, filter);
+            stmt->SetData(0, filter);
             result = LoginDatabase.Query(stmt);
         }
 
@@ -508,7 +508,7 @@ public:
 
         std::string filter(filterStr);
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUID_BY_NAME_FILTER);
-        stmt->setString(0, filter);
+        stmt->SetData(0, filter);
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
         if (!result)
         {
@@ -525,7 +525,7 @@ public:
             {
                 Field* fields = result->Fetch();
                 CharacterDatabasePreparedStatement* stmt2 = CharacterDatabase.GetPreparedStatement(CHAR_SEL_BANNED_NAME);
-                stmt2->setUInt32(0, fields[0].GetUInt32());
+                stmt2->SetData(0, fields[0].GetUInt32());
                 PreparedQueryResult banResult = CharacterDatabase.Query(stmt2);
                 if (banResult)
                     handler->PSendSysMessage("%s", (*banResult)[0].GetCString());
@@ -546,7 +546,7 @@ public:
                 std::string char_name = fields[1].GetString();
 
                 CharacterDatabasePreparedStatement* stmt2 = CharacterDatabase.GetPreparedStatement(CHAR_SEL_BANINFO_LIST);
-                stmt2->setUInt32(0, fields[0].GetUInt32());
+                stmt2->SetData(0, fields[0].GetUInt32());
                 PreparedQueryResult banInfo = CharacterDatabase.Query(stmt2);
                 if (banInfo)
                 {
@@ -601,7 +601,7 @@ public:
         else
         {
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_IP_BANNED_BY_IP);
-            stmt->setString(0, filter);
+            stmt->SetData(0, filter);
             result = LoginDatabase.Query(stmt);
         }
 

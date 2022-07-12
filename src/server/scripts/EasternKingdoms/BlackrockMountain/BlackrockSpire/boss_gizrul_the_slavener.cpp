@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,21 +23,21 @@
 
 enum Spells
 {
-    SPELL_FATAL_BITE                = 16495,
-    SPELL_INFECTED_BITE             = 16128,
-    SPELL_FRENZY                    = 8269
+    SPELL_FATAL_BITE = 16495,
+    SPELL_INFECTED_BITE = 16128,
+    SPELL_FRENZY = 8269
 };
 
 enum Paths
 {
-    GIZRUL_PATH                     = 402450
+    GIZRUL_PATH = 402450
 };
 
 enum Events
 {
-    EVENT_FATAL_BITE                = 1,
-    EVENT_INFECTED_BITE             = 2,
-    EVENT_FRENZY                    = 3
+    EVENT_FATAL_BITE = 1,
+    EVENT_INFECTED_BITE = 2,
+    EVENT_FRENZY = 3
 };
 
 class boss_gizrul_the_slavener : public CreatureScript
@@ -47,7 +47,7 @@ public:
 
     struct boss_gizrul_the_slavenerAI : public BossAI
     {
-       boss_gizrul_the_slavenerAI(Creature* creature) : BossAI(creature, DATA_GIZRUL_THE_SLAVENER) { }
+        boss_gizrul_the_slavenerAI(Creature* creature) : BossAI(creature, DATA_GIZRUL_THE_SLAVENER) { }
 
         void Reset() override
         {
@@ -62,8 +62,8 @@ public:
         void JustEngagedWith(Unit* who) override
         {
             BossAI::JustEngagedWith(who);
-            events.ScheduleEvent(EVENT_FATAL_BITE, urand(17000,20000));
-            events.ScheduleEvent(EVENT_INFECTED_BITE, urand(10000,12000));
+            events.ScheduleEvent(EVENT_FATAL_BITE, urand(17000, 20000));
+            events.ScheduleEvent(EVENT_INFECTED_BITE, urand(10000, 12000));
         }
 
         void JustDied(Unit* /*killer*/) override
@@ -85,16 +85,16 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_FATAL_BITE:
-                        DoCastVictim(SPELL_FATAL_BITE);
-                        events.ScheduleEvent(EVENT_FATAL_BITE, urand(8000,10000));
-                        break;
-                    case EVENT_INFECTED_BITE:
-                        DoCast(me, SPELL_INFECTED_BITE);
-                        events.ScheduleEvent(EVENT_FATAL_BITE, urand(8000,10000));
-                        break;
-                    default:
-                        break;
+                case EVENT_FATAL_BITE:
+                    DoCastVictim(SPELL_FATAL_BITE);
+                    events.ScheduleEvent(EVENT_FATAL_BITE, urand(8000, 10000));
+                    break;
+                case EVENT_INFECTED_BITE:
+                    DoCast(me, SPELL_INFECTED_BITE);
+                    events.ScheduleEvent(EVENT_FATAL_BITE, urand(8000, 10000));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

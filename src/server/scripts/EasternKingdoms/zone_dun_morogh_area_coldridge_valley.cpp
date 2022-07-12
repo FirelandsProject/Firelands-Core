@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -27,13 +27,13 @@
 
 enum WoundedColdridgeMountaineer
 {
-    NPC_JOREN_IRONSTOCK            = 37081,
-    SAY_THANK_PLAYER               = 0,
+    NPC_JOREN_IRONSTOCK = 37081,
+    SAY_THANK_PLAYER = 0,
     SPELL_HEAL_WOUNDED_MOUNTAINEER = 69855,
-    SPELL_LOW_HEALTH               = 76143,
-    EVENT_TURN_TO_PLAYER           = 1,
-    EVENT_THANK_PLAYER             = 2,
-    EVENT_MOVE_TO_SAFETY           = 3
+    SPELL_LOW_HEALTH = 76143,
+    EVENT_TURN_TO_PLAYER = 1,
+    EVENT_THANK_PLAYER = 2,
+    EVENT_MOVE_TO_SAFETY = 3
 };
 
 /*######
@@ -95,7 +95,7 @@ public:
                     break;
                 case EVENT_MOVE_TO_SAFETY:
                     if (Creature* joren = me->FindNearestCreature(NPC_JOREN_IRONSTOCK, 75.0f, true))
-                         me->GetMotionMaster()->MovePoint(0, joren->GetPosition(), true);
+                        me->GetMotionMaster()->MovePoint(0, joren->GetPosition(), true);
                     me->DespawnOrUnsummon(Seconds(5));
                     break;
                 default:
@@ -121,8 +121,8 @@ public:
 
 enum WoundedMilita
 {
-    QUEST_KILL_CREDIT  = 44175,
-    SPELL_FLASH_HEAL   = 2061,
+    QUEST_KILL_CREDIT = 44175,
+    SPELL_FLASH_HEAL = 2061,
     EVENT_RESET_HEALTH = 4
 };
 
@@ -173,12 +173,12 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_RESET_HEALTH:
-                        me->SetHealth(me->CountPctFromMaxHealth(_percentHP));
-                        _hitBySpell = false;
-                        break;
-                    default:
-                        break;
+                case EVENT_RESET_HEALTH:
+                    me->SetHealth(me->CountPctFromMaxHealth(_percentHP));
+                    _hitBySpell = false;
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -200,25 +200,25 @@ public:
 
 enum MilosGyro
 {
-    NPC_MILO                      = 37518,
+    NPC_MILO = 37518,
     SPELL_RIDE_VEHICLE_HARD_CODED = 46598,
-    SPELL_EJECT_ALL_PASSENGERS    = 50630,
-    SAY_MILO_FLIGHT_1             = 0,
-    SAY_MILO_FLIGHT_2             = 1,
-    SAY_MILO_FLIGHT_3             = 2,
-    SAY_MILO_FLIGHT_4             = 3,
-    SAY_MILO_FLIGHT_5             = 4,
-    SAY_MILO_FLIGHT_6             = 5,
-    SAY_MILO_FLIGHT_7             = 6,
-    EVENT_START_PATH              = 5,
-    EVENT_MILO_SAY_0              = 6,
-    EVENT_MILO_SAY_1              = 7,
-    EVENT_MILO_SAY_2              = 8,
-    EVENT_MILO_SAY_3              = 9,
-    EVENT_MILO_SAY_4              = 10,
-    EVENT_MILO_SAY_5              = 11,
-    EVENT_MILO_SAY_6              = 12,
-    EVENT_MILO_DESPAWN            = 13
+    SPELL_EJECT_ALL_PASSENGERS = 50630,
+    SAY_MILO_FLIGHT_1 = 0,
+    SAY_MILO_FLIGHT_2 = 1,
+    SAY_MILO_FLIGHT_3 = 2,
+    SAY_MILO_FLIGHT_4 = 3,
+    SAY_MILO_FLIGHT_5 = 4,
+    SAY_MILO_FLIGHT_6 = 5,
+    SAY_MILO_FLIGHT_7 = 6,
+    EVENT_START_PATH = 5,
+    EVENT_MILO_SAY_0 = 6,
+    EVENT_MILO_SAY_1 = 7,
+    EVENT_MILO_SAY_2 = 8,
+    EVENT_MILO_SAY_3 = 9,
+    EVENT_MILO_SAY_4 = 10,
+    EVENT_MILO_SAY_5 = 11,
+    EVENT_MILO_SAY_6 = 12,
+    EVENT_MILO_DESPAWN = 13
 };
 
 Position const kharanosPath[] =
@@ -300,52 +300,52 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_START_PATH:
-                        me->GetMotionMaster()->MoveSmoothPath(pathSize, kharanosPath, pathSize, false, true);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_0, Seconds(5));
-                        break;
-                    case EVENT_MILO_SAY_0:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_1, me);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_1, Seconds(6));
-                        break;
-                    case EVENT_MILO_SAY_1:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_2, me);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_2, Seconds(11));
-                        break;
-                    case EVENT_MILO_SAY_2:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_3, me);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_3, Seconds(11));
-                        break;
-                    case EVENT_MILO_SAY_3:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_4, me);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_4, Seconds(18));
-                        break;
-                    case EVENT_MILO_SAY_4:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_5, me);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_5, Seconds(11));
-                        break;
-                    case EVENT_MILO_SAY_5:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_6, me);
-                        _events.ScheduleEvent(EVENT_MILO_SAY_6, Seconds(14));
-                        break;
-                    case EVENT_MILO_SAY_6:
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->AI()->Talk(SAY_MILO_FLIGHT_7, me);
-                        break;
-                    case EVENT_MILO_DESPAWN:
-                        me->RemoveAllAuras();
-                        if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
-                            milo->DespawnOrUnsummon();
-                        _waitBeforePath = true;
-                        break;
-                    default:
-                        break;
+                case EVENT_START_PATH:
+                    me->GetMotionMaster()->MoveSmoothPath(pathSize, kharanosPath, pathSize, false, true);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_0, Seconds(5));
+                    break;
+                case EVENT_MILO_SAY_0:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_1, me);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_1, Seconds(6));
+                    break;
+                case EVENT_MILO_SAY_1:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_2, me);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_2, Seconds(11));
+                    break;
+                case EVENT_MILO_SAY_2:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_3, me);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_3, Seconds(11));
+                    break;
+                case EVENT_MILO_SAY_3:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_4, me);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_4, Seconds(18));
+                    break;
+                case EVENT_MILO_SAY_4:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_5, me);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_5, Seconds(11));
+                    break;
+                case EVENT_MILO_SAY_5:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_6, me);
+                    _events.ScheduleEvent(EVENT_MILO_SAY_6, Seconds(14));
+                    break;
+                case EVENT_MILO_SAY_6:
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->AI()->Talk(SAY_MILO_FLIGHT_7, me);
+                    break;
+                case EVENT_MILO_DESPAWN:
+                    me->RemoveAllAuras();
+                    if (Creature* milo = ObjectAccessor::GetCreature(*me, _miloGUID))
+                        milo->DespawnOrUnsummon();
+                    _waitBeforePath = true;
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -426,7 +426,7 @@ public:
 # 76143 - Low Health
 ######*/
 
-class spell_low_health: public SpellScriptLoader
+class spell_low_health : public SpellScriptLoader
 {
 public:
     spell_low_health() : SpellScriptLoader("spell_low_health") { }

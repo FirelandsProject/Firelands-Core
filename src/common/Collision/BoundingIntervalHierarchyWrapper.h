@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -34,7 +34,7 @@ class BIHWrap
         RayCallback& _callback;
         uint32 objects_size;
 
-        MDLCallback(RayCallback& callback, const T* const* objects_array, uint32 objects_size ) : objects(objects_array), _callback(callback), objects_size(objects_size) { }
+        MDLCallback(RayCallback& callback, const T* const* objects_array, uint32 objects_size) : objects(objects_array), _callback(callback), objects_size(objects_size) { }
 
         /// Intersect ray
         bool operator() (const G3D::Ray& ray, uint32 idx, float& maxDist, bool /*stopAtFirst*/)
@@ -77,7 +77,7 @@ public:
     {
         ++unbalanced_times;
         uint32 Idx = 0;
-        const T * temp;
+        const T* temp;
         if (m_obj2Idx.getRemove(&obj, temp, Idx))
             m_objects[Idx] = nullptr;
         else

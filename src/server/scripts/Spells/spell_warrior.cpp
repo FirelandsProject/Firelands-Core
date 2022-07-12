@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Scripts for spells with SPELLFAMILY_WARRIOR and SPELLFAMILY_GENERIC spells used by warrior players.
- * Ordered alphabetically using scriptname.
- * Scriptnames of files in this file should be prefixed with "spell_warr_".
- */
+ /*
+  * Scripts for spells with SPELLFAMILY_WARRIOR and SPELLFAMILY_GENERIC spells used by warrior players.
+  * Ordered alphabetically using scriptname.
+  * Scriptnames of files in this file should be prefixed with "spell_warr_".
+  */
 
 #include "ScriptMgr.h"
 #include "CellImpl.h"
@@ -35,53 +35,53 @@
 
 enum WarriorSpells
 {
-    SPELL_WARRIOR_BATTLE_TRANCE_TRIGGERED           = 12964,
-    SPELL_WARRIOR_BLADESTORM_PERIODIC_WHIRLWIND     = 50622,
-    SPELL_WARRIOR_BLOODTHIRST                       = 23885,
-    SPELL_WARRIOR_BLOODTHIRST_DAMAGE                = 23881,
-    SPELL_WARRIOR_BLOODSURGE_R1                     = 46913,
-    SPELL_WARRIOR_CHARGE_ENERGIZE                   = 34846,
-    SPELL_WARRIOR_CHARGE_STUN                       = 7922,
-    SPELL_WARRIOR_COLOSSUS_SMASH                    = 86346,
-    SPELL_WARRIOR_DEEP_WOUNDS_PERIODIC              = 12721,
-    SPELL_WARRIOR_EXECUTE                           = 20647,
-    SPELL_WARRIOR_GLYPH_OF_EXECUTION                = 58367,
-    SPELL_WARRIOR_INTERCEPT                         = 20252,
-    SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_BUFF        = 65156,
-    SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_TALENT      = 64976,
-    SPELL_WARRIOR_LAST_STAND_TRIGGERED              = 12976,
-    SPELL_WARRIOR_MORTAL_STRIKE                     = 12294,
-    SPELL_WARRIOR_OPPORTUNITY_STRIKE                = 76858,
-    SPELL_WARRIOR_RALLYING_CRY                      = 97463,
-    SPELL_WARRIOR_REND                              = 94009,
-    SPELL_WARRIOR_RETALIATION_DAMAGE                = 22858,
-    SPELL_WARRIOR_SECOND_WIND_PROC_RANK_1           = 29834,
-    SPELL_WARRIOR_SECOND_WIND_PROC_RANK_2           = 29838,
-    SPELL_WARRIOR_SECOND_WIND_TRIGGER_RANK_1        = 29841,
-    SPELL_WARRIOR_SECOND_WIND_TRIGGER_RANK_2        = 29842,
-    SPELL_WARRIOR_SHIELD_SLAM                       = 23922,
-    SPELL_WARRIOR_SLAM_MAIN_HAND                    = 50782,
-    SPELL_WARRIOR_SLAM_OFF_HAND                     = 97992,
-    SPELL_WARRIOR_SUDDEN_DEATH                      = 29723,
-    SPELL_WARRIOR_SUNDER_ARMOR                      = 58567,
-    SPELL_WARRIOR_SWEEPING_STRIKES_EXTRA_ATTACK_1   = 12723,
-    SPELL_WARRIOR_SWEEPING_STRIKES_EXTRA_ATTACK_2   = 26654,
-    SPELL_WARRIOR_TAUNT                             = 355,
-    SPELL_WARRIOR_UNRELENTING_ASSAULT_RANK_1        = 46859,
-    SPELL_WARRIOR_UNRELENTING_ASSAULT_RANK_2        = 46860,
-    SPELL_WARRIOR_UNRELENTING_ASSAULT_TRIGGER_1     = 64849,
-    SPELL_WARRIOR_UNRELENTING_ASSAULT_TRIGGER_2     = 64850,
-    SPELL_WARRIOR_VICTORIOUS                        = 32216,
-    SPELL_WARRIOR_VICTORIOUS_IMPENDING_VICTORY      = 82368,
-    SPELL_WARRIOR_VIGILANCE_PROC                    = 50725,
-    SPELL_WARRIOR_VENGEANCE                         = 76691
+    SPELL_WARRIOR_BATTLE_TRANCE_TRIGGERED = 12964,
+    SPELL_WARRIOR_BLADESTORM_PERIODIC_WHIRLWIND = 50622,
+    SPELL_WARRIOR_BLOODTHIRST = 23885,
+    SPELL_WARRIOR_BLOODTHIRST_DAMAGE = 23881,
+    SPELL_WARRIOR_BLOODSURGE_R1 = 46913,
+    SPELL_WARRIOR_CHARGE_ENERGIZE = 34846,
+    SPELL_WARRIOR_CHARGE_STUN = 7922,
+    SPELL_WARRIOR_COLOSSUS_SMASH = 86346,
+    SPELL_WARRIOR_DEEP_WOUNDS_PERIODIC = 12721,
+    SPELL_WARRIOR_EXECUTE = 20647,
+    SPELL_WARRIOR_GLYPH_OF_EXECUTION = 58367,
+    SPELL_WARRIOR_INTERCEPT = 20252,
+    SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_BUFF = 65156,
+    SPELL_WARRIOR_JUGGERNAUT_CRIT_BONUS_TALENT = 64976,
+    SPELL_WARRIOR_LAST_STAND_TRIGGERED = 12976,
+    SPELL_WARRIOR_MORTAL_STRIKE = 12294,
+    SPELL_WARRIOR_OPPORTUNITY_STRIKE = 76858,
+    SPELL_WARRIOR_RALLYING_CRY = 97463,
+    SPELL_WARRIOR_REND = 94009,
+    SPELL_WARRIOR_RETALIATION_DAMAGE = 22858,
+    SPELL_WARRIOR_SECOND_WIND_PROC_RANK_1 = 29834,
+    SPELL_WARRIOR_SECOND_WIND_PROC_RANK_2 = 29838,
+    SPELL_WARRIOR_SECOND_WIND_TRIGGER_RANK_1 = 29841,
+    SPELL_WARRIOR_SECOND_WIND_TRIGGER_RANK_2 = 29842,
+    SPELL_WARRIOR_SHIELD_SLAM = 23922,
+    SPELL_WARRIOR_SLAM_MAIN_HAND = 50782,
+    SPELL_WARRIOR_SLAM_OFF_HAND = 97992,
+    SPELL_WARRIOR_SUDDEN_DEATH = 29723,
+    SPELL_WARRIOR_SUNDER_ARMOR = 58567,
+    SPELL_WARRIOR_SWEEPING_STRIKES_EXTRA_ATTACK_1 = 12723,
+    SPELL_WARRIOR_SWEEPING_STRIKES_EXTRA_ATTACK_2 = 26654,
+    SPELL_WARRIOR_TAUNT = 355,
+    SPELL_WARRIOR_UNRELENTING_ASSAULT_RANK_1 = 46859,
+    SPELL_WARRIOR_UNRELENTING_ASSAULT_RANK_2 = 46860,
+    SPELL_WARRIOR_UNRELENTING_ASSAULT_TRIGGER_1 = 64849,
+    SPELL_WARRIOR_UNRELENTING_ASSAULT_TRIGGER_2 = 64850,
+    SPELL_WARRIOR_VICTORIOUS = 32216,
+    SPELL_WARRIOR_VICTORIOUS_IMPENDING_VICTORY = 82368,
+    SPELL_WARRIOR_VIGILANCE_PROC = 50725,
+    SPELL_WARRIOR_VENGEANCE = 76691
 };
 
 enum WarriorSpellIcons
 {
-    WARRIOR_ICON_ID_GLYPH_OF_COLOSSUS_SMASH         = 5288,
-    WARRIOR_ICON_ID_BLOOD_AND_THUNDER               = 5057,
-    WARRIOR_ICON_ID_SINGLE_MINDED_FURY              = 4975
+    WARRIOR_ICON_ID_GLYPH_OF_COLOSSUS_SMASH = 5288,
+    WARRIOR_ICON_ID_BLOOD_AND_THUNDER = 5057,
+    WARRIOR_ICON_ID_SINGLE_MINDED_FURY = 4975
 };
 
 /// Updated 4.3.4
@@ -686,7 +686,8 @@ private:
 
 // -46951 - Sword and Board
 class spell_warr_sword_and_board : public AuraScript
-{private:
+{
+private:
     bool Validate(SpellInfo const* /*spellInfo*/) override
     {
         return ValidateSpellInfo({ SPELL_WARRIOR_SHIELD_SLAM });
@@ -1072,7 +1073,7 @@ class spell_warr_enraged_regeneration : public SpellScript
     }
 };
 
-class spell_warr_enraged_regeneration_AuraScript: public AuraScript
+class spell_warr_enraged_regeneration_AuraScript : public AuraScript
 {
     void HandleApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {

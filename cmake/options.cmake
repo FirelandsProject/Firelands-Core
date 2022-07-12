@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2018 FirelandsCore <https://github.com/FirelandsProject>
+# Copyright (C) 2008-2018 Firelands Core <https://github.com/FirelandsProject>
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -8,7 +8,7 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-option(SERVERS "Build worldserver and bnetserver" 1)
+option(SERVERS "Build worldserver and authserver" 1)
 
 set(SCRIPTS_AVAILABLE_OPTIONS none static dynamic minimal-static minimal-dynamic)
 set(MODULES_AVAILABLE_OPTIONS disabled static dynamic)

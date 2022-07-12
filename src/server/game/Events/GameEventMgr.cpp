@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -203,11 +203,11 @@ void GameEventMgr::StopEvent(uint16 event_id, bool overwrite)
 
             CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ALL_GAME_EVENT_CONDITION_SAVE);
-            stmt->setUInt8(0, uint8(event_id));
+            stmt->SetData(0, uint8(event_id));
             trans->Append(stmt);
 
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GAME_EVENT_SAVE);
-            stmt->setUInt8(0, uint8(event_id));
+            stmt->SetData(0, uint8(event_id));
             trans->Append(stmt);
 
             CharacterDatabase.CommitTransaction(trans);
@@ -1620,14 +1620,14 @@ void GameEventMgr::HandleQuestComplete(uint32 quest_id)
                 CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
                 CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GAME_EVENT_CONDITION_SAVE);
-                stmt->setUInt8(0, uint8(event_id));
-                stmt->setUInt32(1, condition);
+                stmt->SetData(0, uint8(event_id));
+                stmt->SetData(1, condition);
                 trans->Append(stmt);
 
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GAME_EVENT_CONDITION_SAVE);
-                stmt->setUInt8(0, uint8(event_id));
-                stmt->setUInt32(1, condition);
-                stmt->setFloat(2, citr->second.done);
+                stmt->SetData(0, uint8(event_id));
+                stmt->SetData(1, condition);
+                stmt->SetData(2, citr->second.done);
                 trans->Append(stmt);
                 CharacterDatabase.CommitTransaction(trans);
                 // check if all conditions are met, if so, update the event state
@@ -1665,13 +1665,13 @@ void GameEventMgr::SaveWorldEventStateToDB(uint16 event_id)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GAME_EVENT_SAVE);
-    stmt->setUInt8(0, uint8(event_id));
+    stmt->SetData(0, uint8(event_id));
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GAME_EVENT_SAVE);
-    stmt->setUInt8(0, uint8(event_id));
-    stmt->setUInt8(1, mGameEvent[event_id].state);
-    stmt->setUInt32(2, mGameEvent[event_id].nextstart ? uint32(mGameEvent[event_id].nextstart) : 0);
+    stmt->SetData(0, uint8(event_id));
+    stmt->SetData(1, mGameEvent[event_id].state);
+    stmt->SetData(2, mGameEvent[event_id].nextstart ? uint32(mGameEvent[event_id].nextstart) : 0);
     trans->Append(stmt);
     CharacterDatabase.CommitTransaction(trans);
 }

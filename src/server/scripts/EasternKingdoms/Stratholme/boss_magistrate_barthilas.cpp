@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Boss_Magistrate_Barthilas
-SD%Complete: 70
-SDComment:
-SDCategory: Stratholme
-EndScriptData */
+ /* ScriptData
+ SDName: Boss_Magistrate_Barthilas
+ SD%Complete: 70
+ SDComment:
+ SDCategory: Stratholme
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
@@ -28,16 +28,16 @@ EndScriptData */
 
 enum Spells
 {
-    SPELL_DRAININGBLOW      = 16793,
-    SPELL_CROWDPUMMEL       = 10887,
-    SPELL_MIGHTYBLOW        = 14099,
-    SPELL_FURIOUS_ANGER     = 16791
+    SPELL_DRAININGBLOW = 16793,
+    SPELL_CROWDPUMMEL = 10887,
+    SPELL_MIGHTYBLOW = 14099,
+    SPELL_FURIOUS_ANGER = 16791
 };
 
 enum Models
 {
-    MODEL_NORMAL            = 10433,
-    MODEL_HUMAN             = 3637
+    MODEL_NORMAL = 10433,
+    MODEL_HUMAN = 3637
 };
 
 class boss_magistrate_barthilas : public CreatureScript
@@ -113,28 +113,32 @@ public:
 
                 ++AngerCount;
                 DoCast(me, SPELL_FURIOUS_ANGER, false);
-            } else FuriousAnger_Timer -= diff;
+            }
+            else FuriousAnger_Timer -= diff;
 
             //DrainingBlow
             if (DrainingBlow_Timer <= diff)
             {
                 DoCastVictim(SPELL_DRAININGBLOW);
                 DrainingBlow_Timer = 15000;
-            } else DrainingBlow_Timer -= diff;
+            }
+            else DrainingBlow_Timer -= diff;
 
             //CrowdPummel
             if (CrowdPummel_Timer <= diff)
             {
                 DoCastVictim(SPELL_CROWDPUMMEL);
                 CrowdPummel_Timer = 15000;
-            } else CrowdPummel_Timer -= diff;
+            }
+            else CrowdPummel_Timer -= diff;
 
             //MightyBlow
             if (MightyBlow_Timer <= diff)
             {
                 DoCastVictim(SPELL_MIGHTYBLOW);
                 MightyBlow_Timer = 20000;
-            } else MightyBlow_Timer -= diff;
+            }
+            else MightyBlow_Timer -= diff;
 
             DoMeleeAttackIfReady();
         }

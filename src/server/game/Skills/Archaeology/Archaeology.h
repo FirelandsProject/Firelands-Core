@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -35,63 +35,63 @@ struct ArchData
 
 enum ContinentState
 {
-    STATE_NULL          = 0,
-    STATE_USE           = 1,
-    STATE_EXT           = 2,
+    STATE_NULL = 0,
+    STATE_USE = 1,
+    STATE_EXT = 2,
 };
 
 class Archaeology
 {
-    public:
-        explicit Archaeology(Player* player);
+public:
+    explicit Archaeology(Player* player);
 
-        void Initialize();
+    void Initialize();
 
-        void Learn();
-        void UnLearn();
-        void Update();
+    void Learn();
+    void UnLearn();
+    void Update();
 
-        void UseSite();
+    void UseSite();
 
-        void SendResearchHistory();
+    void SendResearchHistory();
 
-        void ActivateBranch(uint8 branchId, bool force = false);
-        bool ProjectCompleteable(uint16 projectId);
-        bool ProjectExists(uint16 projectId);
+    void ActivateBranch(uint8 branchId, bool force = false);
+    bool ProjectCompleteable(uint16 projectId);
+    bool ProjectExists(uint16 projectId);
 
-        void CompleteProject(uint16 projectId);
-        void SetArchData(ArchData const& data);
+    void CompleteProject(uint16 projectId);
+    void SetArchData(ArchData const& data);
 
-    private:
-        Player* _player;
-        std::unique_ptr<ArchData> _archData;
+private:
+    Player* _player;
+    std::unique_ptr<ArchData> _archData;
 
-        // Site Functionality
-        ContinentState _continentState[CONTINENT_SITES];
-        SiteData _site[CONTINENT_SITES * COUNT_CONT];
+    // Site Functionality
+    ContinentState _continentState[CONTINENT_SITES];
+    SiteData _site[CONTINENT_SITES * COUNT_CONT];
 
-        void LoadSitesFromDB();
-        void VerifySites();
+    void LoadSitesFromDB();
+    void VerifySites();
 
-        Continent GetContinent();
-        uint32 GetNearestSite(float &distance);
-        void SetSite(uint32 posi, uint16 entry, uint32 state = 0);
-        void RegeneratePosition(uint32 position, Continent continent);
-        void RegenerateContinent(Continent continent);
-        void RegenerateAllSites();
+    Continent GetContinent();
+    uint32 GetNearestSite(float& distance);
+    void SetSite(uint32 posi, uint16 entry, uint32 state = 0);
+    void RegeneratePosition(uint32 position, Continent continent);
+    void RegenerateContinent(Continent continent);
+    void RegenerateAllSites();
 
-        // Project Functionality
-        std::map<uint16, std::pair<int32, int32>> _completedProjects;
-        std::map<uint8, BranchData> _branches;
+    // Project Functionality
+    std::map<uint16, std::pair<int32, int32>> _completedProjects;
+    std::map<uint8, BranchData> _branches;
 
-        void LoadCompletedProjectsFromDB();
-        void LoadCurrentProjectsFromDB();
-        void InitBranches();
-        void VerifyProjects();
-        void CleanProjects();
+    void LoadCompletedProjectsFromDB();
+    void LoadCurrentProjectsFromDB();
+    void InitBranches();
+    void VerifyProjects();
+    void CleanProjects();
 
-        void RegenerateBranch(uint8 branch);
-        void VisualizeBranch(uint8 position, uint16 project);
+    void RegenerateBranch(uint8 branch);
+    void VisualizeBranch(uint8 position, uint16 project);
 };
 
 #endif

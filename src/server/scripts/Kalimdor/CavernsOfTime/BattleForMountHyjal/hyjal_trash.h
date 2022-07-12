@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -29,20 +29,20 @@ struct hyjal_trashAI : public EscortAI
 
     void JustDied(Unit* /*killer*/) override;
 
-    void DamageTaken(Unit* done_by, uint32 &damage) override;
+    void DamageTaken(Unit* done_by, uint32& damage) override;
 
-    public:
-        InstanceScript* instance;
-        bool IsEvent;
-        uint32 Delay;
-        uint32 LastOverronPos;
-        bool IsOverrun;
-        bool SetupOverrun;
-        uint32 OverrunType;
-        uint8 faction;
-        bool useFlyPath;
-        uint32 damageTaken;
-        float DummyTarget[3];
+public:
+    InstanceScript* instance;
+    bool IsEvent;
+    uint32 Delay;
+    uint32 LastOverronPos;
+    bool IsOverrun;
+    bool SetupOverrun;
+    uint32 OverrunType;
+    uint8 faction;
+    bool useFlyPath;
+    uint32 damageTaken;
+    float DummyTarget[3];
 
     //private:
 };

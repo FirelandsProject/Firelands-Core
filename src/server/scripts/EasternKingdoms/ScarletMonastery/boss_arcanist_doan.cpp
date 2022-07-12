@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,17 +21,17 @@
 
 enum Yells
 {
-    SAY_AGGRO       = 0,
-    SAY_DETONATION  = 1
+    SAY_AGGRO = 0,
+    SAY_DETONATION = 1
 };
 
 enum Spells
 {
-    SPELL_DETONATION        = 9435,
-    SPELL_SILENCE           = 8988,
-    SPELL_ARCANE_EXPLOSION  = 9433,
-    SPELL_ARCANE_BUBBLE     = 9438,
-    SPELL_POLYMORPH         = 13323
+    SPELL_DETONATION = 9435,
+    SPELL_SILENCE = 8988,
+    SPELL_ARCANE_EXPLOSION = 9433,
+    SPELL_ARCANE_BUBBLE = 9438,
+    SPELL_POLYMORPH = 13323
 };
 
 enum Events
@@ -85,31 +85,31 @@ struct boss_arcanist_doan : public BossAI
         {
             switch (eventId)
             {
-                case EVENT_DETONATION:
-                    Talk(SAY_DETONATION);
-                    DoCastAOE(SPELL_DETONATION);
-                    events.DelayEvents(3s);
-                    break;
-                case EVENT_SILENCE:
-                    DoCastAOE(SPELL_SILENCE);
-                    events.Repeat(21s, 24s);
-                    break;
-                case EVENT_ARCANE_EXPLOSION:
-                    DoCastAOE(SPELL_ARCANE_EXPLOSION);
-                    events.Repeat(4s, 14s);
-                    break;
-                case EVENT_ARCANE_BUBBLE:
-                    DoCastSelf(SPELL_ARCANE_BUBBLE);
-                    me->resetAttackTimer();
-                    events.ScheduleEvent(EVENT_DETONATION, 1s);
-                    break;
-                case EVENT_POLYMORPH:
-                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, true))
-                        DoCast(target, SPELL_POLYMORPH);
-                    events.Repeat(20s); // To-do: validate
-                    break;
-                default:
-                    break;
+            case EVENT_DETONATION:
+                Talk(SAY_DETONATION);
+                DoCastAOE(SPELL_DETONATION);
+                events.DelayEvents(3s);
+                break;
+            case EVENT_SILENCE:
+                DoCastAOE(SPELL_SILENCE);
+                events.Repeat(21s, 24s);
+                break;
+            case EVENT_ARCANE_EXPLOSION:
+                DoCastAOE(SPELL_ARCANE_EXPLOSION);
+                events.Repeat(4s, 14s);
+                break;
+            case EVENT_ARCANE_BUBBLE:
+                DoCastSelf(SPELL_ARCANE_BUBBLE);
+                me->resetAttackTimer();
+                events.ScheduleEvent(EVENT_DETONATION, 1s);
+                break;
+            case EVENT_POLYMORPH:
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 30.f, true))
+                    DoCast(target, SPELL_POLYMORPH);
+                events.Repeat(20s); // To-do: validate
+                break;
+            default:
+                break;
             }
         }
 

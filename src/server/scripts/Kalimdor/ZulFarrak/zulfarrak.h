@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,16 +25,16 @@
 
 enum ZFEntries
 {
-    ENTRY_ZUM_RAH       = 7271,
-    ENTRY_BLY           = 7604,
-    ENTRY_RAVEN         = 7605,
-    ENTRY_ORO           = 7606,
-    ENTRY_WEEGLI        = 7607,
-    ENTRY_MURTA         = 7608,
+    ENTRY_ZUM_RAH = 7271,
+    ENTRY_BLY = 7604,
+    ENTRY_RAVEN = 7605,
+    ENTRY_ORO = 7606,
+    ENTRY_WEEGLI = 7607,
+    ENTRY_MURTA = 7608,
 
-    GO_END_DOOR         = 146084,
+    GO_END_DOOR = 146084,
 
-    EVENT_PYRAMID       = 1,
+    EVENT_PYRAMID = 1,
     EVENT_GAHZRILLA
 };
 

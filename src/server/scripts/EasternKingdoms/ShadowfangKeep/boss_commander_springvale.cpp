@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -31,37 +31,37 @@
 enum Spells
 {
     // Commander Springvale
-    SPELL_MALEFIC_STRIKE                    = 93685,
-    SPELL_UNHOLY_POWER                      = 93686,
-    SPELL_UNHOLY_POWER_HC                   = 93735,
-    SPELL_SHIELD_OF_THE_PERFIDIOUS_DUMMY    = 93716,
-    SPELL_SHIELD_OF_THE_PERFIDIOUS          = 93693,
-    SPELL_DESECRATION_DUMMY                 = 93688,
-    SPELL_DESECRATION                       = 93687,
-    SPELL_DESECRATION_ARM_AURA              = 67803,
-    SPELL_WORD_OF_SHAME                     = 93852,
+    SPELL_MALEFIC_STRIKE = 93685,
+    SPELL_UNHOLY_POWER = 93686,
+    SPELL_UNHOLY_POWER_HC = 93735,
+    SPELL_SHIELD_OF_THE_PERFIDIOUS_DUMMY = 93716,
+    SPELL_SHIELD_OF_THE_PERFIDIOUS = 93693,
+    SPELL_DESECRATION_DUMMY = 93688,
+    SPELL_DESECRATION = 93687,
+    SPELL_DESECRATION_ARM_AURA = 67803,
+    SPELL_WORD_OF_SHAME = 93852,
 
     // Wailing Guardsman
-    SPELL_UNHOLY_EMPOWERMENT                = 93844,
-    SPELL_SCREAMS_OF_THE_PAST               = 7074,
-    SPELL_MORTAL_STRIKE                     = 91801,
+    SPELL_UNHOLY_EMPOWERMENT = 93844,
+    SPELL_SCREAMS_OF_THE_PAST = 7074,
+    SPELL_MORTAL_STRIKE = 91801,
 
     //Tormented Officer
-    SPELL_FORSAKEN_ABILITY                  = 7054,
-    SPELL_FORSAKEN_ABILITY_DAMAGE           = 7038,
-    SPELL_FORSAKEN_ABILITY_ARMOR            = 7039,
-    SPELL_FORSAKEN_ABILITY_HEAL             = 7041,
-    SPELL_FORSAKEN_ABILITY_SPEED            = 7042,
-    SPELL_FORSAKEN_ABILITY_HEALTH           = 7040,
-    SPELL_SHIELD_WALL                       = 91463
+    SPELL_FORSAKEN_ABILITY = 7054,
+    SPELL_FORSAKEN_ABILITY_DAMAGE = 7038,
+    SPELL_FORSAKEN_ABILITY_ARMOR = 7039,
+    SPELL_FORSAKEN_ABILITY_HEAL = 7041,
+    SPELL_FORSAKEN_ABILITY_SPEED = 7042,
+    SPELL_FORSAKEN_ABILITY_HEALTH = 7040,
+    SPELL_SHIELD_WALL = 91463
 };
 
 enum Texts
 {
-    SAY_AGGRO   = 0,
-    SAY_ADDS    = 1,
-    SAY_SLAY    = 2,
-    SAY_DEATH   = 3
+    SAY_AGGRO = 0,
+    SAY_ADDS = 1,
+    SAY_SLAY = 2,
+    SAY_DEATH = 3
 };
 
 enum Events
@@ -88,8 +88,8 @@ enum Actions
 };
 
 // Heroic additional adds
-Position const OfficerPos = {-229.681f, 2260.03f, 102.84f, 3.45575f};
-Position const GuardsmanPos = {-228.33f, 2254.39f, 102.84f, 3.36848f};
+Position const OfficerPos = { -229.681f, 2260.03f, 102.84f, 3.45575f };
+Position const GuardsmanPos = { -228.33f, 2254.39f, 102.84f, 3.36848f };
 
 // Encounter spawn positions
 Position const SpawnPos[] =
@@ -163,18 +163,18 @@ public:
             summons.Summon(summon);
             switch (summon->GetEntry())
             {
-                case NPC_TORMENTED_OFFICER:
-                case NPC_WAILING_GUARDSMAN:
-                    if (me->IsInCombat())
-                        summon->GetMotionMaster()->MovePoint(0, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), true);
-                    break;
-                case NPC_SHIELD_FOCUS:
-                    me->StopMoving();
-                    me->SetFacingToObject(summon);
-                    DoCast(summon, SPELL_SHIELD_OF_THE_PERFIDIOUS);
-                    break;
-                default:
-                    break;
+            case NPC_TORMENTED_OFFICER:
+            case NPC_WAILING_GUARDSMAN:
+                if (me->IsInCombat())
+                    summon->GetMotionMaster()->MovePoint(0, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), true);
+                break;
+            case NPC_SHIELD_FOCUS:
+                me->StopMoving();
+                me->SetFacingToObject(summon);
+                DoCast(summon, SPELL_SHIELD_OF_THE_PERFIDIOUS);
+                break;
+            default:
+                break;
             }
         }
 
@@ -182,26 +182,26 @@ public:
         {
             switch (action)
             {
-                case ACTION_UNHOLY_POWER:
-                    if (IsHeroic())
+            case ACTION_UNHOLY_POWER:
+                if (IsHeroic())
+                {
+                    switch (urand(0, 1))
                     {
-                        switch (urand(0, 1))
-                        {
-                            case 0:
-                                events.ScheduleEvent(EVENT_SHIELD_OF_THE_PERFIDIOUS, Seconds(1));
-                                break;
-                            case 1:
-                                events.ScheduleEvent(EVENT_WORD_OF_SHAME, Seconds(1));
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    else
+                    case 0:
                         events.ScheduleEvent(EVENT_SHIELD_OF_THE_PERFIDIOUS, Seconds(1));
-                    break;
-                default:
-                    break;
+                        break;
+                    case 1:
+                        events.ScheduleEvent(EVENT_WORD_OF_SHAME, Seconds(1));
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                else
+                    events.ScheduleEvent(EVENT_SHIELD_OF_THE_PERFIDIOUS, Seconds(1));
+                break;
+            default:
+                break;
             }
         }
 
@@ -215,48 +215,48 @@ public:
             if (me->HasUnitState(UNIT_STATE_CASTING))
                 return;
 
-            while(uint32 eventId = events.ExecuteEvent())
+            while (uint32 eventId = events.ExecuteEvent())
             {
                 switch (eventId)
                 {
-                    case EVENT_MALEFIC_STRIKE:
-                        if (!me->HasAura(SPELL_SHIELD_OF_THE_PERFIDIOUS))
-                            DoCastVictim(SPELL_MALEFIC_STRIKE);
-                        events.Repeat(Seconds(5), Seconds(6));
-                        break;
-                    case EVENT_SHIELD_OF_THE_PERFIDIOUS:
-                        me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER);
-                        me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER_HC);
-                        DoCast(SPELL_SHIELD_OF_THE_PERFIDIOUS_DUMMY);
-                        break;
-                    case EVENT_DESECRATION:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
-                            DoCast(target, SPELL_DESECRATION);
-                        events.Repeat(Seconds(28));
-                        break;
-                    case EVENT_SUMMON_ADDS:
-                        Talk(SAY_ADDS);
-                        DoSummon(NPC_WAILING_GUARDSMAN, SpawnPos[0], 4000, TEMPSUMMON_CORPSE_TIMED_DESPAWN);
-                        DoSummon(NPC_TORMENTED_OFFICER, SpawnPos[1], 4000, TEMPSUMMON_CORPSE_TIMED_DESPAWN);
-                        events.Repeat(Seconds(41));
-                        break;
-                    case EVENT_WORD_OF_SHAME:
-                        me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER);
-                        me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER_HC);
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true, true, -SPELL_WORD_OF_SHAME))
-                            DoCast(target, SPELL_WORD_OF_SHAME, true);
-                        else
-                            events.ScheduleEvent(EVENT_SHIELD_OF_THE_PERFIDIOUS, Milliseconds(1));
-                        break;
-                    default:
-                        break;
+                case EVENT_MALEFIC_STRIKE:
+                    if (!me->HasAura(SPELL_SHIELD_OF_THE_PERFIDIOUS))
+                        DoCastVictim(SPELL_MALEFIC_STRIKE);
+                    events.Repeat(Seconds(5), Seconds(6));
+                    break;
+                case EVENT_SHIELD_OF_THE_PERFIDIOUS:
+                    me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER);
+                    me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER_HC);
+                    DoCast(SPELL_SHIELD_OF_THE_PERFIDIOUS_DUMMY);
+                    break;
+                case EVENT_DESECRATION:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true))
+                        DoCast(target, SPELL_DESECRATION);
+                    events.Repeat(Seconds(28));
+                    break;
+                case EVENT_SUMMON_ADDS:
+                    Talk(SAY_ADDS);
+                    DoSummon(NPC_WAILING_GUARDSMAN, SpawnPos[0], 4000, TEMPSUMMON_CORPSE_TIMED_DESPAWN);
+                    DoSummon(NPC_TORMENTED_OFFICER, SpawnPos[1], 4000, TEMPSUMMON_CORPSE_TIMED_DESPAWN);
+                    events.Repeat(Seconds(41));
+                    break;
+                case EVENT_WORD_OF_SHAME:
+                    me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER);
+                    me->RemoveAurasDueToSpell(SPELL_UNHOLY_POWER_HC);
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100.0f, true, true, -SPELL_WORD_OF_SHAME))
+                        DoCast(target, SPELL_WORD_OF_SHAME, true);
+                    else
+                        events.ScheduleEvent(EVENT_SHIELD_OF_THE_PERFIDIOUS, Milliseconds(1));
+                    break;
+                default:
+                    break;
                 }
             }
             DoMeleeAttackIfReady();
         }
     };
 
-    CreatureAI* GetAI(Creature *creature) const override
+    CreatureAI* GetAI(Creature* creature) const override
     {
         return GetShadowfangKeepAI<boss_commander_springvaleAI>(creature);
     }
@@ -265,7 +265,7 @@ public:
 class npc_wailing_guardsman : public CreatureScript
 {
 public:
-    npc_wailing_guardsman() :  CreatureScript("npc_wailing_guardsman") { }
+    npc_wailing_guardsman() : CreatureScript("npc_wailing_guardsman") { }
 
     struct npc_wailing_guardsmanAI : public ScriptedAI
     {
@@ -288,19 +288,19 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_MORTAL_STRIKE:
-                        DoCastVictim(SPELL_MORTAL_STRIKE);
-                        _events.Repeat(Seconds(12));
-                        break;
-                    case EVENT_SCREAMS_OF_THE_PAST:
-                        DoCastAOE(SPELL_SCREAMS_OF_THE_PAST);
-                        break;
-                    case EVENT_UNHOLY_EMPOWERMENT:
-                        if (Creature* springvale = _instance->GetCreature(DATA_COMMANDER_SPRINGVALE))
-                            DoCast(springvale, SPELL_UNHOLY_EMPOWERMENT);
-                        break;
-                    default:
-                        break;
+                case EVENT_MORTAL_STRIKE:
+                    DoCastVictim(SPELL_MORTAL_STRIKE);
+                    _events.Repeat(Seconds(12));
+                    break;
+                case EVENT_SCREAMS_OF_THE_PAST:
+                    DoCastAOE(SPELL_SCREAMS_OF_THE_PAST);
+                    break;
+                case EVENT_UNHOLY_EMPOWERMENT:
+                    if (Creature* springvale = _instance->GetCreature(DATA_COMMANDER_SPRINGVALE))
+                        DoCast(springvale, SPELL_UNHOLY_EMPOWERMENT);
+                    break;
+                default:
+                    break;
                 }
             }
             DoMeleeAttackIfReady();
@@ -319,7 +319,7 @@ public:
 class npc_tormented_officer : public CreatureScript
 {
 public:
-    npc_tormented_officer() :  CreatureScript("npc_tormented_officer") { }
+    npc_tormented_officer() : CreatureScript("npc_tormented_officer") { }
 
     struct npc_tormented_officerAI : public ScriptedAI
     {
@@ -351,24 +351,24 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_FORSAKEN_ABILITY:
-                        if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f, true))
-                            DoCast(target, SPELL_FORSAKEN_ABILITY);
-                        break;
-                    case EVENT_UNHOLY_EMPOWERMENT:
-                        if (Creature* springvale = _instance->GetCreature(DATA_COMMANDER_SPRINGVALE))
-                            DoCast(springvale, SPELL_UNHOLY_EMPOWERMENT);
-                        break;
-                    default:
-                        break;
+                case EVENT_FORSAKEN_ABILITY:
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f, true))
+                        DoCast(target, SPELL_FORSAKEN_ABILITY);
+                    break;
+                case EVENT_UNHOLY_EMPOWERMENT:
+                    if (Creature* springvale = _instance->GetCreature(DATA_COMMANDER_SPRINGVALE))
+                        DoCast(springvale, SPELL_UNHOLY_EMPOWERMENT);
+                    break;
+                default:
+                    break;
                 }
             }
             DoMeleeAttackIfReady();
         }
-        private:
-            InstanceScript* _instance;
-            EventMap _events;
-            bool _shielded;
+    private:
+        InstanceScript* _instance;
+        EventMap _events;
+        bool _shielded;
     };
 
     CreatureAI* GetAI(Creature* creature) const override
@@ -379,14 +379,14 @@ public:
 
 class spell_sfk_forsaken_ability : public SpellScriptLoader
 {
-    public:
-        spell_sfk_forsaken_ability() : SpellScriptLoader("spell_sfk_forsaken_ability") { }
+public:
+    spell_sfk_forsaken_ability() : SpellScriptLoader("spell_sfk_forsaken_ability") { }
 
-        class spell_sfk_forsaken_ability_AuraScript : public AuraScript
+    class spell_sfk_forsaken_ability_AuraScript : public AuraScript
+    {
+        bool Validate(SpellInfo const* /*spellInfo*/) override
         {
-            bool Validate(SpellInfo const* /*spellInfo*/) override
-            {
-                return ValidateSpellInfo(
+            return ValidateSpellInfo(
                 {
                     SPELL_FORSAKEN_ABILITY_DAMAGE,
                     SPELL_FORSAKEN_ABILITY_ARMOR,
@@ -394,43 +394,43 @@ class spell_sfk_forsaken_ability : public SpellScriptLoader
                     SPELL_FORSAKEN_ABILITY_HEAL,
                     SPELL_FORSAKEN_ABILITY_HEALTH
                 });
-            }
+        }
 
-            void OnPeriodic(AuraEffect const* /*aurEff*/)
+        void OnPeriodic(AuraEffect const* /*aurEff*/)
+        {
+            if (Unit* owner = GetOwner()->ToUnit())
             {
-                if (Unit* owner = GetOwner()->ToUnit())
+                switch (RAND(0, 4))
                 {
-                    switch (RAND(0, 4))
-                    {
-                        case 0: // Damage
-                            owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_DAMAGE, true);
-                            break;
-                        case 1: // Armor
-                            owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_ARMOR, true);
-                            break;
-                        case 2: // Speed
-                            owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_SPEED, true);
-                            break;
-                        case 3: // Heal
-                            owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_HEAL, true);
-                            break;
-                        case 4: // Health
-                            owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_HEALTH, true);
-                            break;
-                    }
+                case 0: // Damage
+                    owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_DAMAGE, true);
+                    break;
+                case 1: // Armor
+                    owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_ARMOR, true);
+                    break;
+                case 2: // Speed
+                    owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_SPEED, true);
+                    break;
+                case 3: // Heal
+                    owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_HEAL, true);
+                    break;
+                case 4: // Health
+                    owner->CastSpell(owner, SPELL_FORSAKEN_ABILITY_HEALTH, true);
+                    break;
                 }
             }
-
-            void Register() override
-            {
-                OnEffectPeriodic.Register(&spell_sfk_forsaken_ability_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
-            }
-        };
-
-        AuraScript* GetAuraScript() const override
-        {
-            return new spell_sfk_forsaken_ability_AuraScript();
         }
+
+        void Register() override
+        {
+            OnEffectPeriodic.Register(&spell_sfk_forsaken_ability_AuraScript::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_DUMMY);
+        }
+    };
+
+    AuraScript* GetAuraScript() const override
+    {
+        return new spell_sfk_forsaken_ability_AuraScript();
+    }
 };
 
 class spell_sfk_unholy_power : public SpellScriptLoader
@@ -443,10 +443,10 @@ public:
         bool Validate(SpellInfo const* /*spellInfo*/) override
         {
             return ValidateSpellInfo(
-            {
-                SPELL_UNHOLY_POWER_HC,
-                SPELL_UNHOLY_POWER
-            });
+                {
+                    SPELL_UNHOLY_POWER_HC,
+                    SPELL_UNHOLY_POWER
+                });
         }
 
         void HandleStacks()
@@ -467,7 +467,7 @@ public:
 
         void Register() override
         {
-            
+
             AfterHit.Register(&spell_sfk_unholy_power_SpellScript::HandleStacks);
         }
     };
@@ -488,10 +488,10 @@ public:
         bool Validate(SpellInfo const* /*spellInfo*/) override
         {
             return ValidateSpellInfo(
-            {
-                SPELL_UNHOLY_POWER_HC,
-                SPELL_UNHOLY_POWER
-            });
+                {
+                    SPELL_UNHOLY_POWER_HC,
+                    SPELL_UNHOLY_POWER
+                });
 
             return true;
         }

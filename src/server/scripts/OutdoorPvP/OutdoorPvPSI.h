@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -45,33 +45,33 @@ enum SI_WorldStates
 
 class OutdoorPvPSI : public OutdoorPvP
 {
-    public:
-        OutdoorPvPSI();
+public:
+    OutdoorPvPSI();
 
-        bool SetupOutdoorPvP() override;
+    bool SetupOutdoorPvP() override;
 
-        void HandlePlayerEnterZone(Player* player, uint32 zone) override;
-        void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
+    void HandlePlayerEnterZone(Player* player, uint32 zone) override;
+    void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-        void SendRemoveWorldStates(Player* player) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        bool HandleAreaTrigger(Player* player, uint32 trigger) override;
+    bool HandleAreaTrigger(Player* player, uint32 trigger) override;
 
-        bool HandleDropFlag(Player* player, uint32 spellId) override;
+    bool HandleDropFlag(Player* player, uint32 spellId) override;
 
-        bool HandleCustomSpell(Player* player, uint32 spellId, GameObject* go) override;
+    bool HandleCustomSpell(Player* player, uint32 spellId, GameObject* go) override;
 
-        void UpdateWorldState();
+    void UpdateWorldState();
 
-    private:
-        uint32 m_Gathered_A;
-        uint32 m_Gathered_H;
+private:
+    uint32 m_Gathered_A;
+    uint32 m_Gathered_H;
 
-        uint32 m_LastController;
+    uint32 m_LastController;
 };
 
 #endif

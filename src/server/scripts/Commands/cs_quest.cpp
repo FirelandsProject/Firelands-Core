@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-Name: quest_commandscript
-%Complete: 100
-Comment: All quest related commands
-Category: commandscripts
-EndScriptData */
+ /* ScriptData
+ Name: quest_commandscript
+ %Complete: 100
+ Comment: All quest related commands
+ Category: commandscripts
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "Chat.h"
@@ -84,9 +84,9 @@ public:
         // check item starting quest (it can work incorrectly if added without item in inventory)
         ItemTemplateContainer const* itc = sObjectMgr->GetItemTemplateStore();
         ItemTemplateContainer::const_iterator result = std::find_if(itc->begin(), itc->end(), [quest](ItemTemplateContainer::value_type const& value)
-        {
-            return value.second.GetStartQuest() == quest->GetQuestId();
-        });
+            {
+                return value.second.GetStartQuest() == quest->GetQuestId();
+            });
 
         if (result != itc->end())
         {
@@ -205,11 +205,11 @@ public:
             uint32 curItemCount = player->GetItemCount(id, true);
 
             ItemPosCountVec dest;
-            uint8 msg = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, id, count-curItemCount);
+            uint8 msg = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, id, count - curItemCount);
             if (msg == EQUIP_ERR_OK)
             {
                 Item* item = player->StoreNewItem(dest, id, true, GenerateItemRandomPropertyId(id));
-                player->SendNewItem(item, count-curItemCount, true, false);
+                player->SendNewItem(item, count - curItemCount, true, false);
             }
         }
 
@@ -264,8 +264,8 @@ public:
         {
             // prepare Quest Tracker datas
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_QUEST_TRACK_GM_COMPLETE);
-            stmt->setUInt32(0, quest->GetQuestId());
-            stmt->setUInt32(1, player->GetGUID().GetCounter());
+            stmt->SetData(0, quest->GetQuestId());
+            stmt->SetData(1, player->GetGUID().GetCounter());
 
             // add to Quest Tracker
             CharacterDatabase.Execute(stmt);

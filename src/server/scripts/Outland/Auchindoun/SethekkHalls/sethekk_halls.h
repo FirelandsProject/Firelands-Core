@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -23,29 +23,29 @@
 #define SHScriptName "instance_sethekk_halls"
 #define DataHeader "SH"
 
-uint32 const EncounterCount             = 3;
+uint32 const EncounterCount = 3;
 
 enum SHDataTypes
 {
     // Encounter States/Boss GUIDs
-    DATA_DARKWEAVER_SYTH                = 0,
-    DATA_TALON_KING_IKISS               = 1,
-    DATA_ANZU                           = 2,
+    DATA_DARKWEAVER_SYTH = 0,
+    DATA_TALON_KING_IKISS = 1,
+    DATA_ANZU = 2,
 
     // Additional Data
-    DATA_TALON_KING_COFFER              = 3
+    DATA_TALON_KING_COFFER = 3
 };
 
 enum SHCreatureIds
 {
-    NPC_ANZU                            = 23035,
-    NPC_BROOD_OF_ANZU                   = 23132
+    NPC_ANZU = 23035,
+    NPC_BROOD_OF_ANZU = 23132
 };
 
 enum SHGameObjectIds
 {
-    GO_IKISS_DOOR                       = 177203,
-    GO_TALON_KING_COFFER                = 187372
+    GO_IKISS_DOOR = 177203,
+    GO_TALON_KING_COFFER = 187372
 };
 
 template <class AI, class T>

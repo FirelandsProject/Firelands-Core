@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Instance_Wailing_Caverns
-SD%Complete: 99
-SDComment: Everything seems to work, still need some checking
-SDCategory: Wailing Caverns
-EndScriptData */
+ /* ScriptData
+ SDName: Instance_Wailing_Caverns
+ SD%Complete: 99
+ SDComment: Everything seems to work, still need some checking
+ SDCategory: Wailing Caverns
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "Creature.h"
@@ -60,17 +60,17 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_LADY_ANACONDRA:
-                case NPC_LORD_COBRAHN:
-                case NPC_LORD_PYTHAS:
-                case NPC_LORD_SERPENTIS:
-                case NPC_MUTANUS_THE_DEVOURER:
-                case NPC_KRESH:
-                case NPC_SKUM:
-                case NPC_VERDAN_THE_EVERLIVING:
-                case NPC_NARALEX:
-                    WailingCavernsGUIDs.emplace_back(creature->GetGUID());
-                    break;
+            case NPC_LADY_ANACONDRA:
+            case NPC_LORD_COBRAHN:
+            case NPC_LORD_PYTHAS:
+            case NPC_LORD_SERPENTIS:
+            case NPC_MUTANUS_THE_DEVOURER:
+            case NPC_KRESH:
+            case NPC_SKUM:
+            case NPC_VERDAN_THE_EVERLIVING:
+            case NPC_NARALEX:
+                WailingCavernsGUIDs.emplace_back(creature->GetGUID());
+                break;
             }
         }
 
@@ -78,9 +78,9 @@ public:
         {
             switch (type)
             {
-                case DATA_NARALEX_YELLED:
-                    yelled = true;
-                    break;
+            case DATA_NARALEX_YELLED:
+                yelled = true;
+                break;
             }
         }
 
@@ -88,8 +88,8 @@ public:
         {
             switch (type)
             {
-                case DATA_NARALEX_YELLED:
-                    return yelled;
+            case DATA_NARALEX_YELLED:
+                return yelled;
             }
             return 0;
         }

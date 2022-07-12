@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,8 +16,8 @@
  */
 
 #include "DynamicTree.h"
-//#include "QuadTree.h"
-//#include "RegularGrid.h"
+ //#include "QuadTree.h"
+ //#include "RegularGrid.h"
 #include "BoundingIntervalHierarchyWrapper.h"
 
 #include "Log.h"
@@ -35,11 +35,11 @@ using VMAP::ModelInstance;
 
 namespace {
 
-int CHECK_TREE_PERIOD = 200;
+    int CHECK_TREE_PERIOD = 200;
 
 } // namespace
 
-template<> struct HashTrait< GameObjectModel>{
+template<> struct HashTrait< GameObjectModel> {
     static size_t hashCode(const GameObjectModel& g) { return (size_t)(void*)&g; }
 };
 
@@ -48,8 +48,8 @@ template<> struct PositionTrait< GameObjectModel> {
 };
 
 template<> struct BoundsTrait< GameObjectModel> {
-    static void getBounds(const GameObjectModel& g, G3D::AABox& out) { out = g.getBounds();}
-    static void getBounds2(const GameObjectModel* g, G3D::AABox& out) { out = g->getBounds();}
+    static void getBounds(const GameObjectModel& g, G3D::AABox& out) { out = g.getBounds(); }
+    static void getBounds2(const GameObjectModel* g, G3D::AABox& out) { out = g->getBounds(); }
 };
 
 /*
@@ -178,7 +178,7 @@ bool DynamicMapTree::getObjectHitPos(G3D::Vector3 const& startPos, G3D::Vector3 
         resultHitPos = endPos;
         return false;
     }
-    G3D::Vector3 dir = (endPos - startPos)/maxDist;              // direction with length of 1
+    G3D::Vector3 dir = (endPos - startPos) / maxDist;              // direction with length of 1
     G3D::Ray ray(startPos, dir);
     float dist = maxDist;
     if (getIntersectionTime(ray, endPos, phaseShift, dist))
@@ -208,7 +208,7 @@ bool DynamicMapTree::isInLineOfSight(G3D::Vector3 const& startPos, G3D::Vector3 
 {
     float maxDist = (endPos - startPos).magnitude();
 
-    if (!G3D::fuzzyGt(maxDist, 0) )
+    if (!G3D::fuzzyGt(maxDist, 0))
         return true;
 
     G3D::Ray r(startPos, (endPos - startPos) / maxDist);

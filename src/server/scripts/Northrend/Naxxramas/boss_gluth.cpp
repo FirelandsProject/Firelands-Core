@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,26 +25,26 @@
 
 enum Texts
 {
-    EMOTE_SPOTS_ONE                     = 0,
-    EMOTE_DECIMATE                      = 1,
-    EMOTE_ENRAGE                        = 2,
-    EMOTE_DEVOURS_ALL                   = 3,
-    EMOTE_BERSERKER                     = 4
+    EMOTE_SPOTS_ONE = 0,
+    EMOTE_DECIMATE = 1,
+    EMOTE_ENRAGE = 2,
+    EMOTE_DEVOURS_ALL = 3,
+    EMOTE_BERSERKER = 4
 };
 
 enum Spells
 {
     // Gluth
-    SPELL_MORTAL_WOUND                  = 54378, // spell effect dummy unused. what its supposed to do is unkown.
-    SPELL_ENRAGE                        = 28371, // 54427 in 25 man.
-    SPELL_DECIMATE                      = 28374, // 54426 in 25 man. Effect0 is handled by SpellScript (see below) and 2 rows in conditions table. Effect2 is handled by SpellScript (see below).
-    SPELL_DECIMATE_DMG                  = 28375,
-    SPELL_BERSERK                       = 26662,
-    SPELL_ZOMBIE_CHOW_SEARCH_SINGLE     = 28239, // Insta kill spell. Single target. See spell script below.
-    SPELL_ZOMBIE_CHOW_SEARCH_MULTI      = 28404, // Insta kill spell. Affect all zombies 10 yards around Gluth's center. See one row conditions table + spell script below.
+    SPELL_MORTAL_WOUND = 54378, // spell effect dummy unused. what its supposed to do is unkown.
+    SPELL_ENRAGE = 28371, // 54427 in 25 man.
+    SPELL_DECIMATE = 28374, // 54426 in 25 man. Effect0 is handled by SpellScript (see below) and 2 rows in conditions table. Effect2 is handled by SpellScript (see below).
+    SPELL_DECIMATE_DMG = 28375,
+    SPELL_BERSERK = 26662,
+    SPELL_ZOMBIE_CHOW_SEARCH_SINGLE = 28239, // Insta kill spell. Single target. See spell script below.
+    SPELL_ZOMBIE_CHOW_SEARCH_MULTI = 28404, // Insta kill spell. Affect all zombies 10 yards around Gluth's center. See one row conditions table + spell script below.
 
     // Zombies
-    SPELL_INFECTED_WOUND                = 29307  // Used by the zombies on self.
+    SPELL_INFECTED_WOUND = 29307  // Used by the zombies on self.
 };
 
 Position const PosSummon[3] =
@@ -56,7 +56,7 @@ Position const PosSummon[3] =
 
 enum Events
 {
-    EVENT_WOUND                         = 1,
+    EVENT_WOUND = 1,
     EVENT_ENRAGE,
     EVENT_DECIMATE,
     EVENT_BERSERK,
@@ -68,20 +68,20 @@ enum Events
 
 enum States
 {
-    STATE_GLUTH_NORMAL                  = 1,
-    STATE_GLUTH_EATING                  = 2,
+    STATE_GLUTH_NORMAL = 1,
+    STATE_GLUTH_EATING = 2,
 
-    STATE_ZOMBIE_NORMAL                 = 1,
-    STATE_ZOMBIE_DECIMATED              = 2,
-    STATE_ZOMBIE_TOBE_EATEN             = 3
+    STATE_ZOMBIE_NORMAL = 1,
+    STATE_ZOMBIE_DECIMATED = 2,
+    STATE_ZOMBIE_TOBE_EATEN = 3
 };
 
 enum Misc
 {
-    NPC_ZOMBIE_CHOW                     = 16360,
-    EVENT_GLUTH_ZOMBIE_BEHAVIOR         = 10495, // unused. event handled by spell_gluth_decimate_SpellScript::HandleEvent
-    DATA_ZOMBIE_STATE                   = 1,
-    ACTION_DECIMATE_EVENT               = 2,
+    NPC_ZOMBIE_CHOW = 16360,
+    EVENT_GLUTH_ZOMBIE_BEHAVIOR = 10495, // unused. event handled by spell_gluth_decimate_SpellScript::HandleEvent
+    DATA_ZOMBIE_STATE = 1,
+    ACTION_DECIMATE_EVENT = 2,
 };
 
 class boss_gluth : public CreatureScript
@@ -108,7 +108,7 @@ public:
             BossAI::JustEngagedWith(who);
             events.ScheduleEvent(EVENT_WOUND, Seconds(10));
             events.ScheduleEvent(EVENT_ENRAGE, randtime(Seconds(16), Seconds(22)));
-            events.ScheduleEvent(EVENT_DECIMATE, randtime(Minutes(1)+Seconds(50), Minutes(2)));
+            events.ScheduleEvent(EVENT_DECIMATE, randtime(Minutes(1) + Seconds(50), Minutes(2)));
             events.ScheduleEvent(EVENT_BERSERK, Minutes(8));
             events.ScheduleEvent(EVENT_SUMMON, Seconds(15));
             events.ScheduleEvent(EVENT_SEARCH_ZOMBIE_SINGLE, Seconds(12));
@@ -133,125 +133,125 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_WOUND:
-                        if (state == STATE_GLUTH_EATING)
-                        {
-                            events.Repeat(Seconds(3));
-                            break;
-                        }
-
-                        DoCastVictim(SPELL_MORTAL_WOUND);
-                        events.Repeat(Seconds(10));
-                        break;
-                    case EVENT_ENRAGE:
-                        if (state == STATE_GLUTH_EATING)
-                        {
-                            events.Repeat(Seconds(5));
-                            break;
-                        }
-
-                        Talk(EMOTE_ENRAGE);
-                        DoCast(me, SPELL_ENRAGE);
-                        events.Repeat(randtime(Seconds(16), Seconds(22)));
-                        break;
-                    case EVENT_DECIMATE:
-                        if (state == STATE_GLUTH_EATING)
-                        {
-                            events.Repeat(Seconds(4));
-                            break;
-                        }
-
-                        Talk(EMOTE_DECIMATE);
-                        DoCastAOE(SPELL_DECIMATE);
-                        for (int i = 1; i <= 20; i++)
-                            events.ScheduleEvent(EVENT_SEARCH_ZOMBIE_MULTI, Seconds(3*i));
-                        events.ScheduleEvent(EVENT_DECIMATE, randtime(Minutes(1)+Seconds(50), Minutes(2)));
-                        break;
-                    case EVENT_BERSERK:
-                        Talk(EMOTE_BERSERKER);
-                        DoCast(me, SPELL_BERSERK);
-                        events.Repeat(Minutes(5)); //refresh the hard enrage buff
-                        break;
-                    case EVENT_SUMMON:
-                        if (Is25ManRaid()) // one wave each 10s. one wave=1 zombie in 10man and 2 zombies in 25man.
-                        {
-                            DoSummon(NPC_ZOMBIE_CHOW, PosSummon[1]);
-                            DoSummon(NPC_ZOMBIE_CHOW, PosSummon[2]);
-                        }
-                        else
-                            DoSummon(NPC_ZOMBIE_CHOW, PosSummon[0]);
-                        events.Repeat(Seconds(10));
-                        break;
-                    case EVENT_SEARCH_ZOMBIE_SINGLE:
+                case EVENT_WOUND:
+                    if (state == STATE_GLUTH_EATING)
                     {
-                        Creature* zombie = nullptr;
-                        for (SummonList::const_iterator itr = summons.begin(); !zombie && itr != summons.end(); ++itr)
-                        {
-                            zombie = ObjectAccessor::GetCreature(*me, *itr);
-                            if (zombie == nullptr || !zombie->IsAlive() || !zombie->IsWithinDistInMap(me, 10.0))
-                                zombie = nullptr;
-                        }
-
-                        if (zombie)
-                        {
-                            zombieToBeEatenGUID = zombie->GetGUID(); // save for later use// the soon-to-be-eaten zombie should stop moving and stop attacking
-
-                            // the soon-to-be-eaten zombie should stop moving and stop attacking
-                            zombie->AI()->SetData(DATA_ZOMBIE_STATE, STATE_ZOMBIE_TOBE_EATEN);
-
-                            // gluth should stop AAs on his primary target and turn toward the zombie (2 yards away). He then pauses for a few seconds.
-                            me->SetSpeed(MOVE_RUN, 36.0f / baseMoveSpeed[MOVE_RUN]);
-
-                            me->SetReactState(ReactStates::REACT_PASSIVE);
-                            me->AttackStop();
-
-                            Talk(EMOTE_SPOTS_ONE);
-
-                            //me->SetTarget(ObjectGuid::Empty);
-
-                            me->GetMotionMaster()->MoveCloserAndStop(1, zombie, 2.0f);
-
-                            state = STATE_GLUTH_EATING;
-                        }
-
-                        events.Repeat(RAID_MODE(Seconds(7), Seconds(5)));
+                        events.Repeat(Seconds(3));
                         break;
                     }
-                    case EVENT_KILL_ZOMBIE_SINGLE:
+
+                    DoCastVictim(SPELL_MORTAL_WOUND);
+                    events.Repeat(Seconds(10));
+                    break;
+                case EVENT_ENRAGE:
+                    if (state == STATE_GLUTH_EATING)
                     {
-                        Creature* zombieToBeEaten = ObjectAccessor::GetCreature(*me, zombieToBeEatenGUID);
-                        if (zombieToBeEaten && zombieToBeEaten->IsAlive() && zombieToBeEaten->IsWithinDistInMap(me, 10.0))
-                            DoCast(zombieToBeEaten, SPELL_ZOMBIE_CHOW_SEARCH_SINGLE); // do the killing + healing in done inside by spell script see below.
-
-                        zombieToBeEatenGUID = ObjectGuid::Empty;
-                        state = STATE_GLUTH_NORMAL;
-                        me->SetSpeed(UnitMoveType::MOVE_RUN, 12.0f / baseMoveSpeed[MOVE_RUN]);
-
-                        // and then return on primary target
-                        me->SetReactState(REACT_AGGRESSIVE);
-
+                        events.Repeat(Seconds(5));
                         break;
                     }
-                    case EVENT_SEARCH_ZOMBIE_MULTI:
+
+                    Talk(EMOTE_ENRAGE);
+                    DoCast(me, SPELL_ENRAGE);
+                    events.Repeat(randtime(Seconds(16), Seconds(22)));
+                    break;
+                case EVENT_DECIMATE:
+                    if (state == STATE_GLUTH_EATING)
                     {
-                        if (state == STATE_GLUTH_EATING) // skip and simply wait for the next occurence
-                            break;
-
-                        Creature* zombie = nullptr;
-                        for (SummonList::const_iterator itr = summons.begin(); !zombie && itr != summons.end(); ++itr)
-                        {
-                            zombie = ObjectAccessor::GetCreature(*me, *itr);
-                            if (zombie && zombie->IsAlive() && zombie->GetExactDist2d(me) > 18.0)
-                                zombie = nullptr;
-                        }
-
-                        if (zombie) // cast the aoe spell only if at least one zombie is found nearby
-                        {
-                            Talk(EMOTE_DEVOURS_ALL);
-                            DoCastAOE(SPELL_ZOMBIE_CHOW_SEARCH_MULTI);
-                        }
+                        events.Repeat(Seconds(4));
                         break;
                     }
+
+                    Talk(EMOTE_DECIMATE);
+                    DoCastAOE(SPELL_DECIMATE);
+                    for (int i = 1; i <= 20; i++)
+                        events.ScheduleEvent(EVENT_SEARCH_ZOMBIE_MULTI, Seconds(3 * i));
+                    events.ScheduleEvent(EVENT_DECIMATE, randtime(Minutes(1) + Seconds(50), Minutes(2)));
+                    break;
+                case EVENT_BERSERK:
+                    Talk(EMOTE_BERSERKER);
+                    DoCast(me, SPELL_BERSERK);
+                    events.Repeat(Minutes(5)); //refresh the hard enrage buff
+                    break;
+                case EVENT_SUMMON:
+                    if (Is25ManRaid()) // one wave each 10s. one wave=1 zombie in 10man and 2 zombies in 25man.
+                    {
+                        DoSummon(NPC_ZOMBIE_CHOW, PosSummon[1]);
+                        DoSummon(NPC_ZOMBIE_CHOW, PosSummon[2]);
+                    }
+                    else
+                        DoSummon(NPC_ZOMBIE_CHOW, PosSummon[0]);
+                    events.Repeat(Seconds(10));
+                    break;
+                case EVENT_SEARCH_ZOMBIE_SINGLE:
+                {
+                    Creature* zombie = nullptr;
+                    for (SummonList::const_iterator itr = summons.begin(); !zombie && itr != summons.end(); ++itr)
+                    {
+                        zombie = ObjectAccessor::GetCreature(*me, *itr);
+                        if (zombie == nullptr || !zombie->IsAlive() || !zombie->IsWithinDistInMap(me, 10.0))
+                            zombie = nullptr;
+                    }
+
+                    if (zombie)
+                    {
+                        zombieToBeEatenGUID = zombie->GetGUID(); // save for later use// the soon-to-be-eaten zombie should stop moving and stop attacking
+
+                        // the soon-to-be-eaten zombie should stop moving and stop attacking
+                        zombie->AI()->SetData(DATA_ZOMBIE_STATE, STATE_ZOMBIE_TOBE_EATEN);
+
+                        // gluth should stop AAs on his primary target and turn toward the zombie (2 yards away). He then pauses for a few seconds.
+                        me->SetSpeed(MOVE_RUN, 36.0f / baseMoveSpeed[MOVE_RUN]);
+
+                        me->SetReactState(ReactStates::REACT_PASSIVE);
+                        me->AttackStop();
+
+                        Talk(EMOTE_SPOTS_ONE);
+
+                        //me->SetTarget(ObjectGuid::Empty);
+
+                        me->GetMotionMaster()->MoveCloserAndStop(1, zombie, 2.0f);
+
+                        state = STATE_GLUTH_EATING;
+                    }
+
+                    events.Repeat(RAID_MODE(Seconds(7), Seconds(5)));
+                    break;
+                }
+                case EVENT_KILL_ZOMBIE_SINGLE:
+                {
+                    Creature* zombieToBeEaten = ObjectAccessor::GetCreature(*me, zombieToBeEatenGUID);
+                    if (zombieToBeEaten && zombieToBeEaten->IsAlive() && zombieToBeEaten->IsWithinDistInMap(me, 10.0))
+                        DoCast(zombieToBeEaten, SPELL_ZOMBIE_CHOW_SEARCH_SINGLE); // do the killing + healing in done inside by spell script see below.
+
+                    zombieToBeEatenGUID = ObjectGuid::Empty;
+                    state = STATE_GLUTH_NORMAL;
+                    me->SetSpeed(UnitMoveType::MOVE_RUN, 12.0f / baseMoveSpeed[MOVE_RUN]);
+
+                    // and then return on primary target
+                    me->SetReactState(REACT_AGGRESSIVE);
+
+                    break;
+                }
+                case EVENT_SEARCH_ZOMBIE_MULTI:
+                {
+                    if (state == STATE_GLUTH_EATING) // skip and simply wait for the next occurence
+                        break;
+
+                    Creature* zombie = nullptr;
+                    for (SummonList::const_iterator itr = summons.begin(); !zombie && itr != summons.end(); ++itr)
+                    {
+                        zombie = ObjectAccessor::GetCreature(*me, *itr);
+                        if (zombie && zombie->IsAlive() && zombie->GetExactDist2d(me) > 18.0)
+                            zombie = nullptr;
+                    }
+
+                    if (zombie) // cast the aoe spell only if at least one zombie is found nearby
+                    {
+                        Talk(EMOTE_DEVOURS_ALL);
+                        DoCastAOE(SPELL_ZOMBIE_CHOW_SEARCH_MULTI);
+                    }
+                    break;
+                }
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
@@ -263,7 +263,7 @@ public:
 
         void MovementInform(uint32 /*type*/, uint32 id) override
         {
-            if (id == 1){
+            if (id == 1) {
                 me->GetMotionMaster()->MoveIdle();
                 events.ScheduleEvent(EVENT_KILL_ZOMBIE_SINGLE, Seconds(1));
             }
@@ -274,14 +274,14 @@ public:
         {
             switch (action)
             {
-                case ACTION_DECIMATE_EVENT:
-                    for (ObjectGuid zombieGuid : summons)
-                    {
-                        Creature* zombie = ObjectAccessor::GetCreature(*me, zombieGuid);
-                        if (zombie && zombie->IsAlive())
-                            zombie->AI()->SetData(DATA_ZOMBIE_STATE, STATE_ZOMBIE_DECIMATED);
-                    }
-                    break;
+            case ACTION_DECIMATE_EVENT:
+                for (ObjectGuid zombieGuid : summons)
+                {
+                    Creature* zombie = ObjectAccessor::GetCreature(*me, zombieGuid);
+                    if (zombie && zombie->IsAlive())
+                        zombie->AI()->SetData(DATA_ZOMBIE_STATE, STATE_ZOMBIE_DECIMATED);
+                }
+                break;
             }
         }
 
@@ -307,7 +307,7 @@ public:
         // handles the damaging effect of the decimate spell.
         void HandleScriptEffect(SpellEffIndex /* index */)
         {
-            if (Unit *unit = GetHitUnit())
+            if (Unit* unit = GetHitUnit())
             {
                 int32 damage = int32(unit->GetHealth()) - int32(unit->CountPctFromMaxHealth(5));
                 if (damage > 0)

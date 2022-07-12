@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,17 +25,17 @@
 #include "vec3d.h"
 #include "mpqfile.h"
 
-// MOPY flags
+ // MOPY flags
 enum MopyFlags
 {
-    WMO_MATERIAL_UNK01          = 0x01,
-    WMO_MATERIAL_NOCAMCOLLIDE   = 0x02,
-    WMO_MATERIAL_DETAIL         = 0x04,
-    WMO_MATERIAL_COLLISION      = 0x08,
-    WMO_MATERIAL_HINT           = 0x10,
-    WMO_MATERIAL_RENDER         = 0x20,
-    WMO_MATERIAL_WALL_SURFACE   = 0x40, // Guessed
-    WMO_MATERIAL_COLLIDE_HIT    = 0x80
+    WMO_MATERIAL_UNK01 = 0x01,
+    WMO_MATERIAL_NOCAMCOLLIDE = 0x02,
+    WMO_MATERIAL_DETAIL = 0x04,
+    WMO_MATERIAL_COLLISION = 0x08,
+    WMO_MATERIAL_HINT = 0x10,
+    WMO_MATERIAL_RENDER = 0x20,
+    WMO_MATERIAL_WALL_SURFACE = 0x40, // Guessed
+    WMO_MATERIAL_COLLIDE_HIT = 0x80
 };
 
 class WMOInstance;

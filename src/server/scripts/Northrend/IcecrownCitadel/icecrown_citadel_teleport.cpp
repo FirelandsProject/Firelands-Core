@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -42,69 +42,69 @@ class icecrown_citadel_teleport : public GameObjectScript
 {
     static_assert(DATA_UPPERSPIRE_TELE_ACT == 41, "icecrown_citadel.h DATA_UPPERSPIRE_TELE_ACT set to value != 41, gossip condition of the teleporters won't work as intended.");
 
-    public:
-        icecrown_citadel_teleport() : GameObjectScript("icecrown_citadel_teleport") { }
+public:
+    icecrown_citadel_teleport() : GameObjectScript("icecrown_citadel_teleport") { }
 
-        struct icecrown_citadel_teleportAI : public GameObjectAI
+    struct icecrown_citadel_teleportAI : public GameObjectAI
+    {
+        icecrown_citadel_teleportAI(GameObject* go) : GameObjectAI(go) { }
+
+        bool GossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            icecrown_citadel_teleportAI(GameObject* go) : GameObjectAI(go) { }
+            if (gossipListId >= TeleportSpells.size())
+                return false;
 
-            bool GossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
+            ClearGossipMenuFor(player);
+            CloseGossipMenuFor(player);
+            SpellInfo const* spell = sSpellMgr->GetSpellInfo(TeleportSpells[gossipListId]);
+            if (!spell)
+                return false;
+
+            if (player->IsInCombat())
             {
-                if (gossipListId >= TeleportSpells.size())
-                    return false;
-
-                ClearGossipMenuFor(player);
-                CloseGossipMenuFor(player);
-                SpellInfo const* spell = sSpellMgr->GetSpellInfo(TeleportSpells[gossipListId]);
-                if (!spell)
-                    return false;
-
-                if (player->IsInCombat())
-                {
-                    Spell::SendCastResult(player, spell, 0, SPELL_FAILED_AFFECTING_COMBAT);
-                    return true;
-                }
-
-                // If the player is on the ship, Unit::NearTeleport() will try to keep the player on the ship, causing issues.
-                // For that we simply always remove the player from the ship.
-                if (TransportBase* transport = player->GetTransport())
-                    transport->RemovePassenger(player);
-
-                player->CastSpell(player, spell->Id, true);
+                Spell::SendCastResult(player, spell, 0, SPELL_FAILED_AFFECTING_COMBAT);
                 return true;
             }
-        };
 
-        GameObjectAI* GetAI(GameObject* go) const override
-        {
-            return GetIcecrownCitadelAI<icecrown_citadel_teleportAI>(go);
+            // If the player is on the ship, Unit::NearTeleport() will try to keep the player on the ship, causing issues.
+            // For that we simply always remove the player from the ship.
+            if (TransportBase* transport = player->GetTransport())
+                transport->RemovePassenger(player);
+
+            player->CastSpell(player, spell->Id, true);
+            return true;
         }
+    };
+
+    GameObjectAI* GetAI(GameObject* go) const override
+    {
+        return GetIcecrownCitadelAI<icecrown_citadel_teleportAI>(go);
+    }
 };
 
 class at_frozen_throne_teleport : public AreaTriggerScript
 {
-    public:
-        at_frozen_throne_teleport() : AreaTriggerScript("at_frozen_throne_teleport") { }
+public:
+    at_frozen_throne_teleport() : AreaTriggerScript("at_frozen_throne_teleport") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/) override
+    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/) override
+    {
+        if (player->IsInCombat())
         {
-            if (player->IsInCombat())
-            {
-                if (SpellInfo const* spell = sSpellMgr->GetSpellInfo(FROZEN_THRONE_TELEPORT))
-                    Spell::SendCastResult(player, spell, 0, SPELL_FAILED_AFFECTING_COMBAT);
-                return true;
-            }
-
-            if (InstanceScript* instance = player->GetInstanceScript())
-                if (instance->GetBossState(DATA_PROFESSOR_PUTRICIDE) == DONE &&
-                    instance->GetBossState(DATA_BLOOD_QUEEN_LANA_THEL) == DONE &&
-                    instance->GetBossState(DATA_SINDRAGOSA) == DONE &&
-                    instance->GetBossState(DATA_THE_LICH_KING) != IN_PROGRESS)
-                    player->CastSpell(player, FROZEN_THRONE_TELEPORT, true);
-
+            if (SpellInfo const* spell = sSpellMgr->GetSpellInfo(FROZEN_THRONE_TELEPORT))
+                Spell::SendCastResult(player, spell, 0, SPELL_FAILED_AFFECTING_COMBAT);
             return true;
         }
+
+        if (InstanceScript* instance = player->GetInstanceScript())
+            if (instance->GetBossState(DATA_PROFESSOR_PUTRICIDE) == DONE &&
+                instance->GetBossState(DATA_BLOOD_QUEEN_LANA_THEL) == DONE &&
+                instance->GetBossState(DATA_SINDRAGOSA) == DONE &&
+                instance->GetBossState(DATA_THE_LICH_KING) != IN_PROGRESS)
+                player->CastSpell(player, FROZEN_THRONE_TELEPORT, true);
+
+        return true;
+    }
 };
 
 void AddSC_icecrown_citadel_teleport()

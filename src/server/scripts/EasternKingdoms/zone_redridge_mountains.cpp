@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,11 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Script Data Start
-SDName: Redridge Mountains
-SD%Complete: 0
-SDComment:
-Script Data End */
+ /* Script Data Start
+ SDName: Redridge Mountains
+ SD%Complete: 0
+ SDComment:
+ Script Data End */
 
 #include "ScriptMgr.h"
 #include "MotionMaster.h"
@@ -29,7 +29,7 @@ Script Data End */
 
 enum DumpyKeeshan
 {
-    NPC_BIGEARL                    = 43248,
+    NPC_BIGEARL = 43248,
 
     SPELL_APPLY_QUEST_INVIS_ZONE_3 = 80815, // Used by npc's in Lakeshire Inn
     SPELL_APPLY_QUEST_INVIS_ZONE_4 = 80816  // Used by npc's in Lakeshire Inn
@@ -51,18 +51,18 @@ public:
         void Reset() override
         {
             _scheduler.Schedule(Seconds(1), [this](TaskContext targetSearch)
-            {
-                std::list<Creature*> bigEarlList;
-                me->GetCreatureListWithEntryInGrid(bigEarlList, NPC_BIGEARL, 5.0f);
+                {
+                    std::list<Creature*> bigEarlList;
+                    me->GetCreatureListWithEntryInGrid(bigEarlList, NPC_BIGEARL, 5.0f);
 
-                for (Creature* bigEarl : bigEarlList)
-                    if ((bigEarl->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_3) && me->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_3))
-                        || (bigEarl->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_4) && me->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_4)))
-                        AttackStart(bigEarl);
+                    for (Creature* bigEarl : bigEarlList)
+                        if ((bigEarl->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_3) && me->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_3))
+                            || (bigEarl->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_4) && me->HasAura(SPELL_APPLY_QUEST_INVIS_ZONE_4)))
+                            AttackStart(bigEarl);
 
-                if (!me->IsInCombat())
-                    targetSearch.Repeat();
-            });
+                    if (!me->IsInCombat())
+                        targetSearch.Repeat();
+                });
         }
 
         void DamageTaken(Unit* who, uint32& damage) override
@@ -124,27 +124,27 @@ public:
 
 enum BridgeWorkerAlex
 {
-    EVENT_STORE_GUIDS      = 1,
-    EVENT_OSLOW_SAY        = 2,
-    EVENT_ALEX_SAY         = 3,
-    EVENT_WORKERS_SAY      = 4,
-    EVENT_ALEX_SAY_PUSH    = 5,
-    EVENT_MATTHEW_SAY      = 6,
+    EVENT_STORE_GUIDS = 1,
+    EVENT_OSLOW_SAY = 2,
+    EVENT_ALEX_SAY = 3,
+    EVENT_WORKERS_SAY = 4,
+    EVENT_ALEX_SAY_PUSH = 5,
+    EVENT_MATTHEW_SAY = 6,
 
-    NPC_OSLOW              = 341,
-    NPC_TRENT              = 648,
-    NPC_DIMITRI            = 649,
-    NPC_JESS               = 650,
-    NPC_DANIEL             = 651,
-    NPC_MATTHEW            = 652,
+    NPC_OSLOW = 341,
+    NPC_TRENT = 648,
+    NPC_DIMITRI = 649,
+    NPC_JESS = 650,
+    NPC_DANIEL = 651,
+    NPC_MATTHEW = 652,
 
-    SAY_OSLOW              = 0,
-    SAY_ALEX_PUT           = 0,
-    SAY_ALEX_HEAVE         = 1,
-    SAY_ALEX_DAMN          = 2,
-    SAY_ALEX_HANGON        = 3,
-    SAY_ALEX_PUSH          = 4,
-    SAY_WORKERS_HO         = 0,
+    SAY_OSLOW = 0,
+    SAY_ALEX_PUT = 0,
+    SAY_ALEX_HEAVE = 1,
+    SAY_ALEX_DAMN = 2,
+    SAY_ALEX_HANGON = 3,
+    SAY_ALEX_PUSH = 4,
+    SAY_WORKERS_HO = 0,
     SAY_MATTHEW_IM_PUSHING = 1
 };
 
@@ -270,20 +270,20 @@ public:
 
 enum RedridgeCitizen
 {
-    EVENT_DETERMINE_EVENT           = 7,     // Determine where npc is located by aura
-    EVENT_PLAYEMOTE                 = 8,     // Used by npc's in Lakeshire Inn
-    EVENT_SAY_TEXT                  = 9,     // Used by npc's in Lakeshire Townhall
-    EVENT_LEAVE_TOWNHALL            = 10,    // Used by npc's in Lakeshire Townhall
+    EVENT_DETERMINE_EVENT = 7,     // Determine where npc is located by aura
+    EVENT_PLAYEMOTE = 8,     // Used by npc's in Lakeshire Inn
+    EVENT_SAY_TEXT = 9,     // Used by npc's in Lakeshire Townhall
+    EVENT_LEAVE_TOWNHALL = 10,    // Used by npc's in Lakeshire Townhall
 
-    EMOTE_ONESHOTCHEER              = 4,
-    EMOTE_ONESHOTROAR               = 15,
-    EMOTE_ONESHOTSHOT               = 22,
-    EMOTE_ONESHOTPOINT              = 25,
-    EMOTE_ONESHOTBATTLEROAR         = 53,
-    EMOTE_ONESHOTNO                 = 274,
+    EMOTE_ONESHOTCHEER = 4,
+    EMOTE_ONESHOTROAR = 15,
+    EMOTE_ONESHOTSHOT = 22,
+    EMOTE_ONESHOTPOINT = 25,
+    EMOTE_ONESHOTBATTLEROAR = 53,
+    EMOTE_ONESHOTNO = 274,
 
-    SAY_IN_TOWNHALL                 = 0,     // Used by npc's in Lakeshire Townhall
-    SAY_LEAVE_TOWNHALL              = 1,     // Used by npc's in Lakeshire Townhall
+    SAY_IN_TOWNHALL = 0,     // Used by npc's in Lakeshire Townhall
+    SAY_LEAVE_TOWNHALL = 1,     // Used by npc's in Lakeshire Townhall
 
     SPELL_APPLY_QUEST_INVIS_ZONE_19 = 82099  // Used by npc's in Lakeshire Townhall
 };

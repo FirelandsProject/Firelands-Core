@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,34 +24,34 @@
 #include "ScriptedEscortAI.h"
 #include "SpellInfo.h"
 
-/*######
-## npc_koltira_deathweaver
-######*/
+ /*######
+ ## npc_koltira_deathweaver
+ ######*/
 
 enum Koltira
 {
-    SAY_BREAKOUT1                   = 0,
-    SAY_BREAKOUT2                   = 1,
-    SAY_BREAKOUT3                   = 2,
-    SAY_BREAKOUT4                   = 3,
-    SAY_BREAKOUT5                   = 4,
-    SAY_BREAKOUT6                   = 5,
-    SAY_BREAKOUT7                   = 6,
-    SAY_BREAKOUT8                   = 7,
-    SAY_BREAKOUT9                   = 8,
-    SAY_BREAKOUT10                  = 9,
+    SAY_BREAKOUT1 = 0,
+    SAY_BREAKOUT2 = 1,
+    SAY_BREAKOUT3 = 2,
+    SAY_BREAKOUT4 = 3,
+    SAY_BREAKOUT5 = 4,
+    SAY_BREAKOUT6 = 5,
+    SAY_BREAKOUT7 = 6,
+    SAY_BREAKOUT8 = 7,
+    SAY_BREAKOUT9 = 8,
+    SAY_BREAKOUT10 = 9,
 
-    SPELL_KOLTIRA_TRANSFORM         = 52899,
-    SPELL_ANTI_MAGIC_ZONE           = 52894,
+    SPELL_KOLTIRA_TRANSFORM = 52899,
+    SPELL_ANTI_MAGIC_ZONE = 52894,
 
-    QUEST_BREAKOUT                  = 12727,
+    QUEST_BREAKOUT = 12727,
 
-    NPC_CRIMSON_ACOLYTE             = 29007,
-    NPC_HIGH_INQUISITOR_VALROTH     = 29001,
+    NPC_CRIMSON_ACOLYTE = 29007,
+    NPC_HIGH_INQUISITOR_VALROTH = 29001,
 
     //not sure about this id
     //NPC_DEATH_KNIGHT_MOUNT        = 29201,
-    MODEL_DEATH_KNIGHT_MOUNT        = 25278
+    MODEL_DEATH_KNIGHT_MOUNT = 25278
 };
 
 class npc_koltira_deathweaver : public CreatureScript
@@ -90,33 +90,33 @@ public:
         {
             switch (waypointId)
             {
-                case 0:
-                    Talk(SAY_BREAKOUT1);
-                    break;
-                case 1:
-                    me->SetStandState(UNIT_STAND_STATE_KNEEL);
-                    break;
-                case 2:
-                    me->SetStandState(UNIT_STAND_STATE_STAND);
-                    DoCast(me, SPELL_KOLTIRA_TRANSFORM);
-                    me->LoadEquipment();
-                    break;
-                case 3:
-                    SetEscortPaused(true);
-                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                    me->SetStandState(UNIT_STAND_STATE_KNEEL);
-                    Talk(SAY_BREAKOUT2);
-                    DoCast(me, SPELL_ANTI_MAGIC_ZONE);
-                    break;
-                case 4:
-                    SetRun(true);
-                    break;
-                case 9:
-                    me->Mount(MODEL_DEATH_KNIGHT_MOUNT);
-                    break;
-                case 10:
-                    me->Dismount();
-                    break;
+            case 0:
+                Talk(SAY_BREAKOUT1);
+                break;
+            case 1:
+                me->SetStandState(UNIT_STAND_STATE_KNEEL);
+                break;
+            case 2:
+                me->SetStandState(UNIT_STAND_STATE_STAND);
+                DoCast(me, SPELL_KOLTIRA_TRANSFORM);
+                me->LoadEquipment();
+                break;
+            case 3:
+                SetEscortPaused(true);
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                me->SetStandState(UNIT_STAND_STATE_KNEEL);
+                Talk(SAY_BREAKOUT2);
+                DoCast(me, SPELL_ANTI_MAGIC_ZONE);
+                break;
+            case 4:
+                SetRun(true);
+                break;
+            case 9:
+                me->Mount(MODEL_DEATH_KNIGHT_MOUNT);
+                break;
+            case 10:
+                me->Dismount();
+                break;
             }
         }
 
@@ -147,52 +147,52 @@ public:
                 {
                     switch (wave)
                     {
-                        case 0:
-                            Talk(SAY_BREAKOUT3);
-                            SummonAcolyte(3);
-                            waveTimer = 20000;
-                            break;
-                        case 1:
-                            Talk(SAY_BREAKOUT4);
-                            SummonAcolyte(3);
-                            waveTimer = 20000;
-                            break;
-                        case 2:
-                            Talk(SAY_BREAKOUT5);
-                            SummonAcolyte(4);
-                            waveTimer = 20000;
-                            break;
-                        case 3:
-                            Talk(SAY_BREAKOUT6);
-                            me->SummonCreature(NPC_HIGH_INQUISITOR_VALROTH, 1642.329f, -6045.818f, 127.583f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 1000);
-                            waveTimer = 1000;
-                            break;
-                        case 4:
-                        {
-                            Creature* temp = ObjectAccessor::GetCreature(*me, valrothGUID);
+                    case 0:
+                        Talk(SAY_BREAKOUT3);
+                        SummonAcolyte(3);
+                        waveTimer = 20000;
+                        break;
+                    case 1:
+                        Talk(SAY_BREAKOUT4);
+                        SummonAcolyte(3);
+                        waveTimer = 20000;
+                        break;
+                    case 2:
+                        Talk(SAY_BREAKOUT5);
+                        SummonAcolyte(4);
+                        waveTimer = 20000;
+                        break;
+                    case 3:
+                        Talk(SAY_BREAKOUT6);
+                        me->SummonCreature(NPC_HIGH_INQUISITOR_VALROTH, 1642.329f, -6045.818f, 127.583f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 1000);
+                        waveTimer = 1000;
+                        break;
+                    case 4:
+                    {
+                        Creature* temp = ObjectAccessor::GetCreature(*me, valrothGUID);
 
-                            if (!temp || !temp->IsAlive())
-                            {
-                                Talk(SAY_BREAKOUT8);
-                                waveTimer = 5000;
-                            }
-                            else
-                            {
-                                waveTimer = 2500;
-                                return;
-                            }
-                            break;
+                        if (!temp || !temp->IsAlive())
+                        {
+                            Talk(SAY_BREAKOUT8);
+                            waveTimer = 5000;
                         }
-                        case 5:
-                            Talk(SAY_BREAKOUT9);
-                            me->RemoveAurasDueToSpell(SPELL_ANTI_MAGIC_ZONE);
-                            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        else
+                        {
                             waveTimer = 2500;
-                            break;
-                        case 6:
-                            Talk(SAY_BREAKOUT10);
-                            SetEscortPaused(false);
-                            break;
+                            return;
+                        }
+                        break;
+                    }
+                    case 5:
+                        Talk(SAY_BREAKOUT9);
+                        me->RemoveAurasDueToSpell(SPELL_ANTI_MAGIC_ZONE);
+                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        waveTimer = 2500;
+                        break;
+                    case 6:
+                        Talk(SAY_BREAKOUT10);
+                        SetEscortPaused(false);
+                        break;
                     }
 
                     ++wave;
@@ -228,11 +228,11 @@ public:
 //Scarlet courier
 enum ScarletCourierEnum
 {
-    SAY_TREE1                          = 0,
-    SAY_TREE2                          = 1,
-    SPELL_SHOOT                        = 52818,
-    GO_INCONSPICUOUS_TREE              = 191144,
-    NPC_SCARLET_COURIER                = 29076
+    SAY_TREE1 = 0,
+    SAY_TREE2 = 1,
+    SPELL_SHOOT = 52818,
+    GO_INCONSPICUOUS_TREE = 191144,
+    NPC_SCARLET_COURIER = 29076
 };
 
 class npc_scarlet_courier : public CreatureScript
@@ -309,7 +309,8 @@ public:
                     }
                     uiStage_timer = 3000;
                     uiStage = 0;
-                } else uiStage_timer -= diff;
+                }
+                else uiStage_timer -= diff;
             }
 
             if (!UpdateVictim())
@@ -325,14 +326,14 @@ public:
 
 enum valroth
 {
-  //SAY_VALROTH1                      = 0, Unused
-    SAY_VALROTH_AGGRO                 = 1,
-    SAY_VALROTH_RAND                  = 2,
-    SAY_VALROTH_DEATH                 = 3,
-    SPELL_RENEW                       = 38210,
-    SPELL_INQUISITOR_PENANCE          = 52922,
-    SPELL_VALROTH_SMITE               = 52926,
-    SPELL_SUMMON_VALROTH_REMAINS      = 52929
+    //SAY_VALROTH1                      = 0, Unused
+    SAY_VALROTH_AGGRO = 1,
+    SAY_VALROTH_RAND = 2,
+    SAY_VALROTH_DEATH = 3,
+    SPELL_RENEW = 38210,
+    SPELL_INQUISITOR_PENANCE = 52922,
+    SPELL_VALROTH_SMITE = 52926,
+    SPELL_SUMMON_VALROTH_REMAINS = 52929
 };
 
 class npc_high_inquisitor_valroth : public CreatureScript
@@ -381,21 +382,24 @@ public:
                 Shout();
                 DoCast(me, SPELL_RENEW);
                 uiRenew_timer = urand(1000, 6000);
-            } else uiRenew_timer -= diff;
+            }
+            else uiRenew_timer -= diff;
 
             if (uiInquisitor_Penance_timer <= diff)
             {
                 Shout();
                 DoCastVictim(SPELL_INQUISITOR_PENANCE);
                 uiInquisitor_Penance_timer = urand(2000, 7000);
-            } else uiInquisitor_Penance_timer -= diff;
+            }
+            else uiInquisitor_Penance_timer -= diff;
 
             if (uiValroth_Smite_timer <= diff)
             {
                 Shout();
                 DoCastVictim(SPELL_VALROTH_SMITE);
                 uiValroth_Smite_timer = urand(1000, 6000);
-            } else uiValroth_Smite_timer -= diff;
+            }
+            else uiValroth_Smite_timer -= diff;
 
             DoMeleeAttackIfReady();
         }
@@ -422,19 +426,19 @@ public:
 //used by 29032, 29061, 29065, 29067, 29068, 29070, 29074, 29072, 29073, 29071 but signed for 29032
 enum SpecialSurprise
 {
-    SAY_EXEC_START            = 0,
-    SAY_EXEC_PROG             = 1,
-    SAY_EXEC_NAME             = 2,
-    SAY_EXEC_RECOG            = 3,
-    SAY_EXEC_NOREM            = 4,
-    SAY_EXEC_THINK            = 5,
-    SAY_EXEC_LISTEN           = 6,
-    SAY_EXEC_TIME             = 7,
-    SAY_EXEC_WAITING          = 8,
-    EMOTE_DIES                = 9,
+    SAY_EXEC_START = 0,
+    SAY_EXEC_PROG = 1,
+    SAY_EXEC_NAME = 2,
+    SAY_EXEC_RECOG = 3,
+    SAY_EXEC_NOREM = 4,
+    SAY_EXEC_THINK = 5,
+    SAY_EXEC_LISTEN = 6,
+    SAY_EXEC_TIME = 7,
+    SAY_EXEC_WAITING = 8,
+    EMOTE_DIES = 9,
 
-    SAY_PLAGUEFIST            = 0,
-    NPC_PLAGUEFIST            = 29053
+    SAY_PLAGUEFIST = 0,
+    NPC_PLAGUEFIST = 29053
 };
 
 class npc_a_special_surprise : public CreatureScript
@@ -476,46 +480,46 @@ public:
         {
             switch (me->GetEntry())
             {
-                case 29061:                                     // Ellen Stanbridge
-                    if (player->GetQuestStatus(12742) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29072:                                     // Kug Ironjaw
-                    if (player->GetQuestStatus(12748) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29067:                                     // Donovan Pulfrost
-                    if (player->GetQuestStatus(12744) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29065:                                     // Yazmina Oakenthorn
-                    if (player->GetQuestStatus(12743) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29071:                                     // Antoine Brack
-                    if (player->GetQuestStatus(12750) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29032:                                     // Malar Bravehorn
-                    if (player->GetQuestStatus(12739) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29068:                                     // Goby Blastenheimer
-                    if (player->GetQuestStatus(12745) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29073:                                     // Iggy Darktusk
-                    if (player->GetQuestStatus(12749) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29074:                                     // Lady Eonys
-                    if (player->GetQuestStatus(12747) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
-                case 29070:                                     // Valok the Righteous
-                    if (player->GetQuestStatus(12746) == QUEST_STATUS_INCOMPLETE)
-                        return true;
-                    break;
+            case 29061:                                     // Ellen Stanbridge
+                if (player->GetQuestStatus(12742) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29072:                                     // Kug Ironjaw
+                if (player->GetQuestStatus(12748) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29067:                                     // Donovan Pulfrost
+                if (player->GetQuestStatus(12744) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29065:                                     // Yazmina Oakenthorn
+                if (player->GetQuestStatus(12743) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29071:                                     // Antoine Brack
+                if (player->GetQuestStatus(12750) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29032:                                     // Malar Bravehorn
+                if (player->GetQuestStatus(12739) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29068:                                     // Goby Blastenheimer
+                if (player->GetQuestStatus(12745) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29073:                                     // Iggy Darktusk
+                if (player->GetQuestStatus(12749) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29074:                                     // Lady Eonys
+                if (player->GetQuestStatus(12747) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
+            case 29070:                                     // Valok the Righteous
+                if (player->GetQuestStatus(12746) == QUEST_STATUS_INCOMPLETE)
+                    return true;
+                break;
             }
 
             return false;
@@ -547,47 +551,47 @@ public:
 
                     switch (ExecuteSpeech_Counter)
                     {
-                        case 0:
-                            Talk(SAY_EXEC_START, player);
-                            break;
-                        case 1:
-                            me->SetStandState(UNIT_STAND_STATE_STAND);
-                            break;
-                        case 2:
-                            Talk(SAY_EXEC_PROG, player);
-                            break;
-                        case 3:
-                            Talk(SAY_EXEC_NAME, player);
-                            break;
-                        case 4:
-                            Talk(SAY_EXEC_RECOG, player);
-                            break;
-                        case 5:
-                            Talk(SAY_EXEC_NOREM, player);
-                            break;
-                        case 6:
-                            Talk(SAY_EXEC_THINK, player);
-                            break;
-                        case 7:
-                            Talk(SAY_EXEC_LISTEN, player);
-                            break;
-                        case 8:
-                            if (Creature* Plaguefist = GetClosestCreatureWithEntry(me, NPC_PLAGUEFIST, 85.0f))
-                                Plaguefist->AI()->Talk(SAY_PLAGUEFIST, player);
-                            break;
-                        case 9:
-                            Talk(SAY_EXEC_TIME, player);
-                            me->SetStandState(UNIT_STAND_STATE_KNEEL);
-                            me->SetImmuneToPC(false);
-                            break;
-                        case 10:
-                            Talk(SAY_EXEC_WAITING, player);
-                            break;
-                        case 11:
-                            Talk(EMOTE_DIES);
-                            me->setDeathState(JUST_DIED);
-                            me->SetHealth(0);
-                            return;
+                    case 0:
+                        Talk(SAY_EXEC_START, player);
+                        break;
+                    case 1:
+                        me->SetStandState(UNIT_STAND_STATE_STAND);
+                        break;
+                    case 2:
+                        Talk(SAY_EXEC_PROG, player);
+                        break;
+                    case 3:
+                        Talk(SAY_EXEC_NAME, player);
+                        break;
+                    case 4:
+                        Talk(SAY_EXEC_RECOG, player);
+                        break;
+                    case 5:
+                        Talk(SAY_EXEC_NOREM, player);
+                        break;
+                    case 6:
+                        Talk(SAY_EXEC_THINK, player);
+                        break;
+                    case 7:
+                        Talk(SAY_EXEC_LISTEN, player);
+                        break;
+                    case 8:
+                        if (Creature* Plaguefist = GetClosestCreatureWithEntry(me, NPC_PLAGUEFIST, 85.0f))
+                            Plaguefist->AI()->Talk(SAY_PLAGUEFIST, player);
+                        break;
+                    case 9:
+                        Talk(SAY_EXEC_TIME, player);
+                        me->SetStandState(UNIT_STAND_STATE_KNEEL);
+                        me->SetImmuneToPC(false);
+                        break;
+                    case 10:
+                        Talk(SAY_EXEC_WAITING, player);
+                        break;
+                    case 11:
+                        Talk(EMOTE_DIES);
+                        me->setDeathState(JUST_DIED);
+                        me->SetHealth(0);
+                        return;
                     }
 
                     if (ExecuteSpeech_Counter >= 9)

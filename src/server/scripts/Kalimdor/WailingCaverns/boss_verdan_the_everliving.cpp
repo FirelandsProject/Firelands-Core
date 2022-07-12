@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -42,7 +42,7 @@ public:
         {
             BossAI::JustEngagedWith(who);
 
-            events.ScheduleEvent(EVENT_GRASPING_VINES, Seconds(20),Seconds(35));
+            events.ScheduleEvent(EVENT_GRASPING_VINES, Seconds(20), Seconds(35));
         }
 
         void UpdateAI(uint32 diff) override
@@ -59,12 +59,12 @@ public:
             {
                 switch (eventId)
                 {
-                    case EVENT_GRASPING_VINES:
-                        DoCastVictim(SPELL_GRASPING_VINES);
-                        events.Repeat(Seconds(20), Seconds(35));
-                        break;
-                    default:
-                        break;
+                case EVENT_GRASPING_VINES:
+                    DoCastVictim(SPELL_GRASPING_VINES);
+                    events.Repeat(Seconds(20), Seconds(35));
+                    break;
+                default:
+                    break;
                 }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))

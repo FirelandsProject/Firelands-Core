@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -995,10 +995,10 @@ void WorldSession::HandleWrapItemOpcode(WorldPacket& recvData)
     CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_GIFT);
-    stmt->setUInt32(0, item->GetOwnerGUID().GetCounter());
-    stmt->setUInt32(1, item->GetGUID().GetCounter());
-    stmt->setUInt32(2, item->GetEntry());
-    stmt->setUInt32(3, item->GetUInt32Value(ITEM_FIELD_FLAGS));
+    stmt->SetData(0, item->GetOwnerGUID().GetCounter());
+    stmt->SetData(1, item->GetGUID().GetCounter());
+    stmt->SetData(2, item->GetEntry());
+    stmt->SetData(3, item->GetUInt32Value(ITEM_FIELD_FLAGS));
     trans->Append(stmt);
 
     item->SetEntry(gift->GetEntry());

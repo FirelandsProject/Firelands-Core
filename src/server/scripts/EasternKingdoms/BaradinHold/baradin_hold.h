@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -27,33 +27,33 @@ uint32 const EncounterCount = 3;
 
 enum BHDataTypes
 {
-    DATA_ARGALOTH           = 0,
-    DATA_OCCUTHAR           = 1,
-    DATA_ALIZABAL           = 2
+    DATA_ARGALOTH = 0,
+    DATA_OCCUTHAR = 1,
+    DATA_ALIZABAL = 2
 };
 
 enum BHCreatureIds
 {
     // Bosses
-    BOSS_ARGALOTH           = 47120,
-    BOSS_OCCUTHAR           = 52363,
-    BOSS_ALIZABAL           = 55869,
+    BOSS_ARGALOTH = 47120,
+    BOSS_OCCUTHAR = 52363,
+    BOSS_ALIZABAL = 55869,
 
     // Encounter Related
     /*Argaloth*/
-    NPC_FEL_FLAMES          = 47829,
+    NPC_FEL_FLAMES = 47829,
 
     /*Occu'thar*/
-    NPC_EYE_OF_OCCUTHAR     = 52389,
-    NPC_FOCUS_FIRE_DUMMY    = 52369,
-    NPC_OCCUTHAR_EYE        = 52368
+    NPC_EYE_OF_OCCUTHAR = 52389,
+    NPC_FOCUS_FIRE_DUMMY = 52369,
+    NPC_OCCUTHAR_EYE = 52368
 };
 
 enum BHGameObjectIds
 {
-    GO_ARGALOTH_DOOR        = 207619,
-    GO_OCCUTHAR_DOOR        = 208953,
-    GO_ALIZABAL_DOOR        = 209849
+    GO_ARGALOTH_DOOR = 207619,
+    GO_OCCUTHAR_DOOR = 208953,
+    GO_ALIZABAL_DOOR = 209849
 };
 
 template <class AI, class T>

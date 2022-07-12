@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,12 +30,12 @@ namespace WorldPackets
 
 enum DefenseMessages
 {
-    TEXT_ALL_GUARDS_DEFEATED                = 15017, // (NYI) '|cffffff00All the guards have been defeated!|r'
-    TEXT_HALAA_TAKEN_ALLIANCE               = 15018, // '|cffffff00The Alliance has taken control of Halaa!|r'
-    TEXT_HALAA_TAKEN_HORDE                  = 15019, // '|cffffff00The Horde has taken control of Halaa!|r'
-    TEXT_HALAA_DEFENSELESS                  = 15020, // (NYI) '|cffffff00Halaa is defenseless!|r'
-    TEXT_HALAA_GAINING_CONTROL_HORDE        = 15493, // (NYI) '|cffffff00The Horde is gaining control of Halaa!|r'
-    TEXT_HALAA_GAINING_CONTROL_ALLIANCE     = 15494  // (NYI) '|cffffff00The Alliance is gaining control of Halaa!|r'
+    TEXT_ALL_GUARDS_DEFEATED = 15017, // (NYI) '|cffffff00All the guards have been defeated!|r'
+    TEXT_HALAA_TAKEN_ALLIANCE = 15018, // '|cffffff00The Alliance has taken control of Halaa!|r'
+    TEXT_HALAA_TAKEN_HORDE = 15019, // '|cffffff00The Horde has taken control of Halaa!|r'
+    TEXT_HALAA_DEFENSELESS = 15020, // (NYI) '|cffffff00Halaa is defenseless!|r'
+    TEXT_HALAA_GAINING_CONTROL_HORDE = 15493, // (NYI) '|cffffff00The Horde is gaining control of Halaa!|r'
+    TEXT_HALAA_GAINING_CONTROL_ALLIANCE = 15494  // (NYI) '|cffffff00The Alliance is gaining control of Halaa!|r'
 };
 
 /// @todo "sometimes" set to neutral
@@ -160,74 +160,74 @@ class OutdoorPvPNA;
 
 class OPvPCapturePointNA : public OPvPCapturePoint
 {
-    public:
-        OPvPCapturePointNA(OutdoorPvP* pvp);
+public:
+    OPvPCapturePointNA(OutdoorPvP* pvp);
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void ChangeState() override;
+    void ChangeState() override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-        bool HandleCustomSpell(Player* player, uint32 spellId, GameObject* go) override;
+    bool HandleCustomSpell(Player* player, uint32 spellId, GameObject* go) override;
 
-        int32 HandleOpenGo(Player* player, GameObject* go) override;
+    int32 HandleOpenGo(Player* player, GameObject* go) override;
 
-        uint32 GetAliveGuardsCount();
-        uint32 GetControllingFaction() const;
+    uint32 GetAliveGuardsCount();
+    uint32 GetControllingFaction() const;
 
-    protected:
-        // called when a faction takes control
-        void FactionTakeOver(uint32 team);
+protected:
+    // called when a faction takes control
+    void FactionTakeOver(uint32 team);
 
-        void DeSpawnNPCs();
-        void DeSpawnGOs();
+    void DeSpawnNPCs();
+    void DeSpawnGOs();
 
-        void SpawnNPCsForTeam(uint32 team);
-        void SpawnGOsForTeam(uint32 team);
+    void SpawnNPCsForTeam(uint32 team);
+    void SpawnGOsForTeam(uint32 team);
 
-        void UpdateWyvernRoostWorldState(uint32 roost);
-        void UpdateHalaaWorldState();
+    void UpdateWyvernRoostWorldState(uint32 roost);
+    void UpdateHalaaWorldState();
 
-    private:
-        bool m_capturable;
+private:
+    bool m_capturable;
 
-        uint32 m_GuardsAlive;
+    uint32 m_GuardsAlive;
 
-        uint32 m_ControllingFaction;
+    uint32 m_ControllingFaction;
 
-        uint32 m_WyvernStateNorth;
-        uint32 m_WyvernStateSouth;
-        uint32 m_WyvernStateEast;
-        uint32 m_WyvernStateWest;
+    uint32 m_WyvernStateNorth;
+    uint32 m_WyvernStateSouth;
+    uint32 m_WyvernStateEast;
+    uint32 m_WyvernStateWest;
 
-        uint32 m_HalaaState;
+    uint32 m_HalaaState;
 
-        uint32 m_RespawnTimer;
+    uint32 m_RespawnTimer;
 
-        uint32 m_GuardCheckTimer;
+    uint32 m_GuardCheckTimer;
 };
 
 class OutdoorPvPNA : public OutdoorPvP
 {
-    public:
-        OutdoorPvPNA();
+public:
+    OutdoorPvPNA();
 
-        bool SetupOutdoorPvP() override;
+    bool SetupOutdoorPvP() override;
 
-        void HandlePlayerEnterZone(Player* player, uint32 zone) override;
-        void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
+    void HandlePlayerEnterZone(Player* player, uint32 zone) override;
+    void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-        void SendRemoveWorldStates(Player* player) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        void HandleKillImpl(Player* player, Unit* killed) override;
+    void HandleKillImpl(Player* player, Unit* killed) override;
 
-    private:
-        OPvPCapturePointNA * m_obj;
+private:
+    OPvPCapturePointNA* m_obj;
 };
 
 #endif

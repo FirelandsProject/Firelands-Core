@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,24 +15,24 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-SDName: Sunwell_Plateau
-SD%Complete: 0
-SDComment: Placeholder, Epilogue after Kil'jaeden, Captain Selana Gossips
-EndScriptData */
+ /* ScriptData
+ SDName: Sunwell_Plateau
+ SD%Complete: 0
+ SDComment: Placeholder, Epilogue after Kil'jaeden, Captain Selana Gossips
+ EndScriptData */
 
-/* ContentData
-npc_prophet_velen
-npc_captain_selana
-EndContentData */
+ /* ContentData
+ npc_prophet_velen
+ npc_captain_selana
+ EndContentData */
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 #include "sunwell_plateau.h"
 
-/*######
-## npc_prophet_velen
-######*/
+ /*######
+ ## npc_prophet_velen
+ ######*/
 
 enum ProphetSpeeches
 {

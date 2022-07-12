@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-Name: disable_commandscript
-%Complete: 100
-Comment: All disable related commands
-Category: commandscripts
-EndScriptData */
+ /* ScriptData
+ Name: disable_commandscript
+ %Complete: 100
+ Comment: All disable related commands
+ Category: commandscripts
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "AchievementMgr.h"
@@ -95,101 +95,101 @@ public:
 
         switch (disableType)
         {
-            case DISABLE_TYPE_SPELL:
+        case DISABLE_TYPE_SPELL:
+        {
+            if (!sSpellMgr->GetSpellInfo(entry))
             {
-                if (!sSpellMgr->GetSpellInfo(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NOSPELLFOUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "spell";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NOSPELLFOUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_QUEST:
+            disableTypeStr = "spell";
+            break;
+        }
+        case DISABLE_TYPE_QUEST:
+        {
+            if (!sObjectMgr->GetQuestTemplate(entry))
             {
-                if (!sObjectMgr->GetQuestTemplate(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_QUEST_NOTFOUND, entry);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "quest";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_QUEST_NOTFOUND, entry);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_MAP:
+            disableTypeStr = "quest";
+            break;
+        }
+        case DISABLE_TYPE_MAP:
+        {
+            if (!sMapStore.LookupEntry(entry))
             {
-                if (!sMapStore.LookupEntry(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NOMAPFOUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "map";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NOMAPFOUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_BATTLEGROUND:
+            disableTypeStr = "map";
+            break;
+        }
+        case DISABLE_TYPE_BATTLEGROUND:
+        {
+            if (!sBattlemasterListStore.LookupEntry(entry))
             {
-                if (!sBattlemasterListStore.LookupEntry(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NO_BATTLEGROUND_FOUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "battleground";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NO_BATTLEGROUND_FOUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_ACHIEVEMENT_CRITERIA:
+            disableTypeStr = "battleground";
+            break;
+        }
+        case DISABLE_TYPE_ACHIEVEMENT_CRITERIA:
+        {
+            if (!sAchievementMgr->GetAchievementCriteria(entry))
             {
-                if (!sAchievementMgr->GetAchievementCriteria(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NO_ACHIEVEMENT_CRITERIA_FOUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "achievement criteria";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NO_ACHIEVEMENT_CRITERIA_FOUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_OUTDOORPVP:
+            disableTypeStr = "achievement criteria";
+            break;
+        }
+        case DISABLE_TYPE_OUTDOORPVP:
+        {
+            if (entry > MAX_OUTDOORPVP_TYPES)
             {
-                if (entry > MAX_OUTDOORPVP_TYPES)
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NO_OUTDOOR_PVP_FORUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "outdoorpvp";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NO_OUTDOOR_PVP_FORUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_VMAP:
+            disableTypeStr = "outdoorpvp";
+            break;
+        }
+        case DISABLE_TYPE_VMAP:
+        {
+            if (!sMapStore.LookupEntry(entry))
             {
-                if (!sMapStore.LookupEntry(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NOMAPFOUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "vmap";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NOMAPFOUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            case DISABLE_TYPE_MMAP:
+            disableTypeStr = "vmap";
+            break;
+        }
+        case DISABLE_TYPE_MMAP:
+        {
+            if (!sMapStore.LookupEntry(entry))
             {
-                if (!sMapStore.LookupEntry(entry))
-                {
-                    handler->PSendSysMessage(LANG_COMMAND_NOMAPFOUND);
-                    handler->SetSentErrorMessage(true);
-                    return false;
-                }
-                disableTypeStr = "mmap";
-                break;
+                handler->PSendSysMessage(LANG_COMMAND_NOMAPFOUND);
+                handler->SetSentErrorMessage(true);
+                return false;
             }
-            default:
-                break;
+            disableTypeStr = "mmap";
+            break;
+        }
+        default:
+            break;
         }
 
         WorldDatabasePreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_DISABLES);
-        stmt->setUInt32(0, entry);
-        stmt->setUInt8(1, disableType);
+        stmt->SetData(0, entry);
+        stmt->SetData(1, disableType);
         PreparedQueryResult result = WorldDatabase.Query(stmt);
         if (result)
         {
@@ -199,10 +199,10 @@ public:
         }
 
         stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_DISABLES);
-        stmt->setUInt32(0, entry);
-        stmt->setUInt8(1, disableType);
-        stmt->setUInt16(2, flags);
-        stmt->setString(3, disableComment);
+        stmt->SetData(0, entry);
+        stmt->SetData(1, disableType);
+        stmt->SetData(2, flags);
+        stmt->SetData(3, disableComment);
         WorldDatabase.Execute(stmt);
 
         handler->PSendSysMessage("Add Disabled %s (Id: %u) for reason %s", disableTypeStr.c_str(), entry, disableComment.c_str());
@@ -286,35 +286,35 @@ public:
 
         switch (disableType)
         {
-            case DISABLE_TYPE_SPELL:
-                disableTypeStr = "spell";
-                break;
-            case DISABLE_TYPE_QUEST:
-                disableTypeStr = "quest";
-                break;
-            case DISABLE_TYPE_MAP:
-                disableTypeStr = "map";
-                break;
-            case DISABLE_TYPE_BATTLEGROUND:
-                disableTypeStr = "battleground";
-                break;
-            case DISABLE_TYPE_ACHIEVEMENT_CRITERIA:
-                disableTypeStr = "achievement criteria";
-                break;
-            case DISABLE_TYPE_OUTDOORPVP:
-                disableTypeStr = "outdoorpvp";
-                break;
-            case DISABLE_TYPE_VMAP:
-                disableTypeStr = "vmap";
-                break;
-            case DISABLE_TYPE_MMAP:
-                disableTypeStr = "mmap";
-                break;
+        case DISABLE_TYPE_SPELL:
+            disableTypeStr = "spell";
+            break;
+        case DISABLE_TYPE_QUEST:
+            disableTypeStr = "quest";
+            break;
+        case DISABLE_TYPE_MAP:
+            disableTypeStr = "map";
+            break;
+        case DISABLE_TYPE_BATTLEGROUND:
+            disableTypeStr = "battleground";
+            break;
+        case DISABLE_TYPE_ACHIEVEMENT_CRITERIA:
+            disableTypeStr = "achievement criteria";
+            break;
+        case DISABLE_TYPE_OUTDOORPVP:
+            disableTypeStr = "outdoorpvp";
+            break;
+        case DISABLE_TYPE_VMAP:
+            disableTypeStr = "vmap";
+            break;
+        case DISABLE_TYPE_MMAP:
+            disableTypeStr = "mmap";
+            break;
         }
 
         WorldDatabasePreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_DISABLES);
-        stmt->setUInt32(0, entry);
-        stmt->setUInt8(1, disableType);
+        stmt->SetData(0, entry);
+        stmt->SetData(1, disableType);
         PreparedQueryResult result = WorldDatabase.Query(stmt);
         if (!result)
         {
@@ -324,8 +324,8 @@ public:
         }
 
         stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_DISABLES);
-        stmt->setUInt32(0, entry);
-        stmt->setUInt8(1, disableType);
+        stmt->SetData(0, entry);
+        stmt->SetData(1, disableType);
         WorldDatabase.Execute(stmt);
 
         handler->PSendSysMessage("Remove Disabled %s (Id: %u)", disableTypeStr.c_str(), entry);

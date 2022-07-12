@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,22 +15,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Script Data Start
-SDName: CrystalSongForest
-SDAuthor: Malcrom
-SD%Complete: 99%
-SDComment:
-SDCategory: CrystalsongForest
-Script Data End */
+ /* Script Data Start
+ SDName: CrystalSongForest
+ SDAuthor: Malcrom
+ SD%Complete: 99%
+ SDComment:
+ SDCategory: CrystalsongForest
+ Script Data End */
 
 #include "ScriptMgr.h"
 #include "ObjectAccessor.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
 
-/*******************************************************
- * npc_warmage_violetstand
- *******************************************************/
+ /*******************************************************
+  * npc_warmage_violetstand
+  *******************************************************/
 
 enum Spells
 {
@@ -39,10 +39,10 @@ enum Spells
 
 enum NPCs
 {
-    NPC_TRANSITUS_SHIELD_DUMMY   = 27306,
-    NPC_WARMAGE_SARINA           = 32369,
-    NPC_WARMAGE_HALISTER         = 32371,
-    NPC_WARMAGE_ILSUDRIA         = 32372
+    NPC_TRANSITUS_SHIELD_DUMMY = 27306,
+    NPC_WARMAGE_SARINA = 32369,
+    NPC_WARMAGE_HALISTER = 32371,
+    NPC_WARMAGE_ILSUDRIA = 32372
 };
 
 class npc_warmage_violetstand : public CreatureScript

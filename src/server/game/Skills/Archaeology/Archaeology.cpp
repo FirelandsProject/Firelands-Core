@@ -1,5 +1,5 @@
 /*
-* This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+* This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
 *
 * This program is free software; you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the
@@ -19,7 +19,7 @@
 #include "DBCStore.h"
 #include "Player.h"
 
-Archaeology::Archaeology(Player* player): _player(player)
+Archaeology::Archaeology(Player* player) : _player(player)
 {
     memset(_site, 0, sizeof(SiteData) * CONTINENT_SITES * COUNT_CONT);
 
@@ -75,13 +75,13 @@ void Archaeology::Update()
         RegenerateContinent(CONT_OUTLAND);
     }
 
-    if(SKILL_NORTHREND <= skillValue && _continentState[CONT_NORTHREND] == STATE_NULL)
+    if (SKILL_NORTHREND <= skillValue && _continentState[CONT_NORTHREND] == STATE_NULL)
     {
         _continentState[CONT_NORTHREND] = STATE_USE;
         RegenerateContinent(CONT_NORTHREND);
     }
 
-    if(SKILL_CATA <= skillValue)
+    if (SKILL_CATA <= skillValue)
     {
         _continentState[CONT_EASTERN] = STATE_EXT;
         _continentState[CONT_KALIMDOR] = STATE_EXT;

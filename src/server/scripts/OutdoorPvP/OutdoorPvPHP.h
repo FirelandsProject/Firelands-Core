@@ -1,5 +1,5 @@
 /*
- * This file is part of the FirelandsCore Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -30,12 +30,12 @@ namespace WorldPackets
 
 enum DefenseMessages
 {
-    TEXT_OVERLOOK_TAKEN_ALLIANCE        = 14841, // '|cffffff00The Overlook has been taken by the Alliance!|r'
-    TEXT_OVERLOOK_TAKEN_HORDE           = 14842, // '|cffffff00The Overlook has been taken by the Horde!|r'
-    TEXT_STADIUM_TAKEN_ALLIANCE         = 14843, // '|cffffff00The Stadium has been taken by the Alliance!|r'
-    TEXT_STADIUM_TAKEN_HORDE            = 14844, // '|cffffff00The Stadium has been taken by the Horde!|r'
-    TEXT_BROKEN_HILL_TAKEN_ALLIANCE     = 14845, // '|cffffff00Broken Hill has been taken by the Alliance!|r'
-    TEXT_BROKEN_HILL_TAKEN_HORDE        = 14846, // '|cffffff00Broken Hill has been taken by the Horde!|r'
+    TEXT_OVERLOOK_TAKEN_ALLIANCE = 14841, // '|cffffff00The Overlook has been taken by the Alliance!|r'
+    TEXT_OVERLOOK_TAKEN_HORDE = 14842, // '|cffffff00The Overlook has been taken by the Horde!|r'
+    TEXT_STADIUM_TAKEN_ALLIANCE = 14843, // '|cffffff00The Stadium has been taken by the Alliance!|r'
+    TEXT_STADIUM_TAKEN_HORDE = 14844, // '|cffffff00The Stadium has been taken by the Horde!|r'
+    TEXT_BROKEN_HILL_TAKEN_ALLIANCE = 14845, // '|cffffff00Broken Hill has been taken by the Alliance!|r'
+    TEXT_BROKEN_HILL_TAKEN_HORDE = 14846, // '|cffffff00Broken Hill has been taken by the Horde!|r'
 };
 
 enum OutdoorPvPHPSpells
@@ -65,45 +65,45 @@ enum OutdoorPvPHPWorldStates
 
 class OPvPCapturePointHP : public OPvPCapturePoint
 {
-    public:
-        OPvPCapturePointHP(OutdoorPvP* pvp, OutdoorPvPHPTowerType type);
+public:
+    OPvPCapturePointHP(OutdoorPvP* pvp, OutdoorPvPHPTowerType type);
 
-        void ChangeState() override;
+    void ChangeState() override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-    private:
-        OutdoorPvPHPTowerType m_TowerType;
+private:
+    OutdoorPvPHPTowerType m_TowerType;
 };
 
 class OutdoorPvPHP : public OutdoorPvP
 {
-    public:
-        OutdoorPvPHP();
+public:
+    OutdoorPvPHP();
 
-        bool SetupOutdoorPvP() override;
+    bool SetupOutdoorPvP() override;
 
-        void HandlePlayerEnterZone(Player* player, uint32 zone) override;
-        void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
+    void HandlePlayerEnterZone(Player* player, uint32 zone) override;
+    void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
 
-        bool Update(uint32 diff) override;
+    bool Update(uint32 diff) override;
 
-        void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
+    void FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& /*data*/) override;
 
-        void SendRemoveWorldStates(Player* player) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        void HandleKillImpl(Player* player, Unit* killed) override;
+    void HandleKillImpl(Player* player, Unit* killed) override;
 
-        uint32 GetAllianceTowersControlled() const;
-        void SetAllianceTowersControlled(uint32 count);
+    uint32 GetAllianceTowersControlled() const;
+    void SetAllianceTowersControlled(uint32 count);
 
-        uint32 GetHordeTowersControlled() const;
-        void SetHordeTowersControlled(uint32 count);
+    uint32 GetHordeTowersControlled() const;
+    void SetHordeTowersControlled(uint32 count);
 
-    private:
-        // how many towers are controlled
-        uint32 m_AllianceTowersControlled;
-        uint32 m_HordeTowersControlled;
+private:
+    // how many towers are controlled
+    uint32 m_AllianceTowersControlled;
+    uint32 m_HordeTowersControlled;
 };
 
 #endif
