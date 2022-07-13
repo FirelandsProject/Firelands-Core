@@ -72,10 +72,10 @@ namespace lfg
         if (!guid.IsGroup())
             return;
 
-        SetLeader(guid, ObjectGuid(HighGuid::Player, fields[0].GetUInt32()));
+        SetLeader(guid, ObjectGuid(HighGuid::Player, fields[0].Get<uint32>()));
 
-        uint32 dungeon = fields[17].GetUInt32();
-        uint8 state = fields[18].GetUInt8();
+        uint32 dungeon = fields[17].Get<uint32>();
+        uint8 state = fields[18].Get<uint8>();
 
         if (!dungeon || !state)
             return;
@@ -137,13 +137,13 @@ namespace lfg
         do
         {
             fields = result->Fetch();
-            uint32 dungeonId = fields[0].GetUInt32();
-            uint32 maxLevel = fields[1].GetUInt8();
-            uint32 firstQuestId = fields[2].GetUInt32();
-            uint32 otherQuestId = fields[3].GetUInt32();
-            uint32 shortageQuestId = fields[4].GetUInt32();
-            uint32 completionsPerPeriod = fields[5].GetUInt8();
-            bool dailyReset = fields[6].GetUInt8();
+            uint32 dungeonId = fields[0].Get<uint32>();
+            uint32 maxLevel = fields[1].Get<uint8>();
+            uint32 firstQuestId = fields[2].Get<uint32>();
+            uint32 otherQuestId = fields[3].Get<uint32>();
+            uint32 shortageQuestId = fields[4].Get<uint32>();
+            uint32 completionsPerPeriod = fields[5].Get<uint8>();
+            bool dailyReset = fields[6].Get<uint8>();
 
             if (!GetLFGDungeonEntry(dungeonId))
             {
@@ -231,7 +231,7 @@ namespace lfg
         do
         {
             Field* fields = result->Fetch();
-            uint32 dungeonId = fields[0].GetUInt32();
+            uint32 dungeonId = fields[0].Get<uint32>();
             LFGDungeonContainer::iterator dungeonItr = LfgDungeonStore.find(dungeonId);
             if (dungeonItr == LfgDungeonStore.end())
             {
@@ -240,11 +240,11 @@ namespace lfg
             }
 
             LFGDungeonData& data = dungeonItr->second;
-            data.x = fields[1].GetFloat();
-            data.y = fields[2].GetFloat();
-            data.z = fields[3].GetFloat();
-            data.o = fields[4].GetFloat();
-            data.requiredItemLevel = fields[5].GetUInt16();
+            data.x = fields[1].Get<float>();
+            data.y = fields[2].Get<float>();
+            data.z = fields[3].Get<float>();
+            data.o = fields[4].Get<float>();
+            data.requiredItemLevel = fields[5].Get<uint16>();
 
             ++count;
         } while (result->NextRow());
@@ -994,7 +994,7 @@ namespace lfg
                     dpsPlayers.push_back(guid);
                     break;
                 default:
-                    ASSERT(false, "Invalid LFG role %u", it->second.role);
+                    ASSERT(false, "Invalid LFG role {}", it->second.role);
                     break;
                 }
 

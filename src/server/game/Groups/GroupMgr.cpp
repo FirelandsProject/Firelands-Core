@@ -185,12 +185,12 @@ void GroupMgr::LoadGroups()
         do
         {
             Field* fields = result->Fetch();
-            Group* group = GetGroupByDbStoreId(fields[0].GetUInt32());
+            Group* group = GetGroupByDbStoreId(fields[0].Get<uint32>());
 
             if (group)
-                group->LoadMemberFromDB(fields[1].GetUInt32(), fields[2].GetUInt8(), fields[3].GetUInt8(), fields[4].GetUInt8());
+                group->LoadMemberFromDB(fields[1].Get<uint32>(), fields[2].Get<uint8>(), fields[3].Get<uint8>(), fields[4].Get<uint8>());
             else
-                LOG_ERROR("misc", "GroupMgr::LoadGroups: Consistency failed, can't find group (storage id: %u)", fields[0].GetUInt32());
+                LOG_ERROR("misc", "GroupMgr::LoadGroups: Consistency failed, can't find group (storage id: %u)", fields[0].Get<uint32>());
 
             ++count;
         } while (result->NextRow());
@@ -218,25 +218,25 @@ void GroupMgr::LoadGroups()
         do
         {
             Field* fields = result->Fetch();
-            Group* group = GetGroupByDbStoreId(fields[0].GetUInt32());
+            Group* group = GetGroupByDbStoreId(fields[0].Get<uint32>());
             // group will never be nullptr (we have run consistency sql's before loading)
 
-            MapEntry const* mapEntry = sMapStore.LookupEntry(fields[1].GetUInt16());
+            MapEntry const* mapEntry = sMapStore.LookupEntry(fields[1].Get<uint16>());
             if (!mapEntry || !mapEntry->IsDungeon())
             {
-                LOG_ERROR("sql.sql", "Incorrect entry in group_instance table : no dungeon map %d", fields[1].GetUInt16());
+                LOG_ERROR("sql.sql", "Incorrect entry in group_instance table : no dungeon map %d", fields[1].Get<uint16>());
                 continue;
             }
 
-            uint32 diff = fields[4].GetUInt8();
+            uint32 diff = fields[4].Get<uint8>();
             if (diff >= uint32(mapEntry->IsRaid() ? MAX_RAID_DIFFICULTY : MAX_DUNGEON_DIFFICULTY))
             {
                 LOG_ERROR("sql.sql", "Wrong dungeon difficulty use in group_instance table: %d", diff + 1);
                 diff = 0;                                   // default for both difficaly types
             }
 
-            InstanceSave* save = sInstanceSaveMgr->AddInstanceSave(mapEntry->ID, fields[2].GetUInt32(), Difficulty(diff), time_t(fields[5].GetUInt64()), fields[6].GetUInt64() == 0, true);
-            group->BindToInstance(save, fields[3].GetBool(), true);
+            InstanceSave* save = sInstanceSaveMgr->AddInstanceSave(mapEntry->ID, fields[2].Get<uint32>(), Difficulty(diff), time_t(fields[5].Get<uint64>()), fields[6].Get<uint64>() == 0, true);
+            group->BindToInstance(save, fields[3].Get<bool>(), true);
             ++count;
         } while (result->NextRow());
 

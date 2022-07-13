@@ -100,16 +100,16 @@ void FormationMgr::LoadCreatureFormations()
         fields = result->Fetch();
 
         // Load group member data
-        group_member.LeaderGUID = fields[0].GetUInt32();
-        uint32 memberGUID = fields[1].GetUInt32();
-        group_member.GroupAI = fields[4].GetUInt32();
-        group_member.InversionPoint1 = fields[5].GetInt32();
-        group_member.InversionPoint2 = fields[6].GetInt32();
+        group_member.LeaderGUID = fields[0].Get<uint32>();
+        uint32 memberGUID = fields[1].Get<uint32>();
+        group_member.GroupAI = fields[4].Get<uint32>();
+        group_member.InversionPoint1 = fields[5].Get<int32>();
+        group_member.InversionPoint2 = fields[6].Get<int32>();
         // If creature is group leader we may skip loading of dist/angle
         if (group_member.LeaderGUID != memberGUID)
         {
-            group_member.FollowDistance = fields[2].GetFloat();
-            group_member.FollowAngle = fields[3].GetFloat() * float(M_PI) / 180;
+            group_member.FollowDistance = fields[2].Get<float>();
+            group_member.FollowAngle = fields[3].Get<float>() * float(M_PI) / 180;
         }
         else
         {

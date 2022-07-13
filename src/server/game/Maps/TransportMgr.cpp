@@ -207,7 +207,7 @@ void TransportMgr::LoadTransportTemplates()
     do
     {
         Field* fields = result->Fetch();
-        uint32 entry = fields[0].GetUInt32();
+        uint32 entry = fields[0].Get<uint32>();
         GameObjectTemplate const* goInfo = sObjectMgr->GetGameObjectTemplate(entry);
         if (goInfo == nullptr)
         {
@@ -256,11 +256,11 @@ void TransportMgr::LoadTransportSpawns()
         do
         {
             Field* fields = result->Fetch();
-            ObjectGuid::LowType guid = fields[0].GetUInt32();
-            uint32 entry = fields[1].GetUInt32();
-            uint8 phaseUseFlags = fields[2].GetUInt8();
-            uint32 phaseId = fields[3].GetUInt32();
-            uint32 phaseGroupId = fields[4].GetUInt32();
+            ObjectGuid::LowType guid = fields[0].Get<uint32>();
+            uint32 entry = fields[1].Get<uint32>();
+            uint8 phaseUseFlags = fields[2].Get<uint8>();
+            uint32 phaseId = fields[3].Get<uint32>();
+            uint32 phaseGroupId = fields[4].Get<uint32>();
 
             TransportTemplate const* transportTemplate = GetTransportTemplate(entry);
             if (!transportTemplate)

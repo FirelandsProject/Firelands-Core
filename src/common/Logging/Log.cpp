@@ -25,7 +25,8 @@
 #include "LogMessage.h"
 #include "LogOperation.h"
 #include "Strand.h"
-#include "Util.h"
+#include "StringConvert.h"
+#include "Tokenize.h"
 #include <chrono>
 #include <sstream>
 
@@ -47,7 +48,7 @@ uint8 Log::NextAppenderId()
     return AppenderId++;
 }
 
-Appender* Log::GetAppenderByName(std::string const& name)
+Appender* Log::GetAppenderByName(std::string_view const& name)
 {
     auto it = appenders.begin();
     while (it != appenders.end() && it->second && it->second->getName() != name)
@@ -66,109 +67,113 @@ void Log::CreateAppenderFromConfig(std::string const& appenderName)
     // if type = Console. optional1 = Color
     std::string options = sConfigMgr->GetOption<std::string>(appenderName, "");
 
-    Tokenizer tokens(options, ',');
-    auto iter = tokens.begin();
+    std::vector<std::string_view> tokens = Firelands::Tokenize(options, ',', true);
 
-    size_t size = tokens.size();
+    size_t const size = tokens.size();
+
     std::string name = appenderName.substr(9);
 
     if (size < 2)
     {
-        fprintf(stderr, "Log::CreateAppenderFromConfig: Wrong configuration for appender %s. Config line: %s\n", name.c_str(), options.c_str());
+        fmt::print(stderr, "Log::CreateAppenderFromConfig: Wrong configuration for appender {}. Config line: {}\n", name, options);
         return;
     }
 
     AppenderFlags flags = APPENDER_FLAGS_NONE;
-    AppenderType type = AppenderType(atoi(*iter++));
-    LogLevel level = LogLevel(atoi(*iter++));
+    AppenderType type = AppenderType(Firelands::StringTo<uint8>(tokens[0]).value_or(APPENDER_INVALID));
+    LogLevel level = LogLevel(Firelands::StringTo<uint8>(tokens[1]).value_or(APPENDER_INVALID));
 
     if (level > LOG_LEVEL_FATAL)
     {
-        fprintf(stderr, "Log::CreateAppenderFromConfig: Wrong Log Level %d for appender %s\n", level, name.c_str());
+        fmt::print(stderr, "Log::CreateAppenderFromConfig: Wrong Log Level {} for appender {}\n", level, name);
         return;
     }
 
-    if (size > 2)
-        flags = AppenderFlags(atoi(*iter++));
+    if (size > 2) {
+        if (Optional<uint8> flagsVal = Firelands::StringTo<uint8>(tokens[2]))
+        {
+            flags = AppenderFlags(*flagsVal);
+        }
+        else
+        {
+            fmt::print(stderr, "Log::CreateAppenderFromConfig: Unknown flags '{}' for appender {}\n", tokens[2], name);
+            return;
+        }
+    }
 
     auto factoryFunction = appenderFactory.find(type);
     if (factoryFunction == appenderFactory.end())
     {
-        fprintf(stderr, "Log::CreateAppenderFromConfig: Unknown type %d for appender %s\n", type, name.c_str());
+        fmt::print(stderr, "Log::CreateAppenderFromConfig: Unknown type '{}' for appender {}\n", tokens[0], name);
         return;
     }
 
     try
     {
-        Appender* appender = factoryFunction->second(NextAppenderId(), name, level, flags, std::vector<char const*>(iter, tokens.end()));
+        Appender* appender = factoryFunction->second(NextAppenderId(), name, level, flags, tokens);
         appenders[appender->getId()].reset(appender);
     }
     catch (InvalidAppenderArgsException const& iaae)
     {
-        fprintf(stderr, "%s", iaae.what());
+        fmt::print(stderr, "{}\n", iaae.what());
     }
 }
 
 void Log::CreateLoggerFromConfig(std::string const& appenderName)
 {
-    if (appenderName.empty())
+    if (appenderName.empty()) {
         return;
+    }
 
     LogLevel level = LOG_LEVEL_DISABLED;
-    uint8 type = uint8(-1);
 
     std::string options = sConfigMgr->GetOption<std::string>(appenderName, "");
     std::string name = appenderName.substr(7);
 
     if (options.empty())
     {
-        fprintf(stderr, "Log::CreateLoggerFromConfig: Missing config option Logger.%s\n", name.c_str());
+        fmt::print(stderr, "Log::CreateLoggerFromConfig: Missing config option Logger.{}\n", name);
         return;
     }
 
-    Tokenizer tokens(options, ',');
-    Tokenizer::const_iterator iter = tokens.begin();
+    std::vector<std::string_view> tokens = Firelands::Tokenize(options, ',', true);
 
     if (tokens.size() != 2)
     {
-        fprintf(stderr, "Log::CreateLoggerFromConfig: Wrong config option Logger.%s=%s\n", name.c_str(), options.c_str());
+        fmt::print(stderr, "Log::CreateLoggerFromConfig: Wrong config option Logger.{}={}\n", name, options);
         return;
     }
 
     std::unique_ptr<Logger>& logger = loggers[name];
     if (logger)
     {
-        fprintf(stderr, "Error while configuring Logger %s. Already defined\n", name.c_str());
+        fmt::print(stderr, "Error while configuring Logger {}. Already defined\n", name);
         return;
     }
 
-    level = LogLevel(atoi(*iter++));
+    level = LogLevel(Firelands::StringTo<uint8>(tokens[1]).value_or(APPENDER_INVALID));
     if (level > LOG_LEVEL_FATAL)
     {
-        fprintf(stderr, "Log::CreateLoggerFromConfig: Wrong Log Level %u for logger %s\n", type, name.c_str());
+        fmt::print(stderr, "Log::CreateLoggerFromConfig: Wrong Log Level {} for logger {}\n", name);
         return;
     }
 
-    if (level < lowestLogLevel)
+    if (level < lowestLogLevel) {
         lowestLogLevel = level;
+    }
 
     logger = Firelands::make_unique<Logger>(name, level);
-    //fprintf(stdout, "Log::CreateLoggerFromConfig: Created Logger %s, Level %u\n", name.c_str(), level);
 
-    std::istringstream ss(*iter);
-    std::string str;
-
-    ss >> str;
-    while (ss)
+    for (std::string_view appendName : Firelands::Tokenize(tokens[1], ' ', false))
     {
-        if (Appender* appender = GetAppenderByName(str))
+        if (Appender* appender = GetAppenderByName(appendName))
         {
             logger->addAppender(appender->getId(), appender);
-            //fprintf(stdout, "Log::CreateLoggerFromConfig: Added Appender %s to Logger %s\n", appender->getName().c_str(), name.c_str());
         }
         else
-            fprintf(stderr, "Error while configuring Appender %s in Logger %s. Appender does not exist", str.c_str(), name.c_str());
-        ss >> str;
+        {
+            fmt::print(stderr, "Error while configuring Appender {} in Logger {}. Appender does not exist\n", appendName, name);
+        }
     }
 }
 
@@ -188,12 +193,12 @@ void Log::ReadLoggersFromConfig()
     // Bad config configuration, creating default config
     if (loggers.find(LOGGER_ROOT) == loggers.end())
     {
-        fprintf(stderr, "Wrong Loggers configuration. Review your Logger config section.\n"
+        fmt::print(stderr, "Wrong Loggers configuration. Review your Logger config section.\n"
             "Creating default loggers [root (Error), server (Info)] to console\n");
 
         Close(); // Clean any Logger or Appender created
 
-        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), "Console", LOG_LEVEL_DEBUG, APPENDER_FLAGS_NONE, std::vector<char const*>());
+        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), "Console", LOG_LEVEL_DEBUG, APPENDER_FLAGS_NONE, std::vector<std::string_view>());
         appenders[appender->getId()].reset(appender);
 
         Logger* rootLogger = new Logger(LOGGER_ROOT, LOG_LEVEL_ERROR);
@@ -266,7 +271,7 @@ std::string Log::GetTimestampStr()
     //       HH     hour (2 digits 00-23)
     //       MM     minutes (2 digits 00-59)
     //       SS     seconds (2 digits 00-59)
-    return Firelands::StringFormat("%04d-%02d-%02d_%02d-%02d-%02d",
+    return Firelands::StringFormat("{}4d-{}2d-{}2d_{}2d-{}2d-{}2d",
         aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
 }
 

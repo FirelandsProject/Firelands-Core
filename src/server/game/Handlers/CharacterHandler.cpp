@@ -56,6 +56,8 @@
 #include "World.h"
 #include "WorldPacket.h"
 #include "boost/asio/ip/address.hpp"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 class LoginQueryHolder : public CharacterDatabaseQueryHolder
 {
@@ -460,7 +462,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
                 if (result)
                 {
                     Field* fields = result->Fetch();
-                    acctCharCount = uint64(fields[0].GetDouble());
+                    acctCharCount = uint64(fields[0].Get<double>());
                 }
 
                 if (acctCharCount >= sWorld->getIntConfig(CONFIG_CHARACTERS_PER_ACCOUNT))
@@ -478,7 +480,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
                         if (result)
                         {
                             Field* fields = result->Fetch();
-                            createInfo->CharCount = uint8(fields[0].GetUInt64()); // SQL's COUNT() returns uint64 but it will always be less than uint8.Max
+                            createInfo->CharCount = uint8(fields[0].Get<uint64>()); // SQL's COUNT() returns uint64 but it will always be less than uint8.Max
 
                             if (createInfo->CharCount >= sWorld->getIntConfig(CONFIG_CHARACTERS_PER_REALM))
                             {
@@ -505,11 +507,11 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
                                 uint32 freeDeathKnightSlots = sWorld->getIntConfig(CONFIG_DEATH_KNIGHTS_PER_REALM);
 
                                 Field* field = result->Fetch();
-                                uint8 accRace = field[1].GetUInt8();
+                                uint8 accRace = field[1].Get<uint8>();
 
                                 if (checkDeathKnightReqs)
                                 {
-                                    uint8 accClass = field[2].GetUInt8();
+                                    uint8 accClass = field[2].Get<uint8>();
                                     if (accClass == CLASS_DEATH_KNIGHT)
                                     {
                                         if (freeDeathKnightSlots > 0)
@@ -524,7 +526,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
 
                                     if (!hasDeathKnightReqLevel)
                                     {
-                                        uint8 accLevel = field[0].GetUInt8();
+                                        uint8 accLevel = field[0].Get<uint8>();
                                         if (accLevel >= deathKnightReqLevel)
                                             hasDeathKnightReqLevel = true;
                                     }
@@ -553,14 +555,14 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
                                         break;
 
                                     field = result->Fetch();
-                                    accRace = field[1].GetUInt8();
+                                    accRace = field[1].Get<uint8>();
 
                                     if (!haveSameRace)
                                         haveSameRace = createInfo->Race == accRace;
 
                                     if (checkDeathKnightReqs)
                                     {
-                                        uint8 acc_class = field[2].GetUInt8();
+                                        uint8 acc_class = field[2].Get<uint8>();
                                         if (acc_class == CLASS_DEATH_KNIGHT)
                                         {
                                             if (freeDeathKnightSlots > 0)
@@ -575,7 +577,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
 
                                         if (!hasDeathKnightReqLevel)
                                         {
-                                            uint8 acc_level = field[0].GetUInt8();
+                                            uint8 acc_level = field[0].Get<uint8>();
                                             if (acc_level >= deathKnightReqLevel)
                                                 hasDeathKnightReqLevel = true;
                                         }
@@ -826,8 +828,8 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder const& holder)
     if (PreparedQueryResult resultGuild = holder.GetPreparedResult(PLAYER_LOGIN_QUERY_LOAD_GUILD))
     {
         Field* fields = resultGuild->Fetch();
-        pCurrChar->SetInGuild(fields[0].GetUInt32());
-        pCurrChar->SetGuildRank(fields[1].GetUInt8());
+        pCurrChar->SetInGuild(fields[0].Get<uint32>());
+        pCurrChar->SetGuildRank(fields[1].Get<uint8>());
         if (Guild* guild = sGuildMgr->GetGuildById(pCurrChar->GetGuildId()))
         {
             pCurrChar->SetGuildLevel(guild->GetLevel());
@@ -1250,9 +1252,9 @@ void WorldSession::HandleCharRenameCallback(std::shared_ptr<CharacterRenameInfo>
 
     Field* fields = result->Fetch();
 
-    ObjectGuid::LowType guidLow = fields[0].GetUInt32();
-    std::string oldName = fields[1].GetString();
-    uint16 atLoginFlags = fields[2].GetUInt16();
+    ObjectGuid::LowType guidLow = fields[0].Get<uint32>();
+    std::string oldName = fields[1].Get<std::string>();
+    uint16 atLoginFlags = fields[2].Get<uint16>();
 
     if (!(atLoginFlags & AT_LOGIN_RENAME))
     {
@@ -1494,11 +1496,11 @@ void WorldSession::HandleCharCustomizeCallback(std::shared_ptr<CharacterCustomiz
     }
 
     Field* fields = result->Fetch();
-    std::string oldName = fields[0].GetString();
-    uint8 plrRace = fields[1].GetUInt8();
-    uint8 plrClass = fields[2].GetUInt8();
-    uint8 plrGender = fields[3].GetUInt8();
-    uint16 atLoginFlags = fields[4].GetUInt16();
+    std::string oldName = fields[0].Get<std::string>();
+    uint8 plrRace = fields[1].Get<uint8>();
+    uint8 plrClass = fields[2].Get<uint8>();
+    uint8 plrGender = fields[3].Get<uint8>();
+    uint16 atLoginFlags = fields[4].Get<uint16>();
 
     if (!Player::ValidateAppearance(plrRace, plrClass, plrGender, customizeInfo->HairStyle, customizeInfo->HairColor, customizeInfo->Face, customizeInfo->FacialHair, customizeInfo->Skin, true))
     {
@@ -1769,8 +1771,8 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
     }
 
     Field* fields = result->Fetch();
-    uint32 atLoginFlags = fields[0].GetUInt16();
-    std::string knownTitlesStr = fields[1].GetString();
+    uint32 atLoginFlags = fields[0].Get<uint16>();
+    std::string knownTitlesStr = fields[1].Get<std::string>();
 
     uint32 usedLoginFlag = (factionChangeInfo->FactionChange ? AT_LOGIN_CHANGE_FACTION : AT_LOGIN_CHANGE_RACE);
     if (!(atLoginFlags & usedLoginFlag))
@@ -2136,7 +2138,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
                 if (PreparedQueryResult reputationResult = CharacterDatabase.Query(stmt))
                 {
                     fields = reputationResult->Fetch();
-                    int32 oldDBRep = fields[0].GetInt32();
+                    int32 oldDBRep = fields[0].Get<int32>();
                     FactionEntry const* factionEntry = sFactionStore.LookupEntry(oldReputation);
 
                     // old base reputation
@@ -2168,7 +2170,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
             {
                 uint32 const ktcount = KNOWN_TITLES_SIZE * 2;
                 uint32 knownTitles[ktcount];
-                Tokenizer tokens(knownTitlesStr, ' ', ktcount);
+                std::vector<std::string_view> tokens = Firelands::Tokenize(knownTitlesStr, ' ', false);
 
                 if (tokens.size() != ktcount)
                 {
@@ -2176,8 +2178,9 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
                     return;
                 }
 
-                for (uint32 index = 0; index < ktcount; ++index)
-                    knownTitles[index] = atoul(tokens[index]);
+                for (uint32 index = 0; index < ktcount; ++index) {
+                    knownTitles[index] = *Firelands::StringTo<uint32>(tokens[index]);
+                }
 
                 for (std::map<uint32, uint32>::const_iterator it = sObjectMgr->FactionChangeTitles.begin(); it != sObjectMgr->FactionChangeTitles.end(); ++it)
                 {

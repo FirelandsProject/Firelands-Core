@@ -91,6 +91,7 @@
 #include "WorldSession.h"
 #include "WorldStateMgr.h"
 #include "WorldSocket.h"
+#include "Util.h"
 
 #include <boost/asio/ip/address.hpp>
 #include <boost/algorithm/string.hpp>
@@ -2364,10 +2365,10 @@ void World::LoadAutobroadcasts()
     do
     {
         Field* fields = result->Fetch();
-        uint8 id = fields[0].GetUInt8();
+        uint8 id = fields[0].Get<uint8>();
 
-        m_Autobroadcasts[id] = fields[2].GetString();
-        m_AutobroadcastsWeights[id] = fields[1].GetUInt8();
+        m_Autobroadcasts[id] = fields[2].Get<std::string>();
+        m_AutobroadcastsWeights[id] = fields[1].Get<uint8>();
 
         ++count;
     } while (result->NextRow());
@@ -2854,7 +2855,7 @@ BanReturn World::BanAccount(BanMode mode, std::string const& nameOrIP, uint32 du
     do
     {
         Field* fieldsAccount = resultAccounts->Fetch();
-        uint32 account = fieldsAccount[0].GetUInt32();
+        uint32 account = fieldsAccount[0].Get<uint32>();
 
         if (mode != BAN_IP)
         {
@@ -3222,8 +3223,8 @@ void World::_UpdateRealmCharCount(PreparedQueryResult resultCharCount)
     if (resultCharCount)
     {
         Field* fields = resultCharCount->Fetch();
-        uint32 accountId = fields[0].GetUInt32();
-        uint8 charCount = uint8(fields[1].GetUInt64());
+        uint32 accountId = fields[0].Get<uint32>();
+        uint8 charCount = uint8(fields[1].Get<uint64>());
 
         LoginDatabaseTransaction trans = LoginDatabase.BeginTransaction();
 
@@ -3485,7 +3486,7 @@ void World::LoadDBAllowedSecurityLevel()
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
     if (result)
-        SetPlayerSecurityLimit(AccountTypes(result->Fetch()->GetUInt8()));
+        SetPlayerSecurityLimit(AccountTypes(result->Fetch()->Get<uint8>()));
 }
 
 void World::SetPlayerSecurityLimit(AccountTypes _sec)
@@ -3552,9 +3553,9 @@ void World::LoadDBVersion()
     {
         Field* fields = result->Fetch();
 
-        m_DBVersion = fields[0].GetString();
+        m_DBVersion = fields[0].Get<std::string>();
         // will be overwrite by config values if different and non-0
-        m_int_configs[CONFIG_CLIENTCACHE_VERSION] = fields[1].GetUInt32();
+        m_int_configs[CONFIG_CLIENTCACHE_VERSION] = fields[1].Get<uint32>();
     }
 
     if (m_DBVersion.empty())
@@ -3590,7 +3591,7 @@ void World::LoadWorldStates()
     do
     {
         Field* fields = result->Fetch();
-        m_worldstates[fields[0].GetUInt32()] = fields[1].GetUInt32();
+        m_worldstates[fields[0].Get<uint32>()] = fields[1].Get<uint32>();
         ++count;
     } while (result->NextRow());
 

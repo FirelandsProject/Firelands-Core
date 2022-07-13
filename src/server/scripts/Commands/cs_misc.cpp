@@ -54,6 +54,7 @@
 #include "WeatherMgr.h"
 #include "World.h"
 #include "WorldSession.h"
+#include "Util.h"
 
 class misc_commandscript : public CommandScript
 {
@@ -127,13 +128,13 @@ public:
             if (result)
             {
                 Field* fields = result->Fetch();
-                uint32 horde_victories = fields[1].GetUInt32();
+                uint32 horde_victories = fields[1].Get<uint32>();
 
                 if (!(result->NextRow()))
                     return false;
 
                 fields = result->Fetch();
-                uint32 alliance_victories = fields[1].GetUInt32();
+                uint32 alliance_victories = fields[1].Get<uint32>();
 
                 handler->PSendSysMessage(LANG_PVPSTATS, alliance_victories, horde_victories);
             }
@@ -1647,17 +1648,17 @@ public:
                 return false;
 
             Field* fields = result->Fetch();
-            totalPlayerTime = fields[0].GetUInt32();
-            level = fields[1].GetUInt8();
-            money = fields[2].GetUInt64();
-            accId = fields[3].GetUInt32();
-            raceid = fields[4].GetUInt8();
-            classid = fields[5].GetUInt8();
-            mapId = fields[6].GetUInt16();
-            areaId = fields[7].GetUInt16();
-            gender = fields[8].GetUInt8();
-            uint32 health = fields[9].GetUInt32();
-            uint32 playerFlags = fields[10].GetUInt32();
+            totalPlayerTime = fields[0].Get<uint32>();
+            level = fields[1].Get<uint8>();
+            money = fields[2].Get<uint64>();
+            accId = fields[3].Get<uint32>();
+            raceid = fields[4].Get<uint8>();
+            classid = fields[5].Get<uint8>();
+            mapId = fields[6].Get<uint16>();
+            areaId = fields[7].Get<uint16>();
+            gender = fields[8].Get<uint8>();
+            uint32 health = fields[9].Get<uint32>();
+            uint32 playerFlags = fields[10].Get<uint32>();
 
             if (!health || playerFlags & PLAYER_FLAGS_GHOST)
                 alive = handler->GetFirelandsString(LANG_NO);
@@ -1674,17 +1675,17 @@ public:
         if (result)
         {
             Field* fields = result->Fetch();
-            userName = fields[0].GetString();
-            security = fields[1].GetUInt8();
+            userName = fields[0].Get<std::string>();
+            security = fields[1].Get<uint8>();
 
             // Only fetch these fields if commander has sufficient rights)
             if (handler->HasPermission(rbac::RBAC_PERM_COMMANDS_PINFO_CHECK_PERSONAL_DATA) && // RBAC Perm. 48, Role 39
                 (!handler->GetSession() || handler->GetSession()->GetSecurity() >= AccountTypes(security)))
             {
-                eMail = fields[2].GetString();
-                regMail = fields[3].GetString();
-                lastIp = fields[4].GetString();
-                lastLogin = fields[5].GetString();
+                eMail = fields[2].Get<std::string>();
+                regMail = fields[3].Get<std::string>();
+                lastIp = fields[4].Get<std::string>();
+                lastLogin = fields[5].Get<std::string>();
 
                 if (IpLocationRecord const* location = sIPLocation->GetLocationRecord(lastIp))
                 {
@@ -1700,12 +1701,12 @@ public:
                 lastIp = handler->GetFirelandsString(LANG_UNAUTHORIZED);
                 lastLogin = handler->GetFirelandsString(LANG_UNAUTHORIZED);
             }
-            muteTime = fields[6].GetUInt64();
-            muteReason = fields[7].GetString();
-            muteBy = fields[8].GetString();
-            failedLogins = fields[9].GetUInt32();
-            locked = fields[10].GetUInt8();
-            OS = fields[11].GetString();
+            muteTime = fields[6].Get<uint64>();
+            muteReason = fields[7].Get<std::string>();
+            muteBy = fields[8].Get<std::string>();
+            failedLogins = fields[9].Get<uint32>();
+            locked = fields[10].Get<uint8>();
+            OS = fields[11].Get<std::string>();
         }
 
         // Creates a chat link to the character. Returns nameLink
@@ -1726,9 +1727,9 @@ public:
         if (result2)
         {
             Field* fields = result2->Fetch();
-            banTime = int64(fields[1].GetUInt64() ? 0 : fields[0].GetUInt32());
-            bannedBy = fields[2].GetString();
-            banReason = fields[3].GetString();
+            banTime = int64(fields[1].Get<uint64>() ? 0 : fields[0].Get<uint32>());
+            bannedBy = fields[2].Get<std::string>();
+            banReason = fields[3].Get<std::string>();
         }
 
 
@@ -1741,8 +1742,8 @@ public:
         if (result4)
         {
             Field* fields = result4->Fetch();
-            xp = fields[0].GetUInt32(); // Used for "current xp" output and "%u XP Left" calculation
-            ObjectGuid::LowType gguid = fields[1].GetUInt32(); // We check if have a guild for the person, so we might not require to query it at all
+            xp = fields[0].Get<uint32>(); // Used for "current xp" output and "%u XP Left" calculation
+            ObjectGuid::LowType gguid = fields[1].Get<uint32>(); // We check if have a guild for the person, so we might not require to query it at all
             xptotal = sObjectMgr->GetXPForLevel(level);
 
             if (gguid != 0)
@@ -1754,12 +1755,12 @@ public:
                 if (result5)
                 {
                     Field* fields5 = result5->Fetch();
-                    guildId = fields5[0].GetUInt32();
-                    guildName = fields5[1].GetString();
-                    guildRank = fields5[2].GetString();
-                    guildRankId = fields5[3].GetUInt8();
-                    note = fields5[4].GetString();
-                    officeNote = fields5[5].GetString();
+                    guildId = fields5[0].Get<uint32>();
+                    guildName = fields5[1].Get<std::string>();
+                    guildRank = fields5[2].Get<std::string>();
+                    guildRankId = fields5[3].Get<uint8>();
+                    note = fields5[4].Get<std::string>();
+                    officeNote = fields5[5].Get<std::string>();
                 }
             }
         }
@@ -1848,7 +1849,7 @@ public:
         }
 
         // Output XX. LANG_PINFO_CHR_PLAYEDTIME
-        handler->PSendSysMessage(LANG_PINFO_CHR_PLAYEDTIME, (secsToTimeString(totalPlayerTime, true, true)).c_str());
+        handler->PSendSysMessage(LANG_PINFO_CHR_PLAYEDTIME, (secsToTimeString(uint64(totalPlayerTime), true)).c_str());
 
         // Mail Data - an own query, because it may or may not be useful.
         // SQL: "SELECT SUM(CASE WHEN (checked & 1) THEN 1 ELSE 0 END) AS 'readmail', COUNT(*) AS 'totalmail' FROM mail WHERE `receiver` = ?"
@@ -1858,8 +1859,8 @@ public:
         if (result6)
         {
             Field* fields = result6->Fetch();
-            uint32 readmail = uint32(fields[0].GetDouble());
-            uint32 totalmail = uint32(fields[1].GetUInt64());
+            uint32 readmail = uint32(fields[0].Get<double>());
+            uint32 totalmail = uint32(fields[1].Get<uint64>());
 
             // Output XXI. LANG_INFO_CHR_MAILS if at least one mail is given
             if (totalmail >= 1)
@@ -2084,7 +2085,7 @@ public:
             Field* fields = result->Fetch();
 
             // we have to manually set the string for mutedate
-            time_t sqlTime = fields[0].GetUInt32();
+            time_t sqlTime = fields[0].Get<uint32>();
             tm timeinfo;
             char buffer[80];
 
@@ -2092,7 +2093,7 @@ public:
             localtime_r(&sqlTime, &timeinfo);
             strftime(buffer, sizeof(buffer), "%Y-%m-%d %I:%M%p", &timeinfo);
 
-            handler->PSendSysMessage(LANG_COMMAND_MUTEHISTORY_OUTPUT, buffer, fields[1].GetUInt32(), fields[2].GetCString(), fields[3].GetCString());
+            handler->PSendSysMessage(LANG_COMMAND_MUTEHISTORY_OUTPUT, buffer, fields[1].Get<uint32>(), fields[2].Get<std::string>(), fields[3].Get<std::string>());
         } while (result->NextRow());
         return true;
     }
@@ -2580,8 +2581,8 @@ public:
         do
         {
             Field* fields = result->Fetch();
-            std::string player = fields[0].GetString();
-            int32 remaintime = fields[1].GetInt32();
+            std::string player = fields[0].Get<std::string>();
+            int32 remaintime = fields[1].Get<int32>();
             // Save the frozen player to update remaining time in case of future .listfreeze uses
             // before the frozen state expires
             if (Player* frozen = ObjectAccessor::FindPlayerByName(player))

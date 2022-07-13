@@ -18,23 +18,27 @@
 #include "AppenderConsole.h"
 #include "LogMessage.h"
 #include "Util.h"
-#include <sstream>
+#include "SmartEnum.h"
+#include "StringConvert.h"
+#include "StringFormat.h"
+#include "Tokenize.h"
 
 #if FIRELANDS_PLATFORM == FIRELANDS_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
 
-AppenderConsole::AppenderConsole(uint8 id, std::string const& name, LogLevel level, AppenderFlags flags, std::vector<char const*> extraArgs)
+AppenderConsole::AppenderConsole(uint8 id, std::string const& name, LogLevel level, AppenderFlags flags, std::vector<std::string_view> const& extraArgs)
     : Appender(id, name, level, flags), _colored(false)
 {
     for (uint8 i = 0; i < NUM_ENABLED_LOG_LEVELS; ++i)
         _colors[i] = ColorTypes(MaxColors);
 
-    if (!extraArgs.empty())
-        InitColors(extraArgs[0]);
+    if (!extraArgs.empty()) {
+        InitColors(name, extraArgs[0]);
+    }
 }
 
-void AppenderConsole::InitColors(std::string const& str)
+void AppenderConsole::InitColors(std::string const& name, std::string_view const& str)
 {
     if (str.empty())
     {
@@ -42,23 +46,25 @@ void AppenderConsole::InitColors(std::string const& str)
         return;
     }
 
-    int color[NUM_ENABLED_LOG_LEVELS];
-
-    std::istringstream ss(str);
-
-    for (uint8 i = 0; i < NUM_ENABLED_LOG_LEVELS; ++i)
+    std::vector<std::string_view> colorStrs = Firelands::Tokenize(str, ' ', false);
+    if (colorStrs.size() != NUM_ENABLED_LOG_LEVELS)
     {
-        ss >> color[i];
-
-        if (!ss)
-            return;
-
-        if (color[i] < 0 || color[i] >= MaxColors)
-            return;
+        throw InvalidAppenderArgsException(Firelands::StringFormatFmt("Log::CreateAppenderFromConfig: Invalid color data '{}' for console appender {} (expected {} entries, got {})",
+            str, name, NUM_ENABLED_LOG_LEVELS, colorStrs.size()));
     }
 
     for (uint8 i = 0; i < NUM_ENABLED_LOG_LEVELS; ++i)
-        _colors[i] = ColorTypes(color[i]);
+    {
+        if (Optional<uint8> color = Firelands::StringTo<uint8>(colorStrs[i]); color && EnumUtils::IsValid<ColorTypes>(*color))
+        {
+            _colors[i] = static_cast<ColorTypes>(*color);
+        }
+        else
+        {
+            throw InvalidAppenderArgsException(Firelands::StringFormatFmt("Log::CreateAppenderFromConfig: Invalid color '{}' for log level {} on console appender {}",
+                colorStrs[i], EnumUtils::ToTitle(static_cast<LogLevel>(i)), name));
+        }
+    }
 
     _colored = true;
 }
@@ -148,7 +154,7 @@ FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
 
     fprintf((stdout_stream ? stdout : stderr), "\x1b[%d%sm", UnixColorFG[color], (color >= YELLOW && color < MaxColors ? ";1" : ""));
 #endif
-}
+    }
 
 void AppenderConsole::ResetColor(bool stdout_stream)
 {

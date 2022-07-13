@@ -65,7 +65,7 @@ void LootItemStorage::LoadStorageFromDB()
         {
             Field* fields = result->Fetch();
 
-            uint32 key = fields[0].GetUInt32();
+            uint32 key = fields[0].Get<uint32>();
             auto itr = _lootItemStore.find(key);
             if (itr == _lootItemStore.end())
             {
@@ -78,16 +78,16 @@ void LootItemStorage::LoadStorageFromDB()
             StoredLootContainer& storedContainer = itr->second;
 
             LootItem lootItem;
-            lootItem.itemid = fields[1].GetUInt32();
-            lootItem.count = fields[2].GetUInt32();
-            lootItem.follow_loot_rules = fields[3].GetBool();
-            lootItem.freeforall = fields[4].GetBool();
-            lootItem.is_blocked = fields[5].GetBool();
-            lootItem.is_counted = fields[6].GetBool();
-            lootItem.is_underthreshold = fields[7].GetBool();
-            lootItem.needs_quest = fields[8].GetBool();
-            lootItem.randomPropertyId = { ItemRandomEnchantmentType(fields[9].GetUInt8()), fields[10].GetUInt32() };
-            lootItem.randomSuffix = fields[11].GetUInt32();
+            lootItem.itemid = fields[1].Get<uint32>();
+            lootItem.count = fields[2].Get<uint32>();
+            lootItem.follow_loot_rules = fields[3].Get<bool>();
+            lootItem.freeforall = fields[4].Get<bool>();
+            lootItem.is_blocked = fields[5].Get<bool>();
+            lootItem.is_counted = fields[6].Get<bool>();
+            lootItem.is_underthreshold = fields[7].Get<bool>();
+            lootItem.needs_quest = fields[8].Get<bool>();
+            lootItem.randomPropertyId = { ItemRandomEnchantmentType(fields[9].Get<uint8>()), fields[10].Get<uint32>() };
+            lootItem.randomSuffix = fields[11].Get<uint32>();
 
             storedContainer.AddLootItem(lootItem, trans);
 
@@ -108,7 +108,7 @@ void LootItemStorage::LoadStorageFromDB()
         {
             Field* fields = result->Fetch();
 
-            uint32 key = fields[0].GetUInt32();
+            uint32 key = fields[0].Get<uint32>();
             auto itr = _lootItemStore.find(key);
             if (itr == _lootItemStore.end())
             {
@@ -119,7 +119,7 @@ void LootItemStorage::LoadStorageFromDB()
             }
 
             StoredLootContainer& storedContainer = itr->second;
-            storedContainer.AddMoney(fields[1].GetUInt32(), trans);
+            storedContainer.AddMoney(fields[1].Get<uint32>(), trans);
 
             ++count;
         } while (result->NextRow());

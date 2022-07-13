@@ -34,6 +34,7 @@
 #include "RBAC.h"
 #include "ReputationMgr.h"
 #include "WorldSession.h"
+#include "Util.h"
 
 class modify_commandscript : public CommandScript
 {
@@ -560,7 +561,7 @@ public:
 
         int64 moneyToAdd = 0;
         if (strchr(args, 'g') || strchr(args, 's') || strchr(args, 'c'))
-            moneyToAdd = MoneyStringToMoney(std::string(args));
+            moneyToAdd = int64(*MoneyStringToMoney(std::string_view(args)));
         else
             moneyToAdd = atol(args);
 

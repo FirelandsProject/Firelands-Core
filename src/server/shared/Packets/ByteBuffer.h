@@ -2,13 +2,13 @@
  * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by the
+ * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
@@ -75,15 +75,17 @@ public:
     ByteBuffer()
     {
         _storage.reserve(DEFAULT_SIZE);
+        _bitpos = 8;
+        _curbitval=0;
     }
 
-    ByteBuffer(size_t reserve) : _rpos(0), _wpos(0)
+    ByteBuffer(size_t reserve) : _rpos(0), _wpos(8), _bitpos(8),_curbitval(0)
     {
         _storage.reserve(reserve);
     }
 
     ByteBuffer(ByteBuffer&& buf) noexcept :
-        _rpos(buf._rpos), _wpos(buf._wpos), _storage(std::move(buf._storage))
+        _rpos(buf._rpos), _wpos(buf._wpos), _bitpos(buf._bitpos),_curbitval(0), _storage(std::move(buf._storage))
     {
         buf._rpos = 0;
         buf._wpos = 0;
@@ -131,6 +133,74 @@ public:
         static_assert(std::is_fundamental<T>::value, "append(compound)");
         EndianConvert(value);
         append((uint8*)&value, sizeof(value));
+    }
+
+    void FlushBits()
+    {
+        if (_bitpos == 8)
+            return;
+
+        _bitpos = 8;
+
+        append((uint8*)&_curbitval, sizeof(uint8));
+        _curbitval = 0;
+    }
+
+    bool WriteBit(uint32 bit)
+    {
+        --_bitpos;
+        if (bit)
+            _curbitval |= (1 << (_bitpos));
+
+        if (_bitpos == 0)
+        {
+            _bitpos = 8;
+            append((uint8*)&_curbitval, sizeof(_curbitval));
+            _curbitval = 0;
+        }
+
+        return (bit != 0);
+    }
+
+    bool ReadBit()
+    {
+        ++_bitpos;
+        if (_bitpos > 7)
+        {
+            _bitpos = 0;
+            _curbitval = read<uint8>();
+        }
+
+        return ((_curbitval >> (7 - _bitpos)) & 1) != 0;
+    }
+
+    template <typename T> void WriteBits(T value, size_t bits)
+    {
+        for (int32 i = bits - 1; i >= 0; --i)
+            WriteBit((value >> i) & 1);
+    }
+
+    uint32 ReadBits(size_t bits)
+    {
+        uint32 value = 0;
+        for (int32 i = bits - 1; i >= 0; --i)
+            if (ReadBit())
+                value |= (1 << (i));
+
+        return value;
+    }
+
+    // Reads a byte (if needed) in-place
+    void ReadByteSeq(uint8& b)
+    {
+        if (b != 0)
+            b ^= read<uint8>();
+    }
+
+    void WriteByteSeq(uint8 b)
+    {
+        if (b != 0)
+            append<uint8>(b ^ 1);
     }
 
     template <typename T>
@@ -528,7 +598,8 @@ public:
     void hexlike() const;
 
 protected:
-    size_t _rpos{ 0 }, _wpos{ 0 };
+    size_t _rpos{ 0 }, _wpos{ 0 }, _bitpos{ 8 };
+    uint8 _curbitval;
     std::vector<uint8> _storage;
 };
 

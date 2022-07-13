@@ -267,7 +267,7 @@ void PlayerDump::InitializeTables()
         int32 i = 0;
         do
         {
-            std::string columnName = (*result)[0].GetString();
+            std::string columnName = (*result)[0].Get<std::string>();
             t.FieldIndices.emplace(columnName, i++);
 
             TableField f;
@@ -544,7 +544,7 @@ inline void AppendTableDump(StringTransaction& trans, TableStruct const& tableSt
 
         for (uint32 i = 0; i < fieldSize;)
         {
-            char const* cString = fields[i].GetCString();
+            char const* cString = fields[i].Get<std::string>();
             ++i;
 
             // null pointer -> we have null
@@ -620,19 +620,19 @@ void PlayerDumpWriter::PopulateGuids(ObjectGuid::LowType guid)
             switch (baseTable.StoredType)
             {
             case GUID_TYPE_ITEM:
-                if (ObjectGuid::LowType guid = (*result)[0].GetUInt32())
+                if (ObjectGuid::LowType guid = (*result)[0].Get<uint32>())
                     _items.insert(guid);
                 break;
             case GUID_TYPE_MAIL:
-                if (ObjectGuid::LowType guid = (*result)[0].GetUInt32())
+                if (ObjectGuid::LowType guid = (*result)[0].Get<uint32>())
                     _mails.insert(guid);
                 break;
             case GUID_TYPE_PET:
-                if (ObjectGuid::LowType guid = (*result)[0].GetUInt32())
+                if (ObjectGuid::LowType guid = (*result)[0].Get<uint32>())
                     _pets.insert(guid);
                 break;
             case GUID_TYPE_EQUIPMENT_SET:
-                if (uint64 eqSetId = (*result)[0].GetUInt64())
+                if (uint64 eqSetId = (*result)[0].Get<uint64>())
                     _itemSets.insert(eqSetId);
                 break;
             default:
@@ -687,7 +687,7 @@ bool PlayerDumpWriter::AppendTable(StringTransaction& trans, ObjectGuid::LowType
             int32 index = GetColumnIndexByName(tableStruct, "deleteInfos_Account");
             ASSERT(index != -1); // checked at startup
 
-            if ((*result)[index].GetUInt32())
+            if ((*result)[index].Get<uint32>())
                 return false;
         }
         break;

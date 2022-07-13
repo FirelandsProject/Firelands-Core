@@ -15,16 +15,16 @@ if(UNIX)
     message("* Install libraries to   : ${LIBSDIR}")
 endif()
 
-message("* Install configs to        : ${CONF_DIR}")
+message("* Install configs to     : ${CONF_DIR}")
 add_definitions(-D_CONF_DIR=$<1:"${CONF_DIR}">)
 
 message("")
 
 # Show infomation about the options selected during configuration
 if(SERVERS)
-    message("* Build world/authserver       : Yes (default)")
+    message("* Build world/authserver : Yes (default)")
 else()
-    message("* Build world/authserver       : No")
+    message("* Build world/authserver : No")
 endif()
 
 if(SCRIPTS AND(NOT SCRIPTS STREQUAL "none"))

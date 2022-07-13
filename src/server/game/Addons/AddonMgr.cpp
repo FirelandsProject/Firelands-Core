@@ -50,8 +50,8 @@ namespace AddonMgr
             {
                 Field* fields = result->Fetch();
 
-                std::string name = fields[0].GetString();
-                uint32 crc = fields[1].GetUInt32();
+                std::string name = fields[0].Get<std::string>();
+                uint32 crc = fields[1].Get<uint32>();
 
                 m_knownAddons.push_back(SavedAddon(name, crc));
 
@@ -75,11 +75,11 @@ namespace AddonMgr
                 Field* fields = result->Fetch();
 
                 BannedAddon addon;
-                addon.Id = fields[0].GetUInt32() + dbcMaxBannedAddon;
-                addon.Timestamp = uint32(fields[3].GetUInt64());
+                addon.Id = fields[0].Get<uint32>() + dbcMaxBannedAddon;
+                addon.Timestamp = uint32(fields[3].Get<uint64>());
 
-                std::string name = fields[1].GetString();
-                std::string version = fields[2].GetString();
+                std::string name = fields[1].Get<std::string>();
+                std::string version = fields[2].Get<std::string>();
 
                 MD5(reinterpret_cast<uint8 const*>(name.c_str()), name.length(), addon.NameMD5);
                 MD5(reinterpret_cast<uint8 const*>(version.c_str()), version.length(), addon.VersionMD5);

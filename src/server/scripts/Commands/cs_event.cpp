@@ -29,6 +29,7 @@
 #include "Language.h"
 #include "Player.h"
 #include "RBAC.h"
+#include "Util.h"
 
 class event_commandscript : public CommandScript
 {
@@ -113,12 +114,12 @@ public:
         bool active = activeEvents.find(eventId) != activeEvents.end();
         char const* activeStr = active ? handler->GetFirelandsString(LANG_ACTIVE) : "";
 
-        std::string startTimeStr = TimeToTimestampStr(eventData.start);
-        std::string endTimeStr = TimeToTimestampStr(eventData.end);
+        std::string startTimeStr = Firelands::Time::TimeToTimestampStr(Seconds(eventData.start));
+        std::string endTimeStr = Firelands::Time::TimeToTimestampStr(Seconds(eventData.end));
 
         uint32 delay = sGameEventMgr->NextCheck(eventId);
         time_t nextTime = GameTime::GetGameTime() + delay;
-        std::string nextStr = nextTime >= eventData.start && nextTime < eventData.end ? TimeToTimestampStr(GameTime::GetGameTime() + delay) : "-";
+        std::string nextStr = nextTime >= eventData.start && nextTime < eventData.end ? Firelands::Time::TimeToTimestampStr(Seconds(nextTime)) : "-";
 
         std::string occurenceStr = secsToTimeString(eventData.occurence * MINUTE);
         std::string lengthStr = secsToTimeString(eventData.length * MINUTE);

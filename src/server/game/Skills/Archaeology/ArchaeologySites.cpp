@@ -49,9 +49,9 @@ void Archaeology::LoadSitesFromDB()
     uint32 count = 0;
     do {
         Field* fields = result->Fetch();
-        uint32 site = fields[0].GetUInt8();
-        uint16 type = fields[1].GetUInt16();
-        uint8 finds = fields[2].GetUInt8();
+        uint32 site = fields[0].Get<uint8>();
+        uint16 type = fields[1].Get<uint16>();
+        uint8 finds = fields[2].Get<uint8>();
         SetSite(site, type, finds);
         count++;
     } while (result->NextRow());

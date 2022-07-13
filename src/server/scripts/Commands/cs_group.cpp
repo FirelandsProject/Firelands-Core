@@ -371,7 +371,7 @@ public:
             stmt->SetData(0, guidTarget.GetCounter());
             PreparedQueryResult resultGroup = CharacterDatabase.Query(stmt);
             if (resultGroup)
-                groupTarget = sGroupMgr->GetGroupByDbStoreId((*resultGroup)[0].GetUInt32());
+                groupTarget = sGroupMgr->GetGroupByDbStoreId((*resultGroup)[0].Get<uint32>());
         }
 
         // If both fails, players simply has no party. Return false.

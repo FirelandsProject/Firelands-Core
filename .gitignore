@@ -19,7 +19,6 @@ CMakeLists.txt.user
 nbproject/*
 .idea/*
 .browse.VC*
-.vscode
 cmake-build-*/
 .vs
 /modules/*

@@ -182,9 +182,9 @@ ThreatManager::ThreatManager(Unit* owner) : _owner(owner), _ownerCanHaveThreatLi
 
 ThreatManager::~ThreatManager()
 {
-    ASSERT(_myThreatListEntries.empty(), "ThreatManager::~ThreatManager - %s: we still have %zu things threatening us, one of them is %s.", _owner->GetGUID().ToString().c_str(), _myThreatListEntries.size(), _myThreatListEntries.begin()->first.ToString().c_str());
-    ASSERT(_sortedThreatList.empty(), "ThreatManager::~ThreatManager - %s: we still have %zu things threatening us, one of them is %s.", _owner->GetGUID().ToString().c_str(), _sortedThreatList.size(), (*_sortedThreatList.begin())->GetVictim()->GetGUID().ToString().c_str());
-    ASSERT(_threatenedByMe.empty(), "ThreatManager::~ThreatManager - %s: we are still threatening %zu things, one of them is %s.", _owner->GetGUID().ToString().c_str(), _threatenedByMe.size(), _threatenedByMe.begin()->first.ToString().c_str());
+    ASSERT(_myThreatListEntries.empty(), "ThreatManager::~ThreatManager - {}: we still have {} things threatening us, one of them is {}.", _owner->GetGUID().ToString(), _myThreatListEntries.size(), _myThreatListEntries.begin()->first.ToString());
+    ASSERT(_sortedThreatList.empty(), "ThreatManager::~ThreatManager - {}: we still have {} things threatening us, one of them is {}.", _owner->GetGUID().ToString(), _sortedThreatList.size(), (*_sortedThreatList.begin())->GetVictim()->GetGUID().ToString());
+    ASSERT(_threatenedByMe.empty(), "ThreatManager::~ThreatManager - {}: we are still threatening {} things, one of them is {}.", _owner->GetGUID().ToString(), _threatenedByMe.size(), _threatenedByMe.begin()->first.ToString());
 }
 
 void ThreatManager::Initialize()
@@ -811,7 +811,7 @@ void ThreatManager::PutThreatListRef(ObjectGuid const& guid, ThreatReference* re
 {
     _needClientUpdate = true;
     auto& inMap = _myThreatListEntries[guid];
-    ASSERT(!inMap, "Duplicate threat reference at %p being inserted on %s for %s - memory leak!", ref, _owner->GetGUID().ToString().c_str(), guid.ToString().c_str());
+    ASSERT(!inMap, "Duplicate threat reference at {} being inserted on {} for {} - memory leak!", ref->GetThreat(), _owner->GetGUID().ToString(), guid.GetEntry());
     inMap = ref;
     ref->_handle = _sortedThreatList.push(ref);
 }
@@ -834,7 +834,7 @@ void ThreatManager::PurgeThreatListRef(ObjectGuid const& guid)
 void ThreatManager::PutThreatenedByMeRef(ObjectGuid const& guid, ThreatReference* ref)
 {
     auto& inMap = _threatenedByMe[guid];
-    ASSERT(!inMap, "Duplicate threatened-by-me reference at %p being inserted on %s for %s - memory leak!", ref, _owner->GetGUID().ToString().c_str(), guid.ToString().c_str());
+    ASSERT(!inMap, "Duplicate threatened-by-me reference at {} being inserted on {} for {} - memory leak!", ref->GetThreat(), _owner->GetGUID().ToString(), guid.ToString());
     inMap = ref;
 }
 

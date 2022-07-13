@@ -20,6 +20,7 @@
 #include "Config.h"
 #include "DatabaseEnv.h"
 #include "Log.h"
+#include "SRP6.h"
 #include "Util.h"
 #include "World.h"
 #include <boost/asio/buffer.hpp>
@@ -136,12 +137,12 @@ bool RASession::CheckAccessLevel(const std::string& user)
 
     Field* fields = result->Fetch();
 
-    if (fields[1].GetUInt8() < sConfigMgr->GetOption<int32>("Ra.MinLevel", 3))
+    if (fields[1].Get<uint8>() < sConfigMgr->GetOption<int32>("Ra.MinLevel", 3))
     {
         LOG_INFO("commands.ra", "User %s has no privilege to login", user.c_str());
         return false;
     }
-    else if (fields[2].GetInt32() != -1)
+    else if (fields[2].Get<int32>() != -1)
     {
         LOG_INFO("commands.ra", "User %s has to be assigned on all realms (with RealmID = '-1')", user.c_str());
         return false;
@@ -153,27 +154,28 @@ bool RASession::CheckAccessLevel(const std::string& user)
 bool RASession::CheckPassword(const std::string& user, const std::string& pass)
 {
     std::string safe_user = user;
+    std::transform(safe_user.begin(), safe_user.end(), safe_user.begin(), ::toupper);
     Utf8ToUpperOnlyLatin(safe_user);
 
     std::string safe_pass = pass;
     Utf8ToUpperOnlyLatin(safe_pass);
+    std::transform(safe_pass.begin(), safe_pass.end(), safe_pass.begin(), ::toupper);
 
-    std::string hash = AccountMgr::CalculateShaPassHash(safe_user, safe_pass);
-
-    LoginDatabasePreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_CHECK_PASSWORD_BY_NAME);
+    auto* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_CHECK_PASSWORD_BY_NAME);
 
     stmt->SetData(0, safe_user);
-    stmt->SetData(1, hash);
 
-    PreparedQueryResult result = LoginDatabase.Query(stmt);
-
-    if (!result)
+    if (PreparedQueryResult result = LoginDatabase.Query(stmt))
     {
-        LOG_INFO("commands.ra", "Wrong password for user: %s", user.c_str());
-        return false;
+        Firelands::Crypto::SRP6::Salt salt = (*result)[0].Get<Binary, Firelands::Crypto::SRP6::SALT_LENGTH>();
+        Firelands::Crypto::SRP6::Verifier verifier = (*result)[1].Get<Binary, Firelands::Crypto::SRP6::VERIFIER_LENGTH>();
+
+        if (Firelands::Crypto::SRP6::CheckLogin(safe_user, safe_pass, salt, verifier))
+            return true;
     }
 
-    return true;
+    LOG_INFO("commands.ra", "Wrong password for user: {}", user);
+    return false;
 }
 
 bool RASession::ProcessCommand(std::string& command)

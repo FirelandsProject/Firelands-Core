@@ -42,6 +42,7 @@
 #include "SpellAuraEffects.h"
 #include "WorldSession.h"
 #include <iostream>
+#include "Util.h"
 
 class list_commandscript : public CommandScript
 {
@@ -104,7 +105,7 @@ public:
         uint32 creatureCount = 0;
         result = WorldDatabase.PQuery("SELECT COUNT(guid) FROM creature WHERE id='%u'", creatureId);
         if (result)
-            creatureCount = (*result)[0].GetUInt64();
+            creatureCount = (*result)[0].Get<uint64>();
 
         if (handler->GetSession())
         {
@@ -121,11 +122,11 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                ObjectGuid::LowType guid = fields[0].GetUInt32();
-                float x = fields[1].GetFloat();
-                float y = fields[2].GetFloat();
-                float z = fields[3].GetFloat();
-                uint16 mapId = fields[4].GetUInt16();
+                ObjectGuid::LowType guid = fields[0].Get<uint32>();
+                float x = fields[1].Get<float>();
+                float y = fields[2].Get<float>();
+                float z = fields[3].Get<float>();
+                uint16 mapId = fields[4].Get<uint16>();
                 bool liveFound = false;
 
                 // Get map (only support base map from console)
@@ -209,7 +210,7 @@ public:
         result = CharacterDatabase.Query(stmt);
 
         if (result)
-            inventoryCount = (*result)[0].GetUInt64();
+            inventoryCount = (*result)[0].Get<uint64>();
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_INVENTORY_ITEM_BY_ENTRY);
         stmt->SetData(0, itemId);
@@ -221,12 +222,12 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                uint32 itemGuid = fields[0].GetUInt32();
-                uint32 itemBag = fields[1].GetUInt32();
-                uint8 itemSlot = fields[2].GetUInt8();
-                uint32 ownerGuid = fields[3].GetUInt32();
-                uint32 ownerAccountId = fields[4].GetUInt32();
-                std::string ownerName = fields[5].GetString();
+                uint32 itemGuid = fields[0].Get<uint32>();
+                uint32 itemBag = fields[1].Get<uint32>();
+                uint8 itemSlot = fields[2].Get<uint8>();
+                uint32 ownerGuid = fields[3].Get<uint32>();
+                uint32 ownerAccountId = fields[4].Get<uint32>();
+                std::string ownerName = fields[5].Get<std::string>();
 
                 char const* itemPos = 0;
                 if (Player::IsEquipmentPos(itemBag, itemSlot))
@@ -257,7 +258,7 @@ public:
         result = CharacterDatabase.Query(stmt);
 
         if (result)
-            mailCount = (*result)[0].GetUInt64();
+            mailCount = (*result)[0].Get<uint64>();
 
         if (count > 0)
         {
@@ -274,13 +275,13 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                ObjectGuid::LowType itemGuid = fields[0].GetUInt32();
-                ObjectGuid::LowType itemSender = fields[1].GetUInt32();
-                uint32 itemReceiver = fields[2].GetUInt32();
-                uint32 itemSenderAccountId = fields[3].GetUInt32();
-                std::string itemSenderName = fields[4].GetString();
-                uint32 itemReceiverAccount = fields[5].GetUInt32();
-                std::string itemReceiverName = fields[6].GetString();
+                ObjectGuid::LowType itemGuid = fields[0].Get<uint32>();
+                ObjectGuid::LowType itemSender = fields[1].Get<uint32>();
+                uint32 itemReceiver = fields[2].Get<uint32>();
+                uint32 itemSenderAccountId = fields[3].Get<uint32>();
+                std::string itemSenderName = fields[4].Get<std::string>();
+                uint32 itemReceiverAccount = fields[5].Get<uint32>();
+                std::string itemReceiverName = fields[6].Get<std::string>();
 
                 char const* itemPos = "[in mail]";
 
@@ -303,7 +304,7 @@ public:
         result = CharacterDatabase.Query(stmt);
 
         if (result)
-            auctionCount = (*result)[0].GetUInt64();
+            auctionCount = (*result)[0].Get<uint64>();
 
         if (count > 0)
         {
@@ -320,10 +321,10 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                uint32 itemGuid = fields[0].GetUInt32();
-                uint32 owner = fields[1].GetUInt32();
-                uint32 ownerAccountId = fields[2].GetUInt32();
-                std::string ownerName = fields[3].GetString();
+                uint32 itemGuid = fields[0].Get<uint32>();
+                uint32 owner = fields[1].Get<uint32>();
+                uint32 ownerAccountId = fields[2].Get<uint32>();
+                std::string ownerName = fields[3].Get<std::string>();
 
                 char const* itemPos = "[in auction]";
 
@@ -339,7 +340,7 @@ public:
         result = CharacterDatabase.Query(stmt);
 
         if (result)
-            guildCount = (*result)[0].GetUInt64();
+            guildCount = (*result)[0].Get<uint64>();
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_BANK_ITEM_BY_ENTRY);
         stmt->SetData(0, itemId);
@@ -351,9 +352,9 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                uint32 itemGuid = fields[0].GetUInt32();
-                uint32 guildGuid = fields[1].GetUInt32();
-                std::string guildName = fields[2].GetString();
+                uint32 itemGuid = fields[0].Get<uint32>();
+                uint32 guildGuid = fields[1].Get<uint32>();
+                std::string guildName = fields[2].Get<std::string>();
 
                 char const* itemPos = "[in guild bank]";
 
@@ -417,7 +418,7 @@ public:
         uint32 objectCount = 0;
         result = WorldDatabase.PQuery("SELECT COUNT(guid) FROM gameobject WHERE id='%u'", gameObjectId);
         if (result)
-            objectCount = (*result)[0].GetUInt64();
+            objectCount = (*result)[0].Get<uint64>();
 
         if (handler->GetSession())
         {
@@ -434,12 +435,12 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                ObjectGuid::LowType guid = fields[0].GetUInt32();
-                float x = fields[1].GetFloat();
-                float y = fields[2].GetFloat();
-                float z = fields[3].GetFloat();
-                uint16 mapId = fields[4].GetUInt16();
-                uint32 entry = fields[5].GetUInt32();
+                ObjectGuid::LowType guid = fields[0].Get<uint32>();
+                float x = fields[1].Get<float>();
+                float y = fields[2].Get<float>();
+                float z = fields[3].Get<float>();
+                uint16 mapId = fields[4].Get<uint16>();
+                uint32 entry = fields[5].Get<uint32>();
                 bool liveFound = false;
 
                 // Get map (only support base map from console)
@@ -556,7 +557,7 @@ public:
         if (queryResult)
         {
             Field* fields = queryResult->Fetch();
-            uint32 countMail = fields[0].GetUInt64();
+            uint32 countMail = fields[0].Get<uint64>();
 
             std::string nameLink = handler->playerLink(targetName);
             handler->PSendSysMessage(LANG_LIST_MAIL_HEADER, countMail, nameLink.c_str(), targetGuid.GetCounter());
@@ -571,16 +572,16 @@ public:
                 do
                 {
                     Field* queryFields = queryResult->Fetch();
-                    uint32 messageId = queryFields[0].GetUInt32();
-                    uint32 senderId = queryFields[1].GetUInt32();
-                    std::string sender = queryFields[2].GetString();
-                    uint32 receiverId = queryFields[3].GetUInt32();
-                    std::string receiver = queryFields[4].GetString();
-                    std::string subject = queryFields[5].GetString();
-                    uint64 deliverTime = queryFields[6].GetUInt32();
-                    uint64 expireTime = queryFields[7].GetUInt32();
-                    uint64 money = queryFields[8].GetUInt64();
-                    uint8 hasItem = queryFields[9].GetUInt8();
+                    uint32 messageId = queryFields[0].Get<uint32>();
+                    uint32 senderId = queryFields[1].Get<uint32>();
+                    std::string sender = queryFields[2].Get<std::string>();
+                    uint32 receiverId = queryFields[3].Get<uint32>();
+                    std::string receiver = queryFields[4].Get<std::string>();
+                    std::string subject = queryFields[5].Get<std::string>();
+                    uint64 deliverTime = queryFields[6].Get<uint32>();
+                    uint64 expireTime = queryFields[7].Get<uint32>();
+                    uint64 money = queryFields[8].Get<uint64>();
+                    uint8 hasItem = queryFields[9].Get<uint8>();
                     uint32 gold = money / GOLD;
                     uint32 silv = (money % GOLD) / SILVER;
                     uint32 copp = (money % GOLD) % SILVER;
@@ -588,7 +589,7 @@ public:
                     std::string senderStr = handler->playerLink(sender);
                     handler->PSendSysMessage(LANG_LIST_MAIL_INFO_1, messageId, subject.c_str(), gold, silv, copp);
                     handler->PSendSysMessage(LANG_LIST_MAIL_INFO_2, senderStr.c_str(), senderId, receiverStr.c_str(), receiverId);
-                    handler->PSendSysMessage(LANG_LIST_MAIL_INFO_3, TimeToTimestampStr(deliverTime).c_str(), TimeToTimestampStr(expireTime).c_str());
+                    handler->PSendSysMessage(LANG_LIST_MAIL_INFO_3, Firelands::Time::TimeToTimestampStr(Seconds(deliverTime)).c_str(), Firelands::Time::TimeToTimestampStr(Seconds(expireTime)).c_str());
 
                     if (hasItem == 1)
                     {
@@ -598,7 +599,7 @@ public:
                         {
                             do
                             {
-                                ObjectGuid::LowType item_guid = (*result2)[0].GetUInt32();
+                                ObjectGuid::LowType item_guid = (*result2)[0].Get<uint32>();
                                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_LIST_ITEMS);
                                 stmt->SetData(0, item_guid);
                                 PreparedQueryResult result3 = CharacterDatabase.Query(stmt);
@@ -607,13 +608,13 @@ public:
                                     do
                                     {
                                         Field* fields3 = result3->Fetch();
-                                        uint32 item_entry = fields3[0].GetUInt32();
-                                        uint32 item_count = fields3[1].GetUInt32();
+                                        uint32 item_entry = fields3[0].Get<uint32>();
+                                        uint32 item_count = fields3[1].Get<uint32>();
                                         QueryResult result4;
                                         result4 = WorldDatabase.PQuery("SELECT name, quality FROM item_template WHERE entry = '%u'", item_entry);
                                         Field* fields1 = result4->Fetch();
-                                        std::string item_name = fields1[0].GetString();
-                                        int item_quality = fields1[1].GetUInt8();
+                                        std::string item_name = fields1[0].Get<std::string>();
+                                        int item_quality = fields1[1].Get<uint8>();
                                         if (handler->GetSession())
                                         {
                                             uint32 color = ItemQualityColors[item_quality];

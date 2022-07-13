@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
+ * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
@@ -18,9 +18,11 @@
 #ifndef _FIELD_H
 #define _FIELD_H
 
-#include "Define.h"
 #include "DatabaseEnvFwd.h"
+#include "Define.h"
 #include "Duration.h"
+#include <array>
+#include <string_view>
 #include <vector>
 
 namespace Firelands::Types
@@ -54,11 +56,11 @@ enum class DatabaseFieldTypes : uint8
 
 struct QueryResultFieldMetadata
 {
-    char const* TableName = nullptr;
-    char const* TableAlias = nullptr;
-    char const* Name = nullptr;
-    char const* Alias = nullptr;
-    char const* TypeName = nullptr;
+    std::string TableName{};
+    std::string TableAlias{};
+    std::string Name{};
+    std::string Alias{};
+    std::string TypeName{};
     uint32 Index = 0;
     DatabaseFieldTypes Type = DatabaseFieldTypes::Null;
 };
@@ -70,20 +72,20 @@ struct QueryResultFieldMetadata
 
     Guideline on field type matching:
 
-    |   MySQL type           |  method to use                         |
-    |------------------------|----------------------------------------|
-    | TINYINT                | GetBool, GetInt8, GetUInt8             |
-    | SMALLINT               | GetInt16, GetUInt16                    |
-    | MEDIUMINT, INT         | GetInt32, GetUInt32                    |
-    | BIGINT                 | GetInt64, GetUInt64                    |
-    | FLOAT                  | GetFloat                               |
-    | DOUBLE, DECIMAL        | GetDouble                              |
-    | CHAR, VARCHAR,         | GetCString, GetString                  |
-    | TINYTEXT, MEDIUMTEXT,  | GetCString, GetString                  |
-    | TEXT, LONGTEXT         | GetCString, GetString                  |
-    | TINYBLOB, MEDIUMBLOB,  | GetBinary, GetString                   |
-    | BLOB, LONGBLOB         | GetBinary, GetString                   |
-    | BINARY, VARBINARY      | GetBinary                              |
+    |   MySQL type           |  method to use                          |
+    |------------------------|-----------------------------------------|
+    | TINYINT                | Get<bool>, Get<int8>, Get<uint8>        |
+    | SMALLINT               | Get<int16>, Get<uint16>                 |
+    | MEDIUMINT, INT         | Get<int32>, Get<uint32>                 |
+    | BIGINT                 | Get<int64>, Get<uint64>                 |
+    | FLOAT                  | Get<float>                              |
+    | DOUBLE, DECIMAL        | Get<double>                             |
+    | CHAR, VARCHAR,         | Get<std::string>, Get<std::string_view> |
+    | TINYTEXT, MEDIUMTEXT,  | Get<std::string>, Get<std::string_view> |
+    | TEXT, LONGTEXT         | Get<std::string>, Get<std::string_view> |
+    | TINYBLOB, MEDIUMBLOB,  | Get<Binary>, Get<std::string>           |
+    | BLOB, LONGBLOB         | Get<Binary>, Get<std::string>           |
+    | BINARY, VARBINARY      | Get<Binary>                             |
 
     Return types of aggregate functions:
 
@@ -100,7 +102,12 @@ class FC_DATABASE_API Field
 
 public:
     Field();
-    ~Field();
+    ~Field() = default;
+
+    [[nodiscard]] inline bool IsNull() const
+    {
+        return data.value == nullptr;
+    }
 
     template<typename T>
     inline std::enable_if_t<std::is_arithmetic_v<T>, T> Get() const
@@ -140,57 +147,32 @@ public:
         return convertToUin32 ? T(GetData<uint32>()) : T(GetData<uint64>());
     }
 
-
-    bool GetBool() const // Wrapper, actually gets integer
-    {
-        return GetUInt8() == 1 ? true : false;
-    }
-
-    uint8 GetUInt8() const;
-    int8 GetInt8() const;
-    uint16 GetUInt16() const;
-    int16 GetInt16() const;
-    uint32 GetUInt32() const;
-    int32 GetInt32() const;
-    uint64 GetUInt64() const;
-    int64 GetInt64() const;
-    float GetFloat() const;
-    double GetDouble() const;
-    char const* GetCString() const;
-    std::string GetString() const;
-    std::vector<uint8> GetBinary() const;
-
-    bool IsNull() const
-    {
-        return data.value == nullptr;
-    }
+    DatabaseFieldTypes GetType() { return meta->Type; }
 
 protected:
     struct
     {
-        char const* value;          // Actual data in memory
-        uint32 length;              // Length
-        bool raw;                   // Raw bytes? (Prepared statement or ad hoc)
+        char const* value;      // Actual data in memory
+        uint32 length;          // Length
+        bool raw;               // Raw bytes? (Prepared statement or ad hoc)
     } data;
 
     void SetByteValue(char const* newValue, uint32 length);
     void SetStructuredValue(char const* newValue, uint32 length);
-
-    bool IsType(DatabaseFieldTypes type) const;
-
-    bool IsNumeric() const;
+    [[nodiscard]] bool IsType(DatabaseFieldTypes type) const;
+    [[nodiscard]] bool IsNumeric() const;
 
 private:
-    QueryResultFieldMetadata const* meta;
-    void LogWrongType(char const* getter) const;
-    void SetMetadata(QueryResultFieldMetadata const* fieldMeta);
-
     template<typename T>
     T GetData() const;
 
     std::string GetDataString() const;
     std::string_view GetDataStringView() const;
     Binary GetDataBinary() const;
+
+    QueryResultFieldMetadata const* meta;
+    void LogWrongType(std::string_view getter, std::string_view typeName) const;
+    void SetMetadata(QueryResultFieldMetadata const* fieldMeta);
     void GetBinarySizeChecked(uint8* buf, size_t size) const;
 };
 

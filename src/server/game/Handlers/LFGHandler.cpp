@@ -60,7 +60,7 @@ void WorldSession::HandleLfgLeaveOpcode(WorldPackets::LFG::LFGLeave& lfgLeave)
     Group* group = GetPlayer()->GetGroup();
 
     LOG_DEBUG("lfg", "CMSG_LFG_LEAVE %s in group: %u sent guid %s.",
-        GetPlayerInfo().c_str(), group ? 1 : 0, lfgLeave.Ticket.RequesterGuid.ToString().c_str());
+        GetPlayerInfo().c_str(), group ? 1 : 0, lfgLeave.Ticket.RequesterGuid.ToString());
 
     // Check cheating - only leader can leave the queue
     if (!group || group->GetLeaderGUID() == lfgLeave.Ticket.RequesterGuid)
@@ -86,7 +86,7 @@ void WorldSession::HandleLfgSetRolesOpcode(WorldPackets::LFG::LFGSetRoles& lfgSe
     }
     ObjectGuid gguid = group->GetGUID();
     LOG_DEBUG("lfg", "CMSG_LFG_SET_ROLES: Group %s, Player %s, Roles: %u",
-        gguid.ToString().c_str(), GetPlayerInfo().c_str(), lfgSetRoles.RolesDesired);
+        gguid.ToString(), GetPlayerInfo().c_str(), lfgSetRoles.RolesDesired);
 
     // Role validation
     if (!sLFGMgr->CanPerformSelectedRoles(GetPlayer()->getClass(), lfgSetRoles.RolesDesired))
@@ -384,7 +384,7 @@ void WorldSession::SendLfgUpdateStatus(lfg::LfgUpdateData const& updateData, boo
 void WorldSession::SendLfgRoleChosen(ObjectGuid guid, uint8 roles)
 {
     LOG_DEBUG("lfg", "SMSG_LFG_ROLE_CHOSEN %s guid: %s roles: %u",
-        GetPlayerInfo().c_str(), guid.ToString().c_str(), roles);
+        GetPlayerInfo().c_str(), guid.ToString(), roles);
 
     WorldPackets::LFG::RoleChosen roleChosen;
     roleChosen.Player = guid;
@@ -448,7 +448,7 @@ void WorldSession::SendLfgJoinResult(lfg::LfgJoinResultData const& joinData)
         for (lfg::LfgLockMap::const_iterator itr = it->second.begin(); itr != it->second.end(); ++itr)
         {
             LOG_TRACE("lfg", "SendLfgJoinResult:: %s DungeonID: %u Lock status: %u Required itemLevel: %u Current itemLevel: %f",
-                it->first.ToString().c_str(), (itr->first & 0x00FFFFFF), itr->second.lockStatus, itr->second.requiredItemLevel, itr->second.currentItemLevel);
+                it->first.ToString(), (itr->first & 0x00FFFFFF), itr->second.lockStatus, itr->second.requiredItemLevel, itr->second.currentItemLevel);
 
             blackList.Slots.emplace_back(itr->first, itr->second.lockStatus, itr->second.requiredItemLevel, itr->second.currentItemLevel);
         }
@@ -562,7 +562,7 @@ void WorldSession::SendLfgBootProposalUpdate(lfg::LfgPlayerBoot const& boot)
         "didVote: %u - agree: %u - victim: %s votes: %u - agrees: %u - left: %u - "
         "needed: %u - reason %s",
         GetPlayerInfo().c_str(), uint8(boot.inProgress), uint8(playerVote != lfg::LFG_ANSWER_PENDING),
-        uint8(playerVote == lfg::LFG_ANSWER_AGREE), boot.victim.ToString().c_str(), votesNum, agreeNum,
+        uint8(playerVote == lfg::LFG_ANSWER_AGREE), boot.victim.ToString(), votesNum, agreeNum,
         secsleft, lfg::LFG_GROUP_KICK_VOTES_NEEDED, boot.reason.c_str());
 
     WorldPackets::LFG::LfgBootPlayer lfgBootPlayer;

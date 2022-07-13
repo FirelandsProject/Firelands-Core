@@ -22,6 +22,7 @@
 #include "Log.h"
 #include "Strand.h"
 #include "Util.h"
+#include "Tokenize.h"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/asio/ip/tcp.hpp>
 
@@ -80,7 +81,7 @@ void Metric::LoadFromConfigs()
             return;
         }
 
-        Tokenizer tokens(connectionInfo, ';');
+        std::vector<std::string_view> tokens = Firelands::Tokenize(connectionInfo, ';', true);
         if (tokens.size() != 3)
         {
             LOG_ERROR("metric", "'Metric.ConnectionInfo' specified with wrong format in configuration file.");

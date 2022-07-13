@@ -328,7 +328,7 @@ inline bool CompareRespawnInfo::operator()(RespawnInfo const* a, RespawnInfo con
         return (a->respawnTime > b->respawnTime);
     if (a->spawnId != b->spawnId)
         return a->spawnId < b->spawnId;
-    ASSERT(a->type != b->type, "Duplicate respawn entry for spawnId (%u,%u) found!", a->type, a->spawnId);
+    ASSERT(a->type != b->type, "Duplicate respawn entry for spawnId ({},{}) found!", a->type, a->spawnId);
     return a->type < b->type;
 }
 
@@ -751,7 +751,7 @@ private:
 
     NGridType* getNGrid(uint32 x, uint32 y) const
     {
-        ASSERT(x < MAX_NUMBER_OF_GRIDS&& y < MAX_NUMBER_OF_GRIDS, "x = %u, y = %u", x, y);
+        ASSERT(x < MAX_NUMBER_OF_GRIDS&& y < MAX_NUMBER_OF_GRIDS, "x = {}, y = {}", x, y);
         return i_grids[x][y];
     }
 

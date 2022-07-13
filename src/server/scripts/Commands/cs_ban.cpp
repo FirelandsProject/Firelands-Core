@@ -35,6 +35,7 @@
 #include "RBAC.h"
 #include "World.h"
 #include "WorldSession.h"
+#include "Util.h"
 
 class ban_commandscript : public CommandScript
 {
@@ -284,14 +285,14 @@ public:
         {
             Field* fields = result->Fetch();
 
-            time_t unbanDate = time_t(fields[3].GetUInt32());
+            time_t unbanDate = time_t(fields[3].Get<uint32>());
             bool active = false;
-            if (fields[2].GetBool() && (fields[1].GetUInt64() == uint64(0) || unbanDate >= GameTime::GetGameTime()))
+            if (fields[2].Get<bool>() && (fields[1].Get<uint64>() == uint64(0) || unbanDate >= GameTime::GetGameTime()))
                 active = true;
-            bool permanent = (fields[1].GetUInt64() == uint64(0));
-            std::string banTime = permanent ? handler->GetFirelandsString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[1].GetUInt64(), true);
+            bool permanent = (fields[1].Get<uint64>() == uint64(0));
+            std::string banTime = permanent ? handler->GetFirelandsString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[1].Get<uint64>(), true);
             handler->PSendSysMessage(LANG_BANINFO_HISTORYENTRY,
-                fields[0].GetCString(), banTime.c_str(), active ? handler->GetFirelandsString(LANG_YES) : handler->GetFirelandsString(LANG_NO), fields[4].GetCString(), fields[5].GetCString());
+                fields[0].Get<std::string>(), banTime.c_str(), active ? handler->GetFirelandsString(LANG_YES) : handler->GetFirelandsString(LANG_NO), fields[4].Get<std::string>(), fields[5].Get<std::string>());
         } while (result->NextRow());
 
         return true;
@@ -341,14 +342,13 @@ public:
         do
         {
             Field* fields = result->Fetch();
-            time_t unbanDate = time_t(fields[3].GetUInt32());
+            time_t unbanDate = time_t(fields[3].Get<uint32>());
             bool active = false;
-            if (fields[2].GetUInt8() && (!fields[1].GetUInt32() || unbanDate >= GameTime::GetGameTime()))
+            if (fields[2].Get<uint8>() && (!fields[1].Get<uint32>() || unbanDate >= GameTime::GetGameTime()))
                 active = true;
-            bool permanent = (fields[1].GetUInt32() == uint32(0));
-            std::string banTime = permanent ? handler->GetFirelandsString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[1].GetUInt32(), true);
-            handler->PSendSysMessage(LANG_BANINFO_HISTORYENTRY,
-                TimeToTimestampStr(fields[0].GetUInt32()).c_str(), banTime.c_str(), active ? handler->GetFirelandsString(LANG_YES) : handler->GetFirelandsString(LANG_NO), fields[4].GetCString(), fields[5].GetCString());
+            bool permanent = (fields[1].Get<uint32>() == uint32(0));
+            std::string banTime = permanent ? handler->GetFirelandsString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[1].Get<uint64>(), true);
+            handler->PSendSysMessage(LANG_BANINFO_HISTORYENTRY, fields[0].Get<std::string>(), banTime.c_str(), active ? handler->GetFirelandsString(LANG_YES) : handler->GetFirelandsString(LANG_NO), fields[4].Get<std::string>(), fields[5].Get<std::string>());
         } while (result->NextRow());
 
         return true;
@@ -377,10 +377,10 @@ public:
         }
 
         Field* fields = result->Fetch();
-        bool permanent = !fields[6].GetUInt64();
+        bool permanent = !fields[6].Get<uint64>();
         handler->PSendSysMessage(LANG_BANINFO_IPENTRY,
-            fields[0].GetCString(), fields[1].GetCString(), permanent ? handler->GetFirelandsString(LANG_BANINFO_NEVER) : fields[2].GetCString(),
-            permanent ? handler->GetFirelandsString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[3].GetUInt64(), true).c_str(), fields[4].GetCString(), fields[5].GetCString());
+            fields[0].Get<std::string>(), fields[1].Get<std::string>(), permanent ? handler->GetFirelandsString(LANG_BANINFO_NEVER) : fields[2].Get<std::string>(),
+            permanent ? handler->GetFirelandsString(LANG_BANINFO_INFINITE) : secsToTimeString(fields[3].Get<uint64>(), true).c_str(), fields[4].Get<std::string>(), fields[5].Get<std::string>());
 
 
         return true;
@@ -429,13 +429,13 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                uint32 accountid = fields[0].GetUInt32();
+                uint32 accountid = fields[0].Get<uint32>();
 
                 QueryResult banResult = LoginDatabase.PQuery("SELECT account.username FROM account, account_banned WHERE account_banned.id='%u' AND account_banned.id=account.id", accountid);
                 if (banResult)
                 {
                     Field* fields2 = banResult->Fetch();
-                    handler->PSendSysMessage("%s", fields2[0].GetCString());
+                    handler->PSendSysMessage("%s", fields2[0].Get<std::string>());
                 }
             } while (result->NextRow());
         }
@@ -449,13 +449,13 @@ public:
             {
                 handler->SendSysMessage("-------------------------------------------------------------------------------");
                 Field* fields = result->Fetch();
-                uint32 accountId = fields[0].GetUInt32();
+                uint32 accountId = fields[0].Get<uint32>();
 
                 std::string accountName;
 
                 // "account" case, name can be get in same query
                 if (result->GetFieldCount() > 1)
-                    accountName = fields[1].GetString();
+                    accountName = fields[1].Get<std::string>();
                 // "character" case, name need extract from another DB
                 else
                     AccountMgr::GetName(accountId, accountName);
@@ -467,25 +467,25 @@ public:
                     Field* fields2 = banInfo->Fetch();
                     do
                     {
-                        time_t timeBan = time_t(fields2[0].GetUInt32());
+                        time_t timeBan = time_t(fields2[0].Get<uint32>());
                         tm tmBan;
                         localtime_r(&timeBan, &tmBan);
 
-                        if (fields2[0].GetUInt32() == fields2[1].GetUInt32())
+                        if (fields2[0].Get<uint32>() == fields2[1].Get<uint32>())
                         {
                             handler->PSendSysMessage("|%-15.15s|%02d-%02d-%02d %02d:%02d|   permanent  |%-15.15s|%-15.15s|",
                                 accountName.c_str(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
-                                fields2[2].GetCString(), fields2[3].GetCString());
+                                fields2[2].Get<std::string>(), fields2[3].Get<std::string>());
                         }
                         else
                         {
-                            time_t timeUnban = time_t(fields2[1].GetUInt32());
+                            time_t timeUnban = time_t(fields2[1].Get<uint32>());
                             tm tmUnban;
                             localtime_r(&timeUnban, &tmUnban);
                             handler->PSendSysMessage("|%-15.15s|%02d-%02d-%02d %02d:%02d|%02d-%02d-%02d %02d:%02d|%-15.15s|%-15.15s|",
                                 accountName.c_str(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
                                 tmUnban.tm_year % 100, tmUnban.tm_mon + 1, tmUnban.tm_mday, tmUnban.tm_hour, tmUnban.tm_min,
-                                fields2[2].GetCString(), fields2[3].GetCString());
+                                fields2[2].Get<std::string>(), fields2[3].Get<std::string>());
                         }
                     } while (banInfo->NextRow());
                 }
@@ -525,10 +525,10 @@ public:
             {
                 Field* fields = result->Fetch();
                 CharacterDatabasePreparedStatement* stmt2 = CharacterDatabase.GetPreparedStatement(CHAR_SEL_BANNED_NAME);
-                stmt2->SetData(0, fields[0].GetUInt32());
+                stmt2->SetData(0, fields[0].Get<uint32>());
                 PreparedQueryResult banResult = CharacterDatabase.Query(stmt2);
                 if (banResult)
-                    handler->PSendSysMessage("%s", (*banResult)[0].GetCString());
+                    handler->PSendSysMessage("%s", (*banResult)[0].Get<std::string>());
             } while (result->NextRow());
         }
         // Console wide output
@@ -543,35 +543,35 @@ public:
 
                 Field* fields = result->Fetch();
 
-                std::string char_name = fields[1].GetString();
+                std::string char_name = fields[1].Get<std::string>();
 
                 CharacterDatabasePreparedStatement* stmt2 = CharacterDatabase.GetPreparedStatement(CHAR_SEL_BANINFO_LIST);
-                stmt2->SetData(0, fields[0].GetUInt32());
+                stmt2->SetData(0, fields[0].Get<uint32>());
                 PreparedQueryResult banInfo = CharacterDatabase.Query(stmt2);
                 if (banInfo)
                 {
                     Field* banFields = banInfo->Fetch();
                     do
                     {
-                        time_t timeBan = time_t(banFields[0].GetUInt32());
+                        time_t timeBan = time_t(banFields[0].Get<uint32>());
                         tm tmBan;
                         localtime_r(&timeBan, &tmBan);
 
-                        if (banFields[0].GetUInt32() == banFields[1].GetUInt32())
+                        if (banFields[0].Get<uint32>() == banFields[1].Get<uint32>())
                         {
                             handler->PSendSysMessage("|%-15.15s|%02d-%02d-%02d %02d:%02d|   permanent  |%-15.15s|%-15.15s|",
                                 char_name.c_str(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
-                                banFields[2].GetCString(), banFields[3].GetCString());
+                                banFields[2].Get<std::string>(), banFields[3].Get<std::string>());
                         }
                         else
                         {
-                            time_t timeUnban = time_t(banFields[1].GetUInt32());
+                            time_t timeUnban = time_t(banFields[1].Get<uint32>());
                             tm tmUnban;
                             localtime_r(&timeUnban, &tmUnban);
                             handler->PSendSysMessage("|%-15.15s|%02d-%02d-%02d %02d:%02d|%02d-%02d-%02d %02d:%02d|%-15.15s|%-15.15s|",
                                 char_name.c_str(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
                                 tmUnban.tm_year % 100, tmUnban.tm_mon + 1, tmUnban.tm_mday, tmUnban.tm_hour, tmUnban.tm_min,
-                                banFields[2].GetCString(), banFields[3].GetCString());
+                                banFields[2].Get<std::string>(), banFields[3].Get<std::string>());
                         }
                     } while (banInfo->NextRow());
                 }
@@ -618,7 +618,7 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                handler->PSendSysMessage("%s", fields[0].GetCString());
+                handler->PSendSysMessage("%s", fields[0].Get<std::string>());
             } while (result->NextRow());
         }
         // Console wide output
@@ -631,24 +631,24 @@ public:
             {
                 handler->SendSysMessage("-------------------------------------------------------------------------------");
                 Field* fields = result->Fetch();
-                time_t timeBan = time_t(fields[1].GetUInt32());
+                time_t timeBan = time_t(fields[1].Get<uint32>());
                 tm tmBan;
                 localtime_r(&timeBan, &tmBan);
-                if (fields[1].GetUInt32() == fields[2].GetUInt32())
+                if (fields[1].Get<uint32>() == fields[2].Get<uint32>())
                 {
                     handler->PSendSysMessage("|%-15.15s|%02d-%02d-%02d %02d:%02d|   permanent  |%-15.15s|%-15.15s|",
-                        fields[0].GetCString(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
-                        fields[3].GetCString(), fields[4].GetCString());
+                        fields[0].Get<std::string>(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
+                        fields[3].Get<std::string>(), fields[4].Get<std::string>());
                 }
                 else
                 {
-                    time_t timeUnban = time_t(fields[2].GetUInt32());
+                    time_t timeUnban = time_t(fields[2].Get<uint32>());
                     tm tmUnban;
                     localtime_r(&timeUnban, &tmUnban);
                     handler->PSendSysMessage("|%-15.15s|%02d-%02d-%02d %02d:%02d|%02d-%02d-%02d %02d:%02d|%-15.15s|%-15.15s|",
-                        fields[0].GetCString(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
+                        fields[0].Get<std::string>(), tmBan.tm_year % 100, tmBan.tm_mon + 1, tmBan.tm_mday, tmBan.tm_hour, tmBan.tm_min,
                         tmUnban.tm_year % 100, tmUnban.tm_mon + 1, tmUnban.tm_mday, tmUnban.tm_hour, tmUnban.tm_min,
-                        fields[3].GetCString(), fields[4].GetCString());
+                        fields[3].Get<std::string>(), fields[4].Get<std::string>());
                 }
             } while (result->NextRow());
 

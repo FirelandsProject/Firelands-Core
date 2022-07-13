@@ -105,7 +105,7 @@ UpdateFetcher::DirectoryStorage UpdateFetcher::ReceiveIncludedDirectories() cons
     {
         Field* fields = result->Fetch();
 
-        std::string path = fields[0].GetString();
+        std::string path = fields[0].Get<std::string>();
         if (path.substr(0, 1) == "$")
             path = _sourceDirectory->generic_string() + path.substr(1);
 
@@ -117,7 +117,7 @@ UpdateFetcher::DirectoryStorage UpdateFetcher::ReceiveIncludedDirectories() cons
             continue;
         }
 
-        DirectoryEntry const entry = { p, AppliedFileEntry::StateConvert(fields[1].GetString()) };
+        DirectoryEntry const entry = { p, AppliedFileEntry::StateConvert(fields[1].Get<std::string>()) };
         directories.push_back(entry);
 
         LOG_TRACE("sql.updates", "Added applied file \"%s\" from remote.", p.filename().generic_string().c_str());
@@ -139,8 +139,8 @@ UpdateFetcher::AppliedFileStorage UpdateFetcher::ReceiveAppliedFiles() const
     {
         Field* fields = result->Fetch();
 
-        AppliedFileEntry const entry = { fields[0].GetString(), fields[1].GetString(),
-            AppliedFileEntry::StateConvert(fields[2].GetString()), fields[3].GetUInt64() };
+        AppliedFileEntry const entry = { fields[0].Get<std::string>(), fields[1].Get<std::string>(),
+            AppliedFileEntry::StateConvert(fields[2].Get<std::string>()), fields[3].Get<uint64>() };
 
         map.insert(std::make_pair(entry.name, entry));
     } while (result->NextRow());

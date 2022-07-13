@@ -42,15 +42,15 @@ struct SpellHistory::PersistenceHelper<Player>
 
     static bool ReadCooldown(Field* fields, uint32* spellId, CooldownEntry* cooldownEntry)
     {
-        *spellId = fields[0].GetUInt32();
+        *spellId = fields[0].Get<uint32>();
         if (!sSpellMgr->GetSpellInfo(*spellId))
             return false;
 
         cooldownEntry->SpellId = *spellId;
-        cooldownEntry->CooldownEnd = Clock::from_time_t(time_t(fields[2].GetUInt32()));
-        cooldownEntry->ItemId = fields[1].GetUInt32();
-        cooldownEntry->CategoryId = fields[3].GetUInt32();
-        cooldownEntry->CategoryEnd = Clock::from_time_t(time_t(fields[4].GetUInt32()));
+        cooldownEntry->CooldownEnd = Clock::from_time_t(time_t(fields[2].Get<uint32>()));
+        cooldownEntry->ItemId = fields[1].Get<uint32>();
+        cooldownEntry->CategoryId = fields[3].Get<uint32>();
+        cooldownEntry->CategoryEnd = Clock::from_time_t(time_t(fields[4].Get<uint32>()));
         return true;
     }
 
@@ -74,15 +74,15 @@ struct SpellHistory::PersistenceHelper<Pet>
 
     static bool ReadCooldown(Field* fields, uint32* spellId, CooldownEntry* cooldownEntry)
     {
-        *spellId = fields[0].GetUInt32();
+        *spellId = fields[0].Get<uint32>();
         if (!sSpellMgr->GetSpellInfo(*spellId))
             return false;
 
         cooldownEntry->SpellId = *spellId;
-        cooldownEntry->CooldownEnd = Clock::from_time_t(time_t(fields[1].GetUInt32()));
+        cooldownEntry->CooldownEnd = Clock::from_time_t(time_t(fields[1].Get<uint32>()));
         cooldownEntry->ItemId = 0;
-        cooldownEntry->CategoryId = fields[2].GetUInt32();
-        cooldownEntry->CategoryEnd = Clock::from_time_t(time_t(fields[3].GetUInt32()));
+        cooldownEntry->CategoryId = fields[2].Get<uint32>();
+        cooldownEntry->CategoryEnd = Clock::from_time_t(time_t(fields[3].Get<uint32>()));
         return true;
     }
 

@@ -787,7 +787,7 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
     {
         Field* fields = result->Fetch();
 
-        BattlegroundTypeId bgTypeId = BattlegroundTypeId(fields[0].GetUInt32());
+        BattlegroundTypeId bgTypeId = BattlegroundTypeId(fields[0].Get<uint32>());
 
         if (DisableMgr::IsDisabledFor(DISABLE_TYPE_BATTLEGROUND, bgTypeId, nullptr))
             continue;
@@ -802,14 +802,14 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
 
         BattlegroundTemplate bgTemplate;
         bgTemplate.Id = bgTypeId;
-        bgTemplate.MinPlayersPerTeam = fields[1].GetUInt16();
-        bgTemplate.MaxPlayersPerTeam = fields[2].GetUInt16();
-        bgTemplate.MinLevel = fields[3].GetUInt8();
-        bgTemplate.MaxLevel = fields[4].GetUInt8();
-        float dist = fields[9].GetFloat();
+        bgTemplate.MinPlayersPerTeam = fields[1].Get<uint16>();
+        bgTemplate.MaxPlayersPerTeam = fields[2].Get<uint16>();
+        bgTemplate.MinLevel = fields[3].Get<uint8>();
+        bgTemplate.MaxLevel = fields[4].Get<uint8>();
+        float dist = fields[9].Get<float>();
         bgTemplate.MaxStartDistSq = dist * dist;
-        bgTemplate.Weight = fields[10].GetUInt8();
-        bgTemplate.ScriptId = sObjectMgr->GetScriptId(fields[11].GetString());
+        bgTemplate.Weight = fields[10].Get<uint8>();
+        bgTemplate.ScriptId = sObjectMgr->GetScriptId(fields[11].Get<std::string>());
         bgTemplate.BattlemasterEntry = bl;
 
         if (bgTemplate.MaxPlayersPerTeam == 0 || bgTemplate.MinPlayersPerTeam > bgTemplate.MaxPlayersPerTeam)
@@ -828,10 +828,10 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
 
         if (bgTemplate.Id != BATTLEGROUND_AA && bgTemplate.Id != BATTLEGROUND_RB)
         {
-            uint32 startId = fields[5].GetUInt32();
+            uint32 startId = fields[5].Get<uint32>();
             if (WorldSafeLocsEntry const* start = sWorldSafeLocsStore.LookupEntry(startId))
             {
-                bgTemplate.StartLocation[TEAM_ALLIANCE].Relocate(start->Loc.X, start->Loc.Y, start->Loc.Z, fields[6].GetFloat());
+                bgTemplate.StartLocation[TEAM_ALLIANCE].Relocate(start->Loc.X, start->Loc.Y, start->Loc.Z, fields[6].Get<float>());
             }
             else
             {
@@ -839,10 +839,10 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
                 continue;
             }
 
-            startId = fields[7].GetUInt32();
+            startId = fields[7].Get<uint32>();
             if (WorldSafeLocsEntry const* start = sWorldSafeLocsStore.LookupEntry(startId))
             {
-                bgTemplate.StartLocation[TEAM_HORDE].Relocate(start->Loc.X, start->Loc.Y, start->Loc.Z, fields[8].GetFloat());
+                bgTemplate.StartLocation[TEAM_HORDE].Relocate(start->Loc.X, start->Loc.Y, start->Loc.Z, fields[8].Get<float>());
             }
             else
             {
@@ -1106,7 +1106,7 @@ void BattlegroundMgr::LoadBattleMastersEntry()
 
         Field* fields = result->Fetch();
 
-        uint32 entry = fields[0].GetUInt32();
+        uint32 entry = fields[0].Get<uint32>();
         if (CreatureTemplate const* cInfo = sObjectMgr->GetCreatureTemplate(entry))
         {
             if ((cInfo->npcflag & UNIT_NPC_FLAG_BATTLEMASTER) == 0)
@@ -1118,7 +1118,7 @@ void BattlegroundMgr::LoadBattleMastersEntry()
             continue;
         }
 
-        uint32 bgTypeId = fields[1].GetUInt32();
+        uint32 bgTypeId = fields[1].Get<uint32>();
         if (!sBattlemasterListStore.LookupEntry(bgTypeId))
         {
             LOG_ERROR("sql.sql", "Table `battlemaster_entry` contains entry %u for a non-existing battleground type %u, ignored.", entry, bgTypeId);

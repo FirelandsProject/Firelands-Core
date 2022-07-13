@@ -61,12 +61,12 @@ void SystemMgr::LoadScriptWaypoints()
     do
     {
         Field* fields = result->Fetch();
-        uint32 entry = fields[0].GetUInt32();
-        uint32 id = fields[1].GetUInt32();
-        float x = fields[2].GetFloat();
-        float y = fields[3].GetFloat();
-        float z = fields[4].GetFloat();
-        uint32 waitTime = fields[5].GetUInt32();
+        uint32 entry = fields[0].Get<uint32>();
+        uint32 id = fields[1].Get<uint32>();
+        float x = fields[2].Get<float>();
+        float y = fields[3].Get<float>();
+        float z = fields[4].Get<float>();
+        uint32 waitTime = fields[5].Get<uint32>();
 
         CreatureTemplate const* info = sObjectMgr->GetCreatureTemplate(entry);
         if (!info)
@@ -108,9 +108,9 @@ void SystemMgr::LoadScriptSplineChains()
         do
         {
             Field* fieldsMeta = resultMeta->Fetch();
-            uint32 entry = fieldsMeta[0].GetUInt32();
-            uint16 chainId = fieldsMeta[1].GetUInt16();
-            uint8 splineId = fieldsMeta[2].GetUInt8();
+            uint32 entry = fieldsMeta[0].Get<uint32>();
+            uint16 chainId = fieldsMeta[1].Get<uint16>();
+            uint8 splineId = fieldsMeta[2].Get<uint8>();
             std::vector<SplineChainLink>& chain = m_mSplineChainsMap[{entry, chainId}];
 
             if (splineId != chain.size())
@@ -119,9 +119,9 @@ void SystemMgr::LoadScriptSplineChains()
                 continue;
             }
 
-            uint32 expectedDuration = fieldsMeta[3].GetUInt32();
-            uint32 msUntilNext = fieldsMeta[4].GetUInt32();
-            float velocity = fieldsMeta[5].GetFloat();
+            uint32 expectedDuration = fieldsMeta[3].Get<uint32>();
+            uint32 msUntilNext = fieldsMeta[4].Get<uint32>();
+            float velocity = fieldsMeta[5].Get<float>();
             chain.emplace_back(expectedDuration, msUntilNext, velocity);
 
             if (splineId == 0)
@@ -132,10 +132,10 @@ void SystemMgr::LoadScriptSplineChains()
         do
         {
             Field* fieldsWP = resultWP->Fetch();
-            uint32 entry = fieldsWP[0].GetUInt32();
-            uint16 chainId = fieldsWP[1].GetUInt16();
-            uint8 splineId = fieldsWP[2].GetUInt8(), wpId = fieldsWP[3].GetUInt8();
-            float posX = fieldsWP[4].GetFloat(), posY = fieldsWP[5].GetFloat(), posZ = fieldsWP[6].GetFloat();
+            uint32 entry = fieldsWP[0].Get<uint32>();
+            uint16 chainId = fieldsWP[1].Get<uint16>();
+            uint8 splineId = fieldsWP[2].Get<uint8>(), wpId = fieldsWP[3].Get<uint8>();
+            float posX = fieldsWP[4].Get<float>(), posY = fieldsWP[5].Get<float>(), posZ = fieldsWP[6].Get<float>();
             auto it = m_mSplineChainsMap.find({ entry,chainId });
             if (it == m_mSplineChainsMap.end())
             {

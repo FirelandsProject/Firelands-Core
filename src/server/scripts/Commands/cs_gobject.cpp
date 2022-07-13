@@ -40,6 +40,7 @@
 #include "PoolMgr.h"
 #include "RBAC.h"
 #include "WorldSession.h"
+#include "Util.h"
 
  // definitions are over in cs_npc.cpp
 bool HandleNpcSpawnGroup(ChatHandler* handler, char const* args);
@@ -300,14 +301,14 @@ public:
         do
         {
             Field* fields = result->Fetch();
-            guidLow = fields[0].GetUInt32();
-            id = fields[1].GetUInt32();
-            x = fields[2].GetFloat();
-            y = fields[3].GetFloat();
-            z = fields[4].GetFloat();
-            o = fields[5].GetFloat();
-            mapId = fields[6].GetUInt16();
-            phase = fields[7].GetUInt32();
+            guidLow = fields[0].Get<uint32>();
+            id = fields[1].Get<uint32>();
+            x = fields[2].Get<float>();
+            y = fields[3].Get<float>();
+            z = fields[4].Get<float>();
+            o = fields[5].Get<float>();
+            mapId = fields[6].Get<uint16>();
+            phase = fields[7].Get<uint32>();
             poolId = sPoolMgr->IsPartOfAPool<GameObject>(guidLow);
             if (!poolId || sPoolMgr->IsSpawnedObject<GameObject>(guidLow))
                 found = true;
@@ -549,12 +550,12 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                ObjectGuid::LowType guid = fields[0].GetUInt32();
-                uint32 entry = fields[1].GetUInt32();
-                float x = fields[2].GetFloat();
-                float y = fields[3].GetFloat();
-                float z = fields[4].GetFloat();
-                uint16 mapId = fields[5].GetUInt16();
+                ObjectGuid::LowType guid = fields[0].Get<uint32>();
+                uint32 entry = fields[1].Get<uint32>();
+                float x = fields[2].Get<float>();
+                float y = fields[3].Get<float>();
+                float z = fields[4].Get<float>();
+                uint16 mapId = fields[5].Get<uint16>();
 
                 GameObjectTemplate const* gameObjectInfo = sObjectMgr->GetGameObjectTemplate(entry);
 

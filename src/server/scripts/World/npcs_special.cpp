@@ -110,6 +110,7 @@ public:
                 }
             }
             ASSERT(false, "Unhandled creature with entry %u is assigned 'npc_air_force_bots' script", entry);
+            return nullptr;
         }
 
         npc_air_force_botsAI(Creature* creature) : NullCreatureAI(creature), _spawn(FindSpawnFor(creature->GetEntry())) {}
@@ -118,36 +119,42 @@ public:
         {
             Creature* guard = ObjectAccessor::GetCreature(*me, _myGuard);
 
-            if (!guard && (guard = me->SummonCreature(_spawn.otherEntry, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 300000)))
+            if (!guard && (guard = me->SummonCreature(_spawn.otherEntry, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 300000))) {
                 _myGuard = guard->GetGUID();
+            }
 
             return guard;
         }
 
         void UpdateAI(uint32 /*diff*/) override
         {
-            if (_toAttack.empty())
+            if (_toAttack.empty()) {
                 return;
+            }
 
             Creature* guard = GetOrSummonGuard();
-            if (!guard)
+            if (!guard){
                 return;
+            }
 
             // Keep the list of targets for later on when the guards will be alive
-            if (!guard->IsAlive())
+            if (!guard->IsAlive()){
                 return;
+            }
 
-            for (ObjectGuid guid : _toAttack)
-            {
+            for (ObjectGuid guid : _toAttack) {
                 Unit* target = ObjectAccessor::GetUnit(*me, guid);
-                if (!target)
+                if (!target){
                     continue;
-                if (guard->IsInCombatWith(target))
+                }
+                if (guard->IsInCombatWith(target)){
                     continue;
+                }
 
                 guard->Attack(target, true);
-                if (_spawn.type == ALARMBOT)
+                if (_spawn.type == ALARMBOT){
                     guard->CastSpell(target, SPELL_GUARDS_MARK, true);
+                }
             }
 
             _toAttack.clear();
@@ -156,27 +163,33 @@ public:
         void MoveInLineOfSight(Unit* who) override
         {
             // guards are only spawned against players
-            if (who->GetTypeId() != TYPEID_PLAYER)
+            if (who->GetTypeId() != TYPEID_PLAYER){
                 return;
+            }
 
             // we're already scheduled to attack this player on our next tick, don't bother checking
-            if (_toAttack.find(who->GetGUID()) != _toAttack.end())
+            if (_toAttack.find(who->GetGUID()) != _toAttack.end()){
                 return;
+            }
 
             // check if they're in range
-            if (!who->IsWithinDistInMap(me, (_spawn.type == ALARMBOT) ? RANGE_ALARMBOT : RANGE_TRIPWIRE))
+            if (!who->IsWithinDistInMap(me, (_spawn.type == ALARMBOT) ? RANGE_ALARMBOT : RANGE_TRIPWIRE)){
                 return;
+            }
 
             // check if they're hostile
-            if (!(me->IsHostileTo(who) || who->IsHostileTo(me)))
+            if (!(me->IsHostileTo(who) || who->IsHostileTo(me))){
                 return;
+                }
 
             // check if they're a valid attack target
-            if (!me->IsValidAttackTarget(who))
+            if (!me->IsValidAttackTarget(who)){
                 return;
+            }
 
-            if ((_spawn.type == TRIPWIRE) && who->IsFlying())
+            if ((_spawn.type == TRIPWIRE) && who->IsFlying()){
                 return;
+            }
 
             _toAttack.insert(who->GetGUID());
         }

@@ -1225,8 +1225,8 @@ public:
             }
 
             Field* fields = result->Fetch();
-            uint32 accountId = fields[0].GetUInt32();
-            std::string accountName = fields[1].GetString();
+            uint32 accountId = fields[0].Get<uint32>();
+            std::string accountName = fields[1].Get<std::string>();
 
             CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_GUID_NAME_BY_ACC);
             stmt->SetData(0, accountId);
@@ -1239,8 +1239,8 @@ public:
                 do
                 {
                     Field* characterFields = result2->Fetch();
-                    ObjectGuid::LowType guid = characterFields[0].GetUInt32();
-                    std::string name = characterFields[1].GetString();
+                    ObjectGuid::LowType guid = characterFields[0].Get<uint32>();
+                    std::string name = characterFields[1].Get<std::string>();
 
                     handler->PSendSysMessage(LANG_LOOKUP_PLAYER_CHARACTER, name.c_str(), guid);
                     ++counter;

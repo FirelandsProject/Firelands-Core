@@ -61,9 +61,9 @@ void ChatHandler::InitializeCommandTable()
         do
         {
             Field* fields = result->Fetch();
-            std::string name = fields[0].GetString();
+            std::string name = fields[0].Get<std::string>();
 
-            SetDataForCommandInTable(*commandTableCache, name.c_str(), fields[1].GetUInt16(), fields[2].GetString(), name);
+            SetDataForCommandInTable(*commandTableCache, name.c_str(), fields[1].Get<uint16>(), fields[2].Get<std::string>(), name);
         } while (result->NextRow());
     }
 }

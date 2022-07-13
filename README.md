@@ -8,7 +8,7 @@
 
 Firelands Core is a _MMORPG_ Framework based mostly in C++.
 
-It is derived from _MaNGOS_ and _TrinityCore_, the _Massive Network Game Object Server_, and is
+It is derived from _TrinityCore_ and _MaNGOS_ the _Massive Network Game Object Server_, and is
 based on the code of that project with extensive changes over time to optimize,
 improve and cleanup the codebase at the same time as improving the in-game
 mechanics and functionality.
@@ -16,15 +16,15 @@ mechanics and functionality.
 It is completely open source; community involvement is highly encouraged.
 
 If you wish to contribute ideas or code please visit our site linked below or
-make pull requests to our [Github repository](https://github.com/seobryn/Firelands-Core).
+make pull requests to our [Github repository](https://github.com/FirelandsProject).
 
 ## Install
 
-TBD
+you can follow the instructions in our [Wiki Page](https://github.com/FirelandsProject/firelands-wiki)
 
 ## Reporting issues
 
-Issues can be reported via the [Github issue tracker](https://github.com/seobryn/Firelands-Core/issues).
+Issues can be reported via the [Github issue tracker](https://github.com/FirelandsProject/Firelands-Core/issues).
 
 Please take the time to review existing issues before submitting your own to
 prevent duplicates.
@@ -54,3 +54,5 @@ Read file [AUTHORS](AUTHORS)
 [Forums](TBD)
 
 [Discord](https://discord.gg/CGj9Gghg)
+
+[Youtube Channel](https://www.youtube.com/channel/UCtuh9vVgs5h2dmkzh21PPBQ)

@@ -204,10 +204,10 @@ namespace rbac
             do
             {
                 Field* fields = result->Fetch();
-                if (fields[1].GetBool())
-                    GrantPermission(fields[0].GetUInt32());
+                if (fields[1].Get<bool>())
+                    GrantPermission(fields[0].Get<uint32>());
                 else
-                    DenyPermission(fields[0].GetUInt32());
+                    DenyPermission(fields[0].Get<uint32>());
             } while (result->NextRow());
         }
 

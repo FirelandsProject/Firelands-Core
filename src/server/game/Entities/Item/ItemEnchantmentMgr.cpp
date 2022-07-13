@@ -74,10 +74,10 @@ void LoadRandomEnchantmentsTable()
         {
             Field* fields = result->Fetch();
 
-            uint32 entry = fields[0].GetUInt32();
-            ItemRandomEnchantmentType type = ItemRandomEnchantmentType(fields[1].GetUInt8());
-            uint32 ench = fields[2].GetUInt32();
-            float chance = fields[3].GetFloat();
+            uint32 entry = fields[0].Get<uint32>();
+            ItemRandomEnchantmentType type = ItemRandomEnchantmentType(fields[1].Get<uint8>());
+            uint32 ench = fields[2].Get<uint32>();
+            float chance = fields[3].Get<float>();
 
             switch (type)
             {

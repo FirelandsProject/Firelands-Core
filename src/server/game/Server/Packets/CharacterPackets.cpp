@@ -21,6 +21,8 @@
 #include "ObjectMgr.h"
 #include "Player.h"
 #include "World.h"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 WorldPackets::Character::EnumCharactersResult::CharacterInfo::CharacterInfo(Field* fields)
 {
@@ -33,26 +35,26 @@ WorldPackets::Character::EnumCharactersResult::CharacterInfo::CharacterInfo(Fiel
     //    23                     24               25
     //    character_banned.guid, characters.slot, character_declinedname.genitive
 
-    Guid = ObjectGuid::Create<HighGuid::Player>(fields[0].GetUInt32());
-    Name = fields[1].GetString();
-    RaceID = fields[2].GetUInt8();
-    ClassID = fields[3].GetUInt8();
-    SexID = fields[4].GetUInt8();
-    SkinID = fields[5].GetUInt8();
-    FaceID = fields[6].GetUInt8();
-    HairStyle = fields[7].GetUInt8();
-    HairColor = fields[8].GetUInt8();
-    FacialHair = fields[9].GetUInt8();
-    ExperienceLevel = fields[10].GetUInt8();
-    ZoneID = int32(fields[11].GetUInt16());
-    MapID = int32(fields[12].GetUInt16());
-    PreloadPos = Position(fields[13].GetFloat(), fields[14].GetFloat(), fields[15].GetFloat());
+    Guid = ObjectGuid::Create<HighGuid::Player>(fields[0].Get<uint32>());
+    Name = fields[1].Get<std::string>();
+    RaceID = fields[2].Get<uint8>();
+    ClassID = fields[3].Get<uint8>();
+    SexID = fields[4].Get<uint8>();
+    SkinID = fields[5].Get<uint8>();
+    FaceID = fields[6].Get<uint8>();
+    HairStyle = fields[7].Get<uint8>();
+    HairColor = fields[8].Get<uint8>();
+    FacialHair = fields[9].Get<uint8>();
+    ExperienceLevel = fields[10].Get<uint8>();
+    ZoneID = int32(fields[11].Get<uint16>());
+    MapID = int32(fields[12].Get<uint16>());
+    PreloadPos = Position(fields[13].Get<float>(), fields[14].Get<float>(), fields[15].Get<float>());
 
-    if (ObjectGuid::LowType guildId = fields[16].GetUInt32())
+    if (ObjectGuid::LowType guildId = fields[16].Get<uint32>())
         GuildGUID = ObjectGuid::Create<HighGuid::Guild>(guildId);
 
-    uint32 playerFlags = fields[17].GetUInt32();
-    uint32 atLoginFlags = fields[18].GetUInt16();
+    uint32 playerFlags = fields[17].Get<uint32>();
+    uint32 atLoginFlags = fields[18].Get<uint16>();
 
     if (atLoginFlags & AT_LOGIN_RESURRECT)
         playerFlags &= ~PLAYER_FLAGS_GHOST;
@@ -63,10 +65,10 @@ WorldPackets::Character::EnumCharactersResult::CharacterInfo::CharacterInfo(Fiel
     if (atLoginFlags & AT_LOGIN_RENAME)
         Flags |= CHARACTER_FLAG_RENAME;
 
-    if (fields[23].GetUInt32())
+    if (fields[23].Get<uint32>())
         Flags |= CHARACTER_FLAG_LOCKED_BY_BILLING;
 
-    if (sWorld->getBoolConfig(CONFIG_DECLINED_NAMES_USED) && !fields[22].GetString().empty())
+    if (sWorld->getBoolConfig(CONFIG_DECLINED_NAMES_USED) && !fields[22].Get<std::string>().empty())
         Flags |= CHARACTER_FLAG_DECLINED;
 
     if (atLoginFlags & AT_LOGIN_CUSTOMIZE)
@@ -87,31 +89,36 @@ WorldPackets::Character::EnumCharactersResult::CharacterInfo::CharacterInfo(Fiel
     // show pet at selection character in character list only for non-ghost character
     if (!(playerFlags & PLAYER_FLAGS_GHOST) && (ClassID == CLASS_WARLOCK || ClassID == CLASS_HUNTER || ClassID == CLASS_DEATH_KNIGHT))
     {
-        if (CreatureTemplate const* creatureInfo = sObjectMgr->GetCreatureTemplate(fields[19].GetUInt32()))
+        if (CreatureTemplate const* creatureInfo = sObjectMgr->GetCreatureTemplate(fields[19].Get<uint32>()))
         {
-            PetCreatureDisplayID = fields[20].GetUInt32();
-            PetExperienceLevel = fields[21].GetUInt16();
+            PetCreatureDisplayID = fields[20].Get<uint32>();
+            PetExperienceLevel = fields[21].Get<uint16>();
             PetCreatureFamilyID = creatureInfo->family;
         }
     }
 
-    Tokenizer equipment(fields[22].GetString(), ' ');
-    ListPosition = fields[24].GetUInt8();
+    std::vector<std::string_view> equipment = Firelands::Tokenize(fields[22].Get<std::string>(), ' ', false);
+    ListPosition = fields[24].Get<uint8>();
 
     for (uint8 slot = 0; slot < INVENTORY_SLOT_BAG_END; ++slot)
     {
         uint32 visualBase = slot * 2;
-        uint32 itemId = Player::GetUInt32ValueFromArray(equipment, visualBase);
-        ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
+        Optional<uint32> itemId;
+
+        if (visualBase < equipment.size())
+        {
+            itemId = Firelands::StringTo<uint32>(equipment[visualBase]);
+        }
+        ItemTemplate const* proto = sObjectMgr->GetItemTemplate(*itemId);
         if (!proto)
             continue;
 
         SpellItemEnchantmentEntry const* enchant = nullptr;
-        uint32 enchants = Player::GetUInt32ValueFromArray(equipment, visualBase + 1);
+        Optional<uint32> enchants = Firelands::StringTo<uint32>(equipment[visualBase + 1]);
         for (uint8 enchantSlot = PERM_ENCHANTMENT_SLOT; enchantSlot <= TEMP_ENCHANTMENT_SLOT; ++enchantSlot)
         {
             // values stored in 2 uint16
-            uint32 enchantId = 0x0000FFFF & (enchants >> enchantSlot * 16);
+            uint32 enchantId = 0x0000FFFF & (*enchants >> enchantSlot * 16);
             if (!enchantId)
                 continue;
 
@@ -189,7 +196,7 @@ WorldPacket const* WorldPackets::Character::EnumCharactersResult::Write()
         _worldPacket << uint8(charInfo.FacialHair);
         _worldPacket.WriteByteSeq(charInfo.Guid[7]);
         _worldPacket << uint8(charInfo.SexID);
-        _worldPacket.WriteString(charInfo.Name);
+        _worldPacket << charInfo.Name;
         _worldPacket << uint8(charInfo.FaceID);
         _worldPacket.WriteByteSeq(charInfo.Guid[0]);
         _worldPacket.WriteByteSeq(charInfo.Guid[2]);
@@ -249,7 +256,7 @@ WorldPacket const* WorldPackets::Character::GenerateRandomCharacterNameResult::W
 {
     _worldPacket.WriteBit(Success);
     _worldPacket.WriteBits(Name.size(), 7);
-    _worldPacket.WriteString(Name);
+    _worldPacket << Name;
 
     return &_worldPacket;
 }

@@ -45,6 +45,8 @@
 #include "World.h"
 #include "WorldSession.h"
 #include "Util.h"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 bool AchievementCriteriaData::IsValid(AchievementCriteriaEntry const* criteria)
 {
@@ -453,8 +455,27 @@ void AchievementMgr<Guild>::RemoveCriteriaProgress(AchievementCriteriaEntry cons
     if (criteriaProgress == m_criteriaProgress.end())
         return;
 
+    ObjectGuid guid = GetOwner()->GetGUID();
+
     WorldPacket data(SMSG_GUILD_CRITERIA_DELETED, 4 + 8);
+    data.WriteBit(guid[6]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[7]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(guid[1]);
+    data.WriteBit(guid[3]);
+    data.WriteBit(guid[2]);
+    data.WriteBit(guid[4]);
+
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(guid[3]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[1]);
+    data.WriteByteSeq(guid[7]);
     data << uint32(entry->ID);
+    data.WriteByteSeq(guid[5]);
+    data.WriteByteSeq(guid[0]);
+    data.WriteByteSeq(guid[6]);
 
     SendPacket(&data);
 
@@ -650,7 +671,7 @@ void AchievementMgr<Player>::LoadFromDB(PreparedQueryResult achievementResult, P
         do
         {
             Field* fields = achievementResult->Fetch();
-            uint32 achievementid = fields[0].GetUInt16();
+            uint32 achievementid = fields[0].Get<uint16>();
 
             // must not happen: cleanup at server startup in sAchievementMgr->LoadCompletedAchievements()
             AchievementEntry const* achievement = sAchievementMgr->GetAchievement(achievementid);
@@ -658,7 +679,7 @@ void AchievementMgr<Player>::LoadFromDB(PreparedQueryResult achievementResult, P
                 continue;
 
             CompletedAchievementData& ca = m_completedAchievements[achievementid];
-            ca.date = time_t(fields[1].GetUInt32());
+            ca.date = time_t(fields[1].Get<uint32>());
             ca.changed = false;
 
             _achievementPoints += achievement->Points;
@@ -677,9 +698,9 @@ void AchievementMgr<Player>::LoadFromDB(PreparedQueryResult achievementResult, P
         do
         {
             Field* fields = criteriaResult->Fetch();
-            uint32 id = fields[0].GetUInt16();
-            uint64 counter = fields[1].GetUInt64();
-            time_t date = time_t(fields[2].GetUInt32());
+            uint32 id = fields[0].Get<uint16>();
+            uint64 counter = fields[1].Get<uint64>();
+            time_t date = time_t(fields[2].Get<uint32>());
 
             AchievementCriteriaEntry const* criteria = sAchievementMgr->GetAchievementCriteria(id);
             if (!criteria)
@@ -713,7 +734,7 @@ void AchievementMgr<Guild>::LoadFromDB(PreparedQueryResult achievementResult, Pr
         do
         {
             Field* fields = achievementResult->Fetch();
-            uint32 achievementid = fields[0].GetUInt16();
+            uint32 achievementid = fields[0].Get<uint16>();
 
             // must not happen: cleanup at server startup in sAchievementMgr->LoadCompletedAchievements()
             AchievementEntry const* achievement = sAchievementMgr->GetAchievement(achievementid);
@@ -721,10 +742,11 @@ void AchievementMgr<Guild>::LoadFromDB(PreparedQueryResult achievementResult, Pr
                 continue;
 
             CompletedAchievementData& ca = m_completedAchievements[achievementid];
-            ca.date = time_t(fields[1].GetUInt32());
-            Tokenizer guids(fields[2].GetString(), ' ');
-            for (uint32 i = 0; i < guids.size(); ++i)
-                ca.guids.insert(ObjectGuid(HighGuid::Player, uint32(atol(guids[i]))));
+            ca.date = time_t(fields[1].Get<uint32>());
+            std::vector<std::string_view> guids = Firelands::Tokenize(fields[2].Get<std::string_view>(), ' ', true);
+            for (uint32 i = 0; i < guids.size(); ++i) {
+                ca.guids.insert(ObjectGuid(HighGuid::Player, *Firelands::StringTo<uint32>(guids[i])));
+            }
 
             ca.changed = false;
 
@@ -737,10 +759,10 @@ void AchievementMgr<Guild>::LoadFromDB(PreparedQueryResult achievementResult, Pr
         do
         {
             Field* fields = criteriaResult->Fetch();
-            uint32 id = fields[0].GetUInt16();
-            uint32 counter = fields[1].GetUInt32();
-            time_t date = time_t(fields[2].GetUInt32());
-            uint32 guid = fields[3].GetUInt32();
+            uint32 id = fields[0].Get<uint16>();
+            uint32 counter = fields[1].Get<uint32>();
+            time_t date = time_t(fields[2].Get<uint32>());
+            uint32 guid = fields[3].Get<uint32>();
 
             AchievementCriteriaEntry const* criteria = sAchievementMgr->GetAchievementCriteria(id);
             if (!criteria)
@@ -814,7 +836,7 @@ void AchievementMgr<Guild>::Reset()
 
     _achievementPoints = 0;
     m_completedAchievements.clear();
-    DeleteFromDB(GetOwner()->GetGUID());
+    DeleteFromDB(guid);
 }
 
 template<class T>
@@ -921,10 +943,47 @@ void AchievementMgr<Guild>::SendCriteriaUpdate(AchievementCriteriaEntry const* e
     ObjectGuid counter(progress->counter); // for accessing every byte individually
     ObjectGuid guid = progress->CompletedGUID;
 
-    data << uint32(entry->ID);
-    data << counter;
-    data << guid;
+    data.WriteBits(1, 21);
+    data.WriteBit(counter[4]);
+    data.WriteBit(counter[1]);
+    data.WriteBit(guid[2]);
+    data.WriteBit(counter[3]);
+    data.WriteBit(guid[1]);
+    data.WriteBit(counter[5]);
+    data.WriteBit(counter[0]);
+    data.WriteBit(guid[3]);
+    data.WriteBit(counter[2]);
+    data.WriteBit(guid[7]);
+    data.WriteBit(guid[5]);
+    data.WriteBit(guid[0]);
+    data.WriteBit(counter[6]);
+    data.WriteBit(guid[6]);
+    data.WriteBit(counter[7]);
+    data.WriteBit(guid[4]);
 
+    data.FlushBits();
+
+    data.WriteByteSeq(guid[5]);
+    data << uint32(progress->date);      // unknown date
+    data.WriteByteSeq(counter[3]);
+    data.WriteByteSeq(counter[7]);
+    data << uint32(progress->date);      // unknown date
+    data.WriteByteSeq(counter[6]);
+    data.WriteByteSeq(guid[4]);
+    data.WriteByteSeq(guid[1]);
+    data.WriteByteSeq(counter[4]);
+    data.WriteByteSeq(guid[3]);
+    data.WriteByteSeq(counter[0]);
+    data.WriteByteSeq(guid[2]);
+    data.WriteByteSeq(counter[1]);
+    data.WriteByteSeq(guid[6]);
+    data << uint32(progress->date);      // last update time (not packed!)
+    data << uint32(entry->ID);
+    data.WriteByteSeq(counter[5]);
+    data << uint32(0);
+    data.WriteByteSeq(guid[7]);
+    data.WriteByteSeq(counter[2]);
+    data.WriteByteSeq(guid[0]);
 
     GetOwner()->BroadcastPacketIfTrackingAchievement(&data, entry->ID);
 }
@@ -3277,7 +3336,7 @@ void AchievementGlobalMgr::LoadAchievementCriteriaList()
         if (!criteria)
             continue;
 
-        ASSERT(criteria->Type < ACHIEVEMENT_CRITERIA_TYPE_TOTAL, "ACHIEVEMENT_CRITERIA_TYPE_TOTAL must be greater than or equal to %u but is currently equal to %u",
+        ASSERT(criteria->Type < ACHIEVEMENT_CRITERIA_TYPE_TOTAL, "ACHIEVEMENT_CRITERIA_TYPE_TOTAL must be greater than or equal to {} but is currently equal to {}",
             criteria->Type + 1, ACHIEVEMENT_CRITERIA_TYPE_TOTAL);
 
         AchievementEntry const* achievement = sAchievementMgr->GetAchievement(criteria->ReferredAchievement);
@@ -3323,7 +3382,7 @@ void AchievementGlobalMgr::LoadAchievementCriteriaList()
             if (criteria->AdditionalRequirements[i].Type != ACHIEVEMENT_CRITERIA_CONDITION_NONE)
             {
                 ASSERT(criteria->AdditionalRequirements[i].Type < ACHIEVEMENT_CRITERIA_CONDITION_MAX,
-                    "ACHIEVEMENT_CRITERIA_CONDITION_MAX must be greater than or equal to %u but is currently equal to %u",
+                    "ACHIEVEMENT_CRITERIA_CONDITION_MAX must be greater than or equal to {} but is currently equal to {}",
                     criteria->AdditionalRequirements[i].Type + 1, ACHIEVEMENT_CRITERIA_CONDITION_MAX);
 
                 if (i == 0
@@ -3335,7 +3394,7 @@ void AchievementGlobalMgr::LoadAchievementCriteriaList()
 
         if (criteria->StartTimer)
         {
-            ASSERT(criteria->StartEvent < ACHIEVEMENT_TIMED_TYPE_MAX, "ACHIEVEMENT_TIMED_TYPE_MAX must be greater than or equal to %u but is currently equal to %u",
+            ASSERT(criteria->StartEvent < ACHIEVEMENT_TIMED_TYPE_MAX, "ACHIEVEMENT_TIMED_TYPE_MAX must be greater than or equal to {} but is currently equal to {}",
                 criteria->StartEvent + 1, ACHIEVEMENT_TIMED_TYPE_MAX);
             m_AchievementCriteriasByTimedType[criteria->StartEvent].push_back(criteria);
         }
@@ -3396,7 +3455,7 @@ void AchievementGlobalMgr::LoadAchievementCriteriaData()
     do
     {
         Field* fields = result->Fetch();
-        uint32 criteria_id = fields[0].GetUInt32();
+        uint32 criteria_id = fields[0].Get<uint32>();
 
         AchievementCriteriaEntry const* criteria = sAchievementMgr->GetAchievementCriteria(criteria_id);
 
@@ -3406,8 +3465,8 @@ void AchievementGlobalMgr::LoadAchievementCriteriaData()
             continue;
         }
 
-        uint32 dataType = fields[1].GetUInt8();
-        std::string scriptName = fields[4].GetString();
+        uint32 dataType = fields[1].Get<uint8>();
+        std::string scriptName = fields[4].Get<std::string>();
         uint32 scriptId = 0;
         if (scriptName.length()) // not empty
         {
@@ -3417,7 +3476,7 @@ void AchievementGlobalMgr::LoadAchievementCriteriaData()
                 scriptId = sObjectMgr->GetScriptId(scriptName);
         }
 
-        AchievementCriteriaData data(dataType, fields[2].GetUInt32(), fields[3].GetUInt32(), scriptId);
+        AchievementCriteriaData data(dataType, fields[2].Get<uint32>(), fields[3].Get<uint32>(), scriptId);
 
         if (!data.IsValid(criteria))
             continue;
@@ -3461,7 +3520,7 @@ void AchievementGlobalMgr::LoadCompletedAchievements()
     {
         Field* fields = result->Fetch();
 
-        uint16 achievementId = fields[0].GetUInt16();
+        uint16 achievementId = fields[0].Get<uint16>();
         AchievementEntry const* achievement = sAchievementMgr->GetAchievement(achievementId);
         if (!achievement)
         {
@@ -3500,7 +3559,7 @@ void AchievementGlobalMgr::LoadRewards()
     do
     {
         Field* fields = result->Fetch();
-        uint32 id = fields[0].GetUInt32();
+        uint32 id = fields[0].Get<uint32>();
         AchievementEntry const* achievement = GetAchievement(id);
         if (!achievement)
         {
@@ -3509,13 +3568,13 @@ void AchievementGlobalMgr::LoadRewards()
         }
 
         AchievementReward reward;
-        reward.TitleID[0] = fields[1].GetUInt32();
-        reward.TitleID[1] = fields[2].GetUInt32();
-        reward.ItemID = fields[3].GetUInt32();
-        reward.Sender = fields[4].GetUInt32();
-        reward.Subject = fields[5].GetString();
-        reward.Text = fields[6].GetString();
-        reward.MailTemplateID = fields[7].GetUInt32();
+        reward.TitleID[0] = fields[1].Get<uint32>();
+        reward.TitleID[1] = fields[2].Get<uint32>();
+        reward.ItemID = fields[3].Get<uint32>();
+        reward.Sender = fields[4].Get<uint32>();
+        reward.Subject = fields[5].Get<std::string>();
+        reward.Text = fields[6].Get<std::string>();
+        reward.MailTemplateID = fields[7].Get<uint32>();
 
         // must be title or mail at least
         if (!reward.TitleID[0] && !reward.TitleID[1] && !reward.Sender)
@@ -3616,10 +3675,10 @@ void AchievementGlobalMgr::LoadRewardLocales()
     {
         Field* fields = result->Fetch();
 
-        uint32 id = fields[0].GetUInt32();
-        std::string localeName = fields[1].GetString();
-        std::string subject = fields[2].GetString();
-        std::string text = fields[3].GetString();
+        uint32 id = fields[0].Get<uint32>();
+        std::string localeName = fields[1].Get<std::string>();
+        std::string subject = fields[2].Get<std::string>();
+        std::string text = fields[3].Get<std::string>();
 
         if (m_achievementRewards.find(id) == m_achievementRewards.end())
         {

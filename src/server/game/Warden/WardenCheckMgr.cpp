@@ -56,7 +56,7 @@ void WardenCheckMgr::LoadWardenChecks()
 
     Field* fields = result->Fetch();
 
-    uint16 maxCheckId = fields[0].GetUInt16();
+    uint16 maxCheckId = fields[0].Get<uint16>();
 
     CheckStore.resize(maxCheckId + 1);
 
@@ -68,14 +68,14 @@ void WardenCheckMgr::LoadWardenChecks()
     {
         fields = result->Fetch();
 
-        uint16 id = fields[0].GetUInt16();
-        uint8 checkType = fields[1].GetUInt8();
-        std::string data = fields[2].GetString();
-        std::string checkResult = fields[3].GetString();
-        uint32 address = fields[4].GetUInt32();
-        uint8 length = fields[5].GetUInt8();
-        std::string str = fields[6].GetString();
-        std::string comment = fields[7].GetString();
+        uint16 id = fields[0].Get<uint16>();
+        uint8 checkType = fields[1].Get<uint8>();
+        std::string data = fields[2].Get<std::string>();
+        std::string checkResult = fields[3].Get<std::string>();
+        uint32 address = fields[4].Get<uint32>();
+        uint8 length = fields[5].Get<uint8>();
+        std::string str = fields[6].Get<std::string>();
+        std::string comment = fields[7].Get<std::string>();
 
         WardenCheck* wardenCheck = new WardenCheck();
         wardenCheck->Type = checkType;
@@ -172,8 +172,8 @@ void WardenCheckMgr::LoadWardenOverrides()
     {
         Field* fields = result->Fetch();
 
-        uint16 checkId = fields[0].GetUInt16();
-        uint8  action = fields[1].GetUInt8();
+        uint16 checkId = fields[0].Get<uint16>();
+        uint8  action = fields[1].Get<uint8>();
 
         // Check if action value is in range (0-2, see WardenActions enum)
         if (action > WARDEN_ACTION_BAN)

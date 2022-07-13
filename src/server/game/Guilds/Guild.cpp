@@ -303,10 +303,10 @@ void Guild::NewsLogEntry::WritePacket(WorldPackets::Guild::GuildNews& newsPacket
 // RankInfo
 void Guild::RankInfo::LoadFromDB(Field* fields)
 {
-    m_rankId = fields[1].GetUInt8();
-    m_name = fields[2].GetString();
-    m_rights = fields[3].GetUInt32();
-    m_bankMoneyPerDay = fields[4].GetUInt32();
+    m_rankId = fields[1].Get<uint8>();
+    m_name = fields[2].Get<std::string>();
+    m_rights = fields[3].Get<uint32>();
+    m_bankMoneyPerDay = fields[4].Get<uint32>();
     if (m_rankId == GR_GUILDMASTER)                     // Prevent loss of leader rights
         m_rights |= GR_RIGHT_ALL;
 }
@@ -420,16 +420,16 @@ Guild::BankTab::BankTab(ObjectGuid::LowType guildId, uint8 tabId) : m_guildId(gu
 
 void Guild::BankTab::LoadFromDB(Field* fields)
 {
-    m_name = fields[2].GetString();
-    m_icon = fields[3].GetString();
-    m_text = fields[4].GetString();
+    m_name = fields[2].Get<std::string>();
+    m_icon = fields[3].Get<std::string>();
+    m_text = fields[4].Get<std::string>();
 }
 
 bool Guild::BankTab::LoadItemFromDB(Field* fields)
 {
-    uint8 slotId = fields[14].GetUInt8();
-    ObjectGuid::LowType itemGuid = fields[15].GetUInt32();
-    uint32 itemEntry = fields[16].GetUInt32();
+    uint8 slotId = fields[14].Get<uint8>();
+    ObjectGuid::LowType itemGuid = fields[15].Get<uint32>();
+    uint32 itemEntry = fields[16].Get<uint32>();
     if (slotId >= GUILD_BANK_MAX_SLOTS)
     {
         LOG_ERROR("guild", "Invalid slot for item (GUID: %u, id: %u) in guild bank, skipped.", itemGuid, itemEntry);
@@ -684,32 +684,32 @@ void Guild::Member::SaveToDB(CharacterDatabaseTransaction& trans) const
 // In this case member has to be removed from guild.
 bool Guild::Member::LoadFromDB(Field* fields)
 {
-    m_publicNote = fields[3].GetString();
-    m_officerNote = fields[4].GetString();
+    m_publicNote = fields[3].Get<std::string>();
+    m_officerNote = fields[4].Get<std::string>();
 
     for (uint8 i = 0; i < GUILD_BANK_MAX_TABS; ++i)
-        m_bankWithdraw[i] = fields[5 + i].GetUInt32();
+        m_bankWithdraw[i] = fields[5 + i].Get<uint32>();
 
-    m_bankWithdrawMoney = fields[13].GetUInt64();
+    m_bankWithdrawMoney = fields[13].Get<uint64>();
 
-    SetStats(fields[14].GetString(),
-        fields[15].GetUInt8(),                         // characters.level
-        fields[16].GetUInt8(),                         // characters.class
-        fields[17].GetUInt16(),                        // characters.zone
-        fields[18].GetUInt32(),                        // characters.account
-        fields[22].GetUInt32(),                        // characters.achievementPoint
-        fields[23].GetUInt32());
-    m_logoutTime = fields[19].GetUInt32();                  // characters.logout_time
-    m_totalActivity = fields[20].GetUInt64();
-    m_weekActivity = fields[21].GetUInt64();
-    m_weekReputation = fields[24].GetUInt32();
+    SetStats(fields[14].Get<std::string>(),
+        fields[15].Get<uint8>(),                         // characters.level
+        fields[16].Get<uint8>(),                         // characters.class
+        fields[17].Get<uint16>(),                        // characters.zone
+        fields[18].Get<uint32>(),                        // characters.account
+        fields[22].Get<uint32>(),                        // characters.achievementPoint
+        fields[23].Get<uint32>());
+    m_logoutTime = fields[19].Get<uint32>();                  // characters.logout_time
+    m_totalActivity = fields[20].Get<uint64>();
+    m_weekActivity = fields[21].Get<uint64>();
+    m_weekReputation = fields[24].Get<uint32>();
 
     if (!CheckStats())
         return false;
 
     if (!m_zoneId)
     {
-        LOG_DEBUG("guild", "%s has broken zone-data", m_guid.ToString().c_str());
+        LOG_DEBUG("guild", "%s has broken zone-data", m_guid.ToString());
         m_zoneId = Player::GetZoneIdFromDB(m_guid);
     }
 
@@ -730,9 +730,9 @@ void Guild::Member::LoadProfessionDataFromDB(ObjectGuid guid)
         do
         {
             Field* fields = result->Fetch();
-            uint16 skill = fields[0].GetUInt16();
-            uint16 value = fields[1].GetUInt16();
-            uint16 max = fields[2].GetUInt16();
+            uint16 skill = fields[0].Get<uint16>();
+            uint16 value = fields[1].Get<uint16>();
+            uint16 max = fields[2].Get<uint16>();
 
             SkillLineEntry const* skillLine = sSkillLineStore.LookupEntry(skill);
             if (!skillLine || skillLine->CategoryID != SKILL_CATEGORY_PROFESSION)
@@ -749,8 +749,8 @@ void Guild::Member::LoadProfessionDataFromDB(ObjectGuid guid)
                 do
                 {
                     Field* fields2 = result2->Fetch();
-                    uint32 spellId = fields2[0].GetUInt32();
-                    bool disabled = fields2[2].GetBool();
+                    uint32 spellId = fields2[0].Get<uint32>();
+                    bool disabled = fields2[2].Get<bool>();
                     if (disabled)
                         continue;
 
@@ -780,13 +780,13 @@ bool Guild::Member::CheckStats() const
 {
     if (m_level < 1)
     {
-        LOG_ERROR("guild", "%s has a broken data in field `characters`.`level`, deleting him from guild!", m_guid.ToString().c_str());
+        LOG_ERROR("guild", "%s has a broken data in field `characters`.`level`, deleting him from guild!", m_guid.ToString());
         return false;
     }
 
     if (m_class < CLASS_WARRIOR || m_class >= MAX_CLASSES)
     {
-        LOG_ERROR("guild", "%s has a broken data in field `characters`.`class`, deleting him from guild!", m_guid.ToString().c_str());
+        LOG_ERROR("guild", "%s has a broken data in field `characters`.`class`, deleting him from guild!", m_guid.ToString());
         return false;
     }
     return true;
@@ -930,11 +930,11 @@ void EmblemInfo::ReadPacket(WorldPacket& recv)
 
 void EmblemInfo::LoadFromDB(Field* fields)
 {
-    m_style = fields[3].GetUInt8();
-    m_color = fields[4].GetUInt8();
-    m_borderStyle = fields[5].GetUInt8();
-    m_borderColor = fields[6].GetUInt8();
-    m_backgroundColor = fields[7].GetUInt8();
+    m_style = fields[3].Get<uint8>();
+    m_color = fields[4].Get<uint8>();
+    m_borderStyle = fields[5].Get<uint8>();
+    m_borderColor = fields[6].Get<uint8>();
+    m_backgroundColor = fields[7].Get<uint8>();
 }
 
 void EmblemInfo::SaveToDB(ObjectGuid::LowType guildId) const
@@ -2531,19 +2531,19 @@ void Guild::SendMemberUpdateNote(std::string const& note, ObjectGuid guid, bool 
 // Loading methods
 bool Guild::LoadFromDB(Field* fields)
 {
-    m_id = fields[0].GetUInt32();
-    m_name = fields[1].GetString();
-    m_leaderGuid = ObjectGuid(HighGuid::Player, fields[2].GetUInt32());
+    m_id = fields[0].Get<uint32>();
+    m_name = fields[1].Get<std::string>();
+    m_leaderGuid = ObjectGuid(HighGuid::Player, fields[2].Get<uint32>());
     m_emblemInfo.LoadFromDB(fields);
-    m_info = fields[8].GetString();
-    m_motd = fields[9].GetString();
-    m_createdDate = time_t(fields[10].GetUInt32());
-    m_bankMoney = fields[11].GetUInt64();
-    _level = fields[12].GetUInt32();
-    _experience = fields[13].GetUInt64();
-    _todayExperience = fields[14].GetUInt64();
+    m_info = fields[8].Get<std::string>();
+    m_motd = fields[9].Get<std::string>();
+    m_createdDate = time_t(fields[10].Get<uint32>());
+    m_bankMoney = fields[11].Get<uint64>();
+    _level = fields[12].Get<uint32>();
+    _experience = fields[13].Get<uint64>();
+    _todayExperience = fields[14].Get<uint64>();
 
-    uint8 purchasedTabs = uint8(fields[15].GetUInt64());
+    uint8 purchasedTabs = uint8(fields[15].Get<uint64>());
     if (purchasedTabs > GUILD_BANK_MAX_TABS)
         purchasedTabs = GUILD_BANK_MAX_TABS;
 
@@ -2551,10 +2551,10 @@ bool Guild::LoadFromDB(Field* fields)
     for (uint8 i = 0; i < purchasedTabs; ++i)
         m_bankTabs[i] = new BankTab(m_id, i);
 
-    _currChallengeCount[GUILD_CHALLENGE_TYPE_DUNGEON] = uint8(fields[16].GetUInt32());
-    _currChallengeCount[GUILD_CHALLENGE_TYPE_RAID] = uint8(fields[17].GetUInt32());
-    _currChallengeCount[GUILD_CHALLENGE_TYPE_RATED_BG] = uint8(fields[18].GetUInt32());
-    _weeklyBonusMoney = fields[19].GetUInt64();
+    _currChallengeCount[GUILD_CHALLENGE_TYPE_DUNGEON] = uint8(fields[16].Get<uint32>());
+    _currChallengeCount[GUILD_CHALLENGE_TYPE_RAID] = uint8(fields[17].Get<uint32>());
+    _currChallengeCount[GUILD_CHALLENGE_TYPE_RATED_BG] = uint8(fields[18].Get<uint32>());
+    _weeklyBonusMoney = fields[19].Get<uint64>();
 
     _CreateLogHolders();
     return true;
@@ -2571,9 +2571,9 @@ void Guild::LoadRankFromDB(Field* fields)
 
 bool Guild::LoadMemberFromDB(Field* fields)
 {
-    ObjectGuid::LowType lowguid = fields[1].GetUInt32();
+    ObjectGuid::LowType lowguid = fields[1].Get<uint32>();
     ObjectGuid playerGuid(HighGuid::Player, lowguid);
-    Member* member = new Member(m_id, playerGuid, fields[2].GetUInt8());
+    Member* member = new Member(m_id, playerGuid, fields[2].Get<uint8>());
     if (!member->LoadFromDB(fields))
     {
         CharacterDatabaseTransaction trans(nullptr);
@@ -2590,9 +2590,9 @@ bool Guild::LoadMemberFromDB(Field* fields)
 void Guild::LoadBankRightFromDB(Field* fields)
 {
     // tabId              rights                slots
-    GuildBankRightsAndSlots rightsAndSlots(fields[1].GetUInt8(), fields[3].GetUInt8(), fields[4].GetUInt32());
+    GuildBankRightsAndSlots rightsAndSlots(fields[1].Get<uint8>(), fields[3].Get<uint8>(), fields[4].Get<uint32>());
     // rankId
-    _SetRankBankTabRightsAndSlots(fields[2].GetUInt8(), rightsAndSlots, false);
+    _SetRankBankTabRightsAndSlots(fields[2].Get<uint8>(), rightsAndSlots, false);
 }
 
 bool Guild::LoadEventLogFromDB(Field* fields)
@@ -2601,12 +2601,12 @@ bool Guild::LoadEventLogFromDB(Field* fields)
     {
         m_eventLog->LoadEvent(new EventLogEntry(
             m_id,                                       // guild id
-            fields[1].GetUInt32(),                      // guid
-            time_t(fields[6].GetUInt32()),              // timestamp
-            GuildEventLogTypes(fields[2].GetUInt8()),   // event type
-            fields[3].GetUInt32(),                      // player guid 1
-            fields[4].GetUInt32(),                      // player guid 2
-            fields[5].GetUInt8()));                     // rank
+            fields[1].Get<uint32>(),                      // guid
+            time_t(fields[6].Get<uint32>()),              // timestamp
+            GuildEventLogTypes(fields[2].Get<uint8>()),   // event type
+            fields[3].Get<uint32>(),                      // player guid 1
+            fields[4].Get<uint32>(),                      // player guid 2
+            fields[5].Get<uint8>()));                     // rank
         return true;
     }
     return false;
@@ -2614,7 +2614,7 @@ bool Guild::LoadEventLogFromDB(Field* fields)
 
 bool Guild::LoadBankEventLogFromDB(Field* fields)
 {
-    uint8 dbTabId = fields[1].GetUInt8();
+    uint8 dbTabId = fields[1].Get<uint8>();
     bool isMoneyTab = (dbTabId == GUILD_BANK_MONEY_LOGS_TAB);
     if (dbTabId < _GetPurchasedTabsSize() || isMoneyTab)
     {
@@ -2622,8 +2622,8 @@ bool Guild::LoadBankEventLogFromDB(Field* fields)
         LogHolder* pLog = m_bankEventLog[tabId];
         if (pLog->CanInsert())
         {
-            ObjectGuid::LowType guid = fields[2].GetUInt32();
-            GuildBankEventLogTypes eventType = GuildBankEventLogTypes(fields[3].GetUInt8());
+            ObjectGuid::LowType guid = fields[2].Get<uint32>();
+            GuildBankEventLogTypes eventType = GuildBankEventLogTypes(fields[3].Get<uint8>());
             if (BankEventLogEntry::IsMoneyEvent(eventType))
             {
                 if (!isMoneyTab)
@@ -2640,13 +2640,13 @@ bool Guild::LoadBankEventLogFromDB(Field* fields)
             pLog->LoadEvent(new BankEventLogEntry(
                 m_id,                                   // guild id
                 guid,                                   // guid
-                time_t(fields[8].GetUInt32()),          // timestamp
+                time_t(fields[8].Get<uint32>()),          // timestamp
                 dbTabId,                                // tab id
                 eventType,                              // event type
-                fields[4].GetUInt32(),                  // player guid
-                fields[5].GetUInt64(),                  // item or money
-                fields[6].GetUInt16(),                  // itam stack count
-                fields[7].GetUInt8()));                 // dest tab id
+                fields[4].Get<uint32>(),                  // player guid
+                fields[5].Get<uint64>(),                  // item or money
+                fields[6].Get<uint16>(),                  // itam stack count
+                fields[7].Get<uint8>()));                 // dest tab id
         }
     }
     return true;
@@ -2659,17 +2659,17 @@ void Guild::LoadGuildNewsLogFromDB(Field* fields)
 
     m_newsLog->LoadEvent(new NewsLogEntry(
         m_id,                                               // guild id
-        fields[1].GetUInt32(),                              // guid
-        fields[6].GetUInt32(),                              // timestamp //64 bits?
-        GuildNews(fields[2].GetUInt8()),                    // type
-        ObjectGuid(HighGuid::Player, fields[3].GetUInt32()), // player guid
-        fields[4].GetUInt32(),                              // Flags
-        fields[5].GetUInt32()));                            // value
+        fields[1].Get<uint32>(),                              // guid
+        fields[6].Get<uint32>(),                              // timestamp //64 bits?
+        GuildNews(fields[2].Get<uint8>()),                    // type
+        ObjectGuid(HighGuid::Player, fields[3].Get<uint32>()), // player guid
+        fields[4].Get<uint32>(),                              // Flags
+        fields[5].Get<uint32>()));                            // value
 }
 
 void Guild::LoadBankTabFromDB(Field* fields)
 {
-    uint8 tabId = fields[1].GetUInt8();
+    uint8 tabId = fields[1].Get<uint8>();
     if (tabId >= _GetPurchasedTabsSize())
         LOG_ERROR("guild", "Invalid tab (tabId: %u) in guild bank, skipped.", tabId);
     else
@@ -2678,11 +2678,11 @@ void Guild::LoadBankTabFromDB(Field* fields)
 
 bool Guild::LoadBankItemFromDB(Field* fields)
 {
-    uint8 tabId = fields[13].GetUInt8();
+    uint8 tabId = fields[13].Get<uint8>();
     if (tabId >= _GetPurchasedTabsSize())
     {
         LOG_ERROR("guild", "Invalid tab for item (GUID: %u, id: #%u) in guild bank, skipped.",
-            fields[15].GetUInt32(), fields[16].GetUInt32());
+            fields[15].Get<uint32>(), fields[16].Get<uint32>());
         return false;
     }
     return m_bankTabs[tabId]->LoadItemFromDB(fields);
@@ -2894,10 +2894,10 @@ bool Guild::AddMember(CharacterDatabaseTransaction& trans, ObjectGuid guid, uint
     if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
     {
         Field* fields = result->Fetch();
-        if (fields[0].GetUInt32() == m_id) // old player guild was this guild
+        if (fields[0].Get<uint32>() == m_id) // old player guild was this guild
         {
             // Set the Week cap
-            member->SetWeekReputation(fields[1].GetUInt32());
+            member->SetWeekReputation(fields[1].Get<uint32>());
             keepGuildReputation = true;
         }
     }
@@ -2927,15 +2927,15 @@ bool Guild::AddMember(CharacterDatabaseTransaction& trans, ObjectGuid guid, uint
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt2))
         {
             Field* fields = result->Fetch();
-            name = fields[0].GetString();
+            name = fields[0].Get<std::string>();
             member->SetStats(
                 name,
-                fields[1].GetUInt8(),
-                fields[2].GetUInt8(),
-                fields[3].GetUInt16(),
-                fields[4].GetUInt32(),
-                fields[5].GetUInt32(),
-                keepGuildReputation ? fields[6].GetUInt32() : 0);
+                fields[1].Get<uint8>(),
+                fields[2].Get<uint8>(),
+                fields[3].Get<uint16>(),
+                fields[4].Get<uint32>(),
+                fields[5].Get<uint32>(),
+                keepGuildReputation ? fields[6].Get<uint32>() : 0);
 
             ok = member->CheckStats();
         }
@@ -3778,7 +3778,7 @@ void Guild::SendGuildRanksUpdate(ObjectGuid setterGuid, ObjectGuid targetGuid, u
     member->ChangeRank(trans, rank);
 
     LOG_DEBUG("network", "SMSG_GUILD_RANKS_UPDATE [Broadcast] Target: %s, Issuer: %s, RankId: %u",
-        targetGuid.ToString().c_str(), setterGuid.ToString().c_str(), rank);
+        targetGuid.ToString(), setterGuid.ToString(), rank);
 }
 
 void Guild::CompleteChallenge(uint8 challengeType, Player* source)

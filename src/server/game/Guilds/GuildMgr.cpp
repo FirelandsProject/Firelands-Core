@@ -188,7 +188,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadRankFromDB(fields);
@@ -229,7 +229,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadMemberFromDB(fields);
@@ -262,7 +262,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadBankRightFromDB(fields);
@@ -294,7 +294,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadEventLogFromDB(fields);
@@ -327,7 +327,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadBankEventLogFromDB(fields);
@@ -357,7 +357,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadGuildNewsLogFromDB(fields);
@@ -391,7 +391,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[0].GetUInt32();
+                uint32 guildId = fields[0].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadBankTabFromDB(fields);
@@ -426,7 +426,7 @@ void GuildMgr::LoadGuilds()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guildId = fields[12].GetUInt32();
+                uint32 guildId = fields[12].Get<uint32>();
 
                 if (Guild* guild = GetGuildById(guildId))
                     guild->LoadBankItemFromDB(fields);
@@ -495,8 +495,8 @@ void GuildMgr::LoadGuildXpForLevel()
     {
         Field* fields = result->Fetch();
 
-        uint32 level = fields[0].GetUInt8();
-        uint32 requiredXP = fields[1].GetUInt32();
+        uint32 level = fields[0].Get<uint8>();
+        uint32 requiredXP = fields[1].Get<uint32>();
 
         if (level >= sWorld->getIntConfig(CONFIG_GUILD_MAX_LEVEL))
         {
@@ -541,11 +541,11 @@ void GuildMgr::LoadGuildRewards()
     {
         GuildReward reward;
         Field* fields = result->Fetch();
-        reward.Entry = fields[0].GetUInt32();
-        reward.Standing = fields[1].GetUInt8();
-        reward.Racemask = fields[2].GetInt32();
-        reward.Price = fields[3].GetUInt64();
-        reward.AchievementId = fields[4].GetUInt32();
+        reward.Entry = fields[0].Get<uint32>();
+        reward.Standing = fields[1].Get<uint8>();
+        reward.Racemask = fields[2].Get<int32>();
+        reward.Price = fields[3].Get<uint64>();
+        reward.AchievementId = fields[4].Get<uint32>();
 
         if (!sObjectMgr->GetItemTemplate(reward.Entry))
         {
@@ -607,11 +607,11 @@ void GuildMgr::LoadGuildChallenges()
     {
         GuildChallenge challenge;
         Field* fields = result->Fetch();
-        challenge.ChallengeType = fields[0].GetInt32();
-        challenge.ChallengeCount = fields[1].GetInt32();
-        challenge.Experience = fields[2].GetInt32();
-        challenge.Gold = fields[3].GetInt32();
-        challenge.GoldMaxLevel = fields[4].GetInt32();
+        challenge.ChallengeType = fields[0].Get<int32>();
+        challenge.ChallengeCount = fields[1].Get<int32>();
+        challenge.Experience = fields[2].Get<int32>();
+        challenge.Gold = fields[3].Get<int32>();
+        challenge.GoldMaxLevel = fields[4].Get<int32>();
 
         if (challenge.ChallengeType >= MAX_GUILD_CHALLENGE_TYPES)
         {

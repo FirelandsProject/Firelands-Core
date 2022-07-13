@@ -55,7 +55,6 @@ target_link_libraries(game
   firelands-core-interface
   efsw
   PUBLIC
-  ipc
   game-interface)
 
 set_target_properties(game

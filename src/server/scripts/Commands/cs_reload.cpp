@@ -46,6 +46,8 @@
 #include "WardenCheckMgr.h"
 #include "WaypointManager.h"
 #include "World.h"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 class reload_commandscript : public CommandScript
 {
@@ -420,14 +422,15 @@ public:
 
     static bool HandleReloadCreatureTemplateCommand(ChatHandler* handler, char const* args)
     {
-        if (!*args)
+        if (!*args) {
             return false;
+        }
 
-        Tokenizer entries(std::string(args), ' ');
+        std::vector<std::string_view> entries = Firelands::Tokenize(args, ' ', false);
 
-        for (Tokenizer::const_iterator itr = entries.begin(); itr != entries.end(); ++itr)
-        {
-            uint32 entry = uint32(atoi(*itr));
+
+        for (int itr = 0; itr < ((int)entries.size()); ++itr) {
+            uint32 entry = *Firelands::StringTo<uint32>(entries[itr]);
 
             WorldDatabasePreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_CREATURE_TEMPLATE);
             stmt->SetData(0, entry);

@@ -32,9 +32,9 @@ void Archaeology::LoadCompletedProjectsFromDB()
     do
     {
         Field* fields = result->Fetch();
-        uint16 project = fields[0].GetUInt16();
-        int32 time = fields[1].GetInt32();
-        int32 count = fields[2].GetInt32();
+        uint16 project = fields[0].Get<uint16>();
+        int32 time = fields[1].Get<int32>();
+        int32 count = fields[2].Get<int32>();
 
         _completedProjects.emplace(project, std::make_pair(time, count));
     } while (result->NextRow());
@@ -64,8 +64,8 @@ void Archaeology::LoadCurrentProjectsFromDB()
     do
     {
         Field* fields = result->Fetch();
-        uint8 branch = fields[0].GetUInt8();
-        uint16 project = fields[1].GetUInt16();
+        uint8 branch = fields[0].Get<uint8>();
+        uint16 project = fields[1].Get<uint16>();
 
         if (uint16 old_project = _branches[branch].Project)
         {

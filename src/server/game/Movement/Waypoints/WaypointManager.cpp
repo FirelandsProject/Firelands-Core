@@ -39,28 +39,28 @@ void WaypointMgr::Load()
     do
     {
         Field* fields = result->Fetch();
-        uint32 pathId = fields[0].GetUInt32();
-        float x = fields[2].GetFloat();
-        float y = fields[3].GetFloat();
-        float z = fields[4].GetFloat();
+        uint32 pathId = fields[0].Get<uint32>();
+        float x = fields[2].Get<float>();
+        float y = fields[3].Get<float>();
+        float z = fields[4].Get<float>();
         Optional<float> o;
         if (!fields[5].IsNull())
-            o = fields[5].GetFloat();
+            o = fields[5].Get<float>();
 
-        float velocity = fields[6].GetFloat();
+        float velocity = fields[6].Get<float>();
 
         Firelands::NormalizeMapCoord(x);
         Firelands::NormalizeMapCoord(y);
 
         WaypointNode waypoint;
-        waypoint.Id = fields[1].GetUInt32();
+        waypoint.Id = fields[1].Get<uint32>();
         waypoint.X = x;
         waypoint.Y = y;
         waypoint.Z = z;
         if (o.has_value())
             waypoint.Orientation = o;
         waypoint.Velocity = velocity;
-        waypoint.MoveType = fields[7].GetUInt32();
+        waypoint.MoveType = fields[7].Get<uint32>();
 
         if (waypoint.MoveType >= WAYPOINT_MOVE_TYPE_MAX)
         {
@@ -68,10 +68,10 @@ void WaypointMgr::Load()
             continue;
         }
 
-        waypoint.Delay = fields[8].GetUInt32();
-        waypoint.SmoothTransition = fields[9].GetBool();
-        waypoint.EventId = fields[10].GetUInt32();
-        waypoint.EventChance = fields[11].GetInt16();
+        waypoint.Delay = fields[8].Get<uint32>();
+        waypoint.SmoothTransition = fields[9].Get<bool>();
+        waypoint.EventId = fields[10].Get<uint32>();
+        waypoint.EventChance = fields[11].Get<int16>();
 
         WaypointPath& path = _waypointStore[pathId];
         path.Id = pathId;
@@ -100,7 +100,7 @@ void WaypointMgr::LoadWaypointAddons()
     do
     {
         Field* fields = result->Fetch();
-        uint32 pathId = fields[0].GetUInt32();
+        uint32 pathId = fields[0].Get<uint32>();
 
         std::unordered_map<uint32, WaypointPath>::iterator it = _waypointStore.find(pathId);
         if (it == _waypointStore.end())
@@ -110,7 +110,7 @@ void WaypointMgr::LoadWaypointAddons()
         }
 
         WaypointPath& path = it->second;
-        uint32 pointId = fields[1].GetUInt32();
+        uint32 pointId = fields[1].Get<uint32>();
 
 
         std::vector<WaypointNode>::iterator itr = std::find_if(path.Nodes.begin(), path.Nodes.end(), [pointId](WaypointNode const& node)
@@ -124,9 +124,9 @@ void WaypointMgr::LoadWaypointAddons()
             continue;
         }
 
-        float x = fields[3].GetFloat();
-        float y = fields[4].GetFloat();
-        float z = fields[5].GetFloat();
+        float x = fields[3].Get<float>();
+        float y = fields[4].Get<float>();
+        float z = fields[5].Get<float>();
 
         Firelands::NormalizeMapCoord(x);
         Firelands::NormalizeMapCoord(y);
@@ -164,27 +164,27 @@ void WaypointMgr::ReloadPath(uint32 id)
     do
     {
         Field* fields = result->Fetch();
-        float x = fields[1].GetFloat();
-        float y = fields[2].GetFloat();
-        float z = fields[3].GetFloat();
+        float x = fields[1].Get<float>();
+        float y = fields[2].Get<float>();
+        float z = fields[3].Get<float>();
         Optional<float> o;
         if (!fields[4].IsNull())
-            o = fields[4].GetFloat();
+            o = fields[4].Get<float>();
 
-        float velocity = fields[5].GetFloat();
+        float velocity = fields[5].Get<float>();
 
         Firelands::NormalizeMapCoord(x);
         Firelands::NormalizeMapCoord(y);
 
         WaypointNode waypoint;
-        waypoint.Id = fields[0].GetUInt32();
+        waypoint.Id = fields[0].Get<uint32>();
         waypoint.X = x;
         waypoint.Y = y;
         waypoint.Z = z;
         if (o.has_value())
             waypoint.Orientation = o;
         waypoint.Velocity = velocity;
-        waypoint.MoveType = fields[6].GetUInt32();
+        waypoint.MoveType = fields[6].Get<uint32>();
 
         if (waypoint.MoveType >= WAYPOINT_MOVE_TYPE_MAX)
         {
@@ -192,9 +192,9 @@ void WaypointMgr::ReloadPath(uint32 id)
             continue;
         }
 
-        waypoint.Delay = fields[7].GetUInt32();
-        waypoint.EventId = fields[8].GetUInt32();
-        waypoint.EventChance = fields[9].GetUInt8();
+        waypoint.Delay = fields[7].Get<uint32>();
+        waypoint.EventId = fields[8].Get<uint32>();
+        waypoint.EventChance = fields[9].Get<uint8>();
 
         values.push_back(std::move(waypoint));
     } while (result->NextRow());
