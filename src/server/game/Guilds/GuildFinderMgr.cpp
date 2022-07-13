@@ -85,16 +85,16 @@ void GuildFinderMgr::LoadGuildSettings()
     do
     {
         Field* fields = result->Fetch();
-        uint32 guildId = fields[0].GetUInt32();
-        uint8  availability = fields[1].GetUInt8();
-        uint8  classRoles = fields[2].GetUInt8();
-        uint8  interests = fields[3].GetUInt8();
-        uint8  level = fields[4].GetUInt8();
-        bool   listed = (fields[5].GetUInt8() != 0);
-        std::string comment = fields[6].GetString();
+        uint32 guildId = fields[0].Get<uint32>();
+        uint8  availability = fields[1].Get<uint8>();
+        uint8  classRoles = fields[2].Get<uint8>();
+        uint8  interests = fields[3].Get<uint8>();
+        uint8  level = fields[4].Get<uint8>();
+        bool   listed = (fields[5].Get<uint8>() != 0);
+        std::string comment = fields[6].Get<std::string>();
 
         TeamId guildTeam = TEAM_ALLIANCE;
-        if (ChrRacesEntry const* raceEntry = sChrRacesStore.LookupEntry(fields[7].GetUInt8()))
+        if (ChrRacesEntry const* raceEntry = sChrRacesStore.LookupEntry(fields[7].Get<uint8>()))
             if (raceEntry->BaseLanguage == 1)
                 guildTeam = TEAM_HORDE;
 
@@ -124,13 +124,13 @@ void GuildFinderMgr::LoadMembershipRequests()
     do
     {
         Field* fields = result->Fetch();
-        uint32 guildId = fields[0].GetUInt32();
-        uint32 playerId = fields[1].GetUInt32();
-        uint8  availability = fields[2].GetUInt8();
-        uint8  classRoles = fields[3].GetUInt8();
-        uint8  interests = fields[4].GetUInt8();
-        std::string comment = fields[5].GetString();
-        uint32 submitTime = fields[6].GetUInt32();
+        uint32 guildId = fields[0].Get<uint32>();
+        uint32 playerId = fields[1].Get<uint32>();
+        uint8  availability = fields[2].Get<uint8>();
+        uint8  classRoles = fields[3].Get<uint8>();
+        uint8  interests = fields[4].Get<uint8>();
+        std::string comment = fields[5].Get<std::string>();
+        uint32 submitTime = fields[6].Get<uint32>();
 
         MembershipRequest request(ObjectGuid(HighGuid::Player, playerId), guildId, availability, classRoles, interests, comment, time_t(submitTime));
 

@@ -228,7 +228,7 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
         if (result)
         {
             Field* fields = result->Fetch();
-            mailsCount = fields[0].GetUInt64();
+            mailsCount = fields[0].Get<uint64>();
         }
 
     }

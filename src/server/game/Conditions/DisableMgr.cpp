@@ -25,6 +25,8 @@
 #include "SpellMgr.h"
 #include "VMapManager2.h"
 #include "World.h"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 namespace DisableMgr
 {
@@ -71,17 +73,17 @@ namespace DisableMgr
         do
         {
             fields = result->Fetch();
-            DisableType type = DisableType(fields[0].GetUInt32());
+            DisableType type = DisableType(fields[0].Get<uint32>());
             if (type >= MAX_DISABLE_TYPES)
             {
                 LOG_ERROR("sql.sql", "Invalid type %u specified in `disables` table, skipped.", type);
                 continue;
             }
 
-            uint32 entry = fields[1].GetUInt32();
-            uint8 flags = fields[2].GetUInt8();
-            std::string params_0 = fields[3].GetString();
-            std::string params_1 = fields[4].GetString();
+            uint32 entry = fields[1].Get<uint32>();
+            uint8 flags = fields[2].Get<uint8>();
+            std::string params_0 = fields[3].Get<std::string>();
+            std::string params_1 = fields[4].Get<std::string>();
 
             DisableData data;
             data.flags = flags;
@@ -103,16 +105,16 @@ namespace DisableMgr
 
                 if (flags & SPELL_DISABLE_MAP)
                 {
-                    Tokenizer tokens(params_0, ',');
+                    std::vector<std::string_view> tokens = Firelands::Tokenize(params_0, ',', true);
                     for (uint8 i = 0; i < tokens.size(); )
-                        data.params[0].insert(atoi(tokens[i++]));
+                        data.params[0].insert(*Firelands::StringTo<uint32>(tokens[i++]));
                 }
 
                 if (flags & SPELL_DISABLE_AREA)
                 {
-                    Tokenizer tokens(params_1, ',');
+                    std::vector<std::string_view> tokens = Firelands::Tokenize(params_1, ',', true);
                     for (uint8 i = 0; i < tokens.size(); )
-                        data.params[1].insert(atoi(tokens[i++]));
+                        data.params[1].insert(*Firelands::StringTo<uint32>(tokens[i++]));
                 }
 
                 break;

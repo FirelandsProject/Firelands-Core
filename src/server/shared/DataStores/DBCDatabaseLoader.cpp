@@ -72,7 +72,7 @@ char* DBCDatabaseLoader::Load(uint32& records, char**& indexTable)
 
     // Resize index table
     // database query *MUST* contain ORDER BY `index_field` DESC clause
-    uint32 indexTableSize = std::max(records, (*result)[_sqlIndexPos].GetUInt32() + 1);
+    uint32 indexTableSize = std::max(records, (*result)[_sqlIndexPos].Get<uint32>() + 1);
     if (indexTableSize > records)
     {
         char** tmpIdxTable = new char* [indexTableSize];
@@ -92,7 +92,7 @@ char* DBCDatabaseLoader::Load(uint32& records, char**& indexTable)
         Field* fields = result->Fetch();
         uint32 offset = 0;
 
-        uint32 indexValue = fields[_sqlIndexPos].GetUInt32();
+        uint32 indexValue = fields[_sqlIndexPos].Get<uint32>();
 
         char* dataValue = indexTable[indexValue];
         if (!dataValue)
@@ -141,16 +141,16 @@ char* DBCDatabaseLoader::Load(uint32& records, char**& indexTable)
                 switch (_dbcFormat[columnNumber])
                 {
                 case FT_FLOAT:
-                    *reinterpret_cast<float*>(&dataValue[offset]) = fields[sqlColumnNumber].GetFloat();
+                    *reinterpret_cast<float*>(&dataValue[offset]) = fields[sqlColumnNumber].Get<float>();
                     offset += 4;
                     break;
                 case FT_IND:
                 case FT_INT:
-                    *reinterpret_cast<uint32*>(&dataValue[offset]) = fields[sqlColumnNumber].GetUInt32();
+                    *reinterpret_cast<uint32*>(&dataValue[offset]) = fields[sqlColumnNumber].Get<uint32>();
                     offset += 4;
                     break;
                 case FT_BYTE:
-                    *reinterpret_cast<uint8*>(&dataValue[offset]) = fields[sqlColumnNumber].GetUInt8();
+                    *reinterpret_cast<uint8*>(&dataValue[offset]) = fields[sqlColumnNumber].Get<uint8>();
                     offset += 1;
                     break;
                 case FT_STRING:

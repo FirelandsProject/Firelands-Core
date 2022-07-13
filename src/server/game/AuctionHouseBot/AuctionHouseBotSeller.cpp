@@ -94,7 +94,7 @@ bool AuctionBotSeller::Initialize()
         {
             Field* fields = result->Fetch();
 
-            uint32 entry = fields[0].GetUInt32();
+            uint32 entry = fields[0].Get<uint32>();
             if (!entry)
                 continue;
 

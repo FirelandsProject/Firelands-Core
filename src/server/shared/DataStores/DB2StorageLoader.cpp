@@ -461,7 +461,7 @@ char* DB2DatabaseLoader::Load(const char* format, int32 preparedStatement, uint3
     uint32 indexTableSize;
     if (indexField >= 0)
     {
-        indexTableSize = (*result)[indexField].GetUInt32() + 1;
+        indexTableSize = (*result)[indexField].Get<uint32>() + 1;
         if (indexTableSize < records)
             indexTableSize = records;
     }
@@ -490,7 +490,7 @@ char* DB2DatabaseLoader::Load(const char* format, int32 preparedStatement, uint3
 
         uint32 indexValue;
         if (indexField >= 0)
-            indexValue = fields[indexField].GetUInt32();
+            indexValue = fields[indexField].Get<uint32>();
         else
             indexValue = records + rec;
 
@@ -507,16 +507,16 @@ char* DB2DatabaseLoader::Load(const char* format, int32 preparedStatement, uint3
             switch (format[f])
             {
             case FT_FLOAT:
-                *((float*)(&dataValue[offset])) = fields[f].GetFloat();
+                *((float*)(&dataValue[offset])) = fields[f].Get<float>();
                 offset += 4;
                 break;
             case FT_IND:
             case FT_INT:
-                *((int32*)(&dataValue[offset])) = fields[f].GetInt32();
+                *((int32*)(&dataValue[offset])) = fields[f].Get<int32>();
                 offset += 4;
                 break;
             case FT_BYTE:
-                *((int8*)(&dataValue[offset])) = fields[f].GetInt8();
+                *((int8*)(&dataValue[offset])) = fields[f].Get<int8>();
                 offset += 1;
                 break;
             case FT_STRING:
@@ -526,7 +526,7 @@ char* DB2DatabaseLoader::Load(const char* format, int32 preparedStatement, uint3
                 ASSERT(*slot);
 
                 // Value in database in main table field must be for enUS locale
-                if (char* str = AddLocaleString(*slot, LOCALE_enUS, fields[f].GetString()))
+                if (char* str = AddLocaleString(*slot, LOCALE_enUS, fields[f].Get<std::string>()))
                     stringPool.push_back(str);
 
                 ++stringFieldNumInRecord;
@@ -585,7 +585,7 @@ void DB2DatabaseLoader::LoadStrings(const char* format, int32 preparedStatement,
         Field* fields = result->Fetch();
         uint32 offset = 0;
         uint32 stringFieldNumInRecord = 0;
-        uint32 indexValue = fields[0].GetUInt32();
+        uint32 indexValue = fields[0].Get<uint32>();
 
         // Attempt to overwrite existing data
         if (char* dataValue = indexTable[indexValue])
@@ -607,7 +607,7 @@ void DB2DatabaseLoader::LoadStrings(const char* format, int32 preparedStatement,
                     // fill only not filled entries
                     LocalizedString* db2str = *(LocalizedString**)(&dataValue[offset]);
                     if (db2str->Str[locale] == nullStr)
-                        if (char* str = AddLocaleString(db2str, locale, fields[1 + stringFieldNumInRecord].GetString()))
+                        if (char* str = AddLocaleString(db2str, locale, fields[1 + stringFieldNumInRecord].Get<std::string>()))
                             stringPool.push_back(str);
 
                     ++stringFieldNumInRecord;

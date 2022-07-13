@@ -809,7 +809,7 @@ void WorldSession::LoadAccountData(PreparedQueryResult result, uint32 mask)
     do
     {
         Field* fields = result->Fetch();
-        uint32 type = fields[0].GetUInt8();
+        uint32 type = fields[0].Get<uint8>();
         if (type >= NUM_ACCOUNT_DATA_TYPES)
         {
             LOG_ERROR("misc", "Table `%s` have invalid account data type (%u), ignore.",
@@ -824,8 +824,8 @@ void WorldSession::LoadAccountData(PreparedQueryResult result, uint32 mask)
             continue;
         }
 
-        m_accountData[type].Time = time_t(fields[1].GetUInt32());
-        m_accountData[type].Data = fields[2].GetString();
+        m_accountData[type].Time = time_t(fields[1].Get<uint32>());
+        m_accountData[type].Data = fields[2].Get<std::string>();
     } while (result->NextRow());
 }
 
@@ -878,7 +878,7 @@ void WorldSession::LoadTutorialsData(PreparedQueryResult result)
     if (result)
     {
         for (uint8 i = 0; i < MAX_ACCOUNT_TUTORIAL_VALUES; ++i)
-            m_Tutorials[i] = (*result)[i].GetUInt32();
+            m_Tutorials[i] = (*result)[i].Get<uint32>();
         m_TutorialsChanged |= TUTORIALS_FLAG_LOADED_FROM_DB;
     }
 

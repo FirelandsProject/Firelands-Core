@@ -22,6 +22,7 @@
 #include "Opcodes.h"
 #include "ByteBuffer.h"
 #include <chrono>
+#include <sstream>
 
 struct z_stream_s;
 

@@ -322,15 +322,15 @@ void InstanceSaveManager::LoadResetTimes()
         {
             Field* fields = result->Fetch();
 
-            uint32 instanceId = fields[0].GetUInt32();
+            uint32 instanceId = fields[0].Get<uint32>();
 
             // Mark instance id as being used
             sMapMgr->RegisterInstanceId(instanceId);
 
-            if (time_t resettime = time_t(fields[3].GetUInt64()))
+            if (time_t resettime = time_t(fields[3].Get<uint64>()))
             {
-                uint32 mapid = fields[1].GetUInt16();
-                uint32 difficulty = fields[2].GetUInt8();
+                uint32 mapid = fields[1].Get<uint16>();
+                uint32 difficulty = fields[2].Get<uint8>();
 
                 instResetTime[instanceId] = ResetTimeMapDiffType(MAKE_PAIR32(mapid, difficulty), resettime);
                 mapDiffResetInstances.insert(ResetTimeMapDiffInstances::value_type(MAKE_PAIR32(mapid, difficulty), instanceId));
@@ -350,9 +350,9 @@ void InstanceSaveManager::LoadResetTimes()
         do
         {
             Field* fields = result->Fetch();
-            uint32 mapid = fields[0].GetUInt16();
-            Difficulty difficulty = Difficulty(fields[1].GetUInt8());
-            uint64 oldresettime = fields[2].GetUInt64();
+            uint32 mapid = fields[0].Get<uint16>();
+            Difficulty difficulty = Difficulty(fields[1].Get<uint8>());
+            uint64 oldresettime = fields[2].Get<uint64>();
 
             MapDifficulty const* mapDiff = sDBCManager.GetMapDifficultyData(mapid, difficulty);
             if (!mapDiff)

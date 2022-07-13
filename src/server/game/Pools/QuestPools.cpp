@@ -87,14 +87,14 @@ void QuestPoolMgr::LoadFromDB()
             Field* fields = result->Fetch();
             if (fields[2].IsNull())
             {
-                LOG_ERROR("sql.sql", "Table `quest_pool_members` contains reference to non-existing pool %u. Skipped.", fields[1].GetUInt32());
+                LOG_ERROR("sql.sql", "Table `quest_pool_members` contains reference to non-existing pool %u. Skipped.", fields[1].Get<uint32>());
                 continue;
             }
 
-            uint32 questId = fields[0].GetUInt32();
-            uint32 poolId = fields[1].GetUInt32();
-            uint32 poolIndex = fields[2].GetUInt8();
-            uint32 numActive = fields[3].GetUInt32();
+            uint32 questId = fields[0].Get<uint32>();
+            uint32 poolId = fields[1].Get<uint32>();
+            uint32 poolIndex = fields[2].Get<uint8>();
+            uint32 numActive = fields[3].Get<uint32>();
 
             Quest const* quest = sObjectMgr->GetQuestTemplate(questId);
             if (!quest)
@@ -136,8 +136,8 @@ void QuestPoolMgr::LoadFromDB()
             {
                 Field* fields = result->Fetch();
 
-                uint32 poolId = fields[0].GetUInt32();
-                uint32 questId = fields[1].GetUInt32();
+                uint32 poolId = fields[0].Get<uint32>();
+                uint32 questId = fields[1].Get<uint32>();
 
                 auto it = lookup.find(poolId);
                 if (it == lookup.end() || !it->second.first)

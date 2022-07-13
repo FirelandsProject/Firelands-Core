@@ -56,12 +56,12 @@ void ArchaeologyMgr::LoadData()
     {
         Field* fields = result->Fetch();
         SiteEntry entry;
-        entry.id = fields[0].GetUInt16();
-        entry.mapId = fields[1].GetUInt32();
-        entry.questPOI = fields[2].GetUInt16();
-        entry.reqSkill = fields[3].GetUInt32();
-        entry.minLevel = fields[4].GetUInt32();
-        _objectMap[entry.id] = fields[5].GetUInt32();
+        entry.id = fields[0].Get<uint16>();
+        entry.mapId = fields[1].Get<uint32>();
+        entry.questPOI = fields[2].Get<uint16>();
+        entry.reqSkill = fields[3].Get<uint32>();
+        entry.minLevel = fields[4].Get<uint32>();
+        _objectMap[entry.id] = fields[5].Get<uint32>();
 
         switch (entry.mapId)
         {
@@ -184,16 +184,16 @@ void ArchaeologyMgr::LoadData()
     {
         Field* fields = result->Fetch();
 
-        uint16 entry = fields[0].GetUInt16();
+        uint16 entry = fields[0].Get<uint16>();
 
         ProjectEntry project;
         project.entry = entry;
-        project.branch = fields[1].GetUInt8();
-        project.rarity = fields[2].GetUInt8();
-        project.reqSkill = fields[3].GetUInt16();
-        project.fragments = fields[4].GetUInt8();
-        project.keystone = fields[5].GetUInt8();
-        project.spell = fields[6].GetUInt32();
+        project.branch = fields[1].Get<uint8>();
+        project.rarity = fields[2].Get<uint8>();
+        project.reqSkill = fields[3].Get<uint16>();
+        project.fragments = fields[4].Get<uint8>();
+        project.keystone = fields[5].Get<uint8>();
+        project.spell = fields[6].Get<uint32>();
 
         _projects[entry] = project;
 

@@ -105,19 +105,19 @@ void CreatureTextMgr::LoadCreatureTexts()
         Field* fields = result->Fetch();
         CreatureTextEntry temp;
 
-        temp.creatureId = fields[0].GetUInt32();
-        temp.groupId = fields[1].GetUInt8();
-        temp.id = fields[2].GetUInt8();
-        temp.text = fields[3].GetString();
-        temp.type = ChatMsg(fields[4].GetUInt8());
-        temp.lang = Language(fields[5].GetUInt8());
-        temp.probability = fields[6].GetFloat();
-        temp.emote = Emote(fields[7].GetUInt32());
-        temp.duration = fields[8].GetUInt32();
-        temp.sound = fields[9].GetUInt32();
-        temp.soundType = CreatureTextSoundType(fields[10].GetUInt32());
-        temp.BroadcastTextId = fields[11].GetUInt32();
-        temp.TextRange = CreatureTextRange(fields[12].GetUInt8());
+        temp.creatureId = fields[0].Get<uint32>();
+        temp.groupId = fields[1].Get<uint8>();
+        temp.id = fields[2].Get<uint8>();
+        temp.text = fields[3].Get<std::string>();
+        temp.type = ChatMsg(fields[4].Get<uint8>());
+        temp.lang = Language(fields[5].Get<uint8>());
+        temp.probability = fields[6].Get<float>();
+        temp.emote = Emote(fields[7].Get<uint32>());
+        temp.duration = fields[8].Get<uint32>();
+        temp.sound = fields[9].Get<uint32>();
+        temp.soundType = CreatureTextSoundType(fields[10].Get<uint32>());
+        temp.BroadcastTextId = fields[11].Get<uint32>();
+        temp.TextRange = CreatureTextRange(fields[12].Get<uint8>());
 
         if (temp.sound)
         {
@@ -195,11 +195,11 @@ void CreatureTextMgr::LoadCreatureTextLocales()
     {
         Field* fields = result->Fetch();
 
-        uint32 creatureId = fields[0].GetUInt32();
-        uint32 groupId = fields[1].GetUInt8();
-        uint32 id = fields[2].GetUInt8();
-        std::string localeName = fields[3].GetString();
-        std::string text = fields[4].GetString();
+        uint32 creatureId = fields[0].Get<uint32>();
+        uint32 groupId = fields[1].Get<uint8>();
+        uint32 id = fields[2].Get<uint8>();
+        std::string localeName = fields[3].Get<std::string>();
+        std::string text = fields[4].Get<std::string>();
 
         CreatureTextLocale& data = mLocaleTextMap[CreatureTextId(creatureId, groupId, id)];
         LocaleConstant locale = GetLocaleByName(localeName);

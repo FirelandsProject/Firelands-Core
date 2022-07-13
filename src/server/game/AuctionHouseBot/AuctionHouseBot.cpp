@@ -74,7 +74,7 @@ bool AuctionBotConfig::Initialize()
                 do
                 {
                     Field* fields = result->Fetch();
-                    _AHBotCharacters.push_back(fields[0].GetUInt32());
+                    _AHBotCharacters.push_back(fields[0].Get<uint32>());
                     ++count;
                 } while (result->NextRow());
             }

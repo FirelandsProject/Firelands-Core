@@ -24,7 +24,7 @@
 #include "SpellAuraDefines.h"
 #include "SpellInfo.h"
 #include "Utilities/StringFormat.h"
-#include "Util.h"
+#include "Utilities/Util.h"
 #include "advstd.h"
 
 #include <memory>

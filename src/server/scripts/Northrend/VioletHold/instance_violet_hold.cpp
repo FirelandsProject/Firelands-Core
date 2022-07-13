@@ -759,32 +759,33 @@ public:
             switch (WaveCount)
             {
             case 6:
-                if (FirstBossId == 0)
+                if (FirstBossId == 0) {
                     FirstBossId = urand(DATA_MORAGG, DATA_ZURAMAT);
-                if (Creature* sinclari = GetCreature(DATA_SINCLARI))
-                {
+                }
+                if (Creature* sinclari = GetCreature(DATA_SINCLARI)) {
                     sinclari->SummonCreature(NPC_TELEPORTATION_PORTAL_INTRO, PortalIntroPositions[3], TEMPSUMMON_TIMED_DESPAWN, 3000);
                     sinclari->SummonCreature(NPC_SABOTEOUR, SaboteurSpawnLocation, TEMPSUMMON_DEAD_DESPAWN);
                 }
                 break;
             case 12:
-                if (SecondBossId == 0)
-                    do
-                    {
+                if (SecondBossId == 0) {
+
+                    do {
                         SecondBossId = urand(DATA_MORAGG, DATA_ZURAMAT);
                     } while (SecondBossId == FirstBossId);
-                    if (Creature* sinclari = GetCreature(DATA_SINCLARI))
-                    {
-                        sinclari->SummonCreature(NPC_TELEPORTATION_PORTAL_INTRO, PortalIntroPositions[3], TEMPSUMMON_TIMED_DESPAWN, 3000);
-                        sinclari->SummonCreature(NPC_SABOTEOUR, SaboteurSpawnLocation, TEMPSUMMON_DEAD_DESPAWN);
-                    }
-                    break;
+                }
+                if (Creature* sinclari = GetCreature(DATA_SINCLARI)) {
+                    sinclari->SummonCreature(NPC_TELEPORTATION_PORTAL_INTRO, PortalIntroPositions[3], TEMPSUMMON_TIMED_DESPAWN, 3000);
+                    sinclari->SummonCreature(NPC_SABOTEOUR, SaboteurSpawnLocation, TEMPSUMMON_DEAD_DESPAWN);
+                }
+                break;
             case 18:
                 if (Creature* sinclari = GetCreature(DATA_SINCLARI))
                 {
                     sinclari->SummonCreature(NPC_TELEPORTATION_PORTAL_INTRO, PortalIntroPositions[4], TEMPSUMMON_TIMED_DESPAWN, 6000);
-                    if (Creature* cyanigosa = sinclari->SummonCreature(NPC_CYANIGOSA, CyanigosaSpawnLocation, TEMPSUMMON_DEAD_DESPAWN))
+                    if (Creature* cyanigosa = sinclari->SummonCreature(NPC_CYANIGOSA, CyanigosaSpawnLocation, TEMPSUMMON_DEAD_DESPAWN)) {
                         cyanigosa->CastSpell(cyanigosa, SPELL_CYANIGOSA_ARCANE_POWER_STATE, true);
+                    }
                     ScheduleCyanigosaIntro();
                 }
                 break;

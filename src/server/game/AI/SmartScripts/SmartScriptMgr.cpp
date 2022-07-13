@@ -63,19 +63,19 @@ void SmartWaypointMgr::LoadFromDB()
     do
     {
         Field* fields = result->Fetch();
-        uint32 entry = fields[0].GetUInt32();
-        uint32 id = fields[1].GetUInt32();
-        float x = fields[2].GetFloat();
-        float y = fields[3].GetFloat();
-        float z = fields[4].GetFloat();
+        uint32 entry = fields[0].Get<uint32>();
+        uint32 id = fields[1].Get<uint32>();
+        float x = fields[2].Get<float>();
+        float y = fields[3].Get<float>();
+        float z = fields[4].Get<float>();
 
         Optional<float> o;
         if (!fields[5].IsNull())
-            o = fields[5].GetFloat();
+            o = fields[5].Get<float>();
 
-        float velocity = fields[6].GetFloat();
-        uint32 delay = fields[7].GetUInt32();
-        bool smoothTransition = fields[8].GetBool();
+        float velocity = fields[6].Get<float>();
+        uint32 delay = fields[7].Get<uint32>();
+        bool smoothTransition = fields[8].Get<bool>();
 
         if (lastEntry != entry)
         {
@@ -139,8 +139,8 @@ void SmartAIMgr::LoadSmartAIFromDB()
 
         SmartScriptHolder temp;
 
-        temp.entryOrGuid = fields[0].GetInt32();
-        SmartScriptType source_type = (SmartScriptType)fields[1].GetUInt8();
+        temp.entryOrGuid = fields[0].Get<int32>();
+        SmartScriptType source_type = (SmartScriptType)fields[1].Get<uint8>();
         if (source_type >= SMART_SCRIPT_TYPE_MAX)
         {
             LOG_ERROR("sql.sql", "SmartAIMgr::LoadSmartAIFromDB: invalid source_type (%u), skipped loading.", uint32(source_type));
@@ -255,35 +255,35 @@ void SmartAIMgr::LoadSmartAIFromDB()
         }
 
         temp.source_type = source_type;
-        temp.event_id = fields[2].GetUInt16();
-        temp.link = fields[3].GetUInt16();
-        temp.event.type = (SMART_EVENT)fields[4].GetUInt8();
-        temp.event.event_phase_mask = fields[5].GetUInt16();
-        temp.event.event_chance = fields[6].GetUInt8();
-        temp.event.event_flags = fields[7].GetUInt16();
+        temp.event_id = fields[2].Get<uint16>();
+        temp.link = fields[3].Get<uint16>();
+        temp.event.type = (SMART_EVENT)fields[4].Get<uint8>();
+        temp.event.event_phase_mask = fields[5].Get<uint16>();
+        temp.event.event_chance = fields[6].Get<uint8>();
+        temp.event.event_flags = fields[7].Get<uint16>();
 
-        temp.event.raw.param1 = fields[8].GetUInt32();
-        temp.event.raw.param2 = fields[9].GetUInt32();
-        temp.event.raw.param3 = fields[10].GetUInt32();
-        temp.event.raw.param4 = fields[11].GetUInt32();
-        temp.event.raw.param5 = fields[12].GetUInt32();
+        temp.event.raw.param1 = fields[8].Get<uint32>();
+        temp.event.raw.param2 = fields[9].Get<uint32>();
+        temp.event.raw.param3 = fields[10].Get<uint32>();
+        temp.event.raw.param4 = fields[11].Get<uint32>();
+        temp.event.raw.param5 = fields[12].Get<uint32>();
 
-        temp.action.type = (SMART_ACTION)fields[13].GetUInt8();
-        temp.action.raw.param1 = fields[14].GetUInt32();
-        temp.action.raw.param2 = fields[15].GetUInt32();
-        temp.action.raw.param3 = fields[16].GetUInt32();
-        temp.action.raw.param4 = fields[17].GetUInt32();
-        temp.action.raw.param5 = fields[18].GetUInt32();
-        temp.action.raw.param6 = fields[19].GetUInt32();
+        temp.action.type = (SMART_ACTION)fields[13].Get<uint8>();
+        temp.action.raw.param1 = fields[14].Get<uint32>();
+        temp.action.raw.param2 = fields[15].Get<uint32>();
+        temp.action.raw.param3 = fields[16].Get<uint32>();
+        temp.action.raw.param4 = fields[17].Get<uint32>();
+        temp.action.raw.param5 = fields[18].Get<uint32>();
+        temp.action.raw.param6 = fields[19].Get<uint32>();
 
-        temp.target.type = (SMARTAI_TARGETS)fields[20].GetUInt8();
-        temp.target.raw.param1 = fields[21].GetUInt32();
-        temp.target.raw.param2 = fields[22].GetUInt32();
-        temp.target.raw.param3 = fields[23].GetUInt32();
-        temp.target.x = fields[24].GetFloat();
-        temp.target.y = fields[25].GetFloat();
-        temp.target.z = fields[26].GetFloat();
-        temp.target.o = fields[27].GetFloat();
+        temp.target.type = (SMARTAI_TARGETS)fields[20].Get<uint8>();
+        temp.target.raw.param1 = fields[21].Get<uint32>();
+        temp.target.raw.param2 = fields[22].Get<uint32>();
+        temp.target.raw.param3 = fields[23].Get<uint32>();
+        temp.target.x = fields[24].Get<float>();
+        temp.target.y = fields[25].Get<float>();
+        temp.target.z = fields[26].Get<float>();
+        temp.target.o = fields[27].Get<float>();
 
         //check target
         if (!IsTargetValid(temp))

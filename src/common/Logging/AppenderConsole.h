@@ -46,8 +46,8 @@ class FC_COMMON_API AppenderConsole : public Appender
 public:
     typedef std::integral_constant<AppenderType, APPENDER_CONSOLE>::type TypeIndex;
 
-    AppenderConsole(uint8 _id, std::string const& name, LogLevel level, AppenderFlags flags, std::vector<char const*> extraArgs);
-    void InitColors(const std::string& init_str);
+    AppenderConsole(uint8 _id, std::string const& name, LogLevel level, AppenderFlags flags, std::vector<std::string_view> const& extraArgs);
+    void InitColors(std::string const& name, const std::string_view& init_str);
     AppenderType getType() const override { return TypeIndex::value; }
 
 private:

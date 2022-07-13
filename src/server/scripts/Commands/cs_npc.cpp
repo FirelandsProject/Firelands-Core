@@ -42,6 +42,7 @@
 #include "Transport.h"
 #include "World.h"
 #include "WorldSession.h"
+#include "Util.h"
 
 template<typename E, typename T = char const*>
 struct EnumName
@@ -873,12 +874,12 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                ObjectGuid::LowType guid = fields[0].GetUInt32();
-                uint32 entry = fields[1].GetUInt32();
-                float x = fields[2].GetFloat();
-                float y = fields[3].GetFloat();
-                float z = fields[4].GetFloat();
-                uint16 mapId = fields[5].GetUInt16();
+                ObjectGuid::LowType guid = fields[0].Get<uint32>();
+                uint32 entry = fields[1].Get<uint32>();
+                float x = fields[2].Get<float>();
+                float y = fields[3].Get<float>();
+                float z = fields[4].Get<float>();
+                uint16 mapId = fields[5].Get<uint16>();
 
                 CreatureTemplate const* creatureTemplate = sObjectMgr->GetCreatureTemplate(entry);
                 if (!creatureTemplate)

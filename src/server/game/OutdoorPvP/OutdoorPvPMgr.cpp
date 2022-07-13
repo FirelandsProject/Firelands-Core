@@ -66,7 +66,7 @@ void OutdoorPvPMgr::InitOutdoorPvP()
     {
         Field* fields = result->Fetch();
 
-        typeId = fields[0].GetUInt8();
+        typeId = fields[0].Get<uint8>();
 
         if (DisableMgr::IsDisabledFor(DISABLE_TYPE_OUTDOORPVP, typeId, nullptr))
             continue;
@@ -78,7 +78,7 @@ void OutdoorPvPMgr::InitOutdoorPvP()
         }
 
         OutdoorPvPTypes realTypeId = OutdoorPvPTypes(typeId);
-        m_OutdoorPvPDatas[realTypeId] = sObjectMgr->GetScriptId(fields[1].GetString());
+        m_OutdoorPvPDatas[realTypeId] = sObjectMgr->GetScriptId(fields[1].Get<std::string>());
 
         ++count;
     } while (result->NextRow());

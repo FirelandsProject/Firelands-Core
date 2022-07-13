@@ -36,6 +36,7 @@
 #include "World.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
+#include <vector>
 
 enum eAuctionHouse
 {
@@ -326,8 +327,8 @@ void AuctionHouseMgr::LoadAuctionItems()
     {
         Field* fields = result->Fetch();
 
-        ObjectGuid::LowType item_guid = fields[12].GetUInt32();
-        uint32 itemEntry = fields[13].GetUInt32();
+        ObjectGuid::LowType item_guid = fields[12].Get<uint32>();
+        uint32 itemEntry = fields[13].Get<uint32>();
 
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemEntry);
         if (!proto)
@@ -375,7 +376,7 @@ void AuctionHouseMgr::LoadAuctions()
         do
         {
             Field* fields = resultBidders->Fetch();
-            biddersByAuction[fields[0].GetUInt32()].insert(ObjectGuid::Create<HighGuid::Player>(fields[1].GetUInt32()));
+            biddersByAuction[fields[0].Get<uint32>()].insert(ObjectGuid::Create<HighGuid::Player>(fields[1].Get<uint32>()));
             ++countBidders;
         } while (resultBidders->NextRow());
     }
@@ -903,18 +904,18 @@ void AuctionEntry::SaveToDB(CharacterDatabaseTransaction& trans) const
 
 bool AuctionEntry::LoadFromDB(Field* fields)
 {
-    Id = fields[0].GetUInt32();
-    houseId = fields[1].GetUInt8();
-    itemGUIDLow = fields[2].GetUInt32();
-    itemEntry = fields[3].GetUInt32();
-    itemCount = fields[4].GetUInt32();
-    owner = fields[5].GetUInt32();
-    buyout = fields[6].GetUInt64();
-    expire_time = fields[7].GetUInt32();
-    bidder = fields[8].GetUInt32();
-    bid = fields[9].GetUInt64();
-    startbid = fields[10].GetUInt64();
-    deposit = fields[11].GetUInt64();
+    Id = fields[0].Get<uint32>();
+    houseId = fields[1].Get<uint8>();
+    itemGUIDLow = fields[2].Get<uint32>();
+    itemEntry = fields[3].Get<uint32>();
+    itemCount = fields[4].Get<uint32>();
+    owner = fields[5].Get<uint32>();
+    buyout = fields[6].Get<uint64>();
+    expire_time = fields[7].Get<uint32>();
+    bidder = fields[8].Get<uint32>();
+    bid = fields[9].Get<uint64>();
+    startbid = fields[10].Get<uint64>();
+    deposit = fields[11].Get<uint64>();
 
     auctionHouseEntry = AuctionHouseMgr::GetAuctionHouseEntryFromHouse(houseId);
     if (!auctionHouseEntry)

@@ -459,10 +459,10 @@ void PoolMgr::LoadFromDB()
         {
             Field* fields = result->Fetch();
 
-            uint32 pool_id = fields[0].GetUInt32();
+            uint32 pool_id = fields[0].Get<uint32>();
 
             PoolTemplateData& pPoolTemplate = mPoolTemplate[pool_id];
-            pPoolTemplate.MaxLimit = fields[1].GetUInt32();
+            pPoolTemplate.MaxLimit = fields[1].Get<uint32>();
 
             ++count;
         } while (result->NextRow());
@@ -490,9 +490,9 @@ void PoolMgr::LoadFromDB()
             {
                 Field* fields = result->Fetch();
 
-                ObjectGuid::LowType guid = fields[0].GetUInt32();
-                uint32 pool_id = fields[1].GetUInt32();
-                float chance = fields[2].GetFloat();
+                ObjectGuid::LowType guid = fields[0].Get<uint32>();
+                uint32 pool_id = fields[1].Get<uint32>();
+                float chance = fields[2].Get<float>();
 
                 CreatureData const* data = sObjectMgr->GetCreatureData(guid);
                 if (!data)
@@ -546,9 +546,9 @@ void PoolMgr::LoadFromDB()
             {
                 Field* fields = result->Fetch();
 
-                ObjectGuid::LowType guid = fields[0].GetUInt32();
-                uint32 pool_id = fields[1].GetUInt32();
-                float chance = fields[2].GetFloat();
+                ObjectGuid::LowType guid = fields[0].Get<uint32>();
+                uint32 pool_id = fields[1].Get<uint32>();
+                float chance = fields[2].Get<float>();
 
                 GameObjectData const* data = sObjectMgr->GetGameObjectData(guid);
                 if (!data)
@@ -614,9 +614,9 @@ void PoolMgr::LoadFromDB()
             {
                 Field* fields = result->Fetch();
 
-                uint32 child_pool_id = fields[0].GetUInt32();
-                uint32 mother_pool_id = fields[1].GetUInt32();
-                float chance = fields[2].GetFloat();
+                uint32 child_pool_id = fields[0].Get<uint32>();
+                uint32 mother_pool_id = fields[1].Get<uint32>();
+                float chance = fields[2].Get<float>();
 
                 {
                     auto it = mPoolTemplate.find(mother_pool_id);
@@ -703,15 +703,15 @@ void PoolMgr::LoadFromDB()
             do
             {
                 Field* fields = result->Fetch();
-                uint32 pool_entry = fields[0].GetUInt32();
-                uint32 pool_pool_id = fields[1].GetUInt32();
+                uint32 pool_entry = fields[0].Get<uint32>();
+                uint32 pool_pool_id = fields[1].Get<uint32>();
 
                 if (!CheckPool(pool_entry))
                 {
                     if (pool_pool_id)
                         // The pool is a child pool in pool_pool table. Ideally we should remove it from the pool handler to ensure it never gets spawned,
                         // however that could recursively invalidate entire chain of mother pools. It can be done in the future but for now we'll do nothing.
-                        LOG_ERROR("sql.sql", "Pool Id %u has no equal chance pooled entites defined and explicit chance sum is not 100. This broken pool is a child pool of Id %u and cannot be safely removed.", pool_entry, fields[2].GetUInt32());
+                        LOG_ERROR("sql.sql", "Pool Id %u has no equal chance pooled entites defined and explicit chance sum is not 100. This broken pool is a child pool of Id %u and cannot be safely removed.", pool_entry, fields[2].Get<uint32>());
                     else
                         LOG_ERROR("sql.sql", "Pool Id %u has no equal chance pooled entites defined and explicit chance sum is not 100. The pool will not be spawned.", pool_entry);
                     continue;
@@ -798,7 +798,7 @@ uint32 PoolMgr::IsPartOfAPool(SpawnObjectType type, ObjectGuid::LowType spawnId)
     case SPAWN_TYPE_GAMEOBJECT:
         return IsPartOfAPool<GameObject>(spawnId);
     default:
-        ASSERT(false, "Invalid spawn type %u passed to PoolMgr::IsPartOfPool (with spawnId %u)", uint32(type), spawnId);
+        ASSERT(false, "Invalid spawn type {} passed to PoolMgr::IsPartOfPool (with spawnId {})", uint32(type), spawnId);
         return 0;
     }
 }
@@ -851,6 +851,6 @@ void PoolMgr::UpdatePool(uint32 pool_id, SpawnObjectType type, uint32 spawnId)
         UpdatePool<GameObject>(pool_id, spawnId);
         break;
     default:
-        ASSERT(false, "Invalid spawn type %u passed to PoolMgr::IsPartOfPool (with spawnId %u)", uint32(type), spawnId);
+        ASSERT(false, "Invalid spawn type {} passed to PoolMgr::IsPartOfPool (with spawnId %u)", uint32(type), spawnId);
     }
 }

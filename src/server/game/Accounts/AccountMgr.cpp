@@ -41,7 +41,7 @@ AccountMgr* AccountMgr::instance()
     return &instance;
 }
 
-AccountOpResult AccountMgr::CreateAccount(std::string username, std::string password, std::string email /*= ""*/, uint32 bnetAccountId /*= 0*/, uint8 bnetIndex /*= 0*/)
+AccountOpResult AccountMgr::CreateAccount(std::string username, std::string password, std::string email /*= ""*/)
 {
     if (utf8length(username) > MAX_ACCOUNT_STR)
         return AccountOpResult::AOR_NAME_TOO_LONG;                           // username's too long
@@ -94,7 +94,7 @@ AccountOpResult AccountMgr::DeleteAccount(uint32 accountId)
     {
         do
         {
-            ObjectGuid guid(HighGuid::Player, (*result)[0].GetUInt32());
+            ObjectGuid guid(HighGuid::Player, (*result)[0].Get<uint32>());
 
             // Kick if player is online
             if (Player* p = ObjectAccessor::FindConnectedPlayer(guid))
@@ -276,7 +276,7 @@ uint32 AccountMgr::GetId(std::string const& username)
     stmt->SetData(0, username);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
-    return (result) ? (*result)[0].GetUInt32() : 0;
+    return (result) ? (*result)[0].Get<uint32>() : 0;
 }
 
 uint32 AccountMgr::GetSecurity(uint32 accountId, int32 realmId)
@@ -286,7 +286,7 @@ uint32 AccountMgr::GetSecurity(uint32 accountId, int32 realmId)
     stmt->SetData(1, realmId);
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
-    return (result) ? (*result)[0].GetUInt8() : uint32(SEC_PLAYER);
+    return (result) ? (*result)[0].Get<uint8>() : uint32(SEC_PLAYER);
 }
 
 QueryCallback AccountMgr::GetSecurityAsync(uint32 accountId, int32 realmId, std::function<void(uint32)> callback)
@@ -296,7 +296,7 @@ QueryCallback AccountMgr::GetSecurityAsync(uint32 accountId, int32 realmId, std:
     stmt->SetData(1, realmId);
     return LoginDatabase.AsyncQuery(stmt).WithPreparedCallback([callback = std::move(callback)](PreparedQueryResult result)
         {
-            callback(result ? uint32((*result)[0].GetUInt8()) : uint32(SEC_PLAYER));
+            callback(result ? uint32((*result)[0].Get<uint8>()) : uint32(SEC_PLAYER));
         });
 }
 
@@ -308,7 +308,7 @@ bool AccountMgr::GetName(uint32 accountId, std::string& name)
 
     if (result)
     {
-        name = (*result)[0].GetString();
+        name = (*result)[0].Get<std::string>();
         return true;
     }
 
@@ -323,7 +323,7 @@ bool AccountMgr::GetEmail(uint32 accountId, std::string& email)
 
     if (result)
     {
-        email = (*result)[0].GetString();
+        email = (*result)[0].Get<std::string>();
         return true;
     }
 
@@ -377,7 +377,7 @@ uint32 AccountMgr::GetCharactersCount(uint32 accountId)
     stmt->SetData(0, accountId);
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
-    return (result) ? (*result)[0].GetUInt64() : 0;
+    return (result) ? (*result)[0].Get<uint64>() : 0;
 }
 
 
@@ -429,8 +429,8 @@ void AccountMgr::LoadRBAC()
     do
     {
         Field* field = result->Fetch();
-        uint32 id = field[0].GetUInt32();
-        _permissions[id] = new rbac::RBACPermission(id, field[1].GetString());
+        uint32 id = field[0].Get<uint32>();
+        _permissions[id] = new rbac::RBACPermission(id, field[1].Get<std::string>());
         ++count1;
     } while (result->NextRow());
 
@@ -448,14 +448,14 @@ void AccountMgr::LoadRBAC()
     do
     {
         Field* field = result->Fetch();
-        uint32 newId = field[0].GetUInt32();
+        uint32 newId = field[0].Get<uint32>();
         if (permissionId != newId)
         {
             permissionId = newId;
             permission = _permissions[newId];
         }
 
-        uint32 linkedPermissionId = field[1].GetUInt32();
+        uint32 linkedPermissionId = field[1].Get<uint32>();
         if (linkedPermissionId == permissionId)
         {
             LOG_ERROR("sql.sql", "RBAC Permission %u has itself as linked permission. Ignored", permissionId);
@@ -478,14 +478,14 @@ void AccountMgr::LoadRBAC()
     do
     {
         Field* field = result->Fetch();
-        uint32 newId = field[0].GetUInt32();
+        uint32 newId = field[0].Get<uint32>();
         if (secId != newId || permissions == nullptr)
         {
             secId = newId;
             permissions = &_defaultPermissions[secId];
         }
 
-        permissions->insert(field[1].GetUInt32());
+        permissions->insert(field[1].Get<uint32>());
         ++count3;
     } while (result->NextRow());
 

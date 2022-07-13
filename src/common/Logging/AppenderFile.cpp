@@ -18,9 +18,13 @@
 #include "AppenderFile.h"
 #include "Log.h"
 #include "LogMessage.h"
+#include "SmartEnum.h"
+#include "StringConvert.h"
+#include "StringFormat.h"
+#include "Tokenize.h"
 #include <algorithm>
 
-AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, AppenderFlags flags, std::vector<char const*> extraArgs) :
+AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, AppenderFlags flags, std::vector<std::string_view> const& extraArgs) :
     Appender(id, name, level, flags),
     logfile(nullptr),
     _logDir(sLog->GetLogsDir()),
@@ -32,7 +36,7 @@ AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, Ap
 
     _fileName = extraArgs[0];
 
-    char const* mode = "a";
+    std::string mode = "a";
     if (extraArgs.size() > 1)
         mode = extraArgs[1];
 
@@ -45,14 +49,23 @@ AppenderFile::AppenderFile(uint8 id, std::string const& name, LogLevel level, Ap
             _fileName += sLog->GetLogsTimestamp();
     }
 
-    if (extraArgs.size() > 2)
-        _maxFileSize = atoi(extraArgs[2]);
+    if (extraArgs.size() > 2) {
+        if (Optional<uint32> size = Firelands::StringTo<uint32>(extraArgs[2]))
+        {
+            _maxFileSize = *size;
+        }
+        else
+        {
+            throw InvalidAppenderArgsException(Firelands::StringFormatFmt("Log::CreateAppenderFromConfig: Invalid size '{}' for appender {}", extraArgs[2], name));
+        }
+    }
+
 
     _dynamicName = std::string::npos != _fileName.find("%s");
     _backup = (flags & APPENDER_FLAGS_MAKE_FILE_BACKUP) != 0;
 
     if (!_dynamicName)
-        logfile = OpenFile(_fileName, mode, !strcmp(mode, "w") && _backup);
+        logfile = OpenFile(_fileName, mode, (mode == "w") && _backup);
 }
 
 AppenderFile::~AppenderFile()

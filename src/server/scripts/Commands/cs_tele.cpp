@@ -137,8 +137,8 @@ public:
                 if (resultDB)
                 {
                     Field* fieldsDB = resultDB->Fetch();
-                    WorldLocation loc(fieldsDB[0].GetUInt16(), fieldsDB[2].GetFloat(), fieldsDB[3].GetFloat(), fieldsDB[4].GetFloat(), 0.0f);
-                    uint32 zoneId = fieldsDB[1].GetUInt16();
+                    WorldLocation loc(fieldsDB[0].Get<uint16>(), fieldsDB[2].Get<float>(), fieldsDB[3].Get<float>(), fieldsDB[4].Get<float>(), 0.0f);
+                    uint32 zoneId = fieldsDB[1].Get<uint16>();
 
                     CharacterDatabaseTransaction dummy;
                     Player::SavePositionInDB(loc, zoneId, target_guid, dummy);

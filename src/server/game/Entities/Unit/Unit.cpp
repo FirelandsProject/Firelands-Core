@@ -85,6 +85,8 @@
 #include "WorldPacket.h"
 #include "WorldSession.h"
 #include <cmath>
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 float baseMoveSpeed[MAX_MOVE_TYPE] =
 {
@@ -10421,8 +10423,8 @@ void Unit::RemoveFromWorld()
         if (IsCharmed())
             RemoveCharmedBy(nullptr);
 
-        ASSERT(!GetCharmedGUID(), "Unit %u has charmed guid when removed from world", GetEntry());
-        ASSERT(!GetCharmerGUID(), "Unit %u has charmer guid when removed from world", GetEntry());
+        ASSERT(!GetCharmedGUID(), "Unit {} has charmed guid when removed from world", GetEntry());
+        ASSERT(!GetCharmerGUID(), "Unit {} has charmer guid when removed from world", GetEntry());
 
         if (Unit* owner = GetOwner())
         {
@@ -10740,19 +10742,21 @@ void CharmInfo::LoadPetActionBar(const std::string& data)
 {
     InitPetActionBar();
 
-    Tokenizer tokens(data, ' ');
+    std::vector<std::string_view> tokens = Firelands::Tokenize(data, ' ', false);
+
 
     if (tokens.size() != (ACTION_BAR_INDEX_END - ACTION_BAR_INDEX_START) * 2)
         return;                                             // non critical, will reset to default
 
     uint8 index = ACTION_BAR_INDEX_START;
-    Tokenizer::const_iterator iter = tokens.begin();
-    for (; index < ACTION_BAR_INDEX_END; ++iter, ++index)
-    {
+    int iter = 0;
+    for (; index < ACTION_BAR_INDEX_END; iter++, ++index) {
         // use unsigned cast to avoid sign negative format use at long-> ActiveStates (int) conversion
-        ActiveStates type = ActiveStates(atol(*iter));
+        ActiveStates type = ActiveStates(*Firelands::StringTo<uint32>(tokens[iter]));
+
         ++iter;
-        uint32 action = atoul(*iter);
+
+        uint32 action = *Firelands::StringTo<uint32>(tokens[iter]);
 
         PetActionBar[index].SetActionAndType(action, type);
 
@@ -11345,11 +11349,6 @@ Unit* Unit::SelectNearbyTarget(Unit* exclude, float dist) const
 
     // select random
     return Firelands::Containers::SelectRandomContainerElement(targets);
-}
-
-void ApplyPercentModFloatVar(float& var, float val, bool apply)
-{
-    var *= (apply ? (100.0f + val) / 100.0f : 100.0f / (100.0f + val));
 }
 
 void Unit::ApplyAttackTimePercentMod(WeaponAttackType att, float val, bool apply)

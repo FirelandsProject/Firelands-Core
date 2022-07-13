@@ -37,6 +37,7 @@
 #include "ReputationMgr.h"
 #include "World.h"
 #include "WorldSession.h"
+#include "Timer.h"
 
 class character_commandscript : public CommandScript
 {
@@ -138,13 +139,13 @@ public:
 
                 DeletedInfo info;
 
-                info.guid = ObjectGuid(HighGuid::Player, fields[0].GetUInt32());
-                info.name = fields[1].GetString();
-                info.accountId = fields[2].GetUInt32();
+                info.guid = ObjectGuid(HighGuid::Player, fields[0].Get<uint32>());
+                info.name = fields[1].Get<std::string>();
+                info.accountId = fields[2].Get<uint32>();
 
                 // account name will be empty for nonexisting account
                 AccountMgr::GetName(info.accountId, info.accountName);
-                info.deleteDate = time_t(fields[3].GetUInt32());
+                info.deleteDate = time_t(fields[3].Get<uint32>());
                 foundList.push_back(info);
             } while (result->NextRow());
         }
@@ -173,7 +174,7 @@ public:
 
         for (DeletedInfoList::const_iterator itr = foundList.begin(); itr != foundList.end(); ++itr)
         {
-            std::string dateStr = TimeToTimestampStr(itr->deleteDate);
+            std::string dateStr = Firelands::Time::TimeToTimestampStr(Seconds(itr->deleteDate));
 
             if (!handler->GetSession())
                 handler->PSendSysMessage(LANG_CHARACTER_DELETED_LIST_LINE_CONSOLE,
@@ -230,7 +231,7 @@ public:
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARACTER_NAME_DATA);
         stmt->SetData(0, delInfo.guid.GetCounter());
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
-            sCharacterCache->AddCharacterCacheEntry(delInfo.guid, delInfo.accountId, delInfo.name, (*result)[2].GetUInt8(), (*result)[0].GetUInt8(), (*result)[1].GetUInt8(), (*result)[3].GetUInt8());
+            sCharacterCache->AddCharacterCacheEntry(delInfo.guid, delInfo.accountId, delInfo.name, (*result)[2].Get<uint8>(), (*result)[0].Get<uint8>(), (*result)[1].Get<uint8>(), (*result)[3].Get<uint8>());
     }
 
     static void HandleCharacterLevel(Player* player, ObjectGuid playerGuid, uint32 oldLevel, uint32 newLevel, ChatHandler* handler)
@@ -590,7 +591,7 @@ public:
         LoginDatabasePreparedStatement* loginStmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_ID_BY_NAME);
         loginStmt->SetData(0, accountName);
         if (PreparedQueryResult result = LoginDatabase.Query(loginStmt))
-            newAccountId = (*result)[0].GetUInt32();
+            newAccountId = (*result)[0].Get<uint32>();
         else
         {
             handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());

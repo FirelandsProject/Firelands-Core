@@ -97,8 +97,8 @@ void PlayerSocial::RemoveFromSocialList(ObjectGuid const& friendGuid, SocialFlag
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_SOCIAL_FLAGS);
 
         stmt->SetData(0, itr->second.Flags);
-        stmt->SetData(1, GetPlayerGUID());
-        stmt->SetData(2, friendGuid);
+        stmt->SetData(1, GetPlayerGUID().GetCounter());
+        stmt->SetData(2, friendGuid.GetCounter());
 
         CharacterDatabase.Execute(stmt);
     }
@@ -314,10 +314,10 @@ PlayerSocial* SocialMgr::LoadFromDB(PreparedQueryResult result, ObjectGuid const
         {
             Field* fields = result->Fetch();
 
-            ObjectGuid friendGuid = ObjectGuid::Create<HighGuid::Player>(fields[0].GetUInt32());
+            ObjectGuid friendGuid = ObjectGuid::Create<HighGuid::Player>(fields[0].Get<uint32>());
 
-            uint8 flag = fields[1].GetUInt8();
-            social->_playerSocialMap[friendGuid] = FriendInfo(flag, fields[2].GetString());
+            uint8 flag = fields[1].Get<uint8>();
+            social->_playerSocialMap[friendGuid] = FriendInfo(flag, fields[2].Get<std::string>());
         } while (result->NextRow());
     }
 

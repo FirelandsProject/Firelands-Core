@@ -280,8 +280,8 @@ PreparedResultSet::PreparedResultSet(MySQLStmt* stmt, MySQLResult* result, uint6
                     // warning - the string will not be null-terminated if there is no space for it in the buffer
                     // when mysql_stmt_fetch returned MYSQL_DATA_TRUNCATED
                     // we cannot blindly null-terminate the data either as it may be retrieved as binary blob and not specifically a string
-                    // in this case using Field::GetCString will result in garbage
-                    // TODO: remove Field::GetCString and use std::string_view in C++17
+                    // in this case using Field::Get<std::string> will result in garbage
+                    // TODO: remove Field::Get<std::string> and use std::string_view in C++17
                     if (fetched_length < buffer_length)
                         *((char*)buffer + fetched_length) = '\0';
                     break;

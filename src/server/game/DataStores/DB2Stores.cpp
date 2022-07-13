@@ -166,11 +166,11 @@ void DB2Manager::LoadHotfixData()
         Field* fields = result->Fetch();
 
         HotfixNotify info;
-        info.TableHash = fields[0].GetUInt32();
-        info.Entry = fields[1].GetUInt32();
+        info.TableHash = fields[0].Get<uint32>();
+        info.Entry = fields[1].Get<uint32>();
         _hotfixData.push_back(info);
 
-        if (fields[2].GetBool())
+        if (fields[2].Get<bool>())
         {
             auto itr = _stores.find(info.TableHash);
             if (itr != _stores.end())

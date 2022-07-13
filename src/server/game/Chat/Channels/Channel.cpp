@@ -29,6 +29,8 @@
 #include "Player.h"
 #include "SocialMgr.h"
 #include "World.h"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 Channel::Channel(uint32 channelId, uint32 team /*= 0*/, AreaTableEntry const* zoneEntry /*= nullptr*/) :
     _announceEnabled(false),                                        // no join/leave announces
@@ -78,18 +80,19 @@ Channel::Channel(std::string const& name, uint32 team /*= 0*/) :
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt)) // load
         {
             Field* fields = result->Fetch();
-            _channelName = fields[0].GetString(); // re-get channel name. MySQL table collation is case insensitive
-            _announceEnabled = fields[1].GetBool();
-            _ownershipEnabled = fields[2].GetBool();
-            _channelPassword = fields[3].GetString();
-            std::string db_BannedList = fields[4].GetString();
+            _channelName = fields[0].Get<std::string>(); // re-get channel name. MySQL table collation is case insensitive
+            _announceEnabled = fields[1].Get<bool>();
+            _ownershipEnabled = fields[2].Get<bool>();
+            _channelPassword = fields[3].Get<std::string>();
+            std::string db_BannedList = fields[4].Get<std::string>();
 
             if (!db_BannedList.empty())
             {
-                Tokenizer tokens(db_BannedList, ' ');
+                std::vector<std::string_view> tokens = Firelands::Tokenize(db_BannedList, ' ', true);
                 for (auto const& token : tokens)
                 {
-                    ObjectGuid banned_guid(uint64(atoull(token)));
+
+                    ObjectGuid banned_guid(*Firelands::StringTo<uint64>(token));
                     if (banned_guid)
                     {
                         LOG_DEBUG("chat.system", "Channel(%s) loaded player %s into bannedStore", name.c_str(), banned_guid.ToString().c_str());

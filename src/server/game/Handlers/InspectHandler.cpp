@@ -39,8 +39,8 @@ void WorldSession::HandleRequestHonorStatsOpcode(WorldPackets::Inspect::RequestH
     WorldPackets::Inspect::InspectHonorStats inspectHonorStats;
     inspectHonorStats.PlayerGUID = player->GetGUID();
     inspectHonorStats.LifetimeHK = player->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORABLE_KILLS);
-    inspectHonorStats.YesterdayHK = player->GetUInt16Value(PLAYER_FIELD_KILLS, 1);
-    inspectHonorStats.TodayHK = player->GetUInt16Value(PLAYER_FIELD_KILLS, 0);
+    inspectHonorStats.YesterdayHK = player->Get<uint16>Value(PLAYER_FIELD_KILLS, 1);
+    inspectHonorStats.TodayHK = player->Get<uint16>Value(PLAYER_FIELD_KILLS, 0);
     inspectHonorStats.LifetimeMaxRank = 0; // @todo
 
     SendPacket(inspectHonorStats.Write());

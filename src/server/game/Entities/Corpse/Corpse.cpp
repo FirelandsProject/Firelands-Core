@@ -157,26 +157,26 @@ bool Corpse::LoadCorpseFromDB(ObjectGuid::LowType guid, Field* fields)
     //        0     1     2     3            4      5          6          7       8       9      10        11    12          13          14
     // SELECT posX, posY, posZ, orientation, mapId, displayId, itemCache, bytes1, bytes2, flags, dynFlags, time, corpseType, instanceId, guid FROM corpse WHERE mapId = ? AND instanceId = ?
 
-    float posX = fields[0].GetFloat();
-    float posY = fields[1].GetFloat();
-    float posZ = fields[2].GetFloat();
-    float o = fields[3].GetFloat();
-    uint32 mapId = fields[4].GetUInt16();
+    float posX = fields[0].Get<float>();
+    float posY = fields[1].Get<float>();
+    float posZ = fields[2].Get<float>();
+    float o = fields[3].Get<float>();
+    uint32 mapId = fields[4].Get<uint16>();
 
     Object::_Create(guid, 0, HighGuid::Corpse);
 
     SetObjectScale(1.0f);
-    SetUInt32Value(CORPSE_FIELD_DISPLAY_ID, fields[5].GetUInt32());
-    _LoadIntoDataField(fields[6].GetString(), CORPSE_FIELD_ITEM, EQUIPMENT_SLOT_END);
-    SetUInt32Value(CORPSE_FIELD_BYTES_1, fields[7].GetUInt32());
-    SetUInt32Value(CORPSE_FIELD_BYTES_2, fields[8].GetUInt32());
-    SetUInt32Value(CORPSE_FIELD_FLAGS, fields[9].GetUInt8());
-    SetUInt32Value(CORPSE_FIELD_DYNAMIC_FLAGS, fields[10].GetUInt8());
-    SetGuidValue(CORPSE_FIELD_OWNER, ObjectGuid::Create<HighGuid::Player>(fields[14].GetUInt32()));
+    SetUInt32Value(CORPSE_FIELD_DISPLAY_ID, fields[5].Get<uint32>());
+    _LoadIntoDataField(fields[6].Get<std::string>(), CORPSE_FIELD_ITEM, EQUIPMENT_SLOT_END);
+    SetUInt32Value(CORPSE_FIELD_BYTES_1, fields[7].Get<uint32>());
+    SetUInt32Value(CORPSE_FIELD_BYTES_2, fields[8].Get<uint32>());
+    SetUInt32Value(CORPSE_FIELD_FLAGS, fields[9].Get<uint8>());
+    SetUInt32Value(CORPSE_FIELD_DYNAMIC_FLAGS, fields[10].Get<uint8>());
+    SetGuidValue(CORPSE_FIELD_OWNER, ObjectGuid::Create<HighGuid::Player>(fields[14].Get<uint32>()));
 
-    m_time = time_t(fields[11].GetUInt32());
+    m_time = time_t(fields[11].Get<uint32>());
 
-    uint32 instanceId = fields[13].GetUInt32();
+    uint32 instanceId = fields[13].Get<uint32>();
 
     // place
     SetLocationInstanceId(instanceId);

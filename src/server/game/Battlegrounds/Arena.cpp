@@ -108,7 +108,7 @@ void ArenaTeamScore::BuildTeamInfoLengthBlock(WorldPacket& data)
 
 void ArenaTeamScore::BuildTeamInfoBlock(WorldPacket& data)
 {
-    data.WriteString(TeamName);
+    data << TeamName;
 }
 
 Arena::Arena()

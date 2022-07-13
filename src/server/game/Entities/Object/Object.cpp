@@ -58,6 +58,8 @@
 #include "WaypointMovementGenerator.h"
 #include "World.h"
 #include "WorldPacket.h"
+#include "Tokenize.h"
+#include "StringConvert.h"
 
 constexpr float VisibilityDistances[AsUnderlyingType(VisibilityDistanceType::Max)] =
 {
@@ -754,8 +756,9 @@ uint32 Object::GetUpdateFieldData(Player const* target, uint32*& flags) const
     }
     case TYPEID_GAMEOBJECT:
         flags = GameObjectUpdateFieldFlags;
-        if (ToGameObject()->GetOwnerGUID() == target->GetGUID())
+        if (ToGameObject()->GetOwnerGUID() == target->GetGUID()) {
             visibleFlag |= UF_FLAG_OWNER;
+        }
         break;
     case TYPEID_DYNAMICOBJECT:
         flags = DynamicObjectUpdateFieldFlags;
@@ -782,14 +785,19 @@ void Object::_LoadIntoDataField(std::string const& data, uint32 startOffset, uin
     if (data.empty())
         return;
 
-    Tokenizer tokens(data, ' ', count);
+    std::vector<std::string_view> tokens = Firelands::Tokenize(data, ' ', false);
 
     if (tokens.size() != count)
         return;
 
     for (uint32 index = 0; index < count; ++index)
     {
-        m_uint32Values[startOffset + index] = atoul(tokens[index]);
+        Optional<uint32> dataValue = Firelands::StringTo<uint32>(tokens[index]);
+        if (!dataValue) {
+            return;
+        }
+
+        m_uint32Values[startOffset + index] = *dataValue;
         _changesMask.SetBit(startOffset + index);
     }
 }

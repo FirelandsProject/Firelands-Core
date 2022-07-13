@@ -351,8 +351,9 @@ struct boss_akilzon : public BossAI
             switch (eventId)
             {
             case EVENT_STATIC_DISRUPTION:
-                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me))){
                     DoCast(target, SPELL_STATIC_DISRUPTION);
+                }
                 events.Repeat(12s);
                 break;
             case EVENT_CALL_LIGHTNING:
@@ -363,13 +364,15 @@ struct boss_akilzon : public BossAI
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, [this](Unit const* potentialTarget)->bool
                     {
                         return potentialTarget && me->GetVictim() != potentialTarget && !potentialTarget->HasAura(SPELL_PLUCKED);
-                    }))
+                    })) {
                     DoCast(target, SPELL_GUST_OF_WIND);
-                    events.Repeat(24s);
-                    break;
+                }
+                events.Repeat(24s);
+                break;
             case EVENT_ELECTRICAL_STORM:
-                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
+                if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me))){
                     DoCast(target, SPELL_ELECTRICAL_STORM);
+                }
 
                 events.RescheduleEvent(EVENT_STATIC_DISRUPTION, 14s + 500ms);
                 events.RescheduleEvent(EVENT_GUST_OF_WIND, 17s);

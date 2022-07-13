@@ -144,16 +144,16 @@ uint32 LootStore::LoadLootTable()
     {
         Field* fields = result->Fetch();
 
-        uint32 entry = fields[0].GetUInt32();
-        uint32 item = fields[1].GetUInt32();
-        uint32 reference = fields[2].GetUInt32();
-        float  chance = fields[3].GetFloat();
-        bool   needsquest = fields[4].GetBool();
-        bool   iscurrency = fields[5].GetBool();
-        uint16 lootmode = fields[6].GetUInt16();
-        uint8  groupid = fields[7].GetUInt8();
-        uint8  mincount = fields[8].GetUInt8();
-        uint8  maxcount = fields[9].GetUInt8();
+        uint32 entry = fields[0].Get<uint32>();
+        uint32 item = fields[1].Get<uint32>();
+        uint32 reference = fields[2].Get<uint32>();
+        float  chance = fields[3].Get<float>();
+        bool   needsquest = fields[4].Get<bool>();
+        bool   iscurrency = fields[5].Get<bool>();
+        uint16 lootmode = fields[6].Get<uint16>();
+        uint8  groupid = fields[7].Get<uint8>();
+        uint8  mincount = fields[8].Get<uint8>();
+        uint8  maxcount = fields[9].Get<uint8>();
 
         if (groupid >= 1 << 7)                                     // it stored in 7 bit field
         {

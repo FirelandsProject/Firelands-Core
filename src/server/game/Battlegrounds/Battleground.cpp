@@ -793,7 +793,7 @@ void Battleground::EndBattleground(uint32 winner)
         if (result)
         {
             Field* fields = result->Fetch();
-            battlegroundId = fields[0].GetUInt64() + 1;
+            battlegroundId = fields[0].Get<uint64>() + 1;
         }
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_PVPSTATS_BATTLEGROUND);
@@ -1327,48 +1327,34 @@ void Battleground::BuildPvPLogDataPacket(WorldPacket& data)
     ByteBuffer buff;
 
     data.Initialize(SMSG_PVP_LOG_DATA, (1 + 1 + 4 + 40 * GetPlayerScoresSize()));
+    uint8 type = (isArena() ? 1 : 0);
 
-    data.WriteBit(isRated());
-    data.WriteBit(isArena());
-
-    if (isArena())
+    if (type)
     {
-        // it seems this must be according to BG_WINNER_A/H and _NOT_ TEAM_A/H
-        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
-            _arenaTeamScores[i].BuildTeamInfoLengthBlock(data);
-    }
-
-    size_t countPos = data.bitwpos();
-    data.WriteBits(0, 21);
-    for (auto const& score : PlayerScores)
-        score.second->AppendToPacket(data, buff);
-
-    data.PutBits(countPos, GetPlayerScoresSize(), 21);
-    data.WriteBit(GetStatus() == STATUS_WAIT_LEAVE);    // If Ended
-
-    if (isRated())
-    {
-        // it seems this must be according to BG_WINNER_A/H and _NOT_ BG_TEAM_A/H
-        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
+        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i) {
             _arenaTeamScores[i].BuildRatingInfoBlock(data);
-    }
-
-    data.FlushBits();
-    data.append(buff);
-
-    if (isArena())
-    {
+        }
         // it seems this must be according to BG_WINNER_A/H and _NOT_ TEAM_A/H
-        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i)
-            _arenaTeamScores[i].BuildTeamInfoBlock(data);
+        for (uint8 i = 0; i < BG_TEAMS_COUNT; ++i) {
+            _arenaTeamScores[i].BuildTeamInfoLengthBlock(data);
+        }
     }
-
-    data << uint8(GetPlayersCountByTeam(HORDE));
 
     if (GetStatus() == STATUS_WAIT_LEAVE)
-        data << uint8(GetWinner());
+    {
+        data << uint8(1);                      // bg ended
+        data << uint8(GetWinner());            // who win
+    }
+    else {
 
-    data << uint8(GetPlayersCountByTeam(ALLIANCE));
+        data << uint8(0);                      // bg not ended
+    }
+
+    data << GetPlayerScoresSize();
+
+    for (auto const& score : PlayerScores) {
+        score.second->AppendToPacket(data, buff);
+    }
 }
 
 bool Battleground::UpdatePlayerScore(Player* player, uint32 type, uint32 value, bool doAddHonor)

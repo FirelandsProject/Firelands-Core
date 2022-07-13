@@ -29,11 +29,12 @@
 #include "Util.h"
 #include <errmsg.h>
 #include "MySQLWorkaround.h"
+#include "Tokenize.h"
 #include <mysqld_error.h>
 
 MySQLConnectionInfo::MySQLConnectionInfo(std::string const& infoString)
 {
-    Tokenizer tokens(infoString, ';');
+    std::vector<std::string_view> tokens = Firelands::Tokenize(infoString, ';', true);
     if (tokens.size() != 5)
         return;
 

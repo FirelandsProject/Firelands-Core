@@ -1377,7 +1377,7 @@ public:
         case SPAWN_TYPE_GAMEOBJECT:
             return GetGameObjectData(spawnId);
         default:
-            ASSERT(false, "Invalid spawn object type %u", uint32(type));
+            ASSERT(false, "Invalid spawn object type {}", uint32(type));
             return nullptr;
         }
     }

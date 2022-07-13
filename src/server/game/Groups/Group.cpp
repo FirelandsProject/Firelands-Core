@@ -174,38 +174,38 @@ bool Group::Create(Player* leader)
 
 void Group::LoadGroupFromDB(Field* fields)
 {
-    m_dbStoreId = fields[16].GetUInt32();
+    m_dbStoreId = fields[16].Get<uint32>();
     m_guid = ObjectGuid(HighGuid::Group, sGroupMgr->GenerateGroupId());
-    m_leaderGuid = ObjectGuid(HighGuid::Player, fields[0].GetUInt32());
+    m_leaderGuid = ObjectGuid(HighGuid::Player, fields[0].Get<uint32>());
 
     // group leader not exist
     if (!sCharacterCache->GetCharacterNameByGuid(m_leaderGuid, m_leaderName))
         return;
 
-    m_lootMethod = LootMethod(fields[1].GetUInt8());
-    m_looterGuid = ObjectGuid(HighGuid::Player, fields[2].GetUInt32());
-    m_lootThreshold = ItemQualities(fields[3].GetUInt8());
+    m_lootMethod = LootMethod(fields[1].Get<uint8>());
+    m_looterGuid = ObjectGuid(HighGuid::Player, fields[2].Get<uint32>());
+    m_lootThreshold = ItemQualities(fields[3].Get<uint8>());
 
     for (uint8 i = 0; i < TARGETICONCOUNT; ++i)
-        m_targetIcons[i].Set(fields[4 + i].GetUInt64());
+        m_targetIcons[i].Set(fields[4 + i].Get<uint64>());
 
-    m_groupFlags = GroupFlags(fields[12].GetUInt8());
+    m_groupFlags = GroupFlags(fields[12].Get<uint8>());
     if (m_groupFlags & GROUP_FLAG_RAID)
         _initRaidSubGroupsCounter();
 
-    uint32 diff = fields[13].GetUInt8();
+    uint32 diff = fields[13].Get<uint8>();
     if (diff >= MAX_DUNGEON_DIFFICULTY)
         m_dungeonDifficulty = DUNGEON_DIFFICULTY_NORMAL;
     else
         m_dungeonDifficulty = Difficulty(diff);
 
-    uint32 r_diff = fields[14].GetUInt8();
+    uint32 r_diff = fields[14].Get<uint8>();
     if (r_diff >= MAX_RAID_DIFFICULTY)
         m_raidDifficulty = RAID_DIFFICULTY_10MAN_NORMAL;
     else
         m_raidDifficulty = Difficulty(r_diff);
 
-    m_masterLooterGuid = ObjectGuid(HighGuid::Player, fields[15].GetUInt32());
+    m_masterLooterGuid = ObjectGuid(HighGuid::Player, fields[15].Get<uint32>());
 
     if (m_groupFlags & GROUP_FLAG_LFG)
         sLFGMgr->_LoadFromDB(fields, GetGUID());

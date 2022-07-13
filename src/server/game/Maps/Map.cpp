@@ -838,7 +838,7 @@ void Map::UpdatePlayerZoneStats(uint32 oldZone, uint32 newZone)
     if (oldZone != MAP_INVALID_ZONE)
     {
         uint32& oldZoneCount = _zonePlayerCountMap[oldZone];
-        ASSERT(oldZoneCount, "A player left zone %u (went to %u) - but there were no players in the zone!", oldZone, newZone);
+        ASSERT(oldZoneCount, "A player left zone {} (went to {}) - but there were no players in the zone!", oldZone, newZone);
         --oldZoneCount;
     }
     ++_zonePlayerCountMap[newZone];
@@ -2977,7 +2977,7 @@ void Map::SendObjectUpdates()
 bool Map::CheckRespawn(RespawnInfo* info)
 {
     SpawnData const* data = sObjectMgr->GetSpawnData(info->type, info->spawnId);
-    ASSERT(data, "Invalid respawn info with type %u, spawnID %u in respawn queue.", info->type, info->spawnId);
+    ASSERT(data, "Invalid respawn info with type {}, spawnID {} in respawn queue.", info->type, info->spawnId);
 
     // First, check if this creature's spawn group is inactive
     if (!IsSpawnGroupActive(data->spawnGroupData->groupId))
@@ -3015,7 +3015,7 @@ bool Map::CheckRespawn(RespawnInfo* info)
             alreadyExists = true;
         break;
     default:
-        ASSERT(false, "Invalid spawn type %u with spawnId %u on map %u", uint32(info->type), info->spawnId, GetId());
+        ASSERT(false, "Invalid spawn type {} with spawnId {} on map {}", uint32(info->type), info->spawnId, GetId());
         return true;
     }
     if (alreadyExists)
@@ -3097,10 +3097,10 @@ bool Map::AddRespawnInfo(RespawnInfo const& info)
             else
                 return false;
         }
-        ASSERT(bySpawnIdMap.find(info.spawnId) == bySpawnIdMap.end(), "Insertion of respawn info with id (%u,%u) into spawn id map failed - state desync.", uint32(info.type), info.spawnId);
+        ASSERT(bySpawnIdMap.find(info.spawnId) == bySpawnIdMap.end(), "Insertion of respawn info with id ({},{}) into spawn id map failed - state desync.", uint32(info.type), info.spawnId);
     }
     else
-        ASSERT(false, "Invalid respawn info for spawn id (%u,%u) being inserted", uint32(info.type), info.spawnId);
+        ASSERT(false, "Invalid respawn info for spawn id ({},{}) being inserted", uint32(info.type), info.spawnId);
 
     RespawnInfo* ri = new RespawnInfo(info);
     ri->handle = _respawnTimes.push(ri);
@@ -3150,7 +3150,7 @@ void Map::DeleteRespawnInfo(RespawnInfo* info, CharacterDatabaseTransaction dbTr
     auto& spawnMap = GetRespawnMapForType(info->type);
     auto range = spawnMap.equal_range(info->spawnId);
     auto it = std::find_if(range.first, range.second, [info](RespawnInfoMap::value_type const& pair) { return (pair.second == info); });
-    ASSERT(it != range.second, "Respawn stores inconsistent for map %u, spawnid %u (type %u)", GetId(), info->spawnId, uint32(info->type));
+    ASSERT(it != range.second, "Respawn stores inconsistent for map {}, spawnid {} (type {})", GetId(), info->spawnId, uint32(info->type));
     spawnMap.erase(it);
 
     // respawn heap
@@ -3196,7 +3196,7 @@ void Map::DoRespawn(SpawnObjectType type, ObjectGuid::LowType spawnId, uint32 gr
         break;
     }
     default:
-        ASSERT(false, "Invalid spawn type %u (spawnid %u) on map %u", uint32(type), spawnId, GetId());
+        ASSERT(false, "Invalid spawn type {} (spawnid {}) on map {}", uint32(type), spawnId, GetId());
     }
 }
 
@@ -3390,7 +3390,7 @@ bool Map::SpawnGroupSpawn(uint32 groupId, bool ignoreRespawn, bool force, std::v
             break;
         }
         default:
-            ASSERT(false, "Invalid spawn type %u with spawnId %u", uint32(data->type), data->spawnId);
+            ASSERT(false, "Invalid spawn type {} with spawnId {}", uint32(data->type), data->spawnId);
             return false;
         }
     }
@@ -3945,8 +3945,8 @@ void InstanceMap::CreateInstanceData(bool load)
         if (result)
         {
             Field* fields = result->Fetch();
-            std::string data = fields[0].GetString();
-            i_data->SetCompletedEncountersMask(fields[1].GetUInt32());
+            std::string data = fields[0].Get<std::string>();
+            i_data->SetCompletedEncountersMask(fields[1].Get<uint32>());
             if (!data.empty())
             {
                 LOG_DEBUG("maps", "Loading instance data for `%s` with id %u", sObjectMgr->GetScriptName(i_script_id).c_str(), i_InstanceId);
@@ -4402,9 +4402,9 @@ void Map::LoadRespawnTimes()
         do
         {
             Field* fields = result->Fetch();
-            SpawnObjectType type = SpawnObjectType(fields[0].GetUInt16());
-            ObjectGuid::LowType spawnId = fields[1].GetUInt32();
-            uint64 respawnTime = fields[2].GetUInt64();
+            SpawnObjectType type = SpawnObjectType(fields[0].Get<uint16>());
+            ObjectGuid::LowType spawnId = fields[1].Get<uint32>();
+            uint64 respawnTime = fields[2].Get<uint64>();
 
             if (SpawnData::TypeHasData(type))
             {
@@ -4462,8 +4462,8 @@ void Map::LoadCorpseData()
         do
         {
             Field* fields = phaseResult->Fetch();
-            ObjectGuid::LowType guid = fields[0].GetUInt32();
-            uint32 phaseId = fields[1].GetUInt32();
+            ObjectGuid::LowType guid = fields[0].Get<uint32>();
+            uint32 phaseId = fields[1].Get<uint32>();
 
             phases[guid].insert(phaseId);
         } while (phaseResult->NextRow());
@@ -4482,8 +4482,8 @@ void Map::LoadCorpseData()
     do
     {
         Field* fields = result->Fetch();
-        CorpseType type = CorpseType(fields[12].GetUInt8());
-        ObjectGuid::LowType guid = fields[14].GetUInt32();
+        CorpseType type = CorpseType(fields[12].Get<uint8>());
+        ObjectGuid::LowType guid = fields[14].Get<uint32>();
         if (type >= MAX_CORPSE_TYPE || type == CORPSE_BONES)
         {
             LOG_ERROR("misc", "Corpse (guid: %u) have wrong corpse type (%u), not loading.", guid, type);
