@@ -42,6 +42,7 @@
 #include "Group.h"
 #include "Battleground.h"
 #include "ReputationMgr.h"
+#include "Util.h"
 
 #define MAX_GUILD_BANK_TAB_TEXT_LEN 500
 #define EMBLEM_PRICE 10 * GOLD
@@ -1942,13 +1943,14 @@ void Guild::HandleInviteMember(WorldSession* session, std::string const& name)
     data.WriteByteSeq(oldGuildGuid[1]);
     data.WriteByteSeq(newGuildGuid[0]);
 
-    if (!pInvitee->GetGuildName().empty())
-        data.WriteString(pInvitee->GetGuildName());
+    if (!pInvitee->GetGuildName().empty()){
+        data<<pInvitee->GetGuildName();
+    }
 
     data.WriteByteSeq(newGuildGuid[7]);
     data.WriteByteSeq(newGuildGuid[2]);
 
-    data.WriteString(player->GetName());
+    data<<player->GetName();
 
     data.WriteByteSeq(oldGuildGuid[7]);
     data.WriteByteSeq(oldGuildGuid[6]);
@@ -1956,7 +1958,7 @@ void Guild::HandleInviteMember(WorldSession* session, std::string const& name)
     data.WriteByteSeq(oldGuildGuid[0]);
     data.WriteByteSeq(newGuildGuid[4]);
 
-    data.WriteString(m_name);
+    data<<m_name;
 
     data.WriteByteSeq(newGuildGuid[5]);
     data.WriteByteSeq(newGuildGuid[3]);
@@ -2194,7 +2196,7 @@ void Guild::HandleMemberDepositMoney(WorldSession* session, uint64 amount, bool 
     _LogBankEvent(trans, cashFlow ? GUILD_BANK_LOG_CASH_FLOW_DEPOSIT : GUILD_BANK_LOG_DEPOSIT_MONEY, uint8(0), player->GetGUID().GetCounter(), amount);
     CharacterDatabase.CommitTransaction(trans);
 
-    std::string aux = ByteArrayToHexStr(reinterpret_cast<uint8*>(&m_bankMoney), 8, true);
+    std::string aux = Firelands::Impl::ByteArrayToHexStr(reinterpret_cast<uint8*>(&m_bankMoney), 8, true);
     _BroadcastEvent(GE_BANK_MONEY_SET, player->GetGUID(), aux.c_str());
 
     if (player->GetSession()->HasPermission(rbac::RBAC_PERM_LOG_GM_TRADE))
@@ -2247,7 +2249,7 @@ bool Guild::HandleMemberWithdrawMoney(WorldSession* session, uint64 amount, bool
     _LogBankEvent(trans, repair ? GUILD_BANK_LOG_REPAIR_MONEY : GUILD_BANK_LOG_WITHDRAW_MONEY, uint8(0), player->GetGUID().GetCounter(), amount);
     CharacterDatabase.CommitTransaction(trans);
 
-    std::string aux = ByteArrayToHexStr(reinterpret_cast<uint8*>(&m_bankMoney), 8, true);
+    std::string aux = Firelands::Impl::ByteArrayToHexStr(reinterpret_cast<uint8*>(&m_bankMoney), 8, true);
     _BroadcastEvent(GE_BANK_MONEY_SET, player->GetGUID(), aux.c_str());
 
     if (repair)
@@ -2519,7 +2521,7 @@ void Guild::SendMemberUpdateNote(std::string const& note, ObjectGuid guid, bool 
     data.WriteByteSeq(guid[0]);
     data.WriteByteSeq(guid[2]);
     data.WriteByteSeq(guid[5]);
-    data.WriteString(note); // note
+    data<<note; // no;
     data.WriteByteSeq(guid[7]);
     data.WriteByteSeq(guid[6]);
     data.WriteByteSeq(guid[1]);

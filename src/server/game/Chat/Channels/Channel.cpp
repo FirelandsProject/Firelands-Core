@@ -84,7 +84,7 @@ Channel::Channel(std::string const& name, uint32 team /*= 0*/) :
             _announceEnabled = fields[1].Get<bool>();
             _ownershipEnabled = fields[2].Get<bool>();
             _channelPassword = fields[3].Get<std::string>();
-            std::string db_BannedList = fields[4].Get<std::string>();
+            std::string_view db_BannedList = fields[4].Get<std::string_view>();
 
             if (!db_BannedList.empty())
             {

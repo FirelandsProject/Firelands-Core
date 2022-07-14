@@ -82,8 +82,8 @@ namespace DisableMgr
 
             uint32 entry = fields[1].Get<uint32>();
             uint8 flags = fields[2].Get<uint8>();
-            std::string params_0 = fields[3].Get<std::string>();
-            std::string params_1 = fields[4].Get<std::string>();
+            std::string_view params_0 = fields[3].Get<std::string_view>();
+            std::string_view params_1 = fields[4].Get<std::string_view>();
 
             DisableData data;
             data.flags = flags;

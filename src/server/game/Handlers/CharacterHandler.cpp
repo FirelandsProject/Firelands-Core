@@ -1772,7 +1772,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
 
     Field* fields = result->Fetch();
     uint32 atLoginFlags = fields[0].Get<uint16>();
-    std::string knownTitlesStr = fields[1].Get<std::string>();
+    std::string_view knownTitlesStr = fields[1].Get<std::string_view>();
 
     uint32 usedLoginFlag = (factionChangeInfo->FactionChange ? AT_LOGIN_CHANGE_FACTION : AT_LOGIN_CHANGE_RACE);
     if (!(atLoginFlags & usedLoginFlag))

@@ -34,7 +34,9 @@
 
 MySQLConnectionInfo::MySQLConnectionInfo(std::string const& infoString)
 {
-    std::vector<std::string_view> tokens = Firelands::Tokenize(infoString, ';', true);
+    std::string_view infoStringView(infoString);
+
+    std::vector<std::string_view> tokens = Firelands::Tokenize(infoStringView, ';', true);
     if (tokens.size() != 5)
         return;
 

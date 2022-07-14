@@ -275,6 +275,7 @@ std::string ConfigMgr::GetValueDefault<std::string>(std::string const& name, std
     return itr->second;
 }
 
+
 template<class T>
 T ConfigMgr::GetOption(std::string const& name, T const& def, bool showLogs /*= true*/) const
 {

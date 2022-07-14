@@ -97,7 +97,7 @@ WorldPackets::Character::EnumCharactersResult::CharacterInfo::CharacterInfo(Fiel
         }
     }
 
-    std::vector<std::string_view> equipment = Firelands::Tokenize(fields[22].Get<std::string>(), ' ', false);
+    std::vector<std::string_view> equipment = Firelands::Tokenize(fields[22].Get<std::string_view>(), ' ', false);
     ListPosition = fields[24].Get<uint8>();
 
     for (uint8 slot = 0; slot < INVENTORY_SLOT_BAG_END; ++slot)

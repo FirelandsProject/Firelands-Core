@@ -51,15 +51,15 @@ void WardenWin::Init(WorldSession* session, BigNumber* k)
     _inputCrypto.Init(_inputKey);
     _outputCrypto.Init(_outputKey);
     LOG_DEBUG("warden", "Server side warden for client %u initializing...", session->GetAccountId());
-    LOG_DEBUG("warden", "C->S Key: %s", ByteArrayToHexStr(_inputKey, 16).c_str());
-    LOG_DEBUG("warden", "S->C Key: %s", ByteArrayToHexStr(_outputKey, 16).c_str());
-    LOG_DEBUG("warden", "  Seed: %s", ByteArrayToHexStr(_seed, 16).c_str());
+    LOG_DEBUG("warden", "C->S Key: %s", Firelands::Impl::ByteArrayToHexStr(_inputKey, 16).c_str());
+    LOG_DEBUG("warden", "S->C Key: %s", Firelands::Impl::ByteArrayToHexStr(_outputKey, 16).c_str());
+    LOG_DEBUG("warden", "  Seed: %s", Firelands::Impl::ByteArrayToHexStr(_seed, 16).c_str());
     LOG_DEBUG("warden", "Loading Module...");
 
     _module = GetModuleForClient();
 
-    LOG_DEBUG("warden", "Module Key: %s", ByteArrayToHexStr(_module->Key, 16).c_str());
-    LOG_DEBUG("warden", "Module ID: %s", ByteArrayToHexStr(_module->Id, 16).c_str());
+    LOG_DEBUG("warden", "Module Key: %s", Firelands::Impl::ByteArrayToHexStr(_module->Key, 16).c_str());
+    LOG_DEBUG("warden", "Module ID: %s", Firelands::Impl::ByteArrayToHexStr(_module->Id, 16).c_str());
     RequestModule();
 }
 

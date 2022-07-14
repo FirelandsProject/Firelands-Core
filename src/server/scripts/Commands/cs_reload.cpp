@@ -426,7 +426,7 @@ public:
             return false;
         }
 
-        std::vector<std::string_view> entries = Firelands::Tokenize(args, ' ', false);
+        std::vector<std::string_view> entries = Firelands::Tokenize(std::string_view(args), ' ', false);
 
 
         for (int itr = 0; itr < ((int)entries.size()); ++itr) {

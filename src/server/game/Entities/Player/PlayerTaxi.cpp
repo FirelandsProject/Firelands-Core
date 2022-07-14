@@ -76,7 +76,8 @@ void PlayerTaxi::InitTaxiNodesForLevel(uint32 race, uint32 chrClass, uint8 level
 
 void PlayerTaxi::LoadTaxiMask(std::string const& data)
 {
-    std::vector<std::string_view> tokens = Firelands::Tokenize(data, ' ', false);
+    std::string_view dataStringView(data);
+    std::vector<std::string_view> tokens = Firelands::Tokenize(dataStringView, ' ', false);
 
 
     uint8 index = 0;
@@ -108,7 +109,7 @@ bool PlayerTaxi::LoadTaxiDestinationsFromString(std::string const& values, uint3
 {
     ClearTaxiDestinations();
 
-    std::vector<std::string_view> tokens = Firelands::Tokenize(values, ' ', false);
+    std::vector<std::string_view> tokens = Firelands::Tokenize(std::string_view(values), ' ', false);
 
     for (int itr = 0; itr < ((int)tokens.size()); itr++) {
         uint32 node = *Firelands::StringTo<uint32>(tokens[itr]);

@@ -2387,7 +2387,7 @@ void Group::ResetInstances(uint8 method, bool isRaid, Player* SendMsgTo)
                                 stmt->SetData(3, instanceEntrance->target_Orientation);
                                 stmt->SetData(4, graveyardLocation->Continent);
                                 stmt->SetData(5, zoneId);
-                                stmt->SetData(6, member.guid);
+                                stmt->SetData(6, member.guid.GetCounter());
                                 stmt->SetData(7, map->GetId());
 
                                 CharacterDatabase.Execute(stmt);
