@@ -603,12 +603,12 @@ void ObjectMgr::LoadCreatureTemplateAddons()
         creatureAddon.meleeAnimKit = fields[9].Get<uint16>();
         creatureAddon.visibilityDistanceType = VisibilityDistanceType(fields[10].Get<uint8>());
 
-        std::vector<std::string_view> tokens = Firelands::Tokenize(fields[11].Get<std::string>(), ' ', false);
+        std::vector<std::string_view> tokens = Firelands::Tokenize(fields[11].Get<std::string_view>(), ' ', false);
 
 
         uint8 i = 0;
         creatureAddon.auras.resize(tokens.size());
-        for (int itr = 0; itr < tokens.size(); ++itr) {
+        for (int itr = 0; itr < ((int)tokens.size()); ++itr) {
 
             Optional<uint32> spellId = Firelands::StringTo<uint32>(tokens[itr]);
 
@@ -1129,8 +1129,9 @@ void ObjectMgr::CheckCreatureTemplate(CreatureTemplate const* cInfo)
     // Hack for modules
     std::vector<uint32> CustomCreatures;
 
-    std::string stringCreatureIds(sConfigMgr->GetOption<std::string>("Creatures.CustomIDs", ""));
-    for (std::string_view id : Firelands::Tokenize(stringCreatureIds, ',', false))
+    std::string stringCreatureIds = sConfigMgr->GetOption<std::string>("Creatures.CustomIDs", "");
+    std::string_view stringCreatureIdsSV(stringCreatureIds);
+    for (std::string_view id : Firelands::Tokenize(stringCreatureIdsSV, ',', false))
     {
         uint32 entry = Firelands::StringTo<uint32>(id).value_or(0);
         CustomCreatures.emplace_back(entry);
@@ -1243,11 +1244,11 @@ void ObjectMgr::LoadCreatureAddons()
         creatureAddon.meleeAnimKit = fields[9].Get<uint16>();
         creatureAddon.visibilityDistanceType = VisibilityDistanceType(fields[10].Get<uint8>());
 
-        std::vector<std::string_view> tokens = Firelands::Tokenize(fields[11].Get<std::string>(), ' ', false);
+        std::vector<std::string_view> tokens = Firelands::Tokenize(fields[11].Get<std::string_view>(), ' ', false);
 
         uint8 i = 0;
         creatureAddon.auras.resize(tokens.size());
-        for (int itr = 0; itr < tokens.size(); ++itr) {
+        for (int itr = 0; itr < ((int)tokens.size()); ++itr) {
             Optional<uint32> spellInfoId = Firelands::StringTo<uint32>(tokens[itr]);
             SpellInfo const* AdditionalSpellInfo = sSpellMgr->GetSpellInfo(*spellInfoId);
             if (!AdditionalSpellInfo)

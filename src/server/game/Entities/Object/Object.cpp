@@ -782,16 +782,19 @@ uint32 Object::GetUpdateFieldData(Player const* target, uint32*& flags) const
 
 void Object::_LoadIntoDataField(std::string const& data, uint32 startOffset, uint32 count)
 {
-    if (data.empty())
+    if (data.empty()){
         return;
+    }
 
-    std::vector<std::string_view> tokens = Firelands::Tokenize(data, ' ', false);
+    std::string_view dataStringView(data);
 
-    if (tokens.size() != count)
+    std::vector<std::string_view> tokens = Firelands::Tokenize(dataStringView, ' ', false);
+
+    if (tokens.size() != count){
         return;
+    }
 
-    for (uint32 index = 0; index < count; ++index)
-    {
+    for (uint32 index = 0; index < count; ++index) {
         Optional<uint32> dataValue = Firelands::StringTo<uint32>(tokens[index]);
         if (!dataValue) {
             return;

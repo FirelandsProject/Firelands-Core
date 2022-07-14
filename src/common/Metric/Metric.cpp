@@ -81,7 +81,8 @@ void Metric::LoadFromConfigs()
             return;
         }
 
-        std::vector<std::string_view> tokens = Firelands::Tokenize(connectionInfo, ';', true);
+        std::string_view connectionInfoSV(connectionInfo);
+        std::vector<std::string_view> tokens = Firelands::Tokenize(connectionInfoSV, ';', true);
         if (tokens.size() != 3)
         {
             LOG_ERROR("metric", "'Metric.ConnectionInfo' specified with wrong format in configuration file.");
