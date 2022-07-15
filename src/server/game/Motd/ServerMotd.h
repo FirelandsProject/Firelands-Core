@@ -16,17 +16,24 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FirelandsCore_Banner_h__
-#define FirelandsCore_Banner_h__
+#ifndef __FIRELANDS_SERVER_MOTD_h__
+#define __FIRELANDS_SERVER_MOTD_h__
 
 #include "Define.h"
-#include <iostream>
+#include <string>
 
-namespace Firelands {
-namespace Banner {
-FC_COMMON_API void Show(std::string applicationName,
-                        void (*log)(std::string text), void (*logExtraInfo)());
+class WorldPacket;
+
+namespace Motd
+{
+    /// Set a new Message of the Day
+    void SetMotd(std::string motd);
+
+    /// Get the current Message of the Day
+    char const* GetMotd();
+
+    /// Get the motd packet to send at login
+    WorldPacket const* GetMotdPacket();
 }
-} // namespace Firelands
 
-#endif // FirelandsCore_Banner_h__
+#endif //__FIRELANDS_SERVER_MOTD_h__

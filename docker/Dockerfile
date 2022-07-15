@@ -21,7 +21,5 @@ RUN cmake ../ \
 
 RUN make -j 4 && make install
 WORKDIR /firelands/release/bin
-RUN  rm -rf ./worldserver
-RUN rm -rf ../etc/worldserver*
 
-ENTRYPOINT [ "./bnetserver" ]
+ENTRYPOINT [ "./worldserver" ]
