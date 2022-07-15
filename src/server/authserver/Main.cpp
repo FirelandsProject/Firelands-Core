@@ -27,7 +27,8 @@
 #include "AppenderDB.h"
 #include "AuthSocketMgr.h"
 #include "Banner.h"
-#include "Config.h"
+#include "Configuration/Config.h"
+#include "Common.h"
 #include "DatabaseEnv.h"
 #include "DatabaseLoader.h"
 #include "DeadlineTimer.h"
@@ -43,9 +44,9 @@
 #include "Util.h"
 #include <boost/asio/signal_set.hpp>
 #include <boost/program_options.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/version.hpp>
 #include <csignal>
-#include <filesystem>
 #include <iostream>
 #include <openssl/crypto.h>
 #include <openssl/opensslv.h>
@@ -56,7 +57,7 @@
 
 using boost::asio::ip::tcp;
 using namespace boost::program_options;
-namespace fs = std::filesystem;
+namespace fs = boost::filesystem;
 
 bool StartDB();
 void StopDB();

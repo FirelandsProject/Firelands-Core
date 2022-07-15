@@ -27,7 +27,6 @@
 #include "BigNumber.h"
 #include "CliRunnable.h"
 #include "Common.h"
-#include "Config.h"
 #include "Configuration/Config.h"
 #include "DatabaseEnv.h"
 #include "DatabaseLoader.h"
