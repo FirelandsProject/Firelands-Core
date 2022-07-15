@@ -23,7 +23,7 @@
 
 int main(int argc, char* argv[])
 {
-    Firelands::Banner::Show("VMAP assembler", [](char const* text) { std::cout << text << std::endl; }, nullptr);
+    Firelands::Banner::Show("VMAP assembler", [](std::string text) { std::cout << text << std::endl; }, nullptr);
 
     std::string src = "Buildings";
     std::string dest = "vmaps";

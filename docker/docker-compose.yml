@@ -20,7 +20,7 @@ services:
         container_name: "fc-server"
         build:
             context: ../
-            dockerfile: ./Docker/Dockerfile.server
+            dockerfile: ./Docker/Dockerfile
         stdin_open: true
         tty: true
         restart: always
@@ -41,12 +41,13 @@ services:
         container_name: "fc-auth"
         build:
             context: ../
-            dockerfile: ./Docker/Dockerfile.auth
+            dockerfile: ./Docker/Dockerfile
         restart: always
+        entrypoint: ./authserver
         ports:
-            - "1119:1119"
+            - "3724:3724"
         expose:
-            - 1119
+            - 3724
         tty: true
         volumes:
             - ../../etc/auth/:/firelands/release/etc/

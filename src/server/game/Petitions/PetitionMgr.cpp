@@ -233,7 +233,7 @@ void Petition::AddSignature(ObjectGuid petitionGuid, uint32 accountId, ObjectGui
 
     stmt->SetData(0, ownerGuid.GetCounter());
     stmt->SetData(1, petitionGuid.GetCounter());
-    stmt->SetData(2, playerGuid);
+    stmt->SetData(2, playerGuid.GetCounter());
     stmt->SetData(3, accountId);
 
     CharacterDatabase.Execute(stmt);

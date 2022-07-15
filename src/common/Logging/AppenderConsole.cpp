@@ -34,7 +34,7 @@ AppenderConsole::AppenderConsole(uint8 id, std::string const& name, LogLevel lev
         _colors[i] = ColorTypes(MaxColors);
 
     if (!extraArgs.empty()) {
-        InitColors(name, extraArgs[0]);
+        InitColors(name, extraArgs[3]);
     }
 }
 

@@ -19,19 +19,19 @@
 #include "GitRevision.h"
 #include "StringFormat.h"
 
-void Firelands::Banner::Show(char const* applicationName, void(*log)(char const* text), void(*logExtraInfo)())
+void Firelands::Banner::Show(std::string applicationName, void(*log)(std::string text), void(*logExtraInfo)())
 {
     log(Firelands::StringFormat("%s (%s)", GitRevision::GetFullVersion(), applicationName).c_str());
-    log("<Ctrl-C> to stop.\n");
-    log(" _____  ____  ____     ___  _       ____  ____   ___   _____        __   ___   ____     ___ ");
-    log("|     ||    ||    \\   /  _]| |     /    ||    \\ |   \\ / ___/       /  ] /   \\ |    \\   /  _]");
-    log("|   __| |  | |  D  ) /  [_ | |    |  o  ||  _  ||    (   \\_       /  / |     ||  D  ) /  [_ ");
-    log("|  |_   |  | |    / |    _]| |___ |     ||  |  ||  D  \\__  |     /  /  |  O  ||    / |    _]");
-    log("|   _]  |  | |    \\ |   [_ |     ||  _  ||  |  ||     /  \\ |    /   \\_ |     ||    \\ |   [_ ");
-    log("|  |    |  | |  .  \\|     ||     ||  |  ||  |  ||     \\    |    \\     ||     ||  .  \\|     |");
-    log("|__|   |____||__|\\_||_____||_____||__|__||__|__||_____|\\___|     \\____| \\___/ |__|\\_||_____|");
-    log("                                                                                                    \n");
-    log("https://github.com/FirelandsProject/Firelands-Core                                                  \n");
+    log("\033[0;35m<Ctrl-C> to stop.\n\033[0m");
+    log("\033[0;33m _____  ____  ____     ___  _       ____  ____   ___   _____        __   ___   ____     ___      \033[0m");
+    log("\033[0;33m|     ||    ||    \\   /  _]| |     /    ||    \\ |   \\ / ___/       /  ] /   \\ |    \\   /  _]\033[0m");
+    log("\033[0;33m|   __| |  | |  D  ) /  [_ | |    |  o  ||  _  ||    (   \\_       /  / |     ||  D  ) /  [_     \033[0m");
+    log("\033[0;33m|  |_   |  | |    / |    _]| |___ |     ||  |  ||  D  \\__  |     /  /  |  O  ||    / |    _]    \033[0m");
+    log("\033[0;33m|   _]  |  | |    \\ |   [_ |     ||  _  ||  |  ||     /  \\ |    /   \\_ |     ||    \\ |   [_  \033[0m");
+    log("\033[0;33m|  |    |  | |  .  \\|     ||     ||  |  ||  |  ||     \\    |    \\     ||     ||  .  \\|     | \033[0m");
+    log("\033[0;33m|__|   |____||__|\\_||_____||_____||__|__||__|__||_____|\\___|     \\____| \\___/ |__|\\_||_____|\033[0m");
+    log(applicationName + "                                                                                              \n");
+    log("https://github.com/FirelandsProject/Firelands-Core                                                              \n");
 
     if (logExtraInfo)
         logExtraInfo();

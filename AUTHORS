@@ -8,7 +8,7 @@ which you can read from the file "COPYING"
 
 ## Point of current development
 
-The project is currently developed under https://github.com/seobryn/Firelands-Core
+The project is currently developed under https://github.com/FirelandsProject/Firelands-Core.git
 
 ## History of development
 
@@ -20,14 +20,16 @@ Development of this project dates back to 2004, and was developed under various 
 -   SD2 project, 2008-2009, located at http://getmangos.com
 -   ScriptDev2, 2006-2013, located at https://scriptdev2.svn.sourceforge.net/
 -   TrinityCore, 2008-2022, located at https://www.trinitycore.org
--   Firelands Core, 2022
+-   AzerothCore, 2016-2022, located at https://www.azerothcore.org/
+-   Firelands Core, 2022, located at https://github.com/FirelandsProject
 
 ## Authorship of the code
 
 Authorship is assigned for each commit within the git history, which is stored in these git repositories:
 
--   github.com/cmangos/mangos-svn (History from MaNGOS project from 2005-2008, originally hosted at http://mangos.svn.sourceforge.net)
--   github.com/seobryn/Firelands-Core
+-   github.com/cmangos/mangos-svn (History from MaNGOS pro§ject from 2005-2008, originally hosted at http://mangos.svn.sourceforge.net)
+-   github.com/TrinityCore/TrinityCore
+-   github.com/FirelandsProject/Firelands-Core.git
 
 Unfortunately we have no detailed information of the history of the WoWD project;
 if somebody can provide information, please contact us, so that we can make this history available
@@ -45,7 +47,7 @@ _Please inform us, if you find somebody who is missing!_
 
 = Firelands Core -- Thanks/credits file =
 
-Firelands Core is a derivation/rewrite of MaNGOS, which was originally written
+Firelands Core is a derivation/rewrite of MaNGOS and Trinitycore, which was originally written
 by Team Python and the WoW Daemon Team. Many people further helped Firelands Core
 by submitting bug reports, code patches, and suggestions. Thanks to the
 community!
