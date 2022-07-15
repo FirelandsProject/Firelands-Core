@@ -115,6 +115,9 @@ public:
         }
       }
 
+      ASSERT(false, "Unhandled creature with entry" + std::to_string(entry) +
+                        " is assigned 'npc_air_force_bots' script");
+
       throw std::invalid_argument("Unhandled creature with entry" +
                                   std::to_string(entry) +
                                   " is assigned 'npc_air_force_bots' script");

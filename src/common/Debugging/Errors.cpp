@@ -148,7 +148,7 @@ void Firelands::Abort(std::string_view file, uint32 line, std::string_view funct
 void Firelands::AbortHandler(int sigval)
 {
     // nothing useful to log here, no way to pass args
-    std::string formattedMessage = StringFormatFmt("Caught signal {}\n", sigval);
+    std::string formattedMessage = Firelands::StringFormatFmt("Caught signal {}\n", sigval);
     fmt::print(stderr, "{}", formattedMessage);
     fflush(stderr);
     Crash(formattedMessage.c_str());

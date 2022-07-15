@@ -3,8 +3,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Set build-directive (used in core to tell which buildtype we used)
 target_compile_definitions(firelands-compile-option-interface
-  INTERFACE
-  -D_BUILD_DIRECTIVE="$<CONFIG>")
+    INTERFACE
+    -D_BUILD_DIRECTIVE="${CMAKE_BUILD_TYPE}")
 
 if(PLATFORM EQUAL 32)
   # Required on 32-bit systems to enable SSE2 (standard on x64)

@@ -128,6 +128,8 @@ variables_map GetConsoleArguments(int argc, char **argv, fs::path &configFile,
 
 /// Launch the Firelands server
 extern int main(int argc, char **argv) {
+    Firelands::Impl::CurrentServerProcessHolder::_type =
+      SERVER_PROCESS_WORLDSERVER;
   signal(SIGABRT, &Firelands::AbortHandler);
 
   // Command line parsing
