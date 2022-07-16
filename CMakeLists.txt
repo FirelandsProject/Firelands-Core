@@ -28,7 +28,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
 
 # set macro-directory
 list(APPEND CMAKE_MODULE_PATH
-    "${CMAKE_SOURCE_DIR}/cmake/macros")
+    "${CMAKE_SOURCE_DIR}/src/cmake/macros")
 
 include(CheckCXXSourceRuns)
 include(CheckIncludeFiles)
@@ -51,9 +51,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # set default buildoptions and print them
-include(cmake/options.cmake)
-include(cmake/utils.cmake)
-include(cmake/fc_custom_macros.cmake)
+include(src/cmake/options.cmake)
+include(src/cmake/utils.cmake)
+include(src/cmake/fc_custom_macros.cmake)
 
 #
 # Loading dyn modules
@@ -90,10 +90,10 @@ if(NOT WITHOUT_GIT)
 endif()
 
 # Find revision ID and hash of the sourcetree
-include(cmake/genrev.cmake)
+include(src/cmake/genrev.cmake)
 
 # print out the results before continuing
-include(cmake/showoptions.cmake)
+include(src/cmake/showoptions.cmake)
 
 # add dependencies
 add_subdirectory(dep)
@@ -109,7 +109,7 @@ include(CTest)
 
 if(BUILD_TESTING)
     list(APPEND CMAKE_MODULE_PATH
-        "${Catch2_SOURCE_DIR}/contrib")
+        "${Catch2_SOURCE_DIR}/apps")
     include(Catch)
 
     add_subdirectory(tests)

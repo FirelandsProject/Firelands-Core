@@ -127,7 +127,7 @@ variables_map GetConsoleArguments(int argc, char **argv, fs::path &configFile,
 
 /// Launch the Firelands server
 extern int main(int argc, char **argv) {
-    Firelands::Impl::CurrentServerProcessHolder::_type =
+  Firelands::Impl::CurrentServerProcessHolder::_type =
       SERVER_PROCESS_WORLDSERVER;
   signal(SIGABRT, &Firelands::AbortHandler);
 
@@ -265,7 +265,7 @@ extern int main(int argc, char **argv) {
   if (numThreads < 1)
     numThreads = 1;
 
-  for (int i = 0; i < numThreads; ++i){
+  for (int i = 0; i < numThreads; ++i) {
     threadPool->push_back(std::thread([ioContext]() { ioContext->run(); }));
   }
 
@@ -715,9 +715,8 @@ void ClearOnlineAccounts() {
 
 variables_map GetConsoleArguments(int argc, char **argv, fs::path &configFile,
                                   std::string &configService) {
-  // Silences warning about configService not be used if the OS is not Windows
+  // Avoid Warning over config service
   (void)configService;
-
   options_description all("Allowed options");
   all.add_options()("help,h", "print usage message")(
       "version,v", "print version build info")(
@@ -748,6 +747,8 @@ variables_map GetConsoleArguments(int argc, char **argv, fs::path &configFile,
     std::cout << all << "\n";
   } else if (vm.count("version")) {
     std::cout << GitRevision::GetFullVersion() << "\n";
+  } else if (vm.count("dry-run")) {
+    sConfigMgr->setDryRun(true);
   }
 
   return vm;
