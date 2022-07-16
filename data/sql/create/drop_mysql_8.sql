@@ -1,11 +1,11 @@
-REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'firelands'@'localhost';
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'firelands'@'%';
 
-DROP USER 'firelands'@'localhost';
+DROP USER 'firelands'@'%';
 
-DROP DATABASE IF EXISTS `firelands_world`;
+DROP DATABASE IF EXISTS `world`;
 
-DROP DATABASE IF EXISTS `firelands_characters`;
+DROP DATABASE IF EXISTS `characters`;
 
-DROP DATABASE IF EXISTS `firelands_auth`;
+DROP DATABASE IF EXISTS `auth`;
 
-DROP DATABASE IF EXISTS `firelands_hotfixes`;
+DROP DATABASE IF EXISTS `hotfixes`;
