@@ -70,6 +70,8 @@ namespace Firelands::Time
     FC_COMMON_API uint32 GetYear(Seconds time = 0s);         // years since 1900
 }
 
+FC_COMMON_API struct tm* localtime_r(time_t const* time, struct tm* result);
+
 inline std::chrono::steady_clock::time_point GetApplicationStartTime()
 {
     using namespace std::chrono;

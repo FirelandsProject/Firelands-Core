@@ -56,8 +56,6 @@ namespace Firelands
     {
         return fmt.empty();
     }
-
-
 }
 
 namespace Firelands::String
