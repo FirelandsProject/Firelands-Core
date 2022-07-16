@@ -1,22 +1,22 @@
-REVOKE ALL PRIVILEGES ON * . * FROM 'firelands'@'%';
+REVOKE ALL PRIVILEGES ON * . * FROM 'firelands'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_world` . * FROM 'firelands'@'%';
+REVOKE ALL PRIVILEGES ON `firelands_world` . * FROM 'firelands'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_world` . * FROM 'firelands'@'%';
+REVOKE GRANT OPTION ON `firelands_world` . * FROM 'firelands'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_characters` . * FROM 'firelands'@'%';
+REVOKE ALL PRIVILEGES ON `firelands_characters` . * FROM 'firelands'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_characters` . * FROM 'firelands'@'%';
+REVOKE GRANT OPTION ON `firelands_characters` . * FROM 'firelands'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_auth` . * FROM 'firelands'@'%';
+REVOKE ALL PRIVILEGES ON `firelands_auth` . * FROM 'firelands'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_auth` . * FROM 'firelands'@'%';
+REVOKE GRANT OPTION ON `firelands_auth` . * FROM 'firelands'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_hotfixes` . * FROM 'firelands'@'%';
+REVOKE ALL PRIVILEGES ON `firelands_hotfixes` . * FROM 'firelands'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_hotfixes` . * FROM 'firelands'@'%';
+REVOKE GRANT OPTION ON `firelands_hotfixes` . * FROM 'firelands'@'localhost';
 
-DROP USER 'firelands'@'%';
+DROP USER 'firelands'@'localhost';
 
 DROP DATABASE IF EXISTS `firelands_world`;
 

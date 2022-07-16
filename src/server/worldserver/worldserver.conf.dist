@@ -96,20 +96,20 @@ LogsDir = ""
 #                                                                 section my.ini)
 #                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
 #                                                                           Unix/Linux)
-#        Default:     "127.0.0.1;3306;firelands;firelands;auth"       - (LoginDatabaseInfo)
-#                     "127.0.0.1;3306;firelands;firelands;world"      - (WorldDatabaseInfo)
-#                     "127.0.0.1;3306;firelands;firelands;characters" - (CharacterDatabaseInfo)
-#                     "127.0.0.1;3306;firelands;firelands;hotfixes"   - (HotfixDatabaseInfo)
+#        Default:     "127.0.0.1;3306;firelands;firelands;firelands_auth"       - (LoginDatabaseInfo)
+#                     "127.0.0.1;3306;firelands;firelands;firelands_world"      - (WorldDatabaseInfo)
+#                     "127.0.0.1;3306;firelands;firelands;firelands_characters" - (CharacterDatabaseInfo)
+#                     "127.0.0.1;3306;firelands;firelands;firelands_hotfixes"   - (HotfixDatabaseInfo)
 #
 #    Don't change hostname unless you are hosting mysql on a different machine, if you need help
 #    Please write into our community
 #    Don't open port on firewall to external connections (it belongs to mysql, not to wow server).
 #    The username you choose must have permisions to create/alter/rename tables.
 
-LoginDatabaseInfo     = "127.0.0.1;3306;firelands;firelands;auth"
-WorldDatabaseInfo     = "127.0.0.1;3306;firelands;firelands;world"
-CharacterDatabaseInfo = "127.0.0.1;3306;firelands;firelands;characters"
-HotfixDatabaseInfo    = "127.0.0.1;3306;firelands;firelands;hotfixes"
+LoginDatabaseInfo     = "127.0.0.1;3306;firelands;firelands;firelands_auth"
+WorldDatabaseInfo     = "127.0.0.1;3306;firelands;firelands;firelands_world"
+CharacterDatabaseInfo = "127.0.0.1;3306;firelands;firelands;firelands_characters"
+HotfixDatabaseInfo    = "127.0.0.1;3306;firelands;firelands;firelands_hotfixes"
 
 #
 #    LoginDatabase.WorkerThreads
