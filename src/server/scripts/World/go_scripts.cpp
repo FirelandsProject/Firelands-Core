@@ -1868,8 +1868,7 @@ public:
             if (eventId == GAME_EVENT_HOURLY_BELLS && start)
             {
                 time_t time = GameTime::GetGameTime();
-                tm localTm;
-                localtime_r(&time, &localTm);
+                tm localTm = Firelands::Time::TimeBreakdown();
                 uint8 _rings = (localTm.tm_hour - 1) % 12 + 1;
 
                 for (auto i = 0; i < _rings; ++i)

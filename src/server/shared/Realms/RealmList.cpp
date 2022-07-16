@@ -200,8 +200,8 @@ void RealmList::UpdateRealms(boost::system::error_code const& error)
                 float pop = fields[10].Get<float>();
                 uint32 build = fields[11].Get<uint32>();
 
-                uint32 region = fields[12].Get<uint32>();
-                uint32 battleGroup = fields[13].Get<uint32>();
+                uint8 region = fields[12].Get<uint8>();
+                uint8 battleGroup = fields[13].Get<uint8>();
 
                 RealmHandle id{ realmId, region, battleGroup };
 

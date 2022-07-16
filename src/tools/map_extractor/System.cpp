@@ -1368,7 +1368,7 @@ void LoadCommonMPQFiles(uint32 build) {
 
 int main(int argc, char *arg[]) {
   Firelands::Banner::Show(
-      "Map & DBC Extractor", [](std::String text) { printf("%s\n", text); },
+      "Map & DBC Extractor", [](std::string text) { printf("%s\n", text); },
       nullptr);
 
   boost::filesystem::path current(boost::filesystem::current_path());
