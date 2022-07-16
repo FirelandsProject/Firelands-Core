@@ -10742,7 +10742,7 @@ void CharmInfo::LoadPetActionBar(const std::string& data)
 {
     InitPetActionBar();
 
-    std::vector<std::string_view> tokens = Firelands::Tokenize(std::string_view(data), ' ', false);
+    std::vector<std::string_view> tokens = Firelands::Tokenize(data, ' ', false);
 
 
     if (tokens.size() != (ACTION_BAR_INDEX_END - ACTION_BAR_INDEX_START) * 2)

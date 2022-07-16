@@ -22,18 +22,18 @@ jobs:
       - run:
           name: Codestyle checks
           command: |
-            chmod +x contrib/check_codestyle.sh
-            ./contrib/check_codestyle.sh
+            chmod +x apps/check_codestyle.sh
+            ./apps/check_codestyle.sh
       - run:
           name: SQL checks
           command: |
-            chmod +x contrib/check_updates.sh
+            chmod +x apps/check_updates.sh
             dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
             mysql -h 127.0.0.1 -uroot < sql/create/create_mysql.sql
             mysql -h 127.0.0.1 -uroot auth < sql/base/auth_database.sql
-            ./contrib/check_updates.sh auth 4.3.4 auth 127.0.0.1
+            ./apps/check_updates.sh auth 4.3.4 auth 127.0.0.1
             mysql -h 127.0.0.1 -uroot characters < sql/base/characters_database.sql
-            ./contrib/check_updates.sh characters 4.3.4 characters 127.0.0.1
+            ./apps/check_updates.sh characters 4.3.4 characters 127.0.0.1
             mysql -h 127.0.0.1 -uroot world < sql/base/dev/world_database.sql
             mysql -h 127.0.0.1 -uroot hotfixes < sql/base/dev/hotfixes_database.sql
             cat sql/updates/world/4.3.4/*.sql | mysql -h 127.0.0.1 -uroot world
@@ -78,7 +78,7 @@ jobs:
           name: Create docker images
           command: |
             cd bin/check_install/bin
-            cp -r ../../../contrib/Docker/* .
+            cp -r ../../../apps/Docker/* .
             cp -r ../../../sql ./sql
             image_prefix=$(echo cataclysmpreservationproject/$CIRCLE_PROJECT_REPONAME-$(echo $CIRCLE_BRANCH | tr '/' '-') | tr '[:upper:]' '[:lower:]')
             echo $image_prefix

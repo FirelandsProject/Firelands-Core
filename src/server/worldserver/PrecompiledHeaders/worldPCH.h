@@ -1,5 +1,6 @@
 /*
- * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for
+ * Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,8 +17,9 @@
  */
 
 #include "Common.h"
-#include "World.h"
-#include "Log.h"
-#include "Database/DatabaseEnv.h"
 #include "Configuration/Config.h"
-#include "Util.h"
+#include "Database/DatabaseEnv.h"
+#include "Log.h"
+#include "Utilities/Util.h"
+#include "World.h"
+#include "WorldSocket.h"

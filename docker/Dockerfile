@@ -17,8 +17,8 @@ RUN cmake ../ \
     -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
     -DWITH_WARNINGS=1 \
     -DSERVERS=1 \
-    -DTOOLS=0 \
-    -DWITH_COREDEBUG=1
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DTOOLS=0
 
 RUN make -j 4 && make install
 WORKDIR /firelands/release/bin

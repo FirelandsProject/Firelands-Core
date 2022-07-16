@@ -785,10 +785,7 @@ void Object::_LoadIntoDataField(std::string const& data, uint32 startOffset, uin
     if (data.empty()){
         return;
     }
-
-    std::string_view dataStringView(data);
-
-    std::vector<std::string_view> tokens = Firelands::Tokenize(dataStringView, ' ', false);
+    std::vector<std::string_view> tokens = Firelands::Tokenize(data, ' ', false);
 
     if (tokens.size() != count){
         return;

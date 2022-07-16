@@ -63,9 +63,8 @@ void Log::CreateAppenderFromConfig(std::string const &appenderName) {
   // if type = Console. optional1 = Color
   std::string options = sConfigMgr->GetOption<std::string>(appenderName, "");
 
-  std::string_view optionsSV(options);
   std::vector<std::string_view> tokens =
-      Firelands::Tokenize(optionsSV, ',', true);
+      Firelands::Tokenize(options, ',', true);
 
   size_t const size = tokens.size();
 
@@ -140,10 +139,8 @@ void Log::CreateLoggerFromConfig(std::string const &appenderName) {
     return;
   }
 
-  std::string_view optionsSV(options);
-
   std::vector<std::string_view> tokens =
-      Firelands::Tokenize(optionsSV, ',', true);
+      Firelands::Tokenize(options, ',', true);
 
   if (tokens.size() != 2) {
     fmt::print(
