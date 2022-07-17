@@ -37,10 +37,7 @@
 
 ---
 
-Thank you for collaborating with the project.
-
-For an efficient working methodology.
-
-It is obvious to make long pull request, unless it is necessary.
-
-A short pull request would be easy to test and approve.
+- Thank you for collaborating with the project.
+- For an efficient working methodology.
+- It is obvious to make long pull request, unless it is necessary.
+- A short pull request would be easy to test and approve.
