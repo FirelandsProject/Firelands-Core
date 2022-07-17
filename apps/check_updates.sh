@@ -11,7 +11,7 @@ echo
 # Select all entries which are in the updates table
 entries=$(mysql -uroot ${database} -h ${host} -e "SELECT name FROM updates" | grep ".sql")
 
-cd sql/updates/${name}/${branch}
+cd data/sql/updates/${name}/${branch}
 
 error=0
 updates=0
@@ -24,7 +24,7 @@ do
   updates=$((updates+1))
  else
   # The update isn't listed in the updates table of the given database.
-  echo "- \"sql/updates/${name}/${file}\" is missing in the '${name}'.'updates' table."
+  echo "- \"data/sql/updates/${name}/${file}\" is missing in the '${name}'.'updates' table."
   error=1
  fi
 done
@@ -38,7 +38,7 @@ if [ ${error} -ne 0 ]
     echo
     echo "How to fix:"
     echo "  Insert the missing names of the already applied sql updates"
-    echo "  to the 'updates' table of the '${name}' base dump ('sql/base/${name}_database.sql')."
+    echo "  to the 'updates' table of the '${name}' base dump ('data/sql/base/${name}_database.sql')."
     exit 1
   else
     echo "  Everything is OK, finished checking ${updates} updates."
