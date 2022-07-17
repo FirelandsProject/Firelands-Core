@@ -84,4 +84,3 @@ case $SELECTION in
         exit 0
         ;;
 esac
-
