@@ -143,30 +143,13 @@ class FC_COMMON_API Log
 
 #ifdef PERFORMANCE_PROFILING
 #define LOG_MESSAGE_BODY(filterType__, level__, ...) ((void)0)
-#elif FIRELANDS_PLATFORM != FIRELANDS_PLATFORM_WINDOWS
-void check_args(char const*, ...) ATTR_PRINTF(1, 2);
-void check_args(std::string const&, ...);
-
-// This will catch format errors on build time
-#define TC_LOG_MESSAGE_BODY(filterType__, level__, ...)                 \
-        do {                                                            \
-            if (sLog->ShouldLog(filterType__, level__))                 \
-            {                                                           \
-                if (false)                                              \
-                    check_args(__VA_ARGS__);                            \
-                                                                        \
-                LOG_EXCEPTION_FREE(filterType__, level__, __VA_ARGS__); \
-            }                                                           \
-        } while (0)
 #else
-#define LOG_MESSAGE_BODY(filterType__, level__, ...)                    \
-        __pragma(warning(push))                                         \
-        __pragma(warning(disable:4127))                                 \
-        do {                                                            \
-            if (sLog->ShouldLog(filterType__, level__))                 \
-                LOG_EXCEPTION_FREE(filterType__, level__, __VA_ARGS__); \
-        } while (0)                                                     \
-        __pragma(warning(pop))
+// This will catch format errors on build time
+#define LOG_MESSAGE_BODY(filterType__, level__, ...)                           \
+  do {                                                                         \
+    if (sLog->ShouldLog(filterType__, level__))                                \
+      LOG_EXCEPTION_FREE(filterType__, level__, __VA_ARGS__);                  \
+  } while (0)
 #endif
 
 #define LOG_TRACE(filterType__, ...) \
