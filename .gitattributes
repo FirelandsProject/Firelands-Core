@@ -1,7 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-
 # Whitespace rules
 # strict (no trailing, no tabs)
 *.cpp    whitespace=trailing-space,space-before-tab,tab-in-indent,cr-at-eol
