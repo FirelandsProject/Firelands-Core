@@ -35,11 +35,11 @@
 #endif
 
 #if FIRELANDS_PLATFORM != FIRELANDS_PLATFORM_WINDOWS
-#include "Chat.h"
-#include <readline/history.h>
 #include <readline/readline.h>
+#include <readline/history.h>
+#include "Chat.h"
 
-char *command_finder(char const *text, int state)
+char* command_finder(char const *text, int state)
 {
     static size_t idx, len;
     char const *ret;
@@ -68,9 +68,9 @@ char *command_finder(char const *text, int state)
     return ((char *)nullptr);
 }
 
-char **cli_completion(char const *text, int start, int /*end*/)
+char** cli_completion(char const *text, int start, int /*end*/)
 {
-    char **matches = nullptr;
+    char** matches = nullptr;
     if (start)
         rl_bind_key('\t', rl_abort);
     else
@@ -81,9 +81,7 @@ char **cli_completion(char const *text, int start, int /*end*/)
 int cli_hook_func()
 {
     if (World::IsStopped())
-    {
         rl_done = 1;
-    }
     return 0;
 }
 
