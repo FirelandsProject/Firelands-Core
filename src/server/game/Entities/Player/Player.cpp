@@ -20620,8 +20620,9 @@ void Player::_SaveCUFProfiles(CharacterDatabaseTransaction &trans) {
       stmt->SetData(6, _CUFProfiles[i]->HealthText);
       stmt->SetData(
           7,
-          _CUFProfiles[i]
-              ->BoolOptions.to_ulong()); // 27 of 32 fields used, fits in an int
+          static_cast<int>(
+              _CUFProfiles[i]->BoolOptions.to_ulong())); // 27 of 32 fields
+                                                         // used, fits in an int
       stmt->SetData(8, _CUFProfiles[i]->TopPoint);
       stmt->SetData(9, _CUFProfiles[i]->BottomPoint);
       stmt->SetData(10, _CUFProfiles[i]->LeftPoint);
@@ -28125,7 +28126,7 @@ void Player::_SaveInstanceTimeRestrictions(
         CHAR_INS_ACCOUNT_INSTANCE_LOCK_TIMES);
     stmt->SetData(0, GetSession()->GetAccountId());
     stmt->SetData(1, itr->first);
-    stmt->SetData(2, itr->second);
+    stmt->SetData(2, uint32(itr->second));
     trans->Append(stmt);
   }
 }

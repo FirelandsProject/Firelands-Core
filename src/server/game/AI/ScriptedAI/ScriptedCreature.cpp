@@ -192,7 +192,7 @@ void ScriptedAI::DoPlaySoundToSet(WorldObject* source, uint32 soundId)
 
     if (!sSoundEntriesStore.LookupEntry(soundId))
     {
-        LOG_ERROR("scripts", "Invalid soundId %u used in DoPlaySoundToSet (Source: TypeId %u, GUID %u)", soundId, source->GetTypeId(), source->GetGUID().GetCounter());
+        LOG_ERROR("scripts", "Invalid soundId {} used in DoPlaySoundToSet (Source: TypeId {}, GUID {})", soundId, source->GetTypeId(), source->GetGUID().GetCounter());
         return;
     }
 
@@ -354,7 +354,7 @@ void ScriptedAI::DoTeleportPlayer(Unit* unit, float x, float y, float z, float o
     if (Player* player = unit->ToPlayer())
         player->TeleportTo(unit->GetMapId(), x, y, z, o, TELE_TO_NOT_LEAVE_COMBAT);
     else
-        LOG_ERROR("scripts", "Creature %s Tried to teleport non-player unit (%s) to x: %f y:%f z: %f o: %f. Aborted.",
+        LOG_ERROR("scripts", "Creature {} Tried to teleport non-player unit ({}) to x: {} y:{} z: {} o: {}. Aborted.",
             me->GetGUID().ToString().c_str(), unit->GetGUID().ToString().c_str(), x, y, z, o);
 }
 
@@ -560,7 +560,7 @@ void BossAI::_DespawnAtEvade(Seconds delayToRespawn, Creature* who)
 {
     if (delayToRespawn < Seconds(2))
     {
-        LOG_ERROR("scripts", "_DespawnAtEvade called with delay of %ld seconds, defaulting to 2.", delayToRespawn.count());
+        LOG_ERROR("scripts", "_DespawnAtEvade called with delay of {} seconds, defaulting to 2.", delayToRespawn.count());
         delayToRespawn = Seconds(2);
     }
 

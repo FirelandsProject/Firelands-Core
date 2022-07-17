@@ -591,7 +591,7 @@ Battleground* BattlegroundMgr::CreateNewBattleground(BattlegroundTypeId original
 
     if (!bg_template)
     {
-        LOG_ERROR("bg.battleground", "Battleground: CreateNewBattleground - bg template not found for %u", bgTypeId);
+        LOG_ERROR("bg.battleground", "Battleground: CreateNewBattleground - bg template not found for {}", bgTypeId);
         return nullptr;
     }
 
@@ -796,7 +796,7 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
         BattlemasterListEntry const* bl = sBattlemasterListStore.LookupEntry(bgTypeId);
         if (!bl)
         {
-            LOG_ERROR("bg.battleground", "Battleground ID %u could not be found in BattlemasterList.dbc. The battleground was not created.", bgTypeId);
+            LOG_ERROR("bg.battleground", "Battleground ID {} could not be found in BattlemasterList.dbc. The battleground was not created.", bgTypeId);
             continue;
         }
 
@@ -814,14 +814,14 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
 
         if (bgTemplate.MaxPlayersPerTeam == 0 || bgTemplate.MinPlayersPerTeam > bgTemplate.MaxPlayersPerTeam)
         {
-            LOG_ERROR("sql.sql", "Table `battleground_template` for id %u contains bad values for MinPlayersPerTeam (%u) and MaxPlayersPerTeam(%u).",
+            LOG_ERROR("sql.sql", "Table `battleground_template` for id {} contains bad values for MinPlayersPerTeam ({}) and MaxPlayersPerTeam({}).",
                 bgTemplate.Id, bgTemplate.MinPlayersPerTeam, bgTemplate.MaxPlayersPerTeam);
             continue;
         }
 
         if (bgTemplate.MinLevel == 0 || bgTemplate.MaxLevel == 0 || bgTemplate.MinLevel > bgTemplate.MaxLevel)
         {
-            LOG_ERROR("sql.sql", "Table `battleground_template` for id %u contains bad values for MinLevel (%u) and MaxLevel (%u).",
+            LOG_ERROR("sql.sql", "Table `battleground_template` for id {} contains bad values for MinLevel ({}) and MaxLevel ({}).",
                 bgTemplate.Id, bgTemplate.MinLevel, bgTemplate.MaxLevel);
             continue;
         }
@@ -835,7 +835,7 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
             }
             else
             {
-                LOG_ERROR("sql.sql", "Table `battleground_template` for id %u contains a non-existing WorldSafeLocs.dbc id %u in field `AllianceStartLoc`. BG not created.", bgTemplate.Id, startId);
+                LOG_ERROR("sql.sql", "Table `battleground_template` for id {} contains a non-existing WorldSafeLocs.dbc id {} in field `AllianceStartLoc`. BG not created.", bgTemplate.Id, startId);
                 continue;
             }
 
@@ -846,7 +846,7 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
             }
             else
             {
-                LOG_ERROR("sql.sql", "Table `battleground_template` for id %u contains a non-existing WorldSafeLocs.dbc id %u in field `HordeStartLoc`. BG not created.", bgTemplate.Id, startId);
+                LOG_ERROR("sql.sql", "Table `battleground_template` for id {} contains a non-existing WorldSafeLocs.dbc id {} in field `HordeStartLoc`. BG not created.", bgTemplate.Id, startId);
                 continue;
             }
         }
@@ -862,7 +862,7 @@ void BattlegroundMgr::LoadBattlegroundTemplates()
         ++count;
     } while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u battlegrounds in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} battlegrounds in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void BattlegroundMgr::SendBattlegroundList(ObjectGuid guid, Player* player, BattlegroundTypeId bgTypeId)
@@ -914,11 +914,11 @@ void BattlegroundMgr::SendToBattleground(Player* player, uint32 instanceId, Batt
         uint32 team = player->GetBGTeam();
 
         Position const* pos = bg->GetTeamStartPosition(Battleground::GetTeamIndexByTeamId(team));
-        LOG_DEBUG("bg.battleground", "BattlegroundMgr::SendToBattleground: Sending %s to map %u, %s (bgType %u)", player->GetName().c_str(), mapid, pos->ToString().c_str(), bgTypeId);
+        LOG_DEBUG("bg.battleground", "BattlegroundMgr::SendToBattleground: Sending {} to map {}, {} (bgType {})", player->GetName().c_str(), mapid, pos->ToString().c_str(), bgTypeId);
         player->TeleportTo(mapid, pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), pos->GetOrientation());
     }
     else
-        LOG_ERROR("bg.battleground", "BattlegroundMgr::SendToBattleground: Instance %u (bgType %u) not found while trying to teleport player %s", instanceId, bgTypeId, player->GetName().c_str());
+        LOG_ERROR("bg.battleground", "BattlegroundMgr::SendToBattleground: Instance {} (bgType {}) not found while trying to teleport player {}", instanceId, bgTypeId, player->GetName().c_str());
 }
 
 void BattlegroundMgr::SendAreaSpiritHealerQueryOpcode(Player* player, Battleground* bg, ObjectGuid guid)
@@ -1110,18 +1110,18 @@ void BattlegroundMgr::LoadBattleMastersEntry()
         if (CreatureTemplate const* cInfo = sObjectMgr->GetCreatureTemplate(entry))
         {
             if ((cInfo->npcflag & UNIT_NPC_FLAG_BATTLEMASTER) == 0)
-                LOG_ERROR("sql.sql", "Creature (Entry: %u) listed in `battlemaster_entry` is not a battlemaster.", entry);
+                LOG_ERROR("sql.sql", "Creature (Entry: {}) listed in `battlemaster_entry` is not a battlemaster.", entry);
         }
         else
         {
-            LOG_ERROR("sql.sql", "Creature (Entry: %u) listed in `battlemaster_entry` does not exist.", entry);
+            LOG_ERROR("sql.sql", "Creature (Entry: {}) listed in `battlemaster_entry` does not exist.", entry);
             continue;
         }
 
         uint32 bgTypeId = fields[1].Get<uint32>();
         if (!sBattlemasterListStore.LookupEntry(bgTypeId))
         {
-            LOG_ERROR("sql.sql", "Table `battlemaster_entry` contains entry %u for a non-existing battleground type %u, ignored.", entry, bgTypeId);
+            LOG_ERROR("sql.sql", "Table `battlemaster_entry` contains entry {} for a non-existing battleground type {}, ignored.", entry, bgTypeId);
             continue;
         }
 
@@ -1130,7 +1130,7 @@ void BattlegroundMgr::LoadBattleMastersEntry()
 
     CheckBattleMasters();
 
-    LOG_INFO("server.loading", ">> Loaded %u battlemaster entries in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} battlemaster entries in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void BattlegroundMgr::CheckBattleMasters()
@@ -1140,7 +1140,7 @@ void BattlegroundMgr::CheckBattleMasters()
     {
         if ((itr->second.npcflag & UNIT_NPC_FLAG_BATTLEMASTER) && mBattleMastersMap.find(itr->second.Entry) == mBattleMastersMap.end())
         {
-            LOG_ERROR("sql.sql", "Creature_Template Entry: %u has UNIT_NPC_FLAG_BATTLEMASTER, but no data in the `battlemaster_entry` table. Removing flag.", itr->second.Entry);
+            LOG_ERROR("sql.sql", "Creature_Template Entry: {} has UNIT_NPC_FLAG_BATTLEMASTER, but no data in the `battlemaster_entry` table. Removing flag.", itr->second.Entry);
             const_cast<CreatureTemplate*>(&itr->second)->npcflag &= ~UNIT_NPC_FLAG_BATTLEMASTER;
         }
     }

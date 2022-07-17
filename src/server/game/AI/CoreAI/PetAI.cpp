@@ -106,7 +106,7 @@ void PetAI::UpdateAI(uint32 diff)
 
         if (_needToStop())
         {
-            LOG_DEBUG("misc", "Pet AI stopped attacking [guid=%u]", me->GetGUID().GetCounter());
+            LOG_DEBUG("misc", "Pet AI stopped attacking [guid={}]", me->GetGUID().GetCounter());
             _stopAttack();
             return;
         }

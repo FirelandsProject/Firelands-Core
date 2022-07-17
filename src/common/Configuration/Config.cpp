@@ -53,8 +53,8 @@ void AddKey(std::string const &optionName, std::string const &optionKey,
     if (!IsLoggingSystemOptions(optionName) && !isReload) {
       std::string fileNameStr = std::string{fileName};
       LOG_ERROR(fileNameStr,
-                "> Config::LoadFile: Found incorrect option '%s' in config "
-                "file '%s'. Skip",
+                "> Config::LoadFile: Found incorrect option '{}' in config "
+                "file '{}'. Skip",
                 optionName, fileNameStr);
 
 #ifdef CONFIG_ABORT_INCORRECT_OPTIONS
@@ -97,7 +97,7 @@ bool ParseFile(std::string const &file, bool isOptional, bool isReload) {
     if (itr != fileConfigs.end()) {
       LOG_ERROR(
           file,
-          "> Config::LoadFile: Dublicate key name '%s' in config file '%s'",
+          "> Config::LoadFile: Dublicate key name '{}' in config file '{}'",
           confOption, file);
       return true;
     }
@@ -139,8 +139,8 @@ bool ParseFile(std::string const &file, bool isOptional, bool isReload) {
 
     if (equal_pos == std::string::npos || equal_pos == line.length()) {
       LOG_ERROR(file,
-                "> Config::LoadFile: Failure to read line number %s in file "
-                "'%s'. Skip this line",
+                "> Config::LoadFile: Failure to read line number {} in file "
+                "'{}'. Skip this line",
                 lineNumber, file);
       continue;
     }
@@ -185,7 +185,7 @@ bool LoadFile(std::string const &file, bool isOptional, bool isReload) {
   try {
     return ParseFile(file, isOptional, isReload);
   } catch (const std::exception &e) {
-    LOG_ERROR(file, "> %s", e.what());
+    LOG_ERROR(file, "> {}", e.what());
   }
 
   return false;
@@ -226,8 +226,8 @@ T ConfigMgr::GetValueDefault(std::string const &name, T const &def,
   if (itr == _configOptions.end()) {
     if (showLogs) {
       LOG_ERROR("server.loading",
-                "> Config: Missing property %s in all config files, at least "
-                "the .dist file must contain: \"%s = %s\"",
+                "> Config: Missing property {} in all config files, at least "
+                "the .dist file must contain: \"{} = {}\"",
                 name, name, Firelands::ToString(def));
     }
 
@@ -238,7 +238,7 @@ T ConfigMgr::GetValueDefault(std::string const &name, T const &def,
   if (!value) {
     if (showLogs) {
       LOG_ERROR("server.loading",
-                "> Config: Bad value defined for name '%s', going to use '%s' "
+                "> Config: Bad value defined for name '{}', going to use '{}' "
                 "instead",
                 name, Firelands::ToString(def));
     }
@@ -258,7 +258,7 @@ ConfigMgr::GetValueDefault<std::string>(std::string const &name,
   if (itr == _configOptions.end()) {
     if (showLogs) {
       LOG_ERROR("server.loading",
-                "> Config: Missing option %s, add \"%s = %s\"", name, name,
+                "> Config: Missing option {}, add \"{} = {}\"", name, name,
                 def);
     }
 
@@ -284,7 +284,7 @@ bool ConfigMgr::GetOption<bool>(std::string const &name, bool const &def,
   if (!boolVal) {
     if (showLogs) {
       LOG_ERROR("server.loading",
-                "> Config: Bad value defined for name '%s', going to use '%s' "
+                "> Config: Bad value defined for name '{}', going to use '{}' "
                 "instead",
                 name, def ? "true" : "false");
     }
@@ -389,7 +389,7 @@ bool ConfigMgr::LoadModulesConfigs(bool isReload /*= false*/,
     if (!isReload && !isExistDistConfig) {
       LOG_FATAL("server.loading",
                 "> ConfigMgr::LoadModulesConfigs: Not found original config "
-                "'%s'. Stop loading",
+                "'{}'. Stop loading",
                 distFileName);
       ABORT();
     }
@@ -412,7 +412,7 @@ bool ConfigMgr::LoadModulesConfigs(bool isReload /*= false*/,
       LOG_INFO("server.loading", "Using modules configuration:");
 
       for (auto const &itr : _moduleConfigFiles) {
-        LOG_INFO("server.loading", "> %s", itr);
+        LOG_INFO("server.loading", "> {}", itr);
       }
     } else {
       LOG_INFO("server.loading", "> Not found modules config files");

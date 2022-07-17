@@ -607,7 +607,7 @@ void WorldSocket::HandleAuthSessionCallback(
 
   // Must be done before WorldSession is created
   bool wardenActive = sWorld->getBoolConfig(CONFIG_WARDEN_ENABLED);
-  if (wardenActive && account.OS != "Win" && account.OS != "OSX") {
+  if (wardenActive && account.OS != "Win" &&  account.OS != "Win64" && account.OS != "OSX" && account.OS != "Mc64") {
     SendAuthResponseError(AUTH_REJECT);
     LOG_ERROR("network",
               "WorldSocket::HandleAuthSession: Client %s attempted to log in "

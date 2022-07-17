@@ -145,7 +145,7 @@ namespace lfg
         LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(guid);
         if (itQueue == QueueDataStore.end())
         {
-            LOG_ERROR("lfg.queue.add", "Queue data not found for [%s]", guid.ToString().c_str());
+            LOG_ERROR("lfg.queue.add", "Queue data not found for [{}]", guid.ToString().c_str());
             return;
         }
 
@@ -259,7 +259,7 @@ namespace lfg
         out << guid.GetRawValue();
         std::string strGuid = out.str();
 
-        LOG_DEBUG("lfg.queue.data.compatibles.remove", "Removing %s", guid.ToString().c_str());
+        LOG_DEBUG("lfg.queue.data.compatibles.remove", "Removing {}", guid.ToString().c_str());
         for (LfgCompatibleContainer::iterator itNext = CompatibleMapStore.begin(); itNext != CompatibleMapStore.end();)
         {
             LfgCompatibleContainer::iterator it = itNext++;
@@ -316,7 +316,7 @@ namespace lfg
         while (!newToQueueStore.empty())
         {
             ObjectGuid frontguid = newToQueueStore.front();
-            LOG_DEBUG("lfg.queue.match.check.new", "Checking [%s] newToQueue(%u), currentQueue(%u)", frontguid.ToString().c_str(),
+            LOG_DEBUG("lfg.queue.match.check.new", "Checking [{}] newToQueue(Ï), currentQueue({})", frontguid.ToString().c_str(),
                 uint32(newToQueueStore.size()), uint32(currentQueueStore.size()));
 
             firstNew.clear();
@@ -346,13 +346,13 @@ namespace lfg
         std::string strGuids = ConcatenateGuids(check);
         LfgCompatibility compatibles = GetCompatibles(strGuids);
 
-        LOG_DEBUG("lfg.queue.match.check", "Guids: (%s): %s - all(%s)", GetDetailedMatchRoles(check).c_str(), GetCompatibleString(compatibles), GetDetailedMatchRoles(all).c_str());
+        LOG_DEBUG("lfg.queue.match.check", "Guids: ({}): {} - all({})", GetDetailedMatchRoles(check).c_str(), GetCompatibleString(compatibles), GetDetailedMatchRoles(all).c_str());
         if (compatibles == LFG_COMPATIBILITY_PENDING) // Not previously cached, calculate
             compatibles = CheckCompatibility(check);
 
         if (compatibles == LFG_COMPATIBLES_BAD_STATES && sLFGMgr->AllQueued(check))
         {
-            LOG_DEBUG("lfg.queue.match.check", "Guids: (%s) compatibles (cached) changed from bad states to match", GetDetailedMatchRoles(check).c_str());
+            LOG_DEBUG("lfg.queue.match.check", "Guids: ({}) compatibles (cached) changed from bad states to match", GetDetailedMatchRoles(check).c_str());
             SetCompatibles(strGuids, LFG_COMPATIBLES_MATCH);
             return LFG_COMPATIBLES_MATCH;
         }
@@ -390,7 +390,7 @@ namespace lfg
         // Check for correct size
         if (check.empty())
         {
-            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s): Size wrong - Not compatibles", GetDetailedMatchRoles(check).c_str());
+            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}): Size wrong - Not compatibles", GetDetailedMatchRoles(check).c_str());
             return LFG_INCOMPATIBLES_WRONG_GROUP_SIZE;
         }
 
@@ -404,7 +404,7 @@ namespace lfg
             LfgCompatibility child_compatibles = CheckCompatibility(check);
             if (child_compatibles < LFG_COMPATIBLES_WITH_LESS_PLAYERS) // Group not compatible
             {
-                LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) child %s not compatibles", strGuids.c_str(), GetDetailedMatchRoles(check).c_str());
+                LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) child {} not compatibles", strGuids.c_str(), GetDetailedMatchRoles(check).c_str());
                 SetCompatibles(strGuids, child_compatibles);
                 return child_compatibles;
             }
@@ -438,7 +438,7 @@ namespace lfg
         {
             if (proposalDungeons.empty())
             {
-                LOG_DEBUG("lfg.queue.match.compatibility.check", "LFGQueue::CheckCompatibility: (%s) No compatible dungeons%s", strGuids.c_str(), o.str().c_str());
+                LOG_DEBUG("lfg.queue.match.compatibility.check", "LFGQueue::CheckCompatibility: ({}) No compatible dungeons{}", strGuids.c_str(), o.str().c_str());
                 SetCompatibles(strGuids, LFG_INCOMPATIBLES_NO_DUNGEONS);
                 return LFG_INCOMPATIBLES_NO_DUNGEONS;
             }
@@ -451,7 +451,7 @@ namespace lfg
         // Check for correct size
         if (check.size() > dungeon->GetMaxGroupSize())
         {
-            LOG_DEBUG("lfg.queue.match.compatibility.check", "LFGQueue::CheckCompatibility: (%s): Size wrong - Not compatibles", strGuids.c_str());
+            LOG_DEBUG("lfg.queue.match.compatibility.check", "LFGQueue::CheckCompatibility: ({}): Size wrong - Not compatibles", strGuids.c_str());
             return LFG_INCOMPATIBLES_WRONG_GROUP_SIZE;
         }
 
@@ -464,7 +464,7 @@ namespace lfg
             LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(guid);
             if (itQueue == QueueDataStore.end())
             {
-                LOG_ERROR("lfg.queue.match.compatibility.check", "Guid: [%s] is not queued but listed as queued!", guid.ToString().c_str());
+                LOG_ERROR("lfg.queue.match.compatibility.check", "Guid: [{}] is not queued but listed as queued!", guid.ToString().c_str());
                 RemoveFromQueue(guid);
                 return LFG_COMPATIBILITY_PENDING;
             }
@@ -485,14 +485,14 @@ namespace lfg
 
         if (numLfgGroups > 1)
         {
-            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) More than one Lfggroup (%u)", GetDetailedMatchRoles(check).c_str(), numLfgGroups);
+            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) More than one Lfggroup ({})", GetDetailedMatchRoles(check).c_str(), numLfgGroups);
             SetCompatibles(strGuids, LFG_INCOMPATIBLES_MULTIPLE_LFG_GROUPS);
             return LFG_INCOMPATIBLES_MULTIPLE_LFG_GROUPS;
         }
 
         if (numPlayers > dungeon->GetMaxGroupSize())
         {
-            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) Too many players (%u)", GetDetailedMatchRoles(check).c_str(), numPlayers);
+            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) Too many players ({})", GetDetailedMatchRoles(check).c_str(), numPlayers);
             SetCompatibles(strGuids, LFG_INCOMPATIBLES_TOO_MUCH_PLAYERS);
             return LFG_INCOMPATIBLES_TOO_MUCH_PLAYERS;
         }
@@ -509,7 +509,7 @@ namespace lfg
                     for (itPlayer = proposalRoles.begin(); itPlayer != proposalRoles.end(); ++itPlayer)
                     {
                         if (itRoles->first == itPlayer->first)
-                            LOG_ERROR("lfg.queue.match.compatibility.check", "Guids: ERROR! Player multiple times in queue! [%s]", itRoles->first.ToString().c_str());
+                            LOG_ERROR("lfg.queue.match.compatibility.check", "Guids: ERROR! Player multiple times in queue! [{}]", itRoles->first.ToString().c_str());
                         else if (sLFGMgr->HasIgnore(itRoles->first, itPlayer->first))
                             break;
                     }
@@ -520,7 +520,7 @@ namespace lfg
 
             if (uint8 playersize = numPlayers - proposalRoles.size())
             {
-                LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) not compatible, %u players are ignoring each other", GetDetailedMatchRoles(check).c_str(), playersize);
+                LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) not compatible, {} players are ignoring each other", GetDetailedMatchRoles(check).c_str(), playersize);
                 SetCompatibles(strGuids, LFG_INCOMPATIBLES_HAS_IGNORES);
                 return LFG_INCOMPATIBLES_HAS_IGNORES;
             }
@@ -532,7 +532,7 @@ namespace lfg
                 for (LfgRolesMap::const_iterator it = debugRoles.begin(); it != debugRoles.end(); ++it)
                     o << ", " << it->first.GetRawValue() << ": " << GetRolesString(it->second);
 
-                LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) Roles not compatible%s", GetDetailedMatchRoles(check).c_str(), o.str().c_str());
+                LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) Roles not compatible{}", GetDetailedMatchRoles(check).c_str(), o.str().c_str());
                 SetCompatibles(strGuids, LFG_INCOMPATIBLES_NO_ROLES);
                 return LFG_INCOMPATIBLES_NO_ROLES;
             }
@@ -546,7 +546,7 @@ namespace lfg
         // Enough players?
         if (numPlayers != dungeon->GetMaxGroupSize())
         {
-            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) Compatibles but not enough players(%u)", GetDetailedMatchRoles(check).c_str(), numPlayers);
+            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) Compatibles but not enough players({})", GetDetailedMatchRoles(check).c_str(), numPlayers);
             LfgCompatibilityData data(LFG_COMPATIBLES_WITH_LESS_PLAYERS);
             data.roles = proposalRoles;
 
@@ -563,7 +563,7 @@ namespace lfg
 
         if (!sLFGMgr->AllQueued(check))
         {
-            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) Group MATCH but can't create proposal!", GetDetailedMatchRoles(check).c_str());
+            LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) Group MATCH but can't create proposal!", GetDetailedMatchRoles(check).c_str());
             SetCompatibles(strGuids, LFG_COMPATIBLES_BAD_STATES);
             return LFG_COMPATIBLES_BAD_STATES;
         }
@@ -604,7 +604,7 @@ namespace lfg
 
         sLFGMgr->AddProposal(proposal);
 
-        LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) MATCH! Group formed", GetDetailedMatchRoles(check).c_str());
+        LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: ({}) MATCH! Group formed", GetDetailedMatchRoles(check).c_str());
         SetCompatibles(strGuids, LFG_COMPATIBLES_MATCH);
         return LFG_COMPATIBLES_MATCH;
     }
@@ -730,7 +730,7 @@ namespace lfg
 
     void LFGQueue::FindBestCompatibleInQueue(LfgQueueDataContainer::iterator itrQueue)
     {
-        LOG_DEBUG("lfg.queue.compatibles.find", "%s", itrQueue->first.ToString().c_str());
+        LOG_DEBUG("lfg.queue.compatibles.find", "{}", itrQueue->first.ToString().c_str());
         std::ostringstream o;
         o << itrQueue->first.GetRawValue();
         std::string sguid = o.str();
@@ -756,7 +756,7 @@ namespace lfg
         if (size <= storedSize)
             return;
 
-        LOG_DEBUG("lfg.queue.compatibles.update", "Changed (%s) to (%s) as best compatible group for %s",
+        LOG_DEBUG("lfg.queue.compatibles.update", "Changed ({}) to ({}) as best compatible group for {}",
             queueData.bestCompatible.c_str(), key.c_str(), itrQueue->first.ToString().c_str());
 
         queueData.bestCompatible = key;

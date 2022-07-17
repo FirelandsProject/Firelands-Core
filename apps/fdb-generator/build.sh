@@ -27,7 +27,7 @@ project_root=$(pwd | sed 's/\/apps.*//')
 timestamp=$(date +"%Y_%d_%m_%H%M%S")
 mysql_version=$(mysql -V | sed 's/for .*//' | sed 's/[a-zA-Z ]*//')
 mysql_version_number=$(echo "${mysql_version}" | tr . 0)
-build_directory="$project_root/sql/build/FDB"
+build_directory="$project_root/data/sql/build/FDB"
 build_file_name="FDB_$timestamp.sql"
 
 #db names spec
@@ -40,7 +40,7 @@ echo ""
 
 printf "*   Start building Firelands Database     ${purple}(FDB)${reset}\n"
 printf "*   Using MYSQL Version                   ${purple}${mysql_version}\n${reset}"
-printf "*   Creating ${cyan}build${reset} directory into         ${purple}${project_root}/sql${reset}\n\n"
+printf "*   Creating ${cyan}build${reset} directory into         ${purple}${project_root}/data/sql${reset}\n\n"
 
 mkdir -p "$build_directory"
 cd "$build_directory"
@@ -50,9 +50,9 @@ printf ">   Creating ${cyan}$build_file_name${reset} Archive from data.\n"
 touch $build_file_name
 echo "$WATERMARK_TEXT" >> $build_file_name
 
-create_folder="${project_root}/sql/create"
-base_folder="${project_root}/sql/base"
-custom_folder="${project_root}/sql/custom"
+create_folder="${project_root}/data/sql/create"
+base_folder="${project_root}/data/sql/base"
+custom_folder="${project_root}/data/sql/custom"
 
 read -p "    Do you want to include drop databases module? (y/N) " include_drop_db
 include_drop_db=${include_drop_db:-n}
