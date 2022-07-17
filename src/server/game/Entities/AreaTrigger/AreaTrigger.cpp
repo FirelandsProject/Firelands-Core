@@ -1,5 +1,6 @@
 /*
- * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for
+ * Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,86 +25,80 @@
 #include "Unit.h"
 #include "UpdateData.h"
 
-AreaTrigger::AreaTrigger() : WorldObject(false), _duration(0)
-{
-    m_objectType |= TYPEMASK_AREATRIGGER;
-    m_objectTypeId = TYPEID_AREATRIGGER;
+AreaTrigger::AreaTrigger() : WorldObject(false), _duration(0) {
+  m_objectType |= TYPEMASK_AREATRIGGER;
+  m_objectTypeId = TYPEID_AREATRIGGER;
 
-    m_updateFlag = UPDATEFLAG_STATIONARY_POSITION;
+  m_updateFlag = UPDATEFLAG_STATIONARY_POSITION;
 
-    m_valuesCount = AREATRIGGER_END;
+  m_valuesCount = AREATRIGGER_END;
 }
 
-AreaTrigger::~AreaTrigger()
-{
+AreaTrigger::~AreaTrigger() {}
+
+void AreaTrigger::AddToWorld() {
+  ///- Register the AreaTrigger for guid lookup and for caster
+  if (!IsInWorld()) {
+    GetMap()->GetObjectsStore().Insert<AreaTrigger>(GetGUID(), this);
+    WorldObject::AddToWorld();
+  }
 }
 
-void AreaTrigger::AddToWorld()
-{
-    ///- Register the AreaTrigger for guid lookup and for caster
-    if (!IsInWorld())
-    {
-        GetMap()->GetObjectsStore().Insert<AreaTrigger>(GetGUID(), this);
-        WorldObject::AddToWorld();
-    }
+void AreaTrigger::RemoveFromWorld() {
+  ///- Remove the AreaTrigger from the accessor and from all lists of objects in
+  ///world
+  if (IsInWorld()) {
+    WorldObject::RemoveFromWorld();
+    GetMap()->GetObjectsStore().Remove<AreaTrigger>(GetGUID());
+  }
 }
 
-void AreaTrigger::RemoveFromWorld()
-{
-    ///- Remove the AreaTrigger from the accessor and from all lists of objects in world
-    if (IsInWorld())
-    {
-        WorldObject::RemoveFromWorld();
-        GetMap()->GetObjectsStore().Remove<AreaTrigger>(GetGUID());
-    }
+bool AreaTrigger::CreateAreaTrigger(uint32 guidlow, uint32 triggerEntry,
+                                    Unit *caster, SpellInfo const *spell,
+                                    Position const &pos) {
+  SetMap(caster->GetMap());
+  Relocate(pos);
+  if (!IsPositionValid()) {
+    LOG_ERROR(
+        "misc",
+        "AreaTrigger (spell {}) not created. Invalid coordinates (X: {} Y: {})",
+        spell->Id, GetPositionX(), GetPositionY());
+    return false;
+  }
+
+  WorldObject::_Create(guidlow, HighGuid::AreaTrigger);
+
+  SetEntry(triggerEntry);
+  SetDuration(spell->GetDuration());
+  SetObjectScale(1);
+
+  SetUInt32Value(AREATRIGGER_SPELLID, spell->Id);
+  SetUInt32Value(AREATRIGGER_SPELLVISUALID, spell->SpellVisual[0]);
+  SetUInt32Value(AREATRIGGER_DURATION, spell->GetDuration());
+  SetFloatValue(AREATRIGGER_FINAL_POS + 0, pos.GetPositionX());
+  SetFloatValue(AREATRIGGER_FINAL_POS + 1, pos.GetPositionY());
+  SetFloatValue(AREATRIGGER_FINAL_POS + 2, pos.GetPositionZ());
+
+  PhasingHandler::InheritPhaseShift(this, caster);
+
+  if (!GetMap()->AddToMap(this))
+    return false;
+
+  return true;
 }
 
-bool AreaTrigger::CreateAreaTrigger(uint32 guidlow, uint32 triggerEntry, Unit* caster, SpellInfo const* spell, Position const& pos)
-{
-    SetMap(caster->GetMap());
-    Relocate(pos);
-    if (!IsPositionValid())
-    {
-        LOG_ERROR("misc", "AreaTrigger (spell %u) not created. Invalid coordinates (X: %f Y: %f)", spell->Id, GetPositionX(), GetPositionY());
-        return false;
-    }
+void AreaTrigger::Update(uint32 p_time) {
+  if (GetDuration() > int32(p_time))
+    _duration -= p_time;
+  else
+    Remove(); // expired
 
-    WorldObject::_Create(guidlow, HighGuid::AreaTrigger);
-
-    SetEntry(triggerEntry);
-    SetDuration(spell->GetDuration());
-    SetObjectScale(1);
-
-    SetUInt32Value(AREATRIGGER_SPELLID, spell->Id);
-    SetUInt32Value(AREATRIGGER_SPELLVISUALID, spell->SpellVisual[0]);
-    SetUInt32Value(AREATRIGGER_DURATION, spell->GetDuration());
-    SetFloatValue(AREATRIGGER_FINAL_POS + 0, pos.GetPositionX());
-    SetFloatValue(AREATRIGGER_FINAL_POS + 1, pos.GetPositionY());
-    SetFloatValue(AREATRIGGER_FINAL_POS + 2, pos.GetPositionZ());
-
-    PhasingHandler::InheritPhaseShift(this, caster);
-
-    if (!GetMap()->AddToMap(this))
-        return false;
-
-    return true;
+  WorldObject::Update(p_time);
 }
 
-void AreaTrigger::Update(uint32 p_time)
-{
-    if (GetDuration() > int32(p_time))
-        _duration -= p_time;
-    else
-        Remove(); // expired
-
-    WorldObject::Update(p_time);
-}
-
-void AreaTrigger::Remove()
-{
-    if (IsInWorld())
-    {
-        RemoveFromWorld();
-        AddObjectToRemoveList();
-    }
+void AreaTrigger::Remove() {
+  if (IsInWorld()) {
+    RemoveFromWorld();
+    AddObjectToRemoveList();
+  }
 }

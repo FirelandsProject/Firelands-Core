@@ -885,7 +885,7 @@ namespace rbac
          * // previously defined "RBACData* rbac" with proper initialization
          * uint32 permissionId = 2;
          * if (rbac->GrantRole(permissionId) == RBAC_IN_DENIED_LIST)
-         *     LOG_DEBUG("entities.player", "Failed to grant permission %u, already denied", permissionId);
+         *     LOG_DEBUG("entities.player", "Failed to grant permission {}, already denied", permissionId);
          * @endcode
          */
         RBACCommandResult GrantPermission(uint32 permissionId, int32 realmId = 0);
@@ -909,7 +909,7 @@ namespace rbac
          * // previously defined "RBACData* rbac" with proper initialization
          * uint32 permissionId = 2;
          * if (rbac->DenyRole(permissionId) == RBAC_ID_DOES_NOT_EXISTS)
-         *     LOG_DEBUG("entities.player", "Role Id %u does not exists", permissionId);
+         *     LOG_DEBUG("entities.player", "Role Id {} does not exists", permissionId);
          * @endcode
          */
         RBACCommandResult DenyPermission(uint32 permissionId, int32 realmId = 0);
@@ -934,7 +934,7 @@ namespace rbac
          * // previously defined "RBACData* rbac" with proper initialization
          * uint32 permissionId = 2;
          * if (rbac->RevokeRole(permissionId) == RBAC_OK)
-         *     LOG_DEBUG("entities.player", "Permission %u succesfully removed", permissionId);
+         *     LOG_DEBUG("entities.player", "Permission {} succesfully removed", permissionId);
          * @endcode
          */
         RBACCommandResult RevokePermission(uint32 permissionId, int32 realmId = 0);

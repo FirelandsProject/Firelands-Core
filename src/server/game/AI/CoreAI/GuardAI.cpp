@@ -1,5 +1,6 @@
 /*
- * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for
+ * Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -22,59 +23,54 @@
 #include "MotionMaster.h"
 #include "Player.h"
 
-GuardAI::GuardAI(Creature* creature) : ScriptedAI(creature)
-{
+GuardAI::GuardAI(Creature *creature) : ScriptedAI(creature) {}
+
+int32 GuardAI::Permissible(Creature const *creature) {
+  if (creature->IsGuard())
+    return PERMIT_BASE_PROACTIVE;
+
+  return PERMIT_BASE_NO;
 }
 
-int32 GuardAI::Permissible(Creature const* creature)
-{
-    if (creature->IsGuard())
-        return PERMIT_BASE_PROACTIVE;
+void GuardAI::UpdateAI(uint32 /*diff*/) {
+  if (!UpdateVictim())
+    return;
 
-    return PERMIT_BASE_NO;
+  DoMeleeAttackIfReady();
 }
 
-void GuardAI::UpdateAI(uint32 /*diff*/)
-{
-    if (!UpdateVictim())
-        return;
+bool GuardAI::CanSeeAlways(WorldObject const *obj) {
+  if (Unit const *unit = obj->ToUnit())
+    if (unit->IsControlledByPlayer() && me->IsEngagedBy(unit))
+      return true;
 
-    DoMeleeAttackIfReady();
+  return false;
 }
 
-bool GuardAI::CanSeeAlways(WorldObject const* obj)
-{
-    if (Unit const* unit = obj->ToUnit())
-        if (unit->IsControlledByPlayer() && me->IsEngagedBy(unit))
-            return true;
-
-    return false;
-}
-
-void GuardAI::EnterEvadeMode(EvadeReason /*why*/)
-{
-    if (!me->IsAlive())
-    {
-        me->GetMotionMaster()->MoveIdle();
-        me->CombatStop(true);
-        EngagementOver();
-        return;
-    }
-
-    LOG_DEBUG("entities.unit", "Guard entry: %u enters evade mode.", me->GetEntry());
-
-    me->RemoveAllAuras();
+void GuardAI::EnterEvadeMode(EvadeReason /*why*/) {
+  if (!me->IsAlive()) {
+    me->GetMotionMaster()->MoveIdle();
     me->CombatStop(true);
     EngagementOver();
+    return;
+  }
 
-    // Remove ChaseMovementGenerator from MotionMaster stack list, and add HomeMovementGenerator instead
-    if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == CHASE_MOTION_TYPE)
-        me->GetMotionMaster()->MoveTargetedHome();
+  LOG_DEBUG("entities.unit", "Guard entry: {} enters evade mode.",
+            me->GetEntry());
+
+  me->RemoveAllAuras();
+  me->CombatStop(true);
+  EngagementOver();
+
+  // Remove ChaseMovementGenerator from MotionMaster stack list, and add
+  // HomeMovementGenerator instead
+  if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() ==
+      CHASE_MOTION_TYPE)
+    me->GetMotionMaster()->MoveTargetedHome();
 }
 
-void GuardAI::JustDied(Unit* killer)
-{
-    if (killer)
-        if (Player* player = killer->GetCharmerOrOwnerPlayerOrPlayerItself())
-            me->SendZoneUnderAttackMessage(player);
+void GuardAI::JustDied(Unit *killer) {
+  if (killer)
+    if (Player *player = killer->GetCharmerOrOwnerPlayerOrPlayerItself())
+      me->SendZoneUnderAttackMessage(player);
 }

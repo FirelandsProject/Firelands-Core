@@ -43,7 +43,7 @@ bool Metric::Connect()
     auto error = stream.error();
     if (error)
     {
-        LOG_ERROR("metric", "Error connecting to '%s:%s', disabling Metric. Error message : %s",
+        LOG_ERROR("metric", "Error connecting to '{}:{}', disabling Metric. Error message : {}",
             _hostname.c_str(), _port.c_str(), error.message().c_str());
         _enabled = false;
         return false;
@@ -59,14 +59,14 @@ void Metric::LoadFromConfigs()
     _updateInterval = sConfigMgr->GetOption<int32>("Metric.Interval", 10);
     if (_updateInterval < 1)
     {
-        LOG_ERROR("metric", "'Metric.Interval' config set to %d, overriding to 1.", _updateInterval);
+        LOG_ERROR("metric", "'Metric.Interval' config set to {}, overriding to 1.", _updateInterval);
         _updateInterval = 1;
     }
 
     _overallStatusTimerInterval = sConfigMgr->GetOption<int32>("Metric.OverallStatusInterval", 1);
     if (_overallStatusTimerInterval < 1)
     {
-        LOG_ERROR("metric", "'Metric.OverallStatusInterval' config set to %d, overriding to 1.", _overallStatusTimerInterval);
+        LOG_ERROR("metric", "'Metric.OverallStatusInterval' config set to {}, overriding to 1.", _overallStatusTimerInterval);
         _overallStatusTimerInterval = 1;
     }
 
@@ -182,7 +182,7 @@ void Metric::SendBatch()
     GetDataStream() >> status_code;
     if (status_code != 204)
     {
-        LOG_ERROR("metric", "Error sending data, returned HTTP code: %u", status_code);
+        LOG_ERROR("metric", "Error sending data, returned HTTP code: {}", status_code);
     }
 
     // Read and ignore the status description
