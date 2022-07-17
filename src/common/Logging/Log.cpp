@@ -22,6 +22,7 @@
 #include "Common.h"
 #include "Config.h"
 #include "Errors.h"
+#include "Timer.h"
 #include "LogMessage.h"
 #include "LogOperation.h"
 #include "Logger.h"
@@ -267,21 +268,7 @@ Logger const *Log::GetLoggerByType(std::string const &type) const {
 }
 
 std::string Log::GetTimestampStr() {
-  time_t tt =
-      std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
-  std::tm aTm;
-  localtime_r(&tt, &aTm);
-
-  //       YYYY   year
-  //       MM     month (2 digits 01-12)
-  //       DD     day (2 digits 01-31)
-  //       HH     hour (2 digits 00-23)
-  //       MM     minutes (2 digits 00-59)
-  //       SS     seconds (2 digits 00-59)
-  return Firelands::StringFormat(
-      "{}4d-{}2d-{}2d_{}2d-{}2d-{}2d", aTm.tm_year + 1900, aTm.tm_mon + 1,
-      aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
+    return Firelands::Time::TimeToTimestampStr(GetEpochTime(), "%Y-%m-%d_%H_%M_%S");
 }
 
 bool Log::SetLogLevel(std::string const &name, char const *newLevelc,
