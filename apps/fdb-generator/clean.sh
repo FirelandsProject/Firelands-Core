@@ -15,7 +15,7 @@ source utils/banner.sh
 print_menu
 
 project_root=$(pwd | sed 's/\/apps.*//')
-sql_folder="$project_root/sql"
+sql_folder="$project_root/data/sql"
 
 cd $sql_folder
 

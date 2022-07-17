@@ -38,14 +38,14 @@ DatabaseLoader& DatabaseLoader::AddDatabase(DatabaseWorkerPool<T>& pool, std::st
             std::string const dbString = sConfigMgr->GetOption<std::string>(name + "DatabaseInfo", "");
             if (dbString.empty())
             {
-                LOG_ERROR(_logger, "Database %s not specified in configuration file!", name.c_str());
+                LOG_ERROR(_logger, "Database {} not specified in configuration file!", name.c_str());
                 return false;
             }
 
             uint8 const asyncThreads = uint8(sConfigMgr->GetOption<int32>(name + "Database.WorkerThreads", 1));
             if (asyncThreads < 1 || asyncThreads > 32)
             {
-                LOG_ERROR(_logger, "%s database: invalid number of worker threads specified. "
+                LOG_ERROR(_logger, "{} database: invalid number of worker threads specified. "
                     "Please pick a value between 1 and 32.", name.c_str());
                 return false;
             }
@@ -66,7 +66,7 @@ DatabaseLoader& DatabaseLoader::AddDatabase(DatabaseWorkerPool<T>& pool, std::st
                 // If the error wasn't handled quit
                 if (error)
                 {
-                    LOG_ERROR("sql.driver", "\nDatabasePool %s NOT opened. There were errors opening the MySQL connections. Check your SQLDriverLogFile "
+                    LOG_ERROR("sql.driver", "\nDatabasePool {} NOT opened. There were errors opening the MySQL connections. Check your SQLDriverLogFile "
                         "for specific errors. Read wiki at http://www.Firelands Core.info/display/tc/Firelands Core+Home", name.c_str());
 
                     return false;
@@ -87,7 +87,7 @@ DatabaseLoader& DatabaseLoader::AddDatabase(DatabaseWorkerPool<T>& pool, std::st
             {
                 if (!DBUpdater<T>::Populate(pool))
                 {
-                    LOG_ERROR(_logger, "Could not populate the %s database, see log for details.", name.c_str());
+                    LOG_ERROR(_logger, "Could not populate the {} database, see log for details.", name.c_str());
                     return false;
                 }
                 return true;
@@ -97,7 +97,7 @@ DatabaseLoader& DatabaseLoader::AddDatabase(DatabaseWorkerPool<T>& pool, std::st
             {
                 if (!DBUpdater<T>::Update(pool))
                 {
-                    LOG_ERROR(_logger, "Could not update the %s database, see log for details.", name.c_str());
+                    LOG_ERROR(_logger, "Could not update the {} database, see log for details.", name.c_str());
                     return false;
                 }
                 return true;
@@ -108,7 +108,7 @@ DatabaseLoader& DatabaseLoader::AddDatabase(DatabaseWorkerPool<T>& pool, std::st
         {
             if (!pool.PrepareStatements())
             {
-                LOG_ERROR(_logger, "Could not prepare statements of the %s database, see log for details.", name.c_str());
+                LOG_ERROR(_logger, "Could not prepare statements of the {} database, see log for details.", name.c_str());
                 return false;
             }
             return true;

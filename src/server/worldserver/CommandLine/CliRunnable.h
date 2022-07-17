@@ -1,5 +1,6 @@
 /*
- * This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+ * This file is part of the Firelands Core Project. See AUTHORS file for
+ * Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -15,14 +16,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
- /// \addtogroup Firelandsd
- /// @{
- /// \file
+/// \addtogroup Firelandsd
+/// @{
+/// \file
 
 #ifndef __CLIRUNNABLE_H
 #define __CLIRUNNABLE_H
 
 void CliThread();
+
+#ifndef rl_done
+extern int rl_done;
+#endif
+#ifndef rl_event_hook
+typedef int CBFunction();
+extern CBFunction *rl_event_hook;
+#endif
 
 #endif
 

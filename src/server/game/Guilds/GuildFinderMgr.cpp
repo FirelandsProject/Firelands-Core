@@ -163,7 +163,7 @@ void GuildFinderMgr::AddMembershipRequest(uint32 guildGuid,
   stmt->SetData(3, request.GetClassRoles());
   stmt->SetData(4, request.GetInterests());
   stmt->SetData(5, request.GetComment());
-  stmt->SetData(6, request.GetSubmitTime());
+  stmt->SetData(6, uint32(request.GetSubmitTime()));
   trans->Append(stmt);
   CharacterDatabase.CommitTransaction(trans);
 

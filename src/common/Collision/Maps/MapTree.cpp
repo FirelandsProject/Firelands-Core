@@ -58,7 +58,7 @@ namespace VMAP
         void operator()(const Vector3& point, uint32 entry)
         {
 #ifdef VMAP_DEBUG
-            LOG_DEBUG("maps", "AreaInfoCallback: trying to intersect '%s'", prims[entry].name.c_str());
+            LOG_DEBUG("maps", "AreaInfoCallback: trying to intersect '{}'", prims[entry].name.c_str());
 #endif
             prims[entry].intersectPoint(point, aInfo);
         }
@@ -74,7 +74,7 @@ namespace VMAP
         void operator()(const Vector3& point, uint32 entry)
         {
 #ifdef VMAP_DEBUG
-            LOG_DEBUG("maps", "LocationInfoCallback: trying to intersect '%s'", prims[entry].name.c_str());
+            LOG_DEBUG("maps", "LocationInfoCallback: trying to intersect '{}'", prims[entry].name.c_str());
 #endif
             if (prims[entry].GetLocationInfo(point, locInfo))
                 result = true;
@@ -304,7 +304,7 @@ namespace VMAP
 
     bool StaticMapTree::InitMap(std::string const& fname)
     {
-        LOG_DEBUG("maps", "StaticMapTree::InitMap() : initializing StaticMapTree '%s'", fname.c_str());
+        LOG_DEBUG("maps", "StaticMapTree::InitMap() : initializing StaticMapTree '{}'", fname.c_str());
         bool success = false;
         std::string fullname = iBasePath + fname;
         FILE* rf = fopen(fullname.c_str(), "rb");
@@ -363,7 +363,7 @@ namespace VMAP
     {
         if (!iTreeValues)
         {
-            LOG_ERROR("misc", "StaticMapTree::LoadMapTile() : tree has not been initialized [%u, %u]", tileX, tileY);
+            LOG_ERROR("misc", "StaticMapTree::LoadMapTile() : tree has not been initialized [{}, {}]", tileX, tileY);
             return false;
         }
         bool result = true;
@@ -388,7 +388,7 @@ namespace VMAP
                     // acquire model instance
                     WorldModel* model = vm->acquireModelInstance(iBasePath, spawn.name, spawn.flags);
                     if (!model)
-                        LOG_ERROR("misc", "StaticMapTree::LoadMapTile() : could not acquire WorldModel pointer [%u, %u]", tileX, tileY);
+                        LOG_ERROR("misc", "StaticMapTree::LoadMapTile() : could not acquire WorldModel pointer [{}, {}]", tileX, tileY);
 
                     // update tree
                     auto spawnIndex = iSpawnIndices.find(spawn.ID);
@@ -399,7 +399,7 @@ namespace VMAP
                         {
                             if (referencedVal >= iNTreeValues)
                             {
-                                LOG_ERROR("maps", "StaticMapTree::LoadMapTile() : invalid tree element (%u/%u) referenced in tile %s", referencedVal, iNTreeValues, fileResult.Name.c_str());
+                                LOG_ERROR("maps", "StaticMapTree::LoadMapTile() : invalid tree element ({}/{}) referenced in tile {}", referencedVal, iNTreeValues, fileResult.Name.c_str());
                                 continue;
                             }
 
@@ -413,7 +413,7 @@ namespace VMAP
                             if (iTreeValues[referencedVal].ID != spawn.ID)
                                 LOG_DEBUG("maps", "StaticMapTree::LoadMapTile() : trying to load wrong spawn in node");
                             else if (iTreeValues[referencedVal].name != spawn.name)
-                                LOG_DEBUG("maps", "StaticMapTree::LoadMapTile() : name collision on GUID=%u", spawn.ID);
+                                LOG_DEBUG("maps", "StaticMapTree::LoadMapTile() : name collision on GUID={}", spawn.ID);
 #endif
                         }
                     }
@@ -439,7 +439,7 @@ namespace VMAP
         loadedTileMap::iterator tile = iLoadedTiles.find(tileID);
         if (tile == iLoadedTiles.end())
         {
-            VMAP_ERROR_LOG("misc", "StaticMapTree::UnloadMapTile() : trying to unload non-loaded tile - Map:%u X:%u Y:%u", iMapID, tileX, tileY);
+            VMAP_ERROR_LOG("misc", "StaticMapTree::UnloadMapTile() : trying to unload non-loaded tile - Map:{} X:{} Y:{}", iMapID, tileX, tileY);
             return;
         }
         if (tile->second) // file associated with tile
@@ -472,7 +472,7 @@ namespace VMAP
                         {
                             uint32 referencedNode = spawnIndex->second;
                             if (!iLoadedSpawns.count(referencedNode))
-                                VMAP_ERROR_LOG("misc", "StaticMapTree::UnloadMapTile() : trying to unload non-referenced model '%s' (ID:%u)", spawn.name.c_str(), spawn.ID);
+                                VMAP_ERROR_LOG("misc", "StaticMapTree::UnloadMapTile() : trying to unload non-referenced model '{}' (ID:{})", spawn.name.c_str(), spawn.ID);
                             else if (--iLoadedSpawns[referencedNode] == 0)
                             {
                                 iTreeValues[referencedNode].setUnloaded();
