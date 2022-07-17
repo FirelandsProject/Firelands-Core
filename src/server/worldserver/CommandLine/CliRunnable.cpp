@@ -107,7 +107,7 @@ void utf8print(void * /*arg*/, char const *str)
 
 void commandFinished(void *, bool /*success*/)
 {
-    printf("%s ", CLI_PROMPT);
+    printf("FC> ");
     fflush(stdout);
 }
 
