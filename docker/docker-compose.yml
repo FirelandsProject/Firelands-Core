@@ -1,0 +1,43 @@
+#To start the server from this docker-compose file you can run the command "docker-compose up"
+#Configure the location of the configuration file and the data folder
+#The connection to mysql should match the name of the service in this case "mysqldb"
+version: "2.4"
+services:
+  fc-server:
+    build:
+      context: ..
+      dockerfile: docker/DockerFile.world
+    depends_on:
+      - mysqldb
+    restart: always
+    ports:
+      - "8085:8085"
+    stdin_open: true
+    tty: true
+#    volumes:
+#      - ./local/path/to/etc:/firelands/etc
+#      - ./local/path/to/data:/firelands/data
+  fc-auth:
+    build:
+      context: ..
+      dockerfile: docker/DockerFile.auth
+    depends_on:
+      - mysqldb
+    restart: always
+    ports:
+      - "3724:3724"
+#    volumes:
+#      - ./local/path/to/etc:/firelands/etc
+
+  mysqldb:
+    image: mysql:5.6
+    restart: always
+    environment:
+      - MYSQL_USER=firelands
+      - MYSQL_PASSWORD=firelands
+      - MYSQL_ROOT_PASSWORD=firelands
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
