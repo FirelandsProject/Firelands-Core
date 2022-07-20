@@ -2,37 +2,38 @@
 #include "dbcfile.h"
 #include "adtfile.h"
 #include "vmapexport.h"
+#include "VMapDefinitions.h"
 
 #include <algorithm>
 #include <stdio.h>
 
-bool ExtractSingleModel(std::string& origPath, std::string& fixedName, StringSet& failedPaths)
+bool ExtractSingleModel(std::string& fname)
 {
-    char const* ext = GetExtension(GetPlainName(origPath.c_str()));
-
-    // < 3.1.0 ADT MMDX section store filename.mdx filenames for corresponded .m2 file
-    if (!strcmp(ext, ".mdx"))
-    {
-        // replace .mdx -> .m2
-        origPath.erase(origPath.length() - 2, 2);
-        origPath.append("2");
+    if (fname.length() < 4) {
+        return false;
     }
-    // >= 3.1.0 ADT MMDX section store filename.m2 filenames for corresponded .m2 file
-    // nothing do
 
-    fixedName = GetPlainName(origPath.c_str());
+    std::string extension = fname.substr(fname.length() - 4, 4);
+
+    if (extension == ".mdx" || extension == ".MDX" || extension == ".mdl" || extension == ".MDL") {
+        // replace .mdx -> .m2
+        fname.erase(fname.length() - 2, 2);
+        fname.append("2");
+    }
+
+    std::string originalName = fname;
+    char* name = GetPlainName((char*)fname.c_str());
 
     std::string output(szWorkDirWmo);                       // Stores output filename (possible changed)
     output += "/";
-    output += fixedName;
+    output += name;
 
-    if (FileExists(output.c_str()))
-    {
+    if (FileExists(output.c_str())) {
         return true;
     }
 
-    Model mdl(origPath);                                    // Possible changed fname
-    if (!mdl.open(failedPaths))
+    Model mdl(originalName);                                    // Possible changed fname
+    if (!mdl.open())
     {
         return false;
     }
@@ -58,7 +59,16 @@ void ExtractGameobjectModels()
     std::string path;
     StringSet failedPaths;
 
-    FILE* model_list = fopen((basepath + "temp_gameobject_models").c_str(), "wb");
+    std::string modelListPath = basepath + "temp_gameobject_models";
+    FILE* model_list = fopen((modelListPath).c_str(), "wb");
+    if (!model_list)
+    {
+        printf("Fatal error: Could not open file %s\n", modelListPath.c_str());
+        return;
+    }
+
+    fwrite(VMAP::RAW_VMAP_MAGIC, 1, 8, model_list);
+
 
     for (DBCFile::Iterator it = dbc.begin(); it != dbc.end(); ++it)
     {
@@ -82,8 +92,10 @@ void ExtractGameobjectModels()
         //strToLower(ch_ext);
 
         bool result = false;
+        uint8 isWmo = 0;
         if (!strcmp(ch_ext, ".wmo"))
         {
+            isWmo = 1;
             result = ExtractSingleWmo(path);
         }
         else if (!strcmp(ch_ext, ".mdl"))
@@ -94,7 +106,7 @@ void ExtractGameobjectModels()
         else //if (!strcmp(ch_ext, ".mdx") || !strcmp(ch_ext, ".m2"))
         {
             std::string fixedName;
-            result = ExtractSingleModel(path, fixedName, failedPaths);
+            result = ExtractSingleModel(path);
         }
 
         if (result)

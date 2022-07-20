@@ -134,41 +134,47 @@ struct MapChunkHeader
     uint32 effectId; /**< TODO */
 };
 
+struct ADTOutputCache
+{
+    uint8 Flags;
+    std::vector<uint8> Data;
+};
+
 /**
  * @brief
  *
  */
 class ADTFile
 {
-    public:
-        /**
-         * @brief
-         *
-         * @param filename
-         */
-        ADTFile(char* filename);
-        /**
-         * @brief
-         *
-         */
-        ~ADTFile();
-        int nWMO; /**< TODO */
-        int nMDX; /**< TODO */
-        string* WmoInstansName; /**< TODO */
-        string* ModelInstansName; /**< TODO */
-        /**
-         * @brief
-         *
-         * @param map_num
-         * @param tileX
-         * @param tileY
-         * @param failedPaths
-         * @return bool
-         */
-        bool init(uint32 map_num, uint32 tileX, uint32 tileY, StringSet& failedPaths);
-    private:
-        MPQFile ADT; /**< TODO */
-        string AdtFilename; /**< TODO */
+public:
+    /**
+     * @brief
+     *
+     * @param filename
+     */
+    ADTFile(char* filename);
+    /**
+     * @brief
+     *
+     */
+    ~ADTFile();
+    int nWMO; /**< TODO */
+    int nMDX; /**< TODO */
+    string* WmoInstansName; /**< TODO */
+    string* ModelInstansName; /**< TODO */
+    /**
+     * @brief
+     *
+     * @param map_num
+     * @param tileX
+     * @param tileY
+     * @param failedPaths
+     * @return bool
+     */
+    bool init(uint32 map_num, uint32 tileX, uint32 tileY, StringSet& failedPaths);
+private:
+    MPQFile ADT; /**< TODO */
+    string AdtFilename; /**< TODO */
 };
 
 const char* GetPlainName(const char* FileName);

@@ -79,18 +79,18 @@ void printUsage()
 }
 
 bool handleArgs(int argc, char** argv,
-                int& mapnum,
-                int& tileX,
-                int& tileY,
-                float& maxAngle,
-                bool& skipLiquid,
-                bool& skipContinents,
-                bool& skipJunkMaps,
-                bool& skipBattlegrounds,
-                bool& debugOutput,
-                bool& silent,
-                bool& bigBaseUnit,
-                char*& offMeshInputPath)
+    int& mapnum,
+    int& tileX,
+    int& tileY,
+    float& maxAngle,
+    bool& skipLiquid,
+    bool& skipContinents,
+    bool& skipJunkMaps,
+    bool& skipBattlegrounds,
+    bool& debugOutput,
+    bool& silent,
+    bool& bigBaseUnit,
+    char*& offMeshInputPath)
 {
     char* param = NULL;
     for (int i = 1; i < argc; ++i)
@@ -317,18 +317,18 @@ int main(int argc, char** argv)
     float maxAngle = 60.0f;
     int tileX = -1, tileY = -1;
     bool skipLiquid = false,
-         skipContinents = false,
-         skipJunkMaps = true,
-         skipBattlegrounds = false,
-         debugOutput = false,
-         silent = false,
-         bigBaseUnit = false;
+        skipContinents = false,
+        skipJunkMaps = true,
+        skipBattlegrounds = false,
+        debugOutput = false,
+        silent = false,
+        bigBaseUnit = false;
     char* offMeshInputPath = NULL;
 
     bool validParam = handleArgs(argc, argv, mapnum,
-                                 tileX, tileY, maxAngle,
-                                 skipLiquid, skipContinents, skipJunkMaps, skipBattlegrounds,
-                                 debugOutput, silent, bigBaseUnit, offMeshInputPath);
+        tileX, tileY, maxAngle,
+        skipLiquid, skipContinents, skipJunkMaps, skipBattlegrounds,
+        debugOutput, silent, bigBaseUnit, offMeshInputPath);
 
     if (!validParam)
     {
@@ -357,7 +357,7 @@ int main(int argc, char** argv)
     }
 
     MapBuilder builder(maxAngle, skipLiquid, skipContinents, skipJunkMaps,
-                       skipBattlegrounds, debugOutput, bigBaseUnit, offMeshInputPath);
+        skipBattlegrounds, debugOutput, bigBaseUnit, offMeshInputPath);
 
     if (tileX > -1 && tileY > -1 && mapnum >= 0)
     {
@@ -369,6 +369,7 @@ int main(int argc, char** argv)
     }
     else
     {
+        printf("Start Building all MMaps");
         builder.buildAllMaps();
     }
 

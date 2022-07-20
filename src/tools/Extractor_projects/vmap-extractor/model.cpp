@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "mpqfile.h"
 #include "model.h"
 #include "wmo.h"
@@ -21,11 +22,11 @@
 
 extern HANDLE WorldMpq;
 
-Model::Model(std::string& filename) : filename(filename), vertices(0), indices(0)
+Model::Model(std::string& filename) : filename(filename), vertices(NULL), indices(NULL)
 {
 }
 
-bool Model::open(StringSet& failedPaths)
+bool Model::open()
 {
     MPQFile f(WorldMpq, filename.c_str());
 
@@ -34,30 +35,27 @@ bool Model::open(StringSet& failedPaths)
     if (!ok)
     {
         f.close();
-        failedPaths.insert(filename);
         return false;
     }
 
     _unload();
 
     memcpy(&header, f.getBuffer(), sizeof(ModelHeader));
+    bounds = header.collisionBox;
+
     if (header.nBoundingTriangles > 0)
     {
         f.seek(0);
         f.seekRelative(header.ofsBoundingVertices);
         vertices = new Vec3D[header.nBoundingVertices];
         f.read(vertices, header.nBoundingVertices * 12);
-
-        for (uint32 i = 0; i < header.nBoundingVertices; i++)
-        {
+        for (uint32 i = 0; i < header.nBoundingVertices; i++) {
             vertices[i] = fixCoordSystem(vertices[i]);
         }
         f.seek(0);
         f.seekRelative(header.ofsBoundingTriangles);
-
         indices = new uint16[header.nBoundingTriangles];
         f.read(indices, header.nBoundingTriangles * 2);
-
         f.close();
     }
     else
@@ -71,7 +69,7 @@ bool Model::open(StringSet& failedPaths)
 
 bool Model::ConvertToVMAPModel(const char* outfilename)
 {
-    int N[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int N[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     FILE* output = fopen(outfilename, "wb");
     if (!output)
     {
@@ -103,6 +101,15 @@ bool Model::ConvertToVMAPModel(const char* outfilename)
     fwrite(&nIndexes, sizeof(uint32), 1, output);
     if (nIndexes > 0)
     {
+         for (uint32 i = 0; i < nIndexes; ++i)
+        {
+            if ((i % 3) - 1 == 0 && i + 1 < nIndexes)
+            {
+                uint16 tmp = indices[i];
+                indices[i] = indices[i + 1];
+                indices[i + 1] = tmp;
+            }
+        }
         fwrite(indices, sizeof(unsigned short), nIndexes, output);
     }
     fwrite("VERT", 4, 1, output);

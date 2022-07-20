@@ -140,7 +140,7 @@ WMORoot::~WMORoot()
 }
 
 WMOGroup::WMOGroup(std::string& filename) : filename(filename),
-    MOPY(0), MOVI(0), MoviEx(0), MOVT(0), MOBA(0), MobaEx(0), hlq(0), LiquEx(0), LiquBytes(0)
+MOPY(0), MOVI(0), MoviEx(0), MOVT(0), MOBA(0), MobaEx(0), hlq(0), LiquEx(0), LiquBytes(0)
 {
 }
 
@@ -265,7 +265,7 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
         fwrite(&moba_size_grp, 4, 1, output);
         fwrite(&moba_batch, 4, 1, output);
         fwrite(MobaEx, 4, k, output);
-        delete [] MobaEx;
+        delete[] MobaEx;
 
         uint32 nIdexes = nTriangles * 3;
 
@@ -337,7 +337,7 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
         fwrite(&moba_size_grp, 4, 1, output);
         fwrite(&moba_batch, 4, 1, output);
         fwrite(MobaEx, 4, k, output);
-        delete [] MobaEx;
+        delete[] MobaEx;
 
         //-------INDX------------------------------------
         //-------MOPY--------
@@ -347,7 +347,7 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
         for (int i = 0; i < nTriangles; ++i)
         {
             // Skip no collision triangles
-            if (MOPY[2 * i]&WMO_MATERIAL_NO_COLLISION ||
+            if (MOPY[2 * i] & WMO_MATERIAL_NO_COLLISION ||
                 !(MOPY[2 * i] & (WMO_MATERIAL_HINT | WMO_MATERIAL_COLLIDE_HIT)))
             {
                 continue;
@@ -380,12 +380,12 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
         }
 
         // write triangle indices
-        int INDX[] = {0x58444E49, nColTriangles * 6 + 4, nColTriangles * 3};
+        int INDX[] = { 0x58444E49, nColTriangles * 6 + 4, nColTriangles * 3 };
         fwrite(INDX, 4, 3, output);
         fwrite(MoviEx, 2, nColTriangles * 3, output);
 
         // write vertices
-        int VERT[] = {0x54524556, nColVertices * 3 * sizeof(float) + 4, nColVertices}; // "VERT"
+        int VERT[] = { 0x54524556, nColVertices * 3 * static_cast<int>(sizeof(float)) + 4, nColVertices }; // "VERT"
         int check = 3 * nColVertices;
         fwrite(VERT, 4, 3, output);
         for (uint32 i = 0; i < nVertices; ++i)
@@ -396,14 +396,14 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
 
         assert(check == 0);
 
-        delete [] MoviEx;
-        delete [] IndexRenum;
+        delete[] MoviEx;
+        delete[] IndexRenum;
     }
 
     //------LIQU------------------------
     if (LiquEx_size != 0)
     {
-        int LIQU_h[] = {0x5551494C, sizeof(WMOLiquidHeader) + LiquEx_size + hlq->xtiles* hlq->ytiles}; // "LIQU"
+        int LIQU_h[] = { 0x5551494C, static_cast<int>(sizeof(WMOLiquidHeader)) + LiquEx_size + hlq->xtiles * hlq->ytiles }; // "LIQU"
         fwrite(LIQU_h, 4, 2, output);
 
         // according to WoW.Dev Wiki:
@@ -450,24 +450,24 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
         {
             switch (((uint8)liquidEntry - 1) & 3)
             {
-                case 0:
-                    {
-                        liquidEntry = ((mogpFlags & 0x80000) != 0) + 13;
-                    }
-                    break;
-                case 1:
-                    liquidEntry = 14;
-                    break;
-                case 2:
-                    liquidEntry = 19;
-                    break;
-                case 3:
-                    {
-                    liquidEntry = 20;
-                    }
-                    break;
-                default:
-                    break;
+            case 0:
+            {
+                liquidEntry = ((mogpFlags & 0x80000) != 0) + 13;
+            }
+            break;
+            case 1:
+                liquidEntry = 14;
+                break;
+            case 2:
+                liquidEntry = 19;
+                break;
+            case 3:
+            {
+                liquidEntry = 20;
+            }
+            break;
+            default:
+                break;
             }
         }
 
@@ -493,13 +493,13 @@ int WMOGroup::ConvertToVMAPGroupWmo(FILE* output, WMORoot* rootWMO, bool pPrecis
 
 WMOGroup::~WMOGroup()
 {
-    delete [] MOPY;
-    delete [] MOVI;
-    delete [] MOVT;
-    delete [] MOBA;
+    delete[] MOPY;
+    delete[] MOVI;
+    delete[] MOVT;
+    delete[] MOBA;
     delete hlq;
-    delete [] LiquEx;
-    delete [] LiquBytes;
+    delete[] LiquEx;
+    delete[] LiquBytes;
 }
 
 //WmoInstName is in the form MD5/name.wmo

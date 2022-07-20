@@ -248,7 +248,7 @@ namespace MMAP
     void IntermediateValues::generateObjFile(uint32 mapID, uint32 tileX, uint32 tileY, MeshData& meshData)
     {
         char objFileName[255];
-        sprintf(objFileName, "meshes/map%04u%02u%02u.obj", mapID, tileY, tileX);
+        sprintf(objFileName, "meshes/%04u.map", mapID);
 
         FILE* objFile = fopen(objFileName, "wb");
         if (!objFile)

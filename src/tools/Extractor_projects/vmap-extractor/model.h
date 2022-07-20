@@ -25,6 +25,11 @@
 
 class WMOInstance;
 class MPQFile;
+struct WMODoodadData;
+struct ADTOutputCache;
+
+namespace ADT { struct MDDF; struct MODF; }
+
 
 Vec3D fixCoordSystem(Vec3D v);
 
@@ -34,56 +39,58 @@ Vec3D fixCoordSystem(Vec3D v);
  */
 class Model
 {
-    public:
-        ModelHeader header;
-        uint32 offsBB_vertices, offsBB_indices;
-        Vec3D* BB_vertices, *vertices;
-        uint16* BB_indices, *indices;
-        size_t nIndices; /**< TODO */
+public:
+    ModelHeader header;
+    uint32 offsBB_vertices, offsBB_indices;
+    Vec3D* BB_vertices, * vertices;
+    uint16* BB_indices, * indices;
+    size_t nIndices; /**< TODO */
+    AaBox3D bounds;
 
-        /**
-         * @brief
-         *
-         * @param failedPaths
-         * @return bool
-         */
-        bool open(StringSet& failedPaths);
-        /**
-         * @brief
-         *
-         * @param outfilename
-         * @return bool
-         */
-        bool ConvertToVMAPModel(const char* outfilename);
 
-        bool ok; /**< TODO */
+    /**
+     * @brief
+     *
+     * @param failedPaths
+     * @return bool
+     */
+    bool open();
+    /**
+     * @brief
+     *
+     * @param outfilename
+     * @return bool
+     */
+    bool ConvertToVMAPModel(const char* outfilename);
 
-        /**
-         * @brief
-         *
-         * @param filename
-         */
-        Model(std::string& filename);
-        /**
-         * @brief
-         *
-         */
-        ~Model() {_unload();}
+    bool ok; /**< TODO */
 
-    private:
-        /**
-         * @brief
-         *
-         */
-        void _unload()
-        {
-            delete[] vertices;
-            delete[] indices;
-            vertices = NULL;
-            indices = NULL;
-        }
-        std::string filename; /**< TODO */
-        char outfilename;
+    /**
+     * @brief
+     *
+     * @param filename
+     */
+    Model(std::string& filename);
+    /**
+     * @brief
+     *
+     */
+    ~Model() { _unload(); }
+
+private:
+    /**
+     * @brief
+     *
+     */
+    void _unload()
+    {
+        delete[] vertices;
+        delete[] indices;
+        vertices = NULL;
+        indices = NULL;
+    }
+    std::string filename; /**< TODO */
+    char outfilename;
 };
 
 /**
@@ -92,31 +99,40 @@ class Model
  */
 class ModelInstance
 {
-    public:
-        Model* model; /**< TODO */
+public:
+    Model* model; /**< TODO */
 
-        uint32 id; /**< TODO */
-        Vec3D pos, rot; /**< TODO */
-        unsigned int d1, Scale;
-        float w, sc;
+    uint32 id; /**< TODO */
+    Vec3D pos, rot; /**< TODO */
+    unsigned int d1, Scale;
+    float w, sc;
 
-        /**
-         * @brief
-         *
-         */
-        ModelInstance() {}
-        /**
-         * @brief
-         *
-         * @param f
-         * @param ModelInstName
-         * @param mapID
-         * @param tileX
-         * @param tileY
-         * @param pDirfile
-         */
-        ModelInstance(MPQFile& f, const char* ModelInstName, uint32 mapID, uint32 tileX, uint32 tileY, FILE* pDirfile);
+    /**
+     * @brief
+     *
+     */
+    ModelInstance() {}
+    /**
+     * @brief
+     *
+     * @param f
+     * @param ModelInstName
+     * @param mapID
+     * @param tileX
+     * @param tileY
+     * @param pDirfile
+     */
+    ModelInstance(MPQFile& f, const char* ModelInstName, uint32 mapID, uint32 tileX, uint32 tileY, FILE* pDirfile);
 
 };
+
+namespace Doodad
+{
+    void Extract(ADT::MDDF const& doodadDef, char const* ModelInstName, uint32 mapID, uint32 originalMapId,
+        FILE* pDirfile, std::vector<ADTOutputCache>* dirfileCache);
+
+    void ExtractSet(WMODoodadData const& doodadData, ADT::MODF const& wmo, bool isGlobalWmo, uint32 mapID, uint32 originalMapId,
+        FILE* pDirfile, std::vector<ADTOutputCache>* dirfileCache);
+}
 
 #endif

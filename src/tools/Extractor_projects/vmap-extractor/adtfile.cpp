@@ -156,8 +156,8 @@ bool ADTFile::init(uint32 map_num, uint32 tileX, uint32 tileY, StringSet& failed
                     char* s = GetPlainName(p);
                     FixNameSpaces(s, strlen(s));
                     std::string path(p);                         // Store copy after name fixed
-                    std::string uName;
-                    ExtractSingleModel(path, uName, failedPaths);
+                    char* uName = GetPlainName(p);
+                    ExtractSingleModel(path);
                     ModelInstansName[t++] = uName;
                     p = p + strlen(p) + 1;
                 }

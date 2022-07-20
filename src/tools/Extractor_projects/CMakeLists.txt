@@ -22,9 +22,9 @@ set(SHARED_SRCS
     shared/ExtractorCommon.h
 )
 
-#=======================================================#
-#map-extractor
-#=======================================================#
+# =======================================================#
+# map-extractor
+# =======================================================#
 add_executable(map-extractor
     map-extractor/System.cpp
     map-extractor/dbcfile.cpp
@@ -34,8 +34,8 @@ add_executable(map-extractor
 
 target_include_directories(map-extractor
     PUBLIC
-        shared
-        map-extractor
+    shared
+    map-extractor
 )
 
 target_link_libraries(map-extractor
@@ -55,9 +55,9 @@ if(WIN32 AND MSVC)
         OPTIONAL)
 endif()
 
-#=======================================================#
-#vmap-extractor
-#=======================================================#
+# =======================================================#
+# vmap-extractor
+# =======================================================#
 add_executable(vmap-extractor
     vmap-extractor/adtfile.cpp
     vmap-extractor/adtfile.h
@@ -82,14 +82,14 @@ add_executable(vmap-extractor
 
 target_include_directories(vmap-extractor
     PUBLIC
-        shared
-        vmap-extractor
+    shared
+    vmap-extractor
 )
 
 target_link_libraries(vmap-extractor
     PUBLIC
-        loadlib
-        vmap2
+    loadlib
+    vmap2
 )
 
 install(
@@ -102,12 +102,12 @@ if(WIN32 AND MSVC)
         FILES $<TARGET_PDB_FILE:vmap-extractor>
         DESTINATION ${BIN_DIR}/${TOOLS_DIR}
         OPTIONAL
-)
+    )
 endif()
 
-#=======================================================#
-#vmap-assembler
-#=======================================================#
+# =======================================================#
+# vmap-assembler
+# =======================================================#
 add_executable(vmap-assembler
     vmap-assembler/vmap_assembler.cpp
     ${SHARED_SRCS}
@@ -116,14 +116,14 @@ add_executable(vmap-assembler
 
 target_include_directories(vmap-assembler
     PUBLIC
-        shared
-        vmap-assembler
+    shared
+    vmap-assembler
 )
 
 target_link_libraries(vmap-assembler
     PUBLIC
-        loadlib
-        vmap2
+    loadlib
+    vmap2
 )
 
 install(
@@ -136,13 +136,13 @@ if(WIN32 AND MSVC)
         FILES $<TARGET_PDB_FILE:vmap-assembler>
         DESTINATION ${BIN_DIR}/${TOOLS_DIR}
         OPTIONAL
-)
+    )
 endif()
 
-#=======================================================#
-#mmap-extractor
-#=======================================================#
-add_executable(mmap-extractor
+# =======================================================#
+# mmap-generator
+# =======================================================#
+add_executable(mmap-generator
     Movemap-Generator/generator.cpp
     Movemap-Generator/IntermediateValues.cpp
     Movemap-Generator/IntermediateValues.h
@@ -158,45 +158,45 @@ add_executable(mmap-extractor
     $<$<BOOL:${WIN32}>:Movemap-Generator/Movemap-Generator.rc>
 )
 
-target_include_directories(mmap-extractor
+target_include_directories(mmap-generator
     PUBLIC
-        shared
-        Movemap-Generator
+    shared
+    Movemap-Generator
 )
 
-target_link_libraries(mmap-extractor
+target_link_libraries(mmap-generator
     PUBLIC
-        loadlib
-        vmap2
-        shared
-        RecastNavigation::Recast
-        Threads::Threads
-        DL::DL
+    loadlib
+    vmap2
+    shared
+    RecastNavigation::Recast
+    Threads::Threads
+    DL::DL
 )
 
 install(
-    TARGETS mmap-extractor
+    TARGETS mmap-generator
     DESTINATION ${BIN_DIR}/${TOOLS_DIR}
 )
 
-install (
+install(
     FILES "${EXTRACTOR_BINARIES_DIR}/MoveMapGen.sh"
-         DESTINATION ${BIN_DIR}/${TOOLS_DIR}
+    DESTINATION ${BIN_DIR}/${TOOLS_DIR}
 )
-install (
+install(
     FILES "${EXTRACTOR_BINARIES_DIR}/offmesh.txt"
-         DESTINATION ${BIN_DIR}/${TOOLS_DIR}
+    DESTINATION ${BIN_DIR}/${TOOLS_DIR}
 )
 
-install (
+install(
     FILES "${EXTRACTOR_BINARIES_DIR}/mmap_excluded.txt"
-         DESTINATION ${BIN_DIR}/${TOOLS_DIR}
+    DESTINATION ${BIN_DIR}/${TOOLS_DIR}
 )
 
 if(WIN32 AND MSVC)
     install(
-        FILES $<TARGET_PDB_FILE:mmap-extractor>
+        FILES $<TARGET_PDB_FILE:mmap-generator>
         DESTINATION ${BIN_DIR}/${TOOLS_DIR}
         OPTIONAL
-)
+    )
 endif()

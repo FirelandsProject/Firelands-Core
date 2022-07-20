@@ -115,7 +115,7 @@ else
 fi
 
 # Ensure bins are marked executable
-for bin in ./map-extractor ./mmap-extractor ./vmap-extractor; do
+for bin in ./map-extractor ./mmap-generator ./vmap-extractor; do
     if [ -f "$bin" ]; then
         echo "Marking $bin executable"
         chmod +x "$bin"

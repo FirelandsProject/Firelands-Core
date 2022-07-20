@@ -21,10 +21,10 @@
 #include <string>
 #include <set>
 
-/**
- * @brief
- *
- */
+ /**
+  * @brief
+  *
+  */
 typedef std::set<std::string> StringSet;
 
 /**
@@ -52,11 +52,8 @@ void strToLower(char* str);
 
 bool ExtractSingleWmo(std::string& fname);
 
-/* @param origPath = original path of the model, cleaned with FixNameCase and FixNameSpaces
- * @param fixedName = will store the translated name (if changed)
- * @param failedPaths = Set to collect errors
- */
-bool ExtractSingleModel(std::string& origPath, std::string& fixedName, StringSet& failedPaths);
+/* @param fname = original path of the model, cleaned with FixNameCase and FixNameSpaces*/
+bool ExtractSingleModel(std::string& fname);
 
 void ExtractGameobjectModels();
 

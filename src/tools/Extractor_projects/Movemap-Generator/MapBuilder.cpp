@@ -29,8 +29,8 @@ using namespace VMAP;
 namespace MMAP
 {
     MapBuilder::MapBuilder(float maxWalkableAngle, bool skipLiquid,
-                           bool skipContinents, bool skipJunkMaps, bool skipBattlegrounds,
-                           bool debugOutput, bool bigBaseUnit, const char* offMeshFilePath) :
+        bool skipContinents, bool skipJunkMaps, bool skipBattlegrounds,
+        bool debugOutput, bool bigBaseUnit, const char* offMeshFilePath) :
         m_terrainBuilder(NULL),
         m_debugOutput(debugOutput),
         m_skipContinents(skipContinents),
@@ -97,7 +97,7 @@ namespace MMAP
             set<uint32>* tiles = (*itr).second;
             mapID = (*itr).first;
 
-            sprintf(filter, "%04u*.vmtile", mapID);
+            sprintf(filter, "%03u*.vmtile", mapID);
             files.clear();
             getDirContents(files, "vmaps", filter);
             for (uint32 i = 0; i < files.size(); ++i)
@@ -110,7 +110,7 @@ namespace MMAP
                 count++;
             }
 
-            sprintf(filter, "%04u*", mapID);
+            sprintf(filter, "%03u*", mapID);
             files.clear();
             getDirContents(files, "maps", filter);
             for (uint32 i = 0; i < files.size(); ++i)
@@ -173,64 +173,59 @@ namespace MMAP
     /**************************************************************************/
     void MapBuilder::buildMap(uint32 mapID)
     {
-        printf("Building map %04u:\n", mapID);
+        printf("Building map %03u:\n", mapID);
 
         set<uint32>* tiles = getTileList(mapID);
 
         // make sure we process maps which don't have tiles
-        if (!tiles->size())
+        if (!tiles->empty())
         {
+
+            // build navMesh
+            dtNavMesh* navMesh = NULL;
+            buildNavMesh(mapID, navMesh);
+            if (!navMesh) {
+                printf("[Map %03i] Failed creating navmesh!\n", mapID);
+                return;
+            }
+
             // convert coord bounds to grid bounds
             uint32 minX, minY, maxX, maxY;
             getGridBounds(mapID, minX, minY, maxX, maxY);
 
             // add all tiles within bounds to tile list.
-            for (uint32 i = minX; i <= maxX; ++i)
+            for (uint32 i = minX; i <= maxX; ++i) {
                 for (uint32 j = minY; j <= maxY; ++j)
                 {
                     tiles->insert(StaticMapTree::packTileID(i, j));
                 }
-        }
-
-        if (!tiles->size())
-        {
-            return;
-        }
-
-        // build navMesh
-        dtNavMesh* navMesh = NULL;
-        buildNavMesh(mapID, navMesh);
-        if (!navMesh)
-        {
-            printf("Failed creating navmesh!              \n");
-            return;
-        }
-
-        // now start building mmtiles for each tile
-        printf("We have %u tiles.                          \n", (unsigned int)tiles->size());
-        for (set<uint32>::iterator it = tiles->begin(); it != tiles->end(); ++it)
-        {
-            uint32 tileX, tileY;
-
-            // unpack tile coords
-            StaticMapTree::unpackTileID((*it), tileX, tileY);
-
-            if (shouldSkipTile(mapID, tileX, tileY))
+            }
+            // now start building mmtiles for each tile
+            printf("[Map %03i] We have %u tiles.                          \n", mapID, (unsigned int)tiles->size());
+            for (set<uint32>::iterator it = tiles->begin(); it != tiles->end(); ++it)
             {
-                continue;
+                uint32 tileX, tileY;
+
+                // unpack tile coords
+                StaticMapTree::unpackTileID((*it), tileX, tileY);
+
+                if (shouldSkipTile(mapID, tileX, tileY))
+                {
+                    continue;
+                }
+
+                buildTile(mapID, tileX, tileY, navMesh);
             }
 
-            buildTile(mapID, tileX, tileY, navMesh);
+            dtFreeNavMesh(navMesh);
         }
 
-        dtFreeNavMesh(navMesh);
-
-        printf("Complete!                               \n\n");
+        printf("[Map %03i] Complete!\n", mapID);
     }
     /**************************************************************************/
     void MapBuilder::buildTile(uint32 mapID, uint32 tileX, uint32 tileY, dtNavMesh* navMesh)
     {
-        printf("Building map %04u, tile [%02u,%02u]\n", mapID, tileX, tileY);
+        printf("Building map %03u, tile [%02u,%02u]\n", mapID, tileX, tileY);
 
         MeshData meshData;
 
@@ -332,7 +327,7 @@ namespace MMAP
         //if (tileBits < 1) tileBits = 1;                                     // need at least one bit!
         //int polyBits = sizeof(dtPolyRef)*8 - SALT_MIN_BITS - tileBits;
 
-        int tileBits = DT_TILE_BITS;
+        //int tileBits = DT_TILE_BITS;
         int polyBits = DT_POLY_BITS;
 
         int maxTiles = tiles->size();
@@ -380,22 +375,22 @@ namespace MMAP
         navMeshParams.maxPolys = maxPolysPerTile;
 
         navMesh = dtAllocNavMesh();
-        printf("Creating navMesh...                     \r");
+        printf("[Map %03i] Creating navMesh...\n", mapID);
         if (!navMesh->init(&navMeshParams))
         {
-            printf("Failed creating navmesh!                \n");
+            printf("[Map %03i] Failed creating navmesh!                \n", mapID);
             return;
         }
 
         char fileName[25];
-        sprintf(fileName, "mmaps/%04u.mmap", mapID);
+        sprintf(fileName, "mmaps/%03u.mmap", mapID);
 
         FILE* file = fopen(fileName, "wb");
         if (!file)
         {
             dtFreeNavMesh(navMesh);
             char message[1024];
-            sprintf(message, "Failed to open %s for writing!\n", fileName);
+            sprintf(message, "[Map %03i] Failed to open %s for writing!\n", mapID, fileName);
             perror(message);
             return;
         }
@@ -407,12 +402,12 @@ namespace MMAP
 
     /**************************************************************************/
     void MapBuilder::buildMoveMapTile(uint32 mapID, uint32 tileX, uint32 tileY,
-                                      MeshData& meshData, float bmin[3], float bmax[3],
-                                      dtNavMesh* navMesh)
+        MeshData& meshData, float bmin[3], float bmax[3],
+        dtNavMesh* navMesh)
     {
         // console output
         char tileString[10];
-        sprintf(tileString, "[%02i,%02i]: ", tileX, tileY);
+        sprintf(tileString, "[Map %03i] [%02i,%02i]: ", mapID, tileX, tileY);
         printf("%s Building movemap tiles...                        \r", tileString);
 
         IntermediateValues iv;
@@ -504,7 +499,7 @@ namespace MMAP
                 memset(triFlags, NAV_GROUND, tTriCount * sizeof(unsigned char));
                 rcClearUnwalkableTriangles(m_rcContext, tileCfg.walkableSlopeAngle, tVerts, tVertCount, tTris, tTriCount, triFlags);
                 rcRasterizeTriangles(m_rcContext, tVerts, tVertCount, tTris, triFlags, tTriCount, *tile.solid, config.walkableClimb);
-                delete [] triFlags;
+                delete[] triFlags;
 
                 rcFilterLowHangingWalkableObstacles(m_rcContext, config.walkableClimb, *tile.solid);
                 rcFilterLedgeSpans(m_rcContext, tileCfg.walkableHeight, tileCfg.walkableClimb, *tile.solid);
@@ -555,7 +550,7 @@ namespace MMAP
                 }
 
                 tile.dmesh = rcAllocPolyMeshDetail();
-                if (!tile.dmesh || !rcBuildPolyMeshDetail(m_rcContext, *tile.pmesh, *tile.chf, tileCfg.detailSampleDist, tileCfg    .detailSampleMaxError, *tile.dmesh))
+                if (!tile.dmesh || !rcBuildPolyMeshDetail(m_rcContext, *tile.pmesh, *tile.chf, tileCfg.detailSampleDist, tileCfg.detailSampleMaxError, *tile.dmesh))
                 {
                     printf("%s Failed building polymesh detail!        \n", tileString);
                     continue;
@@ -574,19 +569,19 @@ namespace MMAP
         }
 
         // merge per tile poly and detail meshes
-        rcPolyMesh** pmmerge = new rcPolyMesh*[TILES_PER_MAP * TILES_PER_MAP];
+        rcPolyMesh** pmmerge = new rcPolyMesh * [TILES_PER_MAP * TILES_PER_MAP];
         if (!pmmerge)
         {
             printf("%s alloc pmmerge FAILED!          \n", tileString);
-            delete [] tiles;
+            delete[] tiles;
             return;
         }
 
-        rcPolyMeshDetail** dmmerge = new rcPolyMeshDetail*[TILES_PER_MAP * TILES_PER_MAP];
+        rcPolyMeshDetail** dmmerge = new rcPolyMeshDetail * [TILES_PER_MAP * TILES_PER_MAP];
         if (!dmmerge)
         {
             printf("%s alloc dmmerge FAILED!          \n", tileString);
-            delete [] tiles;
+            delete[] tiles;
             return;
         }
 
@@ -609,7 +604,7 @@ namespace MMAP
         if (!iv.polyMesh)
         {
             printf("%s alloc iv.polyMesh FAILED!          \n", tileString);
-            delete [] tiles;
+            delete[] tiles;
             return;
         }
         rcMergePolyMeshes(m_rcContext, pmmerge, nmerge, *iv.polyMesh);
@@ -618,16 +613,16 @@ namespace MMAP
         if (!iv.polyMeshDetail)
         {
             printf("%s alloc m_dmesh FAILED!          \n", tileString);
-            delete [] tiles;
+            delete[] tiles;
             return;
         }
         rcMergePolyMeshDetails(m_rcContext, dmmerge, nmerge, *iv.polyMeshDetail);
 
         // free things up
-        delete [] pmmerge;
-        delete [] dmmerge;
+        delete[] pmmerge;
+        delete[] dmmerge;
 
-        delete [] tiles;
+        delete[] tiles;
 
         // remove padding for extraction
         for (int i = 0; i < iv.polyMesh->nverts; ++i)
@@ -739,7 +734,7 @@ namespace MMAP
 
             // file output
             char fileName[255];
-            sprintf(fileName, "mmaps/%04u%02i%02i.mmtile", mapID, tileY, tileX);
+            sprintf(fileName, "mmaps/%03u%02i%02i.mmtile", mapID, tileY, tileX);
             FILE* file = fopen(fileName, "wb");
             if (!file)
             {
@@ -762,8 +757,7 @@ namespace MMAP
 
             // now that tile is written to disk, we can unload it
             navMesh->removeTile(tileRef, NULL, NULL);
-        }
-        while (0);
+        } while (0);
 
         if (m_debugOutput)
         {
@@ -807,56 +801,56 @@ namespace MMAP
         if (m_skipContinents)
             switch (mapID)
             {
-                case 0:        // Eastern Kingdoms
-                case 1:        // Kalimdor
-                case 530:    // Outland
-                case 571:    // Northrend
-                    return true;
-                default:
-                    break;
+            case 0:        // Eastern Kingdoms
+            case 1:        // Kalimdor
+            case 530:    // Outland
+            case 571:    // Northrend
+                return true;
+            default:
+                break;
             }
 
         if (m_skipJunkMaps)
             switch (mapID)
             {
-                case 13:    // test.wdt
-                case 25:    // ScottTest.wdt
-                case 29:    // Test.wdt
-                case 42:    // Colin.wdt
-                case 169:   // EmeraldDream.wdt (unused, and very large)
-                case 451:   // development.wdt
-                case 573:   // ExteriorTest.wdt
-                case 597:   // CraigTest.wdt
-                case 605:   // development_nonweighted.wdt
-                case 606:   // QA_DVD.wdt
-                case 627:   // unused.wdt
+            case 13:    // test.wdt
+            case 25:    // ScottTest.wdt
+            case 29:    // Test.wdt
+            case 42:    // Colin.wdt
+            case 169:   // EmeraldDream.wdt (unused, and very large)
+            case 451:   // development.wdt
+            case 573:   // ExteriorTest.wdt
+            case 597:   // CraigTest.wdt
+            case 605:   // development_nonweighted.wdt
+            case 606:   // QA_DVD.wdt
+            case 627:   // unused.wdt
+                return true;
+            default:
+                if (isTransportMap(mapID))
+                {
                     return true;
-                default:
-                    if (isTransportMap(mapID))
-                    {
-                        return true;
-                    }
-                    break;
+                }
+                break;
             }
 
         if (m_skipBattlegrounds)
             switch (mapID)
             {
-                case 30:    // AV
-                case 37:    // AC
-                case 489:   // WSG
-                case 529:   // AB
-                case 566:   // EotS
-                case 607:   // SotA
-                case 628:   // IoC
-                case 726:   // TP
-                case 727:   // SM
-                case 728:   // BfG
-                case 761:   // BfG2
-                case 968:   // EotS2
-                    return true;
-                default:
-                    break;
+            case 30:    // AV
+            case 37:    // AC
+            case 489:   // WSG
+            case 529:   // AB
+            case 566:   // EotS
+            case 607:   // SotA
+            case 628:   // IoC
+            case 726:   // TP
+            case 727:   // SM
+            case 728:   // BfG
+            case 761:   // BfG2
+            case 968:   // EotS2
+                return true;
+            default:
+                break;
             }
 
         return false;
@@ -867,56 +861,56 @@ namespace MMAP
     {
         switch (mapID)
         {
-                // transport maps
-            case 582:    // Transport: Rut'theran to Auberdine
-            case 584:    // Transport: Menethil to Theramore
-            case 586:    // Transport: Exodar to Auberdine
-            case 587:    // Transport: Feathermoon Ferry
-            case 588:    // Transport: Menethil to Auberdine
-            case 589:    // Transport: Orgrimmar to Grom'Gol
-            case 590:    // Transport: Grom'Gol to Undercity
-            case 591:    // Transport: Undercity to Orgrimmar
-            case 592:    // Transport: Borean Tundra Test
-            case 593:    // Transport: Booty Bay to Ratchet
-            case 594:    // Transport: Howling Fjord Sister Mercy (Quest)
-            case 596:    // Transport: Naglfar
-            case 610:    // Transport: Tirisfal to Vengeance Landing
-            case 612:    // Transport: Menethil to Valgarde
-            case 613:    // Transport: Orgrimmar to Warsong Hold
-            case 614:    // Transport: Stormwind to Valiance Keep
-            case 620:    // Transport: Moa'ki to Unu'pe
-            case 621:    // Transport: Moa'ki to Kamagua
-            case 622:    // Transport: Orgrim's Hammer
-            case 623:    // Transport: The Skybreaker
-            case 641:    // Transport: Alliance Airship BG
-            case 642:    // Transport: HordeAirshipBG
-            case 647:    // Transport: Orgrimmar to Thunder Bluff
-            case 662:    // Transport: Alliance Vashj'ir Ship
-            case 672:    // Transport: The Skybreaker (Icecrown Citadel Raid)
-            case 673:    // Transport: Orgrim's Hammer (Icecrown Citadel Raid)
-            case 674:    // Transport: Ship to Vashj'ir
-            case 712:    // Transport: The Skybreaker (IC Dungeon)
-            case 713:    // Transport: Orgrim's Hammer (IC Dungeon)
-            case 718:    // Transport: The Mighty Wind (Icecrown Citadel Raid)
-            case 738:    // Ship to Vashj'ir (Orgrimmar -> Vashj'ir)
-            case 739:    // Vashj'ir Sub - Horde
-            case 740:    // Vashj'ir Sub - Alliance
-            case 741:    // Twilight Highlands Horde Transport
-            case 742:    // Vashj'ir Sub - Horde - Circling Abyssal Maw
-            case 743:    // Vashj'ir Sub - Alliance circling Abyssal Maw
-            case 746:    // Uldum Phase Oasis
-            case 747:    // Transport: Deepholm Gunship
-            case 748:    // Transport: Onyxia/Nefarian Elevator
-            case 749:    // Transport: Gilneas Moving Gunship
-            case 750:    // Transport: Gilneas Static Gunship
-            case 762:    // Twilight Highlands Zeppelin 1
-            case 763:    // Twilight Highlands Zeppelin 2
-            case 765:    // Krazzworks Attack Zeppelin
-            case 766:    // Transport: Gilneas Moving Gunship 02
-            case 767:    // Transport: Gilneas Moving Gunship 03
-                return true;
-            default: // no transport maps
-                return false;
+            // transport maps
+        case 582:    // Transport: Rut'theran to Auberdine
+        case 584:    // Transport: Menethil to Theramore
+        case 586:    // Transport: Exodar to Auberdine
+        case 587:    // Transport: Feathermoon Ferry
+        case 588:    // Transport: Menethil to Auberdine
+        case 589:    // Transport: Orgrimmar to Grom'Gol
+        case 590:    // Transport: Grom'Gol to Undercity
+        case 591:    // Transport: Undercity to Orgrimmar
+        case 592:    // Transport: Borean Tundra Test
+        case 593:    // Transport: Booty Bay to Ratchet
+        case 594:    // Transport: Howling Fjord Sister Mercy (Quest)
+        case 596:    // Transport: Naglfar
+        case 610:    // Transport: Tirisfal to Vengeance Landing
+        case 612:    // Transport: Menethil to Valgarde
+        case 613:    // Transport: Orgrimmar to Warsong Hold
+        case 614:    // Transport: Stormwind to Valiance Keep
+        case 620:    // Transport: Moa'ki to Unu'pe
+        case 621:    // Transport: Moa'ki to Kamagua
+        case 622:    // Transport: Orgrim's Hammer
+        case 623:    // Transport: The Skybreaker
+        case 641:    // Transport: Alliance Airship BG
+        case 642:    // Transport: HordeAirshipBG
+        case 647:    // Transport: Orgrimmar to Thunder Bluff
+        case 662:    // Transport: Alliance Vashj'ir Ship
+        case 672:    // Transport: The Skybreaker (Icecrown Citadel Raid)
+        case 673:    // Transport: Orgrim's Hammer (Icecrown Citadel Raid)
+        case 674:    // Transport: Ship to Vashj'ir
+        case 712:    // Transport: The Skybreaker (IC Dungeon)
+        case 713:    // Transport: Orgrim's Hammer (IC Dungeon)
+        case 718:    // Transport: The Mighty Wind (Icecrown Citadel Raid)
+        case 738:    // Ship to Vashj'ir (Orgrimmar -> Vashj'ir)
+        case 739:    // Vashj'ir Sub - Horde
+        case 740:    // Vashj'ir Sub - Alliance
+        case 741:    // Twilight Highlands Horde Transport
+        case 742:    // Vashj'ir Sub - Horde - Circling Abyssal Maw
+        case 743:    // Vashj'ir Sub - Alliance circling Abyssal Maw
+        case 746:    // Uldum Phase Oasis
+        case 747:    // Transport: Deepholm Gunship
+        case 748:    // Transport: Onyxia/Nefarian Elevator
+        case 749:    // Transport: Gilneas Moving Gunship
+        case 750:    // Transport: Gilneas Static Gunship
+        case 762:    // Twilight Highlands Zeppelin 1
+        case 763:    // Twilight Highlands Zeppelin 2
+        case 765:    // Krazzworks Attack Zeppelin
+        case 766:    // Transport: Gilneas Moving Gunship 02
+        case 767:    // Transport: Gilneas Moving Gunship 03
+            return true;
+        default: // no transport maps
+            return false;
         }
     }
 
@@ -924,7 +918,7 @@ namespace MMAP
     bool MapBuilder::shouldSkipTile(uint32 mapID, uint32 tileX, uint32 tileY)
     {
         char fileName[255];
-        sprintf(fileName, "mmaps/%04u%02i%02i.mmtile", mapID, tileY, tileX);
+        sprintf(fileName, "mmaps/%03u%02i%02i.mmtile", mapID, tileY, tileX);
         FILE* file = fopen(fileName, "rb");
         if (!file)
         {
