@@ -87,7 +87,7 @@ if(UNIX)
   set(BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin)
 
   if(NOT CONF_INSTALL_DIR)
-    set(CONF_INSTALL_DIR ./etc)
+    set(CONF_INSTALL_DIR ../etc)
   endif()
 else()
   set(BIN_DIR ${CMAKE_INSTALL_PREFIX})
