@@ -13,11 +13,11 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-if (NOT TARGET "ZLIB::ZLIB")
+if(NOT TARGET "ZLIB::ZLIB")
     add_subdirectory(zlib)
 endif()
 
-if (NOT TARGET "BZip2::BZip2")
+if(NOT TARGET "BZip2::BZip2")
     add_subdirectory(bzip2)
 endif()
 
@@ -28,6 +28,7 @@ if(BUILD_SERVER)
     if(SCRIPT_LIB_ELUNA)
         add_subdirectory(lualib)
     endif()
+
     if(SOAP)
         add_subdirectory(gsoap)
     endif()
@@ -39,12 +40,7 @@ if(BUILD_SERVER OR BUILD_TOOLS)
 endif()
 
 if(BUILD_TOOLS)
-    if(USE_STORMLIB)
-        add_subdirectory(StormLib)
-        add_subdirectory(tomlib)
-    else()
-        add_subdirectory(libmpq)
-    endif()
+    add_subdirectory(StormLib)
+    add_subdirectory(tomlib)
     add_subdirectory(loadlib)
 endif()
-

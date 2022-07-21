@@ -10,7 +10,7 @@ WORKDIR /firelands/bin
 WORKDIR /firelands/cata/build
 
 #Install firelands
-RUN cmake .. -DCMAKE_INSTALL_PREFIX=/firelands -DBUILD_SERVER=1 -DBUILD_AUTH=0 -DBUILD_TOOLS=0
+RUN cmake .. -DCMAKE_INSTALL_PREFIX=/firelands -DBUILD_SERVER=1 -DBUILD_AUTH=0 -DBUILD_TOOLS=1
 RUN make -j4
 RUN make install
 

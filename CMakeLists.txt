@@ -38,7 +38,6 @@ set_property(GLOBAL
 option(BUILD_SERVER "Build the worldserver" ON)
 option(BUILD_AUTH "Build the authserver" ON)
 option(BUILD_TOOLS "Build the map/vmap/mmap extractors" ON)
-option(USE_STORMLIB "Use StormLib for reading MPQs" ON)
 option(SCRIPT_LIB_ELUNA "Compile with support for Eluna scripts" ON)
 option(SCRIPT_LIB_SD3 "Compile with support for ScriptDev3 scripts" ON)
 option(PLAYERBOTS "Enable Player Bots" OFF)
@@ -56,7 +55,6 @@ message(
     BUILD_SERVER            Build the main server
     BUILD_AUTH              Build the authserver
     BUILD_TOOLS             Build the map/vmap/mmap extractors
-    USE_STORMLIB            Use StormLib for reading MPQs
     SOAP                    Enable remote access via SOAP
     PCH                     Enable use of precompiled headers
     DEBUG                   Debug build, only for systems without IDE (Linux, *BSD)
