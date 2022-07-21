@@ -74,4 +74,8 @@ We are grateful to the following who contributed to Release 0.22:
 * willtuker
 * Xalares    
 * Zilvereyes
+
+Firelands Core Contributors:
+
 * seobryn
+* pangolp
