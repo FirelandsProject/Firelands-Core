@@ -24,25 +24,41 @@
    #ifdef malloc
    #define LTC_NO_PROTOTYPES
    #endif
+#if PLATFORM == PLATFORM_WINDOWS
 #define XMALLOC  LibTomMalloc
+#else
+#define XMALLOC  malloc
+#endif
 #endif
 #ifndef XREALLOC
    #ifdef realloc
    #define LTC_NO_PROTOTYPES
    #endif
+#if PLATFORM == PLATFORM_WINDOWS
 #define XREALLOC LibTomRealloc
+#else
+#define XREALLOC realloc
+#endif
 #endif
 #ifndef XCALLOC
    #ifdef calloc
    #define LTC_NO_PROTOTYPES
    #endif
+#if PLATFORM == PLATFORM_WINDOWS
 #define XCALLOC  LibTomCalloc
+#else
+#define XCALLOC  calloc
+#endif
 #endif
 #ifndef XFREE
    #ifdef free
    #define LTC_NO_PROTOTYPES
    #endif
+#if PLATFORM == PLATFORM_WINDOWS
 #define XFREE    LibTomFree
+#else
+#define XFREE    free
+#endif
 #endif
 
 #ifndef XMEMSET
@@ -71,7 +87,11 @@
 #endif
 
 #ifndef XCLOCK
+#if PLATFORM == PLATFORM_WINDOWS
 #define XCLOCK   LibTomClock
+#else
+#define XCLOCK   clock
+#endif
 #endif
 #ifndef XCLOCKS_PER_SEC
 #define XCLOCKS_PER_SEC CLOCKS_PER_SEC
@@ -81,7 +101,11 @@
    #ifdef qsort
    #define LTC_NO_PROTOTYPES
    #endif
+#if PLATFORM == PLATFORM_WINDOWS
 #define XQSORT LibTomQsort
+#else
+#define XQSORT qsort
+#endif
 #endif
 
 /* Easy button? */
