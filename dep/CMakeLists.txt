@@ -41,6 +41,5 @@ endif()
 
 if(BUILD_TOOLS)
     add_subdirectory(StormLib)
-    add_subdirectory(tomlib)
     add_subdirectory(loadlib)
 endif()
