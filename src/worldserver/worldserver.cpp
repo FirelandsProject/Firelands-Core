@@ -24,6 +24,7 @@
 #include <ace/Version.h>
 #include <ace/Get_Opt.h>
 
+#include "Utilities/Banner.h"
 #include "Common.h"
 #include "Database/DatabaseEnv.h"
 #include "Config/Config.h"
@@ -43,7 +44,6 @@
 #include "CliThread.h"
 #include "AFThread.h"
 #include "RAThread.h"
-#include "Banner.h"
 
 #ifdef ENABLE_SOAP
 #include "SOAP/SoapThread.h"
@@ -105,14 +105,6 @@ static bool start_db()
         return false;
     }
 
-    ///- Check the World database version
-    if (!WorldDatabase.CheckDatabaseVersion(DATABASE_WORLD))
-    {
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        return false;
-    }
-
     dbstring = sConfig.GetStringDefault("CharacterDatabaseInfo", "");
     nConnections = sConfig.GetIntDefault("CharacterDatabaseConnections", 1);
     if (dbstring.empty())
@@ -132,15 +124,6 @@ static bool start_db()
 
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
-        return false;
-    }
-
-    ///- Check the Character database version
-    if (!CharacterDatabase.CheckDatabaseVersion(DATABASE_CHARACTER))
-    {
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        CharacterDatabase.HaltDelayThread();
         return false;
     }
 
@@ -166,16 +149,6 @@ static bool start_db()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        return false;
-    }
-
-    ///- Check the Realm database version
-    if (!LoginDatabase.CheckDatabaseVersion(DATABASE_REALMD))
-    {
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        CharacterDatabase.HaltDelayThread();
-        LoginDatabase.HaltDelayThread();
         return false;
     }
 
@@ -358,7 +331,7 @@ int main(int argc, char** argv)
     case 'r':
         WinServiceRun();
         break;
-    }
+}
 #endif
     if (!sConfig.SetSource(cfg_file))
     {

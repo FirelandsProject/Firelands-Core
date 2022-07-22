@@ -2,6 +2,7 @@
 
 namespace Firelands {
     class Banner {
+    public:
         static void Show();
     };
 }

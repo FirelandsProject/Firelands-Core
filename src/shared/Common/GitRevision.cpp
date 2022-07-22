@@ -44,19 +44,19 @@ char const* GitRevision::GetHostOSVersion()
 
 // Platform Define
 #if PLATFORM == PLATFORM_WINDOWS
-    #ifdef _WIN64
-        #define FIRELANDS_PLATFORM_STR "Win64"
-    #else
-        #define FIRELANDS_PLATFORM_STR "Win32"
-    #endif
-#elif PLATFORM == PLATFORM_APPLE
-    #define FIRELANDS_PLATFORM_STR "MacOSX"
-#elif PLATFORM == PLATFORM_INTEL
-    #define FIRELANDS_PLATFORM_STR "Intel"
-#elif PLATFORM == PLATFORM_UNIX
-    #define FIRELANDS_PLATFORM_STR "Linux"
+#ifdef _WIN64
+#define FIRELANDS_PLATFORM_STR "Win64"
 #else
-    #define FIRELANDS_PLATFORM_STR "Unknown System"
+#define FIRELANDS_PLATFORM_STR "Win32"
+#endif
+#elif PLATFORM == PLATFORM_APPLE
+#define FIRELANDS_PLATFORM_STR "MacOSX"
+#elif PLATFORM == PLATFORM_INTEL
+#define FIRELANDS_PLATFORM_STR "Intel"
+#elif PLATFORM == PLATFORM_UNIX
+#define FIRELANDS_PLATFORM_STR "Linux"
+#else
+#define FIRELANDS_PLATFORM_STR "Unknown System"
 #endif
 
 // Database Revision
@@ -65,69 +65,9 @@ char const* GitRevision::GetProjectRevision()
     return PROJECT_REVISION_NR;
 }
 
-char const* GitRevision::GetRealmDBVersion()
-{
-    return AUTH_DB_VERSION_NR;
-}
-
-char const* GitRevision::GetRealmDBStructure()
-{
-    return AUTH_DB_STRUCTURE_NR;
-}
-
-char const* GitRevision::GetRealmDBContent()
-{
-    return AUTH_DB_CONTENT_NR;
-}
-
-char const* GitRevision::GetRealmDBUpdateDescription()
-{
-    return AUTH_DB_UPDATE_DESCRIPT;
-}
-
-char const* GitRevision::GetCharDBVersion()
-{
-    return CHAR_DB_VERSION_NR;
-}
-
-char const* GitRevision::GetCharDBStructure()
-{
-    return CHAR_DB_STRUCTURE_NR;
-}
-
-char const* GitRevision::GetCharDBContent()
-{
-    return CHAR_DB_CONTENT_NR;
-}
-
-char const* GitRevision::GetCharDBUpdateDescription()
-{
-    return CHAR_DB_UPDATE_DESCRIPT;
-}
-
-char const* GitRevision::GetWorldDBVersion()
-{
-    return WORLD_DB_VERSION_NR;
-}
-
-char const* GitRevision::GetWorldDBStructure()
-{
-    return WORLD_DB_STRUCTURE_NR;
-}
-
-char const* GitRevision::GetWorldDBContent()
-{
-    return WORLD_DB_CONTENT_NR;
-}
-
-char const* GitRevision::GetWorldDBUpdateDescription()
-{
-    return WORLD_DB_UPDATE_DESCRIPT;
-}
-
 char const* GitRevision::GetFullRevision()
 {
-    return "firelands revision: " VER_PRODUCTVERSION_STR;
+    return "firelands-cata revision: " VER_PRODUCTVERSION_STR;
 }
 
 char const* GitRevision::GetRunningSystem()

@@ -40,7 +40,7 @@
 #include <ace/ACE.h>
 #include <ace/Acceptor.h>
 #include <ace/SOCK_Acceptor.h>
-#include "Banner.h"
+#include "Utilities/Banner.h"
 
 #ifdef WIN32
 #include "ServiceWin32.h"
@@ -419,13 +419,6 @@ bool StartDB()
     if (!LoginDatabase.Initialize(dbstring.c_str()))
     {
         sLog.outError("Can not connect to database");
-        return false;
-    }
-
-    if (!LoginDatabase.CheckDatabaseVersion(DATABASE_REALMD))
-    {
-        ///- Wait for already started DB delay threads to end
-        LoginDatabase.HaltDelayThread();
         return false;
     }
 
