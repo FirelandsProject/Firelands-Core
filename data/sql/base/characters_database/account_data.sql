@@ -1,23 +1,22 @@
-CREATE DATABASE  IF NOT EXISTS `characters` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `characters`;
---
--- Table structure for table `account_data`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 DROP TABLE IF EXISTS `account_data`;
-
-CREATE TABLE `account_data` (
-  `account` int(11) unsigned NOT NULL DEFAULT '0',
-  `type` int(11) unsigned NOT NULL DEFAULT '0',
-  `time` bigint(11) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE IF NOT EXISTS `account_data` (
+  `account` int unsigned NOT NULL DEFAULT '0',
+  `type` int unsigned NOT NULL DEFAULT '0',
+  `time` bigint unsigned NOT NULL DEFAULT '0',
   `data` longblob NOT NULL,
   PRIMARY KEY (`account`,`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
---
--- Dumping data for table `account_data`
---
+DELETE FROM `account_data`;
+/*!40000 ALTER TABLE `account_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account_data` ENABLE KEYS */;
 
-LOCK TABLES `account_data` WRITE;
-
-UNLOCK TABLES;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

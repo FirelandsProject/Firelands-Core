@@ -1,111 +1,79 @@
-CREATE DATABASE  IF NOT EXISTS `world` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `world`;
---
--- Table structure for table `spell_learn_spell`
---
-
-DROP TABLE IF EXISTS `spell_learn_spell`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `spell_learn_spell` (
-  `entry` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT 'Spell ID (See Spell.dbc).',
-  `SpellID` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT 'Spell ID (See Spell.dbc).',
-  `Active` tinyint(3) unsigned NOT NULL DEFAULT 1 COMMENT 'Active flag.',
-  PRIMARY KEY (`entry`,`SpellID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Item System';
-/*!40101 SET character_set_client = @saved_cs_client */;
--- ---------------------------------------- 
--- MySQL dump 10.13  Distrib 5.5.37, for macos12 (x86_64)
---
--- Host: localhost    Database: world
--- ------------------------------------------------------
--- Server version	5.5.5-10.5.8-MariaDB
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@SESSION.TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Dumping data for table `spell_learn_spell`
---
+DROP TABLE IF EXISTS `spell_learn_spell`;
+CREATE TABLE IF NOT EXISTS `spell_learn_spell` (
+  `entry` mediumint unsigned NOT NULL DEFAULT '0' COMMENT 'Spell ID (See Spell.dbc).',
+  `SpellID` mediumint unsigned NOT NULL DEFAULT '0' COMMENT 'Spell ID (See Spell.dbc).',
+  `Active` tinyint unsigned NOT NULL DEFAULT '1' COMMENT 'Active flag.',
+  PRIMARY KEY (`entry`,`SpellID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='Item System';
 
-LOCK TABLES `spell_learn_spell` WRITE;
+DELETE FROM `spell_learn_spell`;
 /*!40000 ALTER TABLE `spell_learn_spell` DISABLE KEYS */;
-INSERT INTO `spell_learn_spell` (`entry`, `SpellID`, `Active`) VALUES 
-(264,3018,1),
-(265,3018,1),
-(266,3018,1),
-(2098,79327,1),
-(5011,3018,1),
-(5784,33388,1),
-(13819,33388,1),
-(17002,24867,0),
-(23161,33391,1),
-(23214,33391,1),
-(24866,24864,0),
-(33872,47179,0),
-(33873,47180,0),
-(33943,34090,1),
-(34767,33391,1),
-(34769,33388,1),
-(53428,53341,1),
-(53428,53343,1),
-(56815,56816,0),
-(58984,21009,1),
-(79682,93321,1),
-(80388,93375,1),
-(86467,86473,1),
-(86524,86113,1),
-(86524,86536,1),
-(86524,86537,1),
-(86525,86102,1),
-(86525,86103,1),
-(86525,86539,1),
-(86526,86101,1),
-(86526,86110,1),
-(86526,86535,1),
-(86528,86538,1),
-(86529,86099,1),
-(86529,86100,1),
-(86529,86108,1),
-(86530,86093,1),
-(86530,86096,1),
-(86530,86097,1),
-(86530,86104,1),
-(86531,86092,1),
-(87491,86470,1),
-(87492,86471,1),
-(87493,86472,1),
-(87494,86474,1),
-(87495,86475,1),
-(87496,86476,1),
-(87497,86477,1),
-(87498,86478,1),
-(87500,86479,1),
-(87504,86531,1),
-(87505,86530,1),
-(87506,86528,1),
-(87507,86529,1),
-(87509,86526,1),
-(87510,86524,1),
-(87511,86525,1);
+INSERT INTO `spell_learn_spell` (`entry`, `SpellID`, `Active`) VALUES
+	(264, 3018, 1),
+	(265, 3018, 1),
+	(266, 3018, 1),
+	(2098, 79327, 1),
+	(5011, 3018, 1),
+	(5784, 33388, 1),
+	(13819, 33388, 1),
+	(17002, 24867, 0),
+	(23161, 33391, 1),
+	(23214, 33391, 1),
+	(24866, 24864, 0),
+	(33872, 47179, 0),
+	(33873, 47180, 0),
+	(33943, 34090, 1),
+	(34767, 33391, 1),
+	(34769, 33388, 1),
+	(53428, 53341, 1),
+	(53428, 53343, 1),
+	(56815, 56816, 0),
+	(58984, 21009, 1),
+	(79682, 93321, 1),
+	(80388, 93375, 1),
+	(86467, 86473, 1),
+	(86524, 86113, 1),
+	(86524, 86536, 1),
+	(86524, 86537, 1),
+	(86525, 86102, 1),
+	(86525, 86103, 1),
+	(86525, 86539, 1),
+	(86526, 86101, 1),
+	(86526, 86110, 1),
+	(86526, 86535, 1),
+	(86528, 86538, 1),
+	(86529, 86099, 1),
+	(86529, 86100, 1),
+	(86529, 86108, 1),
+	(86530, 86093, 1),
+	(86530, 86096, 1),
+	(86530, 86097, 1),
+	(86530, 86104, 1),
+	(86531, 86092, 1),
+	(87491, 86470, 1),
+	(87492, 86471, 1),
+	(87493, 86472, 1),
+	(87494, 86474, 1),
+	(87495, 86475, 1),
+	(87496, 86476, 1),
+	(87497, 86477, 1),
+	(87498, 86478, 1),
+	(87500, 86479, 1),
+	(87504, 86531, 1),
+	(87505, 86530, 1),
+	(87506, 86528, 1),
+	(87507, 86529, 1),
+	(87509, 86526, 1),
+	(87510, 86524, 1),
+	(87511, 86525, 1);
 /*!40000 ALTER TABLE `spell_learn_spell` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2022-07-05 13:05:03
