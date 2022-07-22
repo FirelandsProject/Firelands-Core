@@ -1,16 +1,24 @@
-CREATE DATABASE  IF NOT EXISTS `characters` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `characters`;
---
--- Table structure for table `guild_bank_tab`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 DROP TABLE IF EXISTS `guild_bank_tab`;
-CREATE TABLE `guild_bank_tab` (
-  `guildid` int(11) unsigned NOT NULL DEFAULT '0',
-  `TabId` tinyint(1) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE IF NOT EXISTS `guild_bank_tab` (
+  `guildid` int unsigned NOT NULL DEFAULT '0',
+  `TabId` tinyint unsigned NOT NULL DEFAULT '0',
   `TabName` varchar(100) NOT NULL DEFAULT '',
   `TabIcon` varchar(100) NOT NULL DEFAULT '',
   `TabText` text,
   PRIMARY KEY (`guildid`,`TabId`),
   KEY `guildid_key` (`guildid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+DELETE FROM `guild_bank_tab`;
+/*!40000 ALTER TABLE `guild_bank_tab` DISABLE KEYS */;
+/*!40000 ALTER TABLE `guild_bank_tab` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

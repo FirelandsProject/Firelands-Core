@@ -1,24 +1,29 @@
-CREATE DATABASE  IF NOT EXISTS `characters` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `characters`;
---
--- Table structure for table `ahbot_history`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 DROP TABLE IF EXISTS `ahbot_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ahbot_history` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `buytime` bigint(20) NOT NULL,
-  `item` bigint(20) NOT NULL,
-  `bid` bigint(20) NOT NULL,
-  `buyout` bigint(20) NOT NULL,
-  `won` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ahbot_history` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `buytime` bigint NOT NULL,
+  `item` bigint NOT NULL,
+  `bid` bigint NOT NULL,
+  `buyout` bigint NOT NULL,
+  `won` bigint NOT NULL,
   `category` varchar(45) DEFAULT NULL COMMENT 'An Item category Id from the list below:',
-  `auction_house` bigint(20) NOT NULL,
+  `auction_house` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `won` (`won`),
   KEY `category` (`category`),
   KEY `auction_house` (`auction_house`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+DELETE FROM `ahbot_history`;
+/*!40000 ALTER TABLE `ahbot_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ahbot_history` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
