@@ -70,6 +70,7 @@ CREATE TABLE `characters` (
   `deleteInfos_Account` int(11) unsigned DEFAULT NULL COMMENT 'This is the account number from the characters table.',
   `deleteInfos_Name` varchar(12) DEFAULT NULL COMMENT 'The is the name of the character being deleted.',
   `deleteDate` bigint(20) unsigned DEFAULT NULL COMMENT 'This is the date the character was deleted,',
+  `createdDate` int unsigned DEFAULT NULL COMMENT 'This is the character creation date',
   PRIMARY KEY (`guid`),
   KEY `idx_account` (`account`),
   KEY `idx_online` (`online`),
