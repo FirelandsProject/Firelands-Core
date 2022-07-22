@@ -61,7 +61,6 @@ Thumbs.db
 # Configuration files to be customized
 
 # Build directories
-/bin/
 _build
 build
 /dep/libmpq/autom4te.cache/
