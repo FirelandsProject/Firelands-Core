@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `characters` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `characters`;
 --
 -- Table structure for table `character_homebind`
 --

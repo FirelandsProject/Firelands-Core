@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `world` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `world`;
 --
 -- Table structure for table `skill_fishing_base_level`
 --

@@ -1,19 +1,19 @@
+CREATE DATABASE  IF NOT EXISTS `world` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `world`;
 --
--- Table structure for table `conditions`
+-- Table structure for table `command`
 --
 
-DROP TABLE IF EXISTS `conditions`;
+DROP TABLE IF EXISTS `command`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `conditions` (
-  `condition_entry` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identifier',
-  `type` tinyint(3) NOT NULL DEFAULT 0 COMMENT 'Type of the condition.',
-  `value1` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT 'Data field One for the condition.',
-  `value2` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT 'Data field Two for the condition.',
-  `comments` varchar(400) DEFAULT NULL,
-  PRIMARY KEY (`condition_entry`),
-  UNIQUE KEY `unique_conditions` (`type`,`value1`,`value2`)
-) ENGINE=InnoDB AUTO_INCREMENT=8346 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Condition System';
+CREATE TABLE `command` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique Command ID.',
+  `command_text` varchar(50) NOT NULL DEFAULT '' COMMENT 'The Command Name.',
+  `security` tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT 'The minimum security level to use the command (See account.gmlevel) in the realm',
+  `help_text` longtext DEFAULT NULL COMMENT 'The help text for the command which explains it''s use and parameters.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=810 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Chat System';
 /*!40101 SET character_set_client = @saved_cs_client */;
 -- ---------------------------------------- 
 -- MySQL dump 10.13  Distrib 5.5.37, for macos12 (x86_64)
