@@ -46,12 +46,12 @@ CREATE TABLE `firelands_string` (
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `firelands_strings`
+-- Dumping data for table `firelands_string`
 --
 
-LOCK TABLES `firelands_strings` WRITE;
-/*!40000 ALTER TABLE `firelands_strings` DISABLE KEYS */;
-INSERT INTO `firelands_strings` (`entry`, `content_default`, `content_loc1`, `content_loc2`, `content_loc3`, `content_loc4`, `content_loc5`, `content_loc6`, `content_loc7`, `content_loc8`, `source_file`, `source_enum_wrapper`, `source_enum_tag`, `content_loc9`, `content_loc10`, `content_loc11`) VALUES 
+LOCK TABLES `firelands_string` WRITE;
+/*!40000 ALTER TABLE `firelands_string` DISABLE KEYS */;
+INSERT INTO `firelands_string` (`entry`, `content_default`, `content_loc1`, `content_loc2`, `content_loc3`, `content_loc4`, `content_loc5`, `content_loc6`, `content_loc7`, `content_loc8`, `source_file`, `source_enum_wrapper`, `source_enum_tag`, `content_loc9`, `content_loc10`, `content_loc11`) VALUES 
 (1,'You should select a character or a creature.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Вы должны выбрать персонажа или существо.','Language.h','MangosStrings','LANG_SELECT_CHAR_OR_CREATURE',NULL,NULL,NULL),
 (2,'You should select a creature.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Вы должны выбрать существо.','Language.h','MangosStrings','LANG_SELECT_CREATURE',NULL,NULL,NULL),
 (3,'|cffff0000[System Message]: %s|r',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'|cffff0000[Системное сообщение]: %s|r','Language.h','MangosStrings','LANG_SYSTEMMESSAGE',NULL,NULL,NULL),
@@ -928,7 +928,7 @@ INSERT INTO `firelands_strings` (`entry`, `content_default`, `content_loc1`, `co
 (1714,'You can only unfreeze online characters.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Language.h','MangosStrings','LANG_COMMAND_UNFREEZE_PLAYER_PLAYER_NOT_FOUND',NULL,NULL,NULL),
 (1720,'Wrong Item type',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1721,'Currency %u has maxCount = 0, but for currencies maxCount = buyCount, so it can\'t be 0 or less than that\'s currency precision (%u).',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `firelands_strings` ENABLE KEYS */;
+/*!40000 ALTER TABLE `firelands_string` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
