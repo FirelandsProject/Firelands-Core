@@ -610,7 +610,7 @@ bool Database::CheckDatabaseVersion(DatabaseTypes database)
     // See  enum values for :
     //  WORLD_DB_CONTENT_NR
     //  CHAR_DB_CONTENT_NR
-    //  REALMD_DB_CONTENT_NR
+    //  AUTH_DB_CONTENT_NR
     // for more information.
     if (current_db_content < core_db_requirements.minimal_expected_content)
     {

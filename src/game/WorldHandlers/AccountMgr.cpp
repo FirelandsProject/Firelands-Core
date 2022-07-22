@@ -23,6 +23,7 @@
 #include "Policies/Singleton.h"
 #include "Util.h"
 #include "Auth/Sha1.h"
+#include "SharedDefines.h"
 
 extern DatabaseType LoginDatabase;
 
@@ -65,7 +66,7 @@ AccountOpResult AccountMgr::CreateAccount(std::string username, std::string pass
         }
     }
 
-    if (!LoginDatabase.PExecute("INSERT INTO `account` (`username`,`sha_pass_hash`,`joindate`) VALUES ('%s','%s',NOW())", username.c_str(), CalculateShaPassHash(username, password).c_str()))
+    if (!LoginDatabase.PExecute("INSERT INTO `account` (`username`,`sha_pass_hash`,`joindate`,`expansion`) VALUES ('%s','%s',NOW(),%i)", username.c_str(), CalculateShaPassHash(username, password).c_str(), MAX_EXPANSION))
     {
         return AOR_DB_INTERNAL_ERROR;                        // unexpected error
     }

@@ -67,22 +67,22 @@ char const* GitRevision::GetProjectRevision()
 
 char const* GitRevision::GetRealmDBVersion()
 {
-    return REALMD_DB_VERSION_NR;
+    return AUTH_DB_VERSION_NR;
 }
 
 char const* GitRevision::GetRealmDBStructure()
 {
-    return REALMD_DB_STRUCTURE_NR;
+    return AUTH_DB_STRUCTURE_NR;
 }
 
 char const* GitRevision::GetRealmDBContent()
 {
-    return REALMD_DB_CONTENT_NR;
+    return AUTH_DB_CONTENT_NR;
 }
 
 char const* GitRevision::GetRealmDBUpdateDescription()
 {
-    return REALMD_DB_UPDATE_DESCRIPT;
+    return AUTH_DB_UPDATE_DESCRIPT;
 }
 
 char const* GitRevision::GetCharDBVersion()
