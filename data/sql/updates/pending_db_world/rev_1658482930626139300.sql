@@ -11,7 +11,7 @@ BEGIN
     DECLARE bRollback BOOL  DEFAULT FALSE ;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `bRollback` = TRUE;
 
-    -- Current Values (TODO - must be a better way to do this)
+    -- Current Values
     SET @cCurVersion := (SELECT `version` FROM `db_version` ORDER BY `version` DESC, `STRUCTURE` DESC, `CONTENT` DESC LIMIT 0,1);
     SET @cCurStructure := (SELECT `structure` FROM `db_version` ORDER BY `version` DESC, `STRUCTURE` DESC, `CONTENT` DESC LIMIT 0,1);
     SET @cCurContent := (SELECT `content` FROM `db_version` ORDER BY `version` DESC, `STRUCTURE` DESC, `CONTENT` DESC LIMIT 0,1);
@@ -19,17 +19,17 @@ BEGIN
     -- Expected Values
     SET @cOldVersion = '22'; 
     SET @cOldStructure = '03'; 
-    SET @cOldContent = '003';
+    SET @cOldContent = '002';
 
     -- New Values
     SET @cNewVersion = '22';
     SET @cNewStructure = '03';
-    SET @cNewContent = '004';
+    SET @cNewContent = '003';
                             -- DESCRIPTION IS 30 Characters MAX    
-    SET @cNewDescription = 'Item faction Req';
+    SET @cNewDescription = 'NPC movement caverns';
 
                         -- COMMENT is 150 Characters MAX
-    SET @cNewComment = 'Item faction Req';
+    SET @cNewComment = 'NPC movement caverns';
 
     -- Evaluate all settings
     SET @cCurResult := (SELECT `description` FROM `db_version` ORDER BY `version` DESC, `STRUCTURE` DESC, `CONTENT` DESC LIMIT 0,1);
@@ -43,21 +43,8 @@ BEGIN
         -- -- PLACE UPDATE SQL BELOW -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 
-    -- Faction Quartermaster Satchel updated to proper requirements.
-	-- Alliance 
-	UPDATE `item_template` SET `RequiredReputationFaction` = 1134, `RequiredReputationRank` = 6 WHERE `entry` = 67532;
-	UPDATE `item_template` SET `RequiredReputationFaction` = 72, `RequiredReputationRank` = 6 WHERE `entry` = 67531; 
-	UPDATE `item_template` SET `RequiredReputationFaction` = 47, `RequiredReputationRank` = 6 WHERE `entry` = 67528; 
-	UPDATE `item_template` SET `RequiredReputationFaction` = 54, `RequiredReputationRank` = 6 WHERE `entry` = 67530; 
-	UPDATE `item_template` SET `RequiredReputationFaction` = 69, `RequiredReputationRank` = 6 WHERE `entry` = 67526; 
-	UPDATE `item_template` SET `RequiredReputationFaction` = 930, `RequiredReputationRank` = 6 WHERE `entry` = 67527; 
-	-- Horde
-	UPDATE `item_template` SET `RequiredReputationFaction` = 911, `RequiredReputationRank` = 6 WHERE `entry` = 67535; 
-	UPDATE `item_template` SET `RequiredReputationFaction` = 68, `RequiredReputationRank` = 6 WHERE `entry` = 67529;
-	UPDATE `item_template` SET `RequiredReputationFaction` = 81, `RequiredReputationRank` = 6 WHERE `entry` = 67534;  
-	UPDATE `item_template` SET `RequiredReputationFaction` = 78, `RequiredReputationRank` = 6 WHERE `entry` = 67533;  
-	UPDATE `item_template` SET `RequiredReputationFaction` = 530, `RequiredReputationRank` = 6 WHERE `entry` = 67536;
-	UPDATE `item_template` SET `RequiredReputationFaction` = 1133, `RequiredReputationRank` = 6 WHERE `entry` = 67525;
+    -- Caverns of Time "Specimen" npcs should not wonder about, but stand frozen in time.
+    UPDATE `creature` SET `MovementType` = 0, `spawndist` = 0 WHERE `id` IN (20053,20054,20055);
 
         -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
         -- -- PLACE UPDATE SQL ABOVE -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -111,5 +98,3 @@ CALL firelands_update();
 
 -- Drop the procedure
 DROP PROCEDURE IF EXISTS `firelands_update`;
-
-
