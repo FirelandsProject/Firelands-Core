@@ -616,13 +616,6 @@ class Database
         void ProcessResultQueue();
 
         /**
-        * @brief Function to check that the database version matches expected core version
-        *
-        * @param DatabaseTypes
-        * @return bool
-        */
-        bool CheckDatabaseVersion(DatabaseTypes database);
-        /**
          * @brief
          *
          * @return uint32

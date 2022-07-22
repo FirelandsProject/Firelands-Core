@@ -26,55 +26,55 @@
 
 #include <iomanip>
 
-//static ACE_Time_Value g_SystemTickTime = ACE_OS::gettimeofday();
+ //static ACE_Time_Value g_SystemTickTime = ACE_OS::gettimeofday();
 
-//uint32 WorldTimer::m_iTime = 0;
-//uint32 WorldTimer::m_iPrevTime = 0;
-//
-//uint32 WorldTimer::tickTime() { return m_iTime; }
-//uint32 WorldTimer::tickPrevTime() { return m_iPrevTime; }
-//
-//uint32 WorldTimer::tick()
-//{
-//    // save previous world tick time
-//    m_iPrevTime = m_iTime;
-//
-//    // get the new one and don't forget to persist current system time in m_SystemTickTime
-//    m_iTime = WorldTimer::getMSTime_internal();
-//
-//    // return tick diff
-//    return getMSTimeDiff(m_iPrevTime, m_iTime);
-//}
-//
-//uint32 WorldTimer::getMSTime()
-//{
-//    return getMSTime_internal();
-//}
-//
-//uint32 WorldTimer::getMSTime_internal()
-//{
-//    // get current time
-//    const ACE_Time_Value currTime = ACE_OS::gettimeofday();
-//    // calculate time diff between two world ticks
-//    // special case: curr_time < old_time - we suppose that our time has not ticked at all
-//    // this should be constant value otherwise it is possible that our time can start ticking backwards until next world tick!!!
-//    uint64 diff = 0;
-//    (currTime - g_SystemTickTime).msec(diff);
-//
-//    // lets calculate current world time
-//    uint32 iRes = uint32(diff % UI64LIT(0x00000000FFFFFFFF));
-//    return iRes;
-//}
+ //uint32 WorldTimer::m_iTime = 0;
+ //uint32 WorldTimer::m_iPrevTime = 0;
+ //
+ //uint32 WorldTimer::tickTime() { return m_iTime; }
+ //uint32 WorldTimer::tickPrevTime() { return m_iPrevTime; }
+ //
+ //uint32 WorldTimer::tick()
+ //{
+ //    // save previous world tick time
+ //    m_iPrevTime = m_iTime;
+ //
+ //    // get the new one and don't forget to persist current system time in m_SystemTickTime
+ //    m_iTime = WorldTimer::getMSTime_internal();
+ //
+ //    // return tick diff
+ //    return getMSTimeDiff(m_iPrevTime, m_iTime);
+ //}
+ //
+ //uint32 WorldTimer::getMSTime()
+ //{
+ //    return getMSTime_internal();
+ //}
+ //
+ //uint32 WorldTimer::getMSTime_internal()
+ //{
+ //    // get current time
+ //    const ACE_Time_Value currTime = ACE_OS::gettimeofday();
+ //    // calculate time diff between two world ticks
+ //    // special case: curr_time < old_time - we suppose that our time has not ticked at all
+ //    // this should be constant value otherwise it is possible that our time can start ticking backwards until next world tick!!!
+ //    uint64 diff = 0;
+ //    (currTime - g_SystemTickTime).msec(diff);
+ //
+ //    // lets calculate current world time
+ //    uint32 iRes = uint32(diff % UI64LIT(0x00000000FFFFFFFF));
+ //    return iRes;
+ //}
 
-//////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////
 int32 irand(int32 min, int32 max)
 {
-    return RNG::instance()->rand_i(min,max);
+    return RNG::instance()->rand_i(min, max);
 }
 
 uint32 urand(uint32 min, uint32 max)
 {
-    return RNG::instance()->rand_u(min,max);
+    return RNG::instance()->rand_u(min, max);
 }
 
 float frand(float min, float max)
@@ -217,10 +217,10 @@ std::tm localtime_r(const time_t& time)
 
 std::string secsToTimeString(time_t timeInSecs, TimeFormat timeFormat, bool hoursOnly)
 {
-    time_t secs    = timeInSecs % MINUTE;
+    time_t secs = timeInSecs % MINUTE;
     time_t minutes = timeInSecs % HOUR / MINUTE;
-    time_t hours   = timeInSecs % DAY  / HOUR;
-    time_t days    = timeInSecs / DAY;
+    time_t hours = timeInSecs % DAY / HOUR;
+    time_t days = timeInSecs / DAY;
 
     std::ostringstream ss;
     if (days)
@@ -334,8 +334,8 @@ std::string secsToTimeString(time_t timeInSecs, TimeFormat timeFormat, bool hour
 
 uint32 TimeStringToSecs(const std::string& timestring)
 {
-    uint32 secs       = 0;
-    uint32 buffer     = 0;
+    uint32 secs = 0;
+    uint32 buffer = 0;
     uint32 multiplier = 0;
 
     for (std::string::const_iterator itr = timestring.begin(); itr != timestring.end(); ++itr)
@@ -349,11 +349,11 @@ uint32 TimeStringToSecs(const std::string& timestring)
         {
             switch (*itr)
             {
-                case 'd': multiplier = DAY;     break;
-                case 'h': multiplier = HOUR;    break;
-                case 'm': multiplier = MINUTE;  break;
-                case 's': multiplier = 1;       break;
-                default : return 0;                         // bad format
+            case 'd': multiplier = DAY;     break;
+            case 'h': multiplier = HOUR;    break;
+            case 'm': multiplier = MINUTE;  break;
+            case 's': multiplier = 1;       break;
+            default: return 0;                         // bad format
             }
             buffer *= multiplier;
             secs += buffer;
@@ -617,22 +617,22 @@ std::wstring GetMainPartOfName(std::wstring wname, uint32 declension)
 
     // Important: end length must be <= MAX_INTERNAL_PLAYER_NAME-MAX_PLAYER_NAME (3 currently)
 
-    static wchar_t const a_End[]    = { wchar_t(1), wchar_t(0x0430), wchar_t(0x0000)};
-    static wchar_t const o_End[]    = { wchar_t(1), wchar_t(0x043E), wchar_t(0x0000)};
-    static wchar_t const ya_End[]   = { wchar_t(1), wchar_t(0x044F), wchar_t(0x0000)};
-    static wchar_t const ie_End[]   = { wchar_t(1), wchar_t(0x0435), wchar_t(0x0000)};
-    static wchar_t const i_End[]    = { wchar_t(1), wchar_t(0x0438), wchar_t(0x0000)};
-    static wchar_t const yeru_End[] = { wchar_t(1), wchar_t(0x044B), wchar_t(0x0000)};
-    static wchar_t const u_End[]    = { wchar_t(1), wchar_t(0x0443), wchar_t(0x0000)};
-    static wchar_t const yu_End[]   = { wchar_t(1), wchar_t(0x044E), wchar_t(0x0000)};
-    static wchar_t const oj_End[]   = { wchar_t(2), wchar_t(0x043E), wchar_t(0x0439), wchar_t(0x0000)};
-    static wchar_t const ie_j_End[] = { wchar_t(2), wchar_t(0x0435), wchar_t(0x0439), wchar_t(0x0000)};
-    static wchar_t const io_j_End[] = { wchar_t(2), wchar_t(0x0451), wchar_t(0x0439), wchar_t(0x0000)};
-    static wchar_t const o_m_End[]  = { wchar_t(2), wchar_t(0x043E), wchar_t(0x043C), wchar_t(0x0000)};
-    static wchar_t const io_m_End[] = { wchar_t(2), wchar_t(0x0451), wchar_t(0x043C), wchar_t(0x0000)};
-    static wchar_t const ie_m_End[] = { wchar_t(2), wchar_t(0x0435), wchar_t(0x043C), wchar_t(0x0000)};
-    static wchar_t const soft_End[] = { wchar_t(1), wchar_t(0x044C), wchar_t(0x0000)};
-    static wchar_t const j_End[]    = { wchar_t(1), wchar_t(0x0439), wchar_t(0x0000)};
+    static wchar_t const a_End[] = { wchar_t(1), wchar_t(0x0430), wchar_t(0x0000) };
+    static wchar_t const o_End[] = { wchar_t(1), wchar_t(0x043E), wchar_t(0x0000) };
+    static wchar_t const ya_End[] = { wchar_t(1), wchar_t(0x044F), wchar_t(0x0000) };
+    static wchar_t const ie_End[] = { wchar_t(1), wchar_t(0x0435), wchar_t(0x0000) };
+    static wchar_t const i_End[] = { wchar_t(1), wchar_t(0x0438), wchar_t(0x0000) };
+    static wchar_t const yeru_End[] = { wchar_t(1), wchar_t(0x044B), wchar_t(0x0000) };
+    static wchar_t const u_End[] = { wchar_t(1), wchar_t(0x0443), wchar_t(0x0000) };
+    static wchar_t const yu_End[] = { wchar_t(1), wchar_t(0x044E), wchar_t(0x0000) };
+    static wchar_t const oj_End[] = { wchar_t(2), wchar_t(0x043E), wchar_t(0x0439), wchar_t(0x0000) };
+    static wchar_t const ie_j_End[] = { wchar_t(2), wchar_t(0x0435), wchar_t(0x0439), wchar_t(0x0000) };
+    static wchar_t const io_j_End[] = { wchar_t(2), wchar_t(0x0451), wchar_t(0x0439), wchar_t(0x0000) };
+    static wchar_t const o_m_End[] = { wchar_t(2), wchar_t(0x043E), wchar_t(0x043C), wchar_t(0x0000) };
+    static wchar_t const io_m_End[] = { wchar_t(2), wchar_t(0x0451), wchar_t(0x043C), wchar_t(0x0000) };
+    static wchar_t const ie_m_End[] = { wchar_t(2), wchar_t(0x0435), wchar_t(0x043C), wchar_t(0x0000) };
+    static wchar_t const soft_End[] = { wchar_t(1), wchar_t(0x044C), wchar_t(0x0000) };
+    static wchar_t const j_End[] = { wchar_t(1), wchar_t(0x0439), wchar_t(0x0000) };
 
     static wchar_t const* const dropEnds[6][8] =
     {
@@ -644,7 +644,7 @@ std::wstring GetMainPartOfName(std::wstring wname, uint32 declension)
         { &ie_End[1], &i_End[1],    NULL,         NULL,        NULL,         NULL,         NULL,       NULL }
     };
 
-    for (wchar_t const * const* itr = &dropEnds[declension][0]; *itr; ++itr)
+    for (wchar_t const* const* itr = &dropEnds[declension][0]; *itr; ++itr)
     {
         size_t len = size_t((*itr)[-1]);                    // get length from string size field
 
@@ -828,54 +828,4 @@ void utf8printf(FILE* out, const char* str, ...)
     va_start(ap, str);
     vutf8printf(out, str, &ap);
     va_end(ap);
-}
-
-int return_iCoreNumber()
-{
-#if defined(CLASSIC)
-    return 0;
-#elif defined(TBC)
-    return 1;
-#elif defined(WOTLK)
-    return 2;
-#elif defined(CATA)
-    return 3;
-#elif defined(MOP)
-    return 4;
-#elif defined(WOD)
-    return 5;
-#elif defined(LEGION)
-    return 6;
-#else
-    return -1;
-#endif
-}
-
-/// Print out the core banner
-void print_banner()
-{
-    int iCoreNumber = return_iCoreNumber();
-    switch (iCoreNumber)
-    {
-    case 0: // CLASSIC
-    case 1: // TBC
-    case 2: // WOTLK
-    case 3: // CATA
-    case 4: // MOP
-        sLog.outString("<Ctrl-C> to stop.\n"
-        "_____  ____  ____     ___  _       ____  ____   ___   _____        __   ___   ____     ___       \n"
-        "|     ||    ||    \\   /  _]| |     /    ||    \\ |   \\ / ___/       /  ] /   \\ |    \\   /  _]\n"
-        "|   __| |  | |  D  ) /  [_ | |    |  o  ||  _  ||    (   \\_       /  / |     ||  D  ) /  [_     \n"
-        "|  |_   |  | |    / |    _]| |___ |     ||  |  ||  D  \\__  |     /  /  |  O  ||    / |    _]    \n"
-        "|   _]  |  | |    \\ |   [_ |     ||  _  ||  |  ||     /  \\ |    /   \\_ |     ||    \\ |   [_  \n"
-        "|  |    |  | |  .  \\|     ||     ||  |  ||  |  ||     \\    |    \\     ||     ||  .  \\|     | \n"
-        "|__|   |____||__|\\_||_____||_____||__|__||__|__||_____|\\___|     \\____| \\___/ |__|\\_||_____|\n"
-        " Powered By Firelands Core                                                                       \n"
-        " ________________________________________________________________________________________________\n"
-        "\n"
-        " Website/Forum/Wiki/Issue Tracker: http://github.com/FirelandsProject                            \n"
-        " ________________________________________________________________________________________________\n"
-        "\n");
-        break;
-    }
 }

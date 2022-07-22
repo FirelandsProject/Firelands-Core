@@ -1713,14 +1713,13 @@ void World::showFooter()
         "_______________________________________________________\n"
         "\n"
         "        Server Version : %s\n"
-        "      Database Version : Rel%s.%s.%s\n"
         "\n"
         "    Supporting Clients : %s\n"
         "                Builds : %s\n"
         "\n"
         "         Module Status -\n%s\n"
         "_______________________________________________________\n"
-        , GitRevision::GetProductVersionStr(), GitRevision::GetWorldDBVersion(), GitRevision::GetWorldDBStructure(), GitRevision::GetWorldDBContent(),
+        , GitRevision::GetProductVersionStr(),
             thisClientVersion.c_str(), thisClientBuilds.c_str(), sModules.c_str());
 }
 

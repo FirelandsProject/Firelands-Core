@@ -37,12 +37,6 @@ struct DBVersion
     std::string description;
 };
 
-const DBVersion databaseVersions[COUNT_DATABASES] = {
-    { "World", GitRevision::GetWorldDBVersion(), GitRevision::GetWorldDBStructure(), GitRevision::GetWorldDBContent(), GitRevision::GetWorldDBUpdateDescription() }, // DATABASE_WORLD
-    { "Realmd", GitRevision::GetRealmDBVersion(), GitRevision::GetRealmDBStructure(), GitRevision::GetRealmDBContent(), GitRevision::GetRealmDBUpdateDescription() }, // DATABASE_REALMD
-    { "Character", GitRevision::GetCharDBVersion(), GitRevision::GetCharDBStructure(), GitRevision::GetCharDBContent(), GitRevision::GetCharDBUpdateDescription() }, // DATABASE_CHARACTER
-};
-
 //////////////////////////////////////////////////////////////////////////
 SqlPreparedStatement* SqlConnection::CreateStatement(const std::string& fmt)
 {
@@ -224,7 +218,7 @@ void Database::HaltDelayThread()
     delete m_delayThread;                                   // This also deletes m_threadBody
     m_delayThread = NULL;
     m_threadBody = NULL;
-    m_TransStorage=NULL;
+    m_TransStorage = NULL;
 }
 
 void Database::ThreadStart()
@@ -297,7 +291,7 @@ bool Database::PExecuteLog(const char* format, ...)
     }
 
     va_list ap;
-    char szQuery [MAX_QUERY_LEN];
+    char szQuery[MAX_QUERY_LEN];
     va_start(ap, format);
     int res = vsnprintf(szQuery, MAX_QUERY_LEN, format, ap);
     va_end(ap);
@@ -343,7 +337,7 @@ QueryResult* Database::PQuery(const char* format, ...)
     }
 
     va_list ap;
-    char szQuery [MAX_QUERY_LEN];
+    char szQuery[MAX_QUERY_LEN];
     va_start(ap, format);
     int res = vsnprintf(szQuery, MAX_QUERY_LEN, format, ap);
     va_end(ap);
@@ -365,7 +359,7 @@ QueryNamedResult* Database::PQueryNamed(const char* format, ...)
     }
 
     va_list ap;
-    char szQuery [MAX_QUERY_LEN];
+    char szQuery[MAX_QUERY_LEN];
     va_start(ap, format);
     int res = vsnprintf(szQuery, MAX_QUERY_LEN, format, ap);
     va_end(ap);
@@ -415,7 +409,7 @@ bool Database::PExecute(const char* format, ...)
     }
 
     va_list ap;
-    char szQuery [MAX_QUERY_LEN];
+    char szQuery[MAX_QUERY_LEN];
     va_start(ap, format);
     int res = vsnprintf(szQuery, MAX_QUERY_LEN, format, ap);
     va_end(ap);
@@ -437,7 +431,7 @@ bool Database::DirectPExecute(const char* format, ...)
     }
 
     va_list ap;
-    char szQuery [MAX_QUERY_LEN];
+    char szQuery[MAX_QUERY_LEN];
     va_start(ap, format);
     int res = vsnprintf(szQuery, MAX_QUERY_LEN, format, ap);
     va_end(ap);
@@ -527,137 +521,6 @@ bool Database::RollbackTransaction()
     return true;
 }
 
-void PrintNormalYouHaveDatabaseVersion(std::string current_db_version, std::string current_db_structure, std::string current_db_content, std::string description)
-{
-    sLog.outString("  [A] You have database Version: %s", current_db_version.c_str());
-    sLog.outString("                      Structure: %s", current_db_structure.c_str());
-    sLog.outString("                        Content: %s", current_db_content.c_str());
-    sLog.outString("                    Description: %s", description.c_str());
-}
-
-void PrintErrorYouHaveDatabaseVersion(std::string current_db_version, std::string current_db_structure, std::string current_db_content, std::string description)
-{
-    sLog.outErrorDb("  [A] You have database Version: %s", current_db_version.c_str());
-    sLog.outErrorDb("                      Structure: %s", current_db_structure.c_str());
-    sLog.outErrorDb("                        Content: %s", current_db_content.c_str());
-    sLog.outErrorDb("                    Description: %s", description.c_str());
-}
-
-void PrintNormalDatabaseVersionReferencedByCore(const DBVersion& core_db_requirements)
-{
-    sLog.outString("  [B] The core references last database Version: %s", core_db_requirements.expected_version.c_str());
-    sLog.outString("                                      Structure: %s", core_db_requirements.expected_structure.c_str());
-    sLog.outString("                                        Content: %s", core_db_requirements.minimal_expected_content.c_str());
-    sLog.outString("                                    Description: %s", core_db_requirements.description.c_str());
-}
-
-void PrintErrorYouNeedDatabaseVersionExpectedByCore(const DBVersion& core_db_requirements)
-{
-    sLog.outErrorDb("  [B] The core needs database Version: %s", core_db_requirements.expected_version.c_str());
-    sLog.outErrorDb("                            Structure: %s", core_db_requirements.expected_structure.c_str());
-    sLog.outErrorDb("                              Content: %s", core_db_requirements.minimal_expected_content.c_str());
-    sLog.outErrorDb("                          Description: %s", core_db_requirements.description.c_str());
-}
-
-bool Database::CheckDatabaseVersion(DatabaseTypes database)
-{
-    const DBVersion& core_db_requirements = databaseVersions[database];
-
-    // Fetch the database version table information
-    QueryResult* result = Query("SELECT `version`, `structure`, `content`, `description` FROM `db_version` ORDER BY `version` DESC, `structure` DESC, `content` DESC LIMIT 1");
-
-    // db_version table does not exist or is empty
-    if (!result)
-    {
-        sLog.outErrorDb("The table `db_version` in your [%s] database is missing or corrupt.", core_db_requirements.dbname.c_str());
-        sLog.outErrorDb();
-        sLog.outErrorDb("  [A] You have database Version: Firelands can not verify your database version or its existence!");
-        sLog.outErrorDb();
-        PrintErrorYouNeedDatabaseVersionExpectedByCore(core_db_requirements);
-        sLog.outErrorDb();
-        sLog.outErrorDb("Please verify your database location or your database integrity.");
-
-        // The core loading will no go further :
-        return false;
-    }
-
-    Field* fields = result->Fetch();
-    std::string current_db_version = fields[0].GetCppString();
-    std::string current_db_structure = fields[1].GetCppString();
-    std::string current_db_content = fields[2].GetCppString();
-    std::string description = fields[3].GetCppString();
-
-    delete result;
-
-    // Structure does not match the required version
-    if (current_db_version != core_db_requirements.expected_version || current_db_structure != core_db_requirements.expected_structure)
-    {
-        sLog.outErrorDb("The table `db_version` indicates that your [%s] database does not match the expected structure!", core_db_requirements.dbname.c_str());
-        sLog.outErrorDb();
-        PrintErrorYouHaveDatabaseVersion(current_db_version, current_db_structure, current_db_content, description);
-        sLog.outErrorDb();
-        PrintErrorYouNeedDatabaseVersionExpectedByCore(core_db_requirements);
-        sLog.outErrorDb();
-        sLog.outErrorDb("You must apply all updates after [A] to [B] to use Firelands with this database.");
-        sLog.outErrorDb("These updates are included in the database/%s/Updates folder.", core_db_requirements.dbname.c_str());
-        return false;
-    }
-
-    bool db_vs_core_content_version_mismatch = false;
-
-    // DB is not up to date, but structure is correct.
-    // The 'content' version in the 'db_version' table can be < from the one required by the core
-    // See  enum values for :
-    //  WORLD_DB_CONTENT_NR
-    //  CHAR_DB_CONTENT_NR
-    //  AUTH_DB_CONTENT_NR
-    // for more information.
-    if (current_db_content < core_db_requirements.minimal_expected_content)
-    {
-        // TODO : Should not display with error color but warning (e.g YELLOW) => Create a sLog.outWarningDb() and sLog.outWarning()
-        sLog.outErrorDb("You have not updated the core for few DB [%s] updates!", core_db_requirements.dbname.c_str());
-        sLog.outErrorDb("Current DB content is %s, core expects %s", current_db_content.c_str(), core_db_requirements.minimal_expected_content.c_str());
-        sLog.outErrorDb("It is recommended to run ALL database updates up to the required core version.");
-        sLog.outErrorDb("These updates are included in the database/%s/Updates folder.", core_db_requirements.dbname.c_str());
-        sLog.outErrorDb("This is ok for now but should not last long.");
-        db_vs_core_content_version_mismatch = true;
-    }
-
-    // Do not alert if current_db_content > core_db_requirements.minimal_expected_content it can mislead newcomers !
-
-    // In anys cases if there are differences in content : output a recap of the differences :
-    if (db_vs_core_content_version_mismatch)
-    {
-        // TODO : Should not display with error color but warning (e.g YELLOW) => Create a sLog.outWarningDb() and sLog.outWarning()
-        sLog.outErrorDb("The table `db_version` indicates that your [%s] database does not match the expected version!", core_db_requirements.dbname.c_str());
-        sLog.outErrorDb();
-        PrintErrorYouHaveDatabaseVersion(current_db_version, current_db_structure, current_db_content, description);
-        sLog.outErrorDb();
-        PrintErrorYouNeedDatabaseVersionExpectedByCore(core_db_requirements);
-    }
-    else
-    {
-        if (current_db_version == core_db_requirements.expected_version && current_db_structure == core_db_requirements.expected_structure)
-        {
-            sLog.outString("The table `db_version` indicates that your [%s] database has the same version as the core requirements.", core_db_requirements.dbname.c_str());
-            sLog.outString();
-        }
-        else
-        {
-            sLog.outString("The table `db_version` indicates that your [%s] database has a higher version than the one referenced by the core."
-                "\nYou have probably applied DB updates, and that's a good thing to keep your server up to date.", core_db_requirements.dbname.c_str());
-            sLog.outString();
-            PrintNormalYouHaveDatabaseVersion(current_db_version, current_db_structure, current_db_content, description);
-            sLog.outString();
-            PrintNormalDatabaseVersionReferencedByCore(core_db_requirements);
-            sLog.outString();
-            sLog.outString("You can run the core without any problem like that.");
-            sLog.outString();
-        }
-    }
-
-    return true;
-}
 
 bool Database::ExecuteStmt(const SqlStatementID& id, SqlStmtParameters* params)
 {

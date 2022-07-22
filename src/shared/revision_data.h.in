@@ -24,26 +24,12 @@
     #define CMAKE_VERSION               R"(@CMAKE_VERSION@)"
     #define CMAKE_HOST_SYSTEM           R"(@CMAKE_HOST_SYSTEM_NAME@ @CMAKE_HOST_SYSTEM_VERSION@)"
 
-    #define PROJECT_REVISION_NR         "2201001"
+    #define PROJECT_REVISION_NR         "v0.1.0"
 
-   #define AUTH_DB_VERSION_NR        "22"
-    #define AUTH_DB_STRUCTURE_NR      "1"
-    #define AUTH_DB_CONTENT_NR        "1"
-    #define AUTH_DB_UPDATE_DESCRIPT   "Release 22"
-
-    #define CHAR_DB_VERSION_NR          "21"
-    #define CHAR_DB_STRUCTURE_NR        "2"
-    #define CHAR_DB_CONTENT_NR          "0"
-    #define CHAR_DB_UPDATE_DESCRIPT     "Honor Counting"
-
-    #define WORLD_DB_VERSION_NR         "22"
-    #define WORLD_DB_STRUCTURE_NR       "4"
-    #define WORLD_DB_CONTENT_NR         "13"
-    #define WORLD_DB_UPDATE_DESCRIPT    "Quest text updates"
 
     #define VER_COMPANY_NAME_STR        "Firelands Developers"
-    #define VER_LEGALCOPYRIGHT_STR      "(c)2005-@rev_year@ Firelands"
-    #define VER_FILEVERSION             0,0,0
+    #define VER_LEGALCOPYRIGHT_STR      "(c)@rev_year@ Firelands"
+    #define VER_FILEVERSION             0,1,0
     #define VER_FILEVERSION_STR         "@rev_hash@ @rev_date@ (@rev_branch@ branch)"
     #define VER_PRODUCTVERSION          VER_FILEVERSION
     #define VER_PRODUCTVERSION_STR      VER_FILEVERSION_STR

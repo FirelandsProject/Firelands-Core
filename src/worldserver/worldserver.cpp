@@ -15,15 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup worldserver firelands Daemon
-/// @{
-/// \file
+ /// \addtogroup worldserver firelands Daemon
+ /// @{
+ /// \file
 
 #include <openssl/opensslv.h>
 #include <openssl/crypto.h>
 #include <ace/Version.h>
 #include <ace/Get_Opt.h>
 
+#include "Utilities/Banner.h"
 #include "Common.h"
 #include "Database/DatabaseEnv.h"
 #include "Config/Config.h"
@@ -45,20 +46,20 @@
 #include "RAThread.h"
 
 #ifdef ENABLE_SOAP
-  #include "SOAP/SoapThread.h"
+#include "SOAP/SoapThread.h"
 #endif
 
 #ifdef _WIN32
- #include "ServiceWin32.h"
+#include "ServiceWin32.h"
 
-  char serviceName[]        = "Firelands";               // service short name
-  char serviceLongName[]    = "Firelands World Service"; // service long name
-  char serviceDescription[] = "Firelands World Service - no description available";
+char serviceName[] = "Firelands";               // service short name
+char serviceLongName[] = "Firelands World Service"; // service long name
+char serviceDescription[] = "Firelands World Service - no description available";
 
-  int m_ServiceStatus = -1;
+int m_ServiceStatus = -1;
 
 #else
- #include "PosixDaemon.h"
+#include "PosixDaemon.h"
 #endif
 
 //*******************************************************************************************************//
@@ -104,14 +105,6 @@ static bool start_db()
         return false;
     }
 
-    ///- Check the World database version
-    if(!WorldDatabase.CheckDatabaseVersion(DATABASE_WORLD))
-    {
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        return false;
-    }
-
     dbstring = sConfig.GetStringDefault("CharacterDatabaseInfo", "");
     nConnections = sConfig.GetIntDefault("CharacterDatabaseConnections", 1);
     if (dbstring.empty())
@@ -131,15 +124,6 @@ static bool start_db()
 
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
-        return false;
-    }
-
-    ///- Check the Character database version
-    if (!CharacterDatabase.CheckDatabaseVersion(DATABASE_CHARACTER))
-    {
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        CharacterDatabase.HaltDelayThread();
         return false;
     }
 
@@ -165,16 +149,6 @@ static bool start_db()
         ///- Wait for already started DB delay threads to end
         WorldDatabase.HaltDelayThread();
         CharacterDatabase.HaltDelayThread();
-        return false;
-    }
-
-    ///- Check the Realm database version
-    if (!LoginDatabase.CheckDatabaseVersion(DATABASE_REALMD))
-    {
-        ///- Wait for already started DB delay threads to end
-        WorldDatabase.HaltDelayThread();
-        CharacterDatabase.HaltDelayThread();
-        LoginDatabase.HaltDelayThread();
         return false;
     }
 
@@ -211,15 +185,15 @@ static void on_signal(int s)
 {
     switch (s)
     {
-        case SIGINT:
-            World::StopNow(RESTART_EXIT_CODE);
-            break;
-        case SIGTERM:
+    case SIGINT:
+        World::StopNow(RESTART_EXIT_CODE);
+        break;
+    case SIGTERM:
 #ifdef _WIN32
-        case SIGBREAK:
+    case SIGBREAK:
 #endif
-            World::StopNow(SHUTDOWN_EXIT_CODE);
-            break;
+        World::StopNow(SHUTDOWN_EXIT_CODE);
+        break;
     }
 
     signal(s, on_signal);
@@ -228,7 +202,7 @@ static void on_signal(int s)
 /// Define hook for all termination signals
 static void hook_signals()
 {
-    signal(SIGINT,  on_signal);
+    signal(SIGINT, on_signal);
     signal(SIGTERM, on_signal);
 #ifdef _WIN32
     signal(SIGBREAK, on_signal);
@@ -250,20 +224,20 @@ static void unhook_signals()
 static void usage(const char* prog)
 {
     sLog.outString("Usage: \n %s [<options>]\n"
-                   "    -v, --version              print version and exist\n\r"
-                   "    -c <config_file>           use config_file as configuration file\n\r"
-                   "    -a, --ahbot <config_file>  use config_file as ahbot configuration file\n\r"
+        "    -v, --version              print version and exist\n\r"
+        "    -c <config_file>           use config_file as configuration file\n\r"
+        "    -a, --ahbot <config_file>  use config_file as ahbot configuration file\n\r"
 #ifdef WIN32
-                   "    Running as service functions:\n\r"
-                   "    -s run                     run as service\n\r"
-                   "    -s install                 install service\n\r"
-                   "    -s uninstall               uninstall service\n\r"
+        "    Running as service functions:\n\r"
+        "    -s run                     run as service\n\r"
+        "    -s install                 install service\n\r"
+        "    -s uninstall               uninstall service\n\r"
 #else
-                   "    Running as daemon functions:\n\r"
-                   "    -s run                     run as daemon\n\r"
-                   "    -s stop                    stop daemon\n\r"
+        "    Running as daemon functions:\n\r"
+        "    -s run                     run as daemon\n\r"
+        "    -s stop                    stop daemon\n\r"
 #endif
-                   , prog);
+        , prog);
 }
 
 /// Launch the worldserver
@@ -285,79 +259,79 @@ int main(int argc, char** argv)
     {
         switch (option)
         {
-            case 'a':
-                sAuctionBotConfig.SetConfigFileName(cmd_opts.opt_arg());
-                break;
-            case 'c':
-                cfg_file = cmd_opts.opt_arg();
-                break;
-            case 'v':
-                printf("%s\n", GitRevision::GetProjectRevision());
-                return 0;
-            case 's':
-            {
-                const char* mode = cmd_opts.opt_arg();
+        case 'a':
+            sAuctionBotConfig.SetConfigFileName(cmd_opts.opt_arg());
+            break;
+        case 'c':
+            cfg_file = cmd_opts.opt_arg();
+            break;
+        case 'v':
+            printf("%s\n", GitRevision::GetProjectRevision());
+            return 0;
+        case 's':
+        {
+            const char* mode = cmd_opts.opt_arg();
 
-                if (!strcmp(mode, "run"))
-                {
-                    serviceDaemonMode = 'r';
-                }
-#ifdef WIN32
-                else if (!strcmp(mode, "install"))
-                {
-                    serviceDaemonMode = 'i';
-                }
-                else if (!strcmp(mode, "uninstall"))
-                {
-                    serviceDaemonMode = 'u';
-                }
-#else
-                else if (!strcmp(mode, "stop"))
-                {
-                    serviceDaemonMode = 's';
-                }
-#endif
-                else
-                {
-                    sLog.outError("Runtime-Error: -%c unsupported argument %s", cmd_opts.opt_opt(), mode);
-                    usage(argv[0]);
-                    Log::WaitBeforeContinueIfNeed();
-                    return 1;
-                }
-                break;
+            if (!strcmp(mode, "run"))
+            {
+                serviceDaemonMode = 'r';
             }
-            case ':':
-                sLog.outError("Runtime-Error: -%c option requires an input argument", cmd_opts.opt_opt());
+#ifdef WIN32
+            else if (!strcmp(mode, "install"))
+            {
+                serviceDaemonMode = 'i';
+            }
+            else if (!strcmp(mode, "uninstall"))
+            {
+                serviceDaemonMode = 'u';
+            }
+#else
+            else if (!strcmp(mode, "stop"))
+            {
+                serviceDaemonMode = 's';
+            }
+#endif
+            else
+            {
+                sLog.outError("Runtime-Error: -%c unsupported argument %s", cmd_opts.opt_opt(), mode);
                 usage(argv[0]);
                 Log::WaitBeforeContinueIfNeed();
                 return 1;
-            default:
-                sLog.outError("Runtime-Error: bad format of commandline arguments");
-                usage(argv[0]);
-                Log::WaitBeforeContinueIfNeed();
-                return 1;
+            }
+            break;
+        }
+        case ':':
+            sLog.outError("Runtime-Error: -%c option requires an input argument", cmd_opts.opt_opt());
+            usage(argv[0]);
+            Log::WaitBeforeContinueIfNeed();
+            return 1;
+        default:
+            sLog.outError("Runtime-Error: bad format of commandline arguments");
+            usage(argv[0]);
+            Log::WaitBeforeContinueIfNeed();
+            return 1;
         }
     }
 
 #ifdef _WIN32                                                // windows service command need execute before config read
     switch (serviceDaemonMode)
     {
-        case 'i':
-            if (WinServiceInstall())
-            {
-                sLog.outString("Installing service");
-            }
-            return 1;
-        case 'u':
-            if (WinServiceUninstall())
-            {
-                sLog.outString("Uninstalling service");
-            }
-            return 1;
-        case 'r':
-            WinServiceRun();
-            break;
-    }
+    case 'i':
+        if (WinServiceInstall())
+        {
+            sLog.outString("Installing service");
+        }
+        return 1;
+    case 'u':
+        if (WinServiceUninstall())
+        {
+            sLog.outString("Uninstalling service");
+        }
+        return 1;
+    case 'r':
+        WinServiceRun();
+        break;
+}
 #endif
     if (!sConfig.SetSource(cfg_file))
     {
@@ -369,18 +343,18 @@ int main(int argc, char** argv)
 #ifndef _WIN32                                               // posix daemon commands need apply after config read
     switch (serviceDaemonMode)
     {
-        case 'r':
-            startDaemon();
-            break;
-        case 's':
-            stopDaemon();
-            break;
+    case 'r':
+        startDaemon();
+        break;
+    case 's':
+        stopDaemon();
+        break;
     }
 #endif
 
     sLog.outString("%s [world-daemon]", GitRevision::GetProjectRevision());
     sLog.outString("%s", GitRevision::GetFullRevision());
-    print_banner();
+    Firelands::Banner::Show();
     sLog.outString("Using configuration file %s.", cfg_file);
 
     DETAIL_LOG("Using SSL version: %s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
@@ -477,10 +451,10 @@ int main(int argc, char** argv)
     if (sConfig.GetBoolDefault("SOAP.Enabled", false))
     {
         soapThread.reset(new std::thread(SoapThread, sConfig.GetStringDefault("SOAP.IP", "127.0.0.1"), uint16(sConfig.GetIntDefault("SOAP.Port", 7878))), [](std::thread* thread)
-        {
-            thread->join();
-            delete thread;
-        });
+            {
+                thread->join();
+                delete thread;
+            });
     }
 #else /* ENABLE_SOAP */
     if (sConfig.GetBoolDefault("SOAP.Enabled", false))
