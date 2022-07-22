@@ -1,16 +1,30 @@
-CREATE DATABASE  IF NOT EXISTS `world` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `world`;
--- MySQL dump 10.13  Distrib 8.0.29, for macos12 (x86_64)
 --
--- Host: 127.0.0.1    Database: world
+-- Table structure for table `spell_threat`
+--
+
+DROP TABLE IF EXISTS `spell_threat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `spell_threat` (
+  `entry` mediumint(8) unsigned NOT NULL COMMENT 'The spell identifier.',
+  `Threat` smallint(6) NOT NULL COMMENT 'The value of threat to add or remove from the characters threat.',
+  `multiplier` float NOT NULL DEFAULT 1 COMMENT 'Any value here will modify the spells threat with the factor given here.',
+  `ap_bonus` float NOT NULL DEFAULT 0 COMMENT 'Any value here will modify the spells attack power with the factor given here.',
+  PRIMARY KEY (`entry`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+-- ---------------------------------------- 
+-- MySQL dump 10.13  Distrib 5.5.37, for macos12 (x86_64)
+--
+-- Host: localhost    Database: world
 -- ------------------------------------------------------
--- Server version	5.6.51
+-- Server version	5.5.5-10.5.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@SESSION.TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
@@ -18,28 +32,38 @@ USE `world`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `spell_threat`
---
-
-DROP TABLE IF EXISTS `spell_threat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `spell_threat` (
-  `entry` mediumint(8) unsigned NOT NULL COMMENT 'The spell identifier.',
-  `Threat` smallint(6) NOT NULL COMMENT 'The value of threat to add or remove from the characters threat.',
-  `multiplier` float NOT NULL DEFAULT '1' COMMENT 'Any value here will modify the spells threat with the factor given here.',
-  `ap_bonus` float NOT NULL DEFAULT '0' COMMENT 'Any value here will modify the spells attack power with the factor given here.',
-  PRIMARY KEY (`entry`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `spell_threat`
 --
 
 LOCK TABLES `spell_threat` WRITE;
 /*!40000 ALTER TABLE `spell_threat` DISABLE KEYS */;
-INSERT INTO `spell_threat` VALUES (72,180,1,0),(78,20,1,0),(99,15,1,0),(284,39,1,0),(285,59,1,0),(770,108,1,0),(845,10,1,0),(1160,43,1,0),(1608,78,1,0),(1715,61,1,0),(1735,25,1,0),(2139,300,1,0),(2649,415,1,0),(3716,395,1,0),(6343,17,1,0),(6572,155,1,0),(6574,195,1,0),(6673,60,1,0),(6807,59,1,0),(6809,89,1,0),(7369,40,1,0),(7372,101,1,0),(7373,141,1,0),(7379,235,1,0),(7386,100,1,0),(7405,140,1,0),(8198,40,1,0),(8204,64,1,0),(8205,96,1,0),(8380,180,1,0),(8972,118,1,0),(9490,29,1,0),(9745,148,1,0),(9747,36,1,0),(9880,178,1,0),(9881,207,1,0),(9898,42,1,0),(11564,98,1,0),(11565,118,1,0),(11566,137,1,0),(11567,145,1,0),(11580,143,1,0),(11581,180,1,0),(11596,220,1,0),(11597,261,1,0),(11600,275,1,0),(11601,315,1,0),(11608,60,1,0),(11609,70,1,0),(14274,200,1,0),(15629,300,1,0),(15630,400,1,0),(15631,500,1,0),(15632,600,1,0),(16857,108,1,0),(17735,200,1,0),(17750,300,1,0),(17751,450,1,0),(17752,600,1,0),(20243,101,1,0),(20569,100,1,0),(20736,100,1,0),(20925,20,1,0),(20927,30,1,0),(20928,40,1,0),(23922,160,1,0),(23923,190,1,0),(23924,220,1,0),(23925,250,1,0),(24394,580,1,0),(24640,5,1,0),(25286,175,1,0),(25288,355,1,0);
+INSERT INTO `spell_threat` (`entry`, `Threat`, `multiplier`, `ap_bonus`) VALUES 
+(78,20,1,0),
+(99,15,1,0),
+(676,104,1,0),
+(770,108,1,0),
+(779,0,1.5,0),
+(845,10,1,0),
+(1160,16,1,0),
+(1715,61,1,0),
+(2139,300,1,0),
+(5676,0,2,0),
+(6343,0,1.75,0),
+(6572,155,1,0),
+(6807,13,1,0),
+(7386,100,1,0),
+(16857,108,1,0),
+(17735,200,1,0),
+(20243,0,1,0.05),
+(20736,100,1,0),
+(20925,20,1,0),
+(23922,160,1,0),
+(24394,580,1,0),
+(33745,182,0.5,0),
+(33878,129,1,0),
+(52212,0,1.9,0),
+(56815,0,1.75,0),
+(57755,0,1.5,0);
 /*!40000 ALTER TABLE `spell_threat` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +76,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-19  0:45:48
+-- Dump completed on 2022-07-05 13:05:05

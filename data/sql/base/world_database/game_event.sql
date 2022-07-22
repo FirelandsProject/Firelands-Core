@@ -1,16 +1,33 @@
-CREATE DATABASE  IF NOT EXISTS `world` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `world`;
--- MySQL dump 10.13  Distrib 8.0.29, for macos12 (x86_64)
 --
--- Host: 127.0.0.1    Database: world
+-- Table structure for table `game_event`
+--
+
+DROP TABLE IF EXISTS `game_event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `game_event` (
+  `entry` mediumint(8) unsigned NOT NULL COMMENT 'ID of the event.',
+  `start_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Global starting date for the event.',
+  `end_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Global ending date of the event.',
+  `occurence` bigint(20) unsigned NOT NULL DEFAULT 5184000 COMMENT 'Event periodicity (minutes).',
+  `length` bigint(20) unsigned NOT NULL DEFAULT 2592000 COMMENT 'Event duration (minutes).',
+  `holiday` mediumint(8) unsigned NOT NULL DEFAULT 0 COMMENT 'Holiday ID.',
+  `description` varchar(255) DEFAULT NULL COMMENT 'Description of the event.',
+  PRIMARY KEY (`entry`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+-- ---------------------------------------- 
+-- MySQL dump 10.13  Distrib 5.5.37, for macos12 (x86_64)
+--
+-- Host: localhost    Database: world
 -- ------------------------------------------------------
--- Server version	5.6.51
+-- Server version	5.5.5-10.5.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@SESSION.TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
@@ -18,31 +35,94 @@ USE `world`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `game_event`
---
-
-DROP TABLE IF EXISTS `game_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `game_event` (
-  `entry` mediumint(8) unsigned NOT NULL COMMENT 'ID of the event.',
-  `start_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Global starting date for the event.',
-  `end_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Global ending date of the event.',
-  `occurence` bigint(20) unsigned NOT NULL DEFAULT '86400' COMMENT 'Event periodicity (minutes).',
-  `length` bigint(20) unsigned NOT NULL DEFAULT '43200' COMMENT 'Event duration (minutes).',
-  `holiday` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT 'Holiday ID.',
-  `description` varchar(255) DEFAULT NULL COMMENT 'Description of the event.',
-  PRIMARY KEY (`entry`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `game_event`
 --
 
 LOCK TABLES `game_event` WRITE;
 /*!40000 ALTER TABLE `game_event` DISABLE KEYS */;
-INSERT INTO `game_event` VALUES (1,'2007-06-20 20:00:00','2020-12-31 22:59:59',525600,20160,341,'Midsummer Fire Festival'),(2,'2006-12-14 23:00:00','2020-12-31 22:59:59',525600,27360,141,'Feast of Winter Veil'),(3,'2006-02-08 21:00:00','2020-12-31 04:59:59',1440,480,0,'Pyrewood Village - Worgen Curse'),(4,'2006-02-08 23:00:00','2020-12-31 22:59:59',96480,10080,374,'Darkmoon Faire (Elwynn)'),(5,'2006-01-07 23:00:00','2020-12-31 22:59:59',96480,10080,374,'Darkmoon Faire (Mulgore)'),(6,'2017-02-27 00:00:00','2020-12-31 22:59:59',525600,1440,0,'New Year\'s Eve'),(7,'2017-01-21 06:00:00','2017-02-04 05:59:59',525600,28800,327,'Lunar Festival'),(8,'2006-02-10 22:00:00','2020-12-31 22:59:59',525600,5760,335,'Love is in the Air'),(9,'2006-04-16 20:00:00','2020-12-31 22:59:59',524160,7200,181,'Noblegarden'),(10,'2007-05-01 20:00:00','2020-12-31 22:59:59',525600,11520,201,'Children\'s Week '),(12,'2006-10-18 20:00:00','2020-12-31 22:59:59',525600,21600,324,'Hallow\'s End'),(13,'0000-00-00 00:00:00','2020-12-31 22:59:59',525600,1,0,'Elemental Invasions'),(14,'2006-01-02 05:00:00','2020-12-31 22:59:59',10080,240,0,'Fishing Extravaganza Announce'),(15,'2006-01-01 11:00:00','2020-12-31 22:59:59',10080,120,301,'Fishing Extravaganza'),(16,'2005-12-31 23:00:00','2020-12-31 22:59:59',180,120,0,'Gurubashi Arena Booty Run'),(17,'0000-00-00 00:00:00','0000-00-00 00:00:00',525600,1,0,'Scourge Invasion'),(18,'2006-01-19 23:00:00','2020-12-31 22:59:59',40320,6240,283,'Call to Arms: Alterac Valley!'),(19,'2006-01-26 23:00:00','2020-12-31 22:59:59',40320,6240,284,'Call to Arms: Warsong Gulch!'),(20,'2006-01-05 23:00:00','2020-12-31 22:59:59',40320,6240,285,'Call to Arms: Arathi Basin!'),(21,'2006-12-25 16:00:00','2020-12-31 16:00:00',525600,11700,0,'Winter Veil: Gifts'),(22,'0000-00-00 00:00:00','0000-00-00 00:00:00',525600,1,0,'AQ War Effort'),(23,'2006-02-05 23:00:00','2020-12-31 22:59:59',131040,4320,374,'Darkmoon Faire Building (Elwynn)'),(24,'2016-10-18 19:01:07','2020-12-31 22:59:59',1440,600,0,'Hallow\'s End - Wickerman Ember\'s'),(25,'2016-10-18 18:30:00','2020-12-31 22:59:59',1440,45,0,'Hallow\'s End - Banshee Queen'),(27,'2008-01-01 19:00:00','2020-12-31 22:59:59',1440,720,0,'Nights'),(29,'2006-01-23 23:00:00','2020-12-31 22:59:59',86400,21600,0,'Edge of Madness, Gri\'lek'),(30,'2006-01-06 23:00:00','2020-12-31 22:59:59',86400,21600,0,'Edge of Madness, Hazza\'rah'),(31,'2006-01-20 23:00:00','2020-12-31 22:59:59',86400,21600,0,'Edge of Madness, Renataki'),(32,'2006-01-04 23:00:00','2020-12-31 22:59:59',86400,21600,0,'Edge of Madness, Wushoolay'),(33,'2006-10-05 22:00:00','2020-10-05 22:00:00',525600,10080,321,'Harvest Festival'),(34,'2006-01-01 06:00:00','2020-12-31 17:59:59',10080,180,0,'Fishing Extravaganza Turn-in'),(35,'2010-09-23 01:00:00','2020-12-30 23:00:00',525600,256320,0,'Winter Season Fishing'),(36,'2010-03-21 01:00:00','2020-12-30 23:00:00',525600,269280,0,'Summer Season Fishing'),(61,'2010-12-31 23:58:00','2020-12-30 23:00:00',30,10,0,'Stormwind City - Stockades Jail Break');
+INSERT INTO `game_event` (`entry`, `start_time`, `end_time`, `occurence`, `length`, `holiday`, `description`) VALUES 
+(1,'2013-06-20 19:00:00','2020-12-29 21:00:00',525600,20160,341,'Midsummer Fire Festival'),
+(2,'2013-12-15 03:00:00','2020-12-30 17:00:00',525600,25920,141,'Feast of Winter Veil'),
+(3,'2013-08-31 17:01:00','2012-12-30 14:00:00',131040,8639,376,'Darkmoon Faire (Terokkar Forest)'),
+(4,'2013-10-05 17:01:00','2012-12-30 14:00:00',131040,8639,374,'Darkmoon Faire (Elwynn Forest)'),
+(5,'2013-08-03 17:01:00','2012-12-30 14:00:00',131040,8639,375,'Darkmoon Faire (Mulgore)'),
+(6,'2010-12-31 17:00:00','2010-12-31 17:00:00',525600,120,0,'New Year\'s Eve'),
+(7,'2013-01-22 03:00:00','2020-12-30 17:00:00',525600,30240,327,'Lunar Festival'),
+(8,'2013-02-04 19:01:00','2020-12-20 15:00:00',525600,20160,423,'Love is in the Air'),
+(9,'2013-03-31 17:01:00','2020-12-30 17:00:00',525600,10078,181,'Noblegarden'),
+(10,'2013-04-28 17:01:00','2020-12-30 17:00:00',525600,10078,201,'Children\'s Week '),
+(11,'2013-09-05 17:01:00','2020-12-29 21:00:00',525600,10080,321,'Harvest Festival'),
+(12,'2013-10-17 17:00:00','2020-12-31 04:00:00',525600,20160,324,'Hallow\'s End'),
+(13,'0000-00-00 00:00:00','0000-00-00 00:00:00',525600,28800,0,'Elemental Invasions'),
+(14,'2010-12-19 11:50:00','2020-12-30 11:00:00',10080,130,0,'Fishing Extravaganza Announce'),
+(15,'2010-12-19 12:00:00','2020-12-27 11:00:00',10080,120,301,'Fishing Extravaganza'),
+(16,'2010-11-30 19:00:00','2020-12-30 14:00:00',180,120,0,'Gurubashi Arena Booty Run'),
+(17,'0000-00-00 00:00:00','0000-00-00 00:00:00',525600,28800,0,'Scourge Invasion'),
+(18,'2012-11-15 19:01:00','2020-11-19 17:00:00',60480,5758,283,'Call to Arms: Alterac Valley!'),
+(19,'2012-11-22 19:01:00','2020-11-26 17:00:00',60480,5758,284,'Call to Arms: Warsong Gulch!'),
+(20,'2012-11-26 19:01:00','2020-11-30 17:00:00',60480,5758,285,'Call to Arms: Arathi Basin!'),
+(21,'2012-11-08 19:01:00','2020-11-12 17:00:00',60480,5758,353,'Call to Arms: Eye of the Storm!'),
+(22,'0000-00-00 00:00:00','0000-00-00 00:00:00',482400,43200,0,'AQ War Effort'),
+(23,'2009-03-06 02:00:00','2011-12-30 20:00:00',1440,60,0,'Wolfs Attack to the Orgrimmar (Wolfs Group One)'),
+(24,'2009-03-05 23:05:00','2011-12-30 20:00:00',7200,60,0,'Wolfs Attack to the Orgrimmar (Wolfs Group Two)'),
+(25,'2007-08-12 09:00:07','2020-12-30 20:00:00',7200,60,0,'Orgrimmar Grunts Start Defend'),
+(26,'2013-09-19 19:00:00','2020-12-30 15:00:00',525600,24478,372,'Brewfest'),
+(27,'2010-12-05 19:10:00','2020-12-30 18:00:00',30,10,0,'Leader of Jin\'Alai, Kutube\'sa'),
+(28,'2007-08-12 14:59:59','2011-12-30 20:00:00',7200,60,0,'Death Legion Attack Stormwind City (Undead Attack)'),
+(29,'2010-12-01 16:00:00','2020-12-30 17:00:00',1440,540,0,'Nights'),
+(30,'2012-11-29 19:01:00','2020-11-03 17:00:00',60480,5758,400,'Call to Arms: Strand of the Ancients!'),
+(31,'2011-01-01 16:00:00','2020-12-30 19:00:00',1440,5,0,'Dalaran - Invitation to the Argent Crusade'),
+(32,'2013-09-18 17:01:00','2020-12-30 17:00:00',525600,1440,398,'Pirates\' Day'),
+(33,'2010-12-05 19:20:00','2020-12-30 18:00:00',30,10,0,'Leader of Jin\'Alai, Gawanil'),
+(34,'2010-09-18 07:00:00','2019-12-31 19:00:00',10080,5,0,'L70ETC Concert'),
+(35,'2010-09-05 17:01:00','2020-12-30 17:00:00',80640,20160,0,'Edge of Madness, Gri\'lek'),
+(36,'2010-09-19 17:01:00','2020-12-30 17:00:00',80640,20160,0,'Edge of Madness, Hazza\'rah'),
+(37,'2010-10-03 17:01:00','2020-12-30 17:00:00',80640,20160,0,'Edge of Madness, Renataki'),
+(38,'2010-10-17 17:01:00','2020-12-30 17:00:00',80640,20160,0,'Edge of Madness, Wushoolay'),
+(39,'2010-12-05 19:30:00','2020-12-30 18:00:00',30,10,0,'Leader of Jin\'Alai, Chulo'),
+(40,'2013-10-31 20:00:00','2020-12-30 17:00:00',525600,1440,409,'Day of the Dead'),
+(41,'2013-11-17 20:00:00','2020-12-30 17:00:00',545760,10019,404,'Pilgrim\'s Bounty'),
+(42,'2012-12-06 19:01:00','2020-12-10 17:00:00',60480,5758,420,'Call to Arms: Isle of Conquest!'),
+(43,'2010-11-30 19:15:00','2020-12-30 17:00:00',60,5,0,'Hammerfall Under Attack'),
+(44,'2010-11-30 19:00:00','2020-12-30 17:00:00',5,5,0,'Thrallmar Demon Attack'),
+(45,'2010-12-18 09:00:00','2020-12-26 10:00:00',10080,60,424,'Kalu\'ak Fishing Derby'),
+(46,'2010-09-07 17:00:01','2010-12-07 06:00:01',432000,86400,0,'Zalazane\'s Fall'),
+(47,'2010-09-07 17:00:01','2010-12-07 06:00:01',432000,86400,0,'Operation: Gnomeregan'),
+(48,'2010-11-01 05:00:01','2010-12-07 06:00:01',432000,86400,0,'Twilight\'s Cult & Elemental Invasion'),
+(49,'2013-12-25 00:00:00','2020-12-31 00:00:00',525600,11700,0,'Winter Veil: Gifts'),
+(50,'2009-12-31 19:01:00','2020-01-31 18:59:00',525600,44640,0,'January'),
+(51,'2010-01-31 19:01:00','2020-02-29 18:59:00',525600,40320,0,'February'),
+(52,'2010-02-28 19:01:00','2020-03-31 16:59:00',525600,44640,0,'March'),
+(53,'2010-03-31 17:01:00','2020-04-30 16:59:00',525600,43200,0,'April'),
+(54,'2010-04-30 17:01:00','2020-05-31 16:59:00',525600,44640,0,'May'),
+(55,'2010-05-31 17:01:00','2020-06-30 16:59:00',525600,43200,0,'June'),
+(56,'2010-06-30 17:01:00','2020-07-31 16:59:00',525600,44640,0,'July'),
+(57,'2010-07-31 17:01:00','2020-08-31 16:59:00',525600,44640,0,'August'),
+(58,'2010-08-31 17:01:00','2020-09-30 16:59:00',525600,43200,0,'September'),
+(59,'2010-09-30 17:01:00','2020-10-31 18:59:00',525600,44640,0,'October'),
+(60,'2010-10-31 19:01:00','2020-11-30 18:59:00',525600,43200,0,'November'),
+(61,'2010-11-30 19:01:00','2020-12-31 18:59:00',525600,44640,0,'December'),
+(62,'2010-12-31 21:48:00','2020-12-30 19:00:00',180,24,0,'World\'s End Tavern - Perry Gatner Announce'),
+(63,'2010-12-31 22:00:00','2020-12-30 19:00:00',180,5,0,'World\'s End Tavern - Perry Gatner Standup Comedy'),
+(64,'2010-09-22 17:01:00','2020-12-30 17:00:00',525600,256320,0,'Fishing (winter season)'),
+(65,'2011-03-19 19:01:00','2020-12-30 17:00:00',525600,269280,0,'Fishing (summer season)'),
+(66,'2010-10-31 19:00:00','2020-12-30 17:00:00',1440,360,0,'Fishing (00.00-06.00)'),
+(67,'2010-11-01 01:00:00','2020-12-30 17:00:00',1440,360,0,'Fishing (06.00-12.00)'),
+(68,'2010-11-01 07:00:00','2020-12-30 17:00:00',1440,360,0,'Fishing (12.00-18.00)'),
+(69,'2010-11-01 13:00:00','2020-12-30 17:00:00',1440,360,0,'Fishing (18.00-00.00)'),
+(70,'2010-12-31 22:48:00','2020-12-30 19:00:00',180,24,0,'World\'s End Tavern - L70ETC Concert Announce'),
+(71,'2010-12-31 23:00:00','2020-12-30 19:00:00',180,5,0,'World\'s End Tavern - L70ETC Concert'),
+(72,'2010-12-31 19:58:00','2020-12-30 19:00:00',30,10,0,'Stormwind City - Stockades Jail Break'),
+(73,'0000-00-00 00:00:00','0000-00-00 00:00:00',60,60,0,'Night Elf Mohawk'),
+(75,'2013-08-03 18:01:00','2020-12-30 14:00:00',43680,8639,479,'Darkmoon Faire'),
+(76,'2012-10-18 17:01:00','2020-10-22 15:00:00',60480,5758,435,'Call to Arms: The Battle for Gilneas'),
+(77,'2012-10-25 17:01:00','2020-10-29 17:00:00',60480,5758,436,'Call to Arms: Twin Peaks'),
+(78,'2012-11-22 19:01:00','2012-11-29 17:00:00',60480,10080,0,'Rated Battleground 10x10'),
+(79,'2012-11-29 19:01:00','2012-12-06 17:00:00',60480,10080,442,'Rated Battleground 15x15'),
+(80,'2012-12-06 19:01:00','2012-12-13 17:00:00',60480,10080,443,'Rated Battleground 25x25'),
+(132,'0000-00-00 00:00:00','0000-00-00 00:00:00',5184000,2592000,0,'Arena Season 9'),
+(133,'0000-00-00 00:00:00','0000-00-00 00:00:00',5184000,2592000,0,'Arena Season 10'),
+(134,'0000-00-00 00:00:00','0000-00-00 00:00:00',5184000,2592000,0,'Arena Season 11');
 /*!40000 ALTER TABLE `game_event` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +135,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-19  0:45:20
+-- Dump completed on 2022-07-05 13:04:33

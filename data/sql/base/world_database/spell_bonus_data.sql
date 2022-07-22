@@ -1,16 +1,32 @@
-CREATE DATABASE  IF NOT EXISTS `world` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `world`;
--- MySQL dump 10.13  Distrib 8.0.29, for macos12 (x86_64)
 --
--- Host: 127.0.0.1    Database: world
+-- Table structure for table `spell_bonus_data`
+--
+
+DROP TABLE IF EXISTS `spell_bonus_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `spell_bonus_data` (
+  `entry` mediumint(8) unsigned NOT NULL COMMENT 'Spell ID (See Spell.dbc).',
+  `direct_bonus` float NOT NULL DEFAULT 0 COMMENT 'Direct damage bonus.',
+  `dot_bonus` float NOT NULL DEFAULT 0 COMMENT 'DoT tick bonus coefficient.',
+  `ap_bonus` float NOT NULL DEFAULT 0 COMMENT 'Any value here will modify the spells attack power with the factor given here.',
+  `ap_dot_bonus` float NOT NULL DEFAULT 0 COMMENT 'DoT bonus for physical damage.',
+  `comments` varchar(255) DEFAULT NULL COMMENT 'Textual comment.',
+  PRIMARY KEY (`entry`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+-- ---------------------------------------- 
+-- MySQL dump 10.13  Distrib 5.5.37, for macos12 (x86_64)
+--
+-- Host: localhost    Database: world
 -- ------------------------------------------------------
--- Server version	5.6.51
+-- Server version	5.5.5-10.5.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@SESSION.TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
@@ -18,38 +34,144 @@ USE `world`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `spell_bonus_data`
---
-
-DROP TABLE IF EXISTS `spell_bonus_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `spell_bonus_data` (
-  `entry` smallint(5) unsigned NOT NULL COMMENT 'Spell ID (See Spell.dbc).',
-  `direct_bonus` float NOT NULL DEFAULT '0' COMMENT 'Direct damage bonus.',
-  `one_hand_direct_bonus` float NOT NULL DEFAULT '0' COMMENT 'Direct bonus for one-handed weapon.',
-  `two_hand_direct_bonus` float NOT NULL DEFAULT '0' COMMENT 'Direct damage bonus for two-handed weapon.',
-  `direct_bonus_done` float NOT NULL DEFAULT '0' COMMENT 'Direct bonus for done part.',
-  `one_hand_direct_bonus_done` float NOT NULL DEFAULT '0' COMMENT 'Direct damage done bonus with one-handed weapon.',
-  `two_hand_direct_bonus_done` float NOT NULL DEFAULT '0' COMMENT 'Direct damage done bonus with two-handed weapon.',
-  `direct_bonus_taken` float NOT NULL DEFAULT '0' COMMENT 'Direct damage taken bonus.',
-  `one_hand_direct_bonus_taken` float NOT NULL DEFAULT '0' COMMENT 'Direct damage taken bonus with one-handed weapon.',
-  `two_hand_direct_bonus_taken` float NOT NULL DEFAULT '0' COMMENT 'Direct damage taken bonus with two-handed weapon.',
-  `dot_bonus` float NOT NULL DEFAULT '0' COMMENT 'DoT tick bonus coefficient.',
-  `ap_bonus` float NOT NULL DEFAULT '0' COMMENT 'Any value here will modify the spells attack power with the factor given here.',
-  `ap_dot_bonus` float NOT NULL DEFAULT '0' COMMENT 'DoT bonus for physical damage.',
-  `comments` varchar(255) DEFAULT NULL COMMENT 'Textual comment.',
-  PRIMARY KEY (`entry`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `spell_bonus_data`
 --
 
 LOCK TABLES `spell_bonus_data` WRITE;
 /*!40000 ALTER TABLE `spell_bonus_data` DISABLE KEYS */;
-INSERT INTO `spell_bonus_data` VALUES (116,0.8143,0,0,0,0,0,0,0,0,0,0,0,'Mage - Frost Bolt'),(120,0.1357,0,0,0,0,0,0,0,0,0,0,0,'Mage - Cone of Cold'),(133,1,0,0,0,0,0,0,0,0,0,0,0,'Mage - Fire Ball'),(172,0,0,0,0,0,0,0,0,0,0.156,0,0,'Warlock - Corruption'),(331,0.8571,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Healing Wave'),(339,0,0,0,0,0,0,0,0,0,0.1,0,0,'Druid - Entangling Roots'),(348,0.2,0,0,0,0,0,0,0,0,0.2,0,0,'Warlock - Immolate'),(379,0,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Earth Shield Triggered'),(403,0.7143,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Bolt'),(421,0.57,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Chain Lightning'),(585,0.714,0,0,0,0,0,0,0,0,0,0,0,'Priest - Smite'),(603,0,0,0,0,0,0,0,0,0,2,0,0,'Warlock - Curse of Doom'),(686,0.8571,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Shadow Bolt'),(703,0,0,0,0,0,0,0,0,0,0,0,0.03,'Rogue - Garrote'),(755,0,0,0,0,0,0,0,0,0,0.4485,0,0,'Warlock - Health Funnel'),(879,0.15,0,0,0,0,0,0,0,0,0,0.15,0,'Paladin - Exorcism'),(974,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Earth Shield'),(980,0,0,0,0,0,0,0,0,0,0.1,0,0,'Warlock - Curse of Agony'),(1120,0,0,0,0,0,0,0,0,0,0.4286,0,0,'Warlock - Drain Soul'),(1454,0,0,0,0,0,0,0,0,0,0,0,0,'Life Tap - no scaling with SP'),(1463,0.8053,0,0,0,0,0,0,0,0,0,0,0,'Mage - Mana Shield'),(1949,0,0,0,0,0,0,0,0,0,0.0946,0,0,'Warlock - Hellfire'),(2060,1.2353,0,0,0,0,0,0,0,0,0,0,0,'Priest - Greater Heal'),(2061,0.6177,0,0,0,0,0,0,0,0,0,0,0,'Priest - Flash Heal'),(2120,0.2357,0,0,0,0,0,0,0,0,0.122,0,0,'Mage - Flamestrike'),(2812,0.07,0,0,0,0,0,0,0,0,0,0.07,0,'Paladin - Holy Wrath'),(3606,0.1667,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Searing Totem Attack Rank 1'),(5138,0,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Drain Mana'),(5176,0.5714,0,0,0,0,0,0,0,0,0,0,0,'Druid - Wrath'),(5185,1.6104,0,0,0,0,0,0,0,0,0,0,0,'Druid - Healing Touch'),(5570,0,0,0,0,0,0,0,0,0,0.127,0,0,'Druid - Insect Swarm'),(5672,0,0,0,0,0,0,0,0,0,0.045,0,0,'Shaman - Healing Stream Totem'),(5707,0,0,0,0,0,0,0,0,0,0,0,0,'Item - Lifestone Regeneration'),(5857,0.1428,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Hellfire Effect on Enemy Rank 1'),(6229,0.3,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Shadow Ward'),(6350,0.1667,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Searing Totem Attack Rank 2'),(6351,0.1667,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Searing Totem Attack Rank 3'),(6352,0.1667,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Searing Totem Attack Rank 4'),(6353,1.15,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Soul Fire'),(7268,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 1'),(7269,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 2'),(7270,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 3'),(8026,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Weapon Proc Rank 1'),(8028,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Weapon Proc Rank 2'),(8029,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Weapon Proc Rank 3'),(8034,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Frostbrand Attack Rank 1'),(8042,0.3858,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Earth Shock'),(8050,0.2142,0,0,0,0,0,0,0,0,0.1,0,0,'Shaman - Flame Shock'),(8056,0.3858,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Frost Shock'),(8129,0,0,0,0,0,0,0,0,0,0,0,0,'Priest - Mana Burn'),(8188,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Magma Totam Passive Rank 1'),(8418,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 5'),(8419,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 4'),(8443,0.2142,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Fire Nova Totem Casted by Totem Rank 1'),(8504,0.2142,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Fire Nova Totem Casted by Totem Rank 2'),(8505,0.2142,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Fire Nova Totem Casted by Totem Rank 3'),(8921,0.1515,0,0,0,0,0,0,0,0,0.13,0,0,'Druid - Moonfire'),(8936,0.3,0,0,0,0,0,0,0,0,0.1,0,0,'Druid - Regrowth'),(10273,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 6'),(10274,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 7'),(10435,0.1667,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Searing Totem Attack Rank 5'),(10436,0.1667,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Searing Totem Attack Rank 6'),(10444,0,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Attack'),(10445,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Weapon Proc Rank 4'),(10582,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Magma Totam Passive Rank 2'),(10583,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Magma Totam Passive Rank 3'),(10584,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Magma Totam Passive Rank 4'),(11113,0.1357,0,0,0,0,0,0,0,0,0,0,0,'Mage - Blast Wave Rank'),(11310,0.2142,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Fire Nova Totem Casted by Totem Rank 4'),(11311,0.2142,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Fire Nova Totem Casted by Totem Rank 5'),(11538,0,0,0,0,0,0,0,0,0,0,0,0,'Item - Six Demon Bag - Frostbolt'),(11681,0.1428,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Hellfire Effect on Enemy Rank 2'),(11682,0.1428,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Hellfire Effect on Enemy Rank 3'),(14914,0.5711,0,0,0,0,0,0,0,0,0.024,0,0,'Priest - Holy Fire'),(15237,0.1606,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Damage'),(15407,0,0,0,0,0,0,0,0,0,0.19,0,0,'Priest - Mind Flay'),(15662,0,0,0,0,0,0,0,0,0,0,0,0,'Item - Six Demon Bag - Fireball'),(16343,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Weapon Proc Rank 5'),(16344,0.1,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Flametongue Weapon Proc Rank 6'),(17712,0,0,0,0,0,0,0,0,0,0,0,0,'Item - Lifestone Healing'),(18220,0.96,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Dark Pact'),(18562,0,0,0,0,0,0,0,0,0,0,0,0,'Druid - Swiftmend'),(18764,0,0,0,0,0,0,0,0,0,0,0,0,'Item - Fungal Regrowth'),(18790,0,0,0,0,0,0,0,0,0,0,0,0,'Warlock - Fel Stamina'),(20167,0.25,0,0,0,0,0,0,0,0,0,0.16,0,'Paladin - Seal of Light Proc'),(20424,0.2,0,0,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Command Proc'),(20925,0.09,0,0,0,0,0,0,0,0,0,0.056,0,'Paladin - Holy Shield'),(21179,0,0,0,0,0,0,0,0,0,0,0,0,'Item - Six Demon Bag - Chain Lightning'),(23455,0.3035,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Heal Rank 1'),(23458,0.3035,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Heal Rank 2'),(23459,0.3035,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Heal Rank 3'),(24275,0.15,0,0,0,0,0,0,0,0,0,0.15,0,'Paladin - Hammer of Wrath'),(25346,0.2857,0,0,0,0,0,0,0,0,0,0,0,'Mage - Arcane Missiles Triggered Spell Rank 8'),(25713,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25735,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25736,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25737,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25738,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25739,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25740,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(25742,0,0.1,0.125,0,0,0,0,0,0,0,0,0,'Paladin - Seal of Righteousness Dummy Proc'),(26363,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 7'),(26364,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 1'),(26365,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 2'),(26366,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 3'),(26367,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 4'),(26369,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 5'),(26370,0.33,0,0,0,0,0,0,0,0,0,0,0,'Shaman - Lightning Shield Proc Rank 6'),(26573,0,0,0,0,0,0,0,0,0,0.04,0,0.04,'Paladin - Consecration'),(27803,0.3035,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Heal Rank 4'),(27804,0.3035,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Heal Rank 5'),(27805,0.3035,0,0,0,0,0,0,0,0,0,0,0,'Priest - Holy Nova Heal Rank 6');
+INSERT INTO `spell_bonus_data` (`entry`, `direct_bonus`, `dot_bonus`, `ap_bonus`, `ap_dot_bonus`, `comments`) VALUES 
+(116,0.8143,0,0,0,'Mage - Frost Bolt'),
+(133,1,0,0,0,'Mage - Fire Ball'),
+(172,0,0.2,0,0,'Warlock - Corruption'),
+(348,0.2,0.2,0,0,'Warlock - Immolate'),
+(379,0,0,0,0,'Shaman - Earth Shield Triggered'),
+(543,0.1,0,0,0,'Mage - Fire Ward'),
+(585,0.714,0,0,0,'Priest - Smite'),
+(603,0,2,0,0,'Warlock - Curse of Doom'),
+(635,1.66,0,0,0,'Paladin - Holy Light'),
+(703,0,0,0,0.07,'Rogue - Garrote'),
+(755,0,0.4485,0,0,'Warlock - Health Funnel'),
+(879,0.15,0,0.15,0,'Paladin - Exorcism'),
+(974,0.4762,0,0,0,'Shaman - Earth Shield'),
+(980,0,0.1,0,0,'Warlock - Curse of Agony'),
+(1120,0,0.4286,0,0,'Warlock - Drain Soul'),
+(1463,0.8053,0,0,0,'Mage - Mana Shield'),
+(1776,0,0,0.21,0,'Rogue - Gouge'),
+(1822,0,0,0,0.06,'Druid - Rake'),
+(1949,0,0.0946,0,0,'Warlock - Hellfire'),
+(1978,0,0,0,0.04,'Hunter - Serpent Sting'),
+(2120,0.2357,0.122,0,0,'Mage - Flamestrike'),
+(2645,0,0,0,0,'Shaman - Glyph of Ghost Wolf'),
+(2812,0.07,0,0.07,0,'Paladin - Holy Wrath'),
+(2818,0,0,0,0.03,'Rogue - Deadly Poison'),
+(2944,0,0.1849,0,0,'Priest - Devouring Plague'),
+(3044,0,0,0.15,0,'Hunter - Arcane Shot'),
+(3606,0.1667,0,0,0,'Shaman - Searing Totem Attack'),
+(3674,0,0,0,0.02,'Hunter - Black Arrow'),
+(5176,0.5714,0,0,0,'Druid - Wrath'),
+(5570,0,0.2,0,0,'Druid - Insect Swarm'),
+(5672,0.08272,0,0,0,'Shaman - Healing Stream Totem Aura'),
+(5707,0,0,0,0,'Item - Lifestone Regeneration'),
+(5857,0.1428,0,0,0,'Warlock - Hellfire Effect on Enemy'),
+(6229,0.3,0,0,0,'Warlock - Shadow Ward'),
+(7268,0.2857,0,0,0,'Mage - Arcane Missiles Triggered Spell'),
+(8034,0.1,0,0,0,'Shaman - Frostbrand Attack Rank 1'),
+(8042,0.3858,0,0,0,'Shaman - Earth Shock'),
+(8050,0.2142,0.1,0,0,'Shaman - Flame Shock'),
+(8056,0.3858,0,0,0,'Shaman - Frost Shock'),
+(8129,0,0,0,0,'Priest - Mana Burn'),
+(8188,0.1,0,0,0,'Shaman - Magma Totam Passive'),
+(8680,0,0,0.1,0,'Rogue - Instant Poison'),
+(8921,0.1515,0.13,0,0,'Druid - Moonfire'),
+(8936,0.539,0.188,0,0,'Druid - Regrowth'),
+(9007,0,0,0,0.03,'Druid - Pounce Bleed'),
+(10444,0,0,0,0,'Shaman - Flametongue Attack'),
+(11366,1.15,0.05,0,0,'Mage - Pyroblast'),
+(11538,0,0,0,0,'Item - Six Demon Bag - Frostbolt'),
+(13218,0,0,0.04,0,'Rogue - Wound Poison'),
+(13797,0,0,0,0.02,'Hunter - Immolation Trap'),
+(13812,0,0,0.1,0.1,'Hunter - Explosive Trap'),
+(14914,0.5711,0.024,0,0,'Priest - Holy Fire'),
+(15237,0.1606,0,0,0,'Priest - Holy Nova Damage'),
+(15662,0,0,0,0,'Item - Six Demon Bag - Fireball'),
+(17712,0,0,0,0,'Item - Lifestone Healing'),
+(17962,0,0,0,0,'Warlock - Conflagrate'),
+(18562,0,0,0,0,'Druid - Swiftmend'),
+(18790,0,0,0,0,'Warlock - Fel Stamina'),
+(19306,0,0,0.2,0,'Hunter - Counterattack'),
+(19750,1,0,0,0,'Paladin - Flash of Light'),
+(20424,0,0,0,0,'Paladin - Seal of Command Proc'),
+(20925,0.09,0,0.056,0,'Paladin - Holy Shield'),
+(21179,0,0,0,0,'Item - Six Demon Bag - Chain Lightning'),
+(23455,0.3035,0,0,0,'Priest - Holy Nova Heal'),
+(25742,0.07,0,0.039,0,'Paladin - Seal of Righteousness Dummy Proc'),
+(25997,0,0,0,0,'Paladin - Eye for an Eye'),
+(26364,0.33,0,0,0,'Shaman - Lightning Shield Proc'),
+(27243,0.2129,0.25,0,0,'Warlock - Seed of Corruption'),
+(27813,0,0,0,0,'Priest - Blessed Recovery'),
+(28176,0,0,0,0,'Warlock - Fel Armor'),
+(30294,0,0,0,0,'Warlock - Soul Leech'),
+(30455,0.1429,0,0,0,'Mage - Ice Lance'),
+(31024,0,0,0,0,'Item - Living Ruby Pedant'),
+(31117,1.8,0,0,0,'Warlock - Unstable Affliction Dispell'),
+(31804,0,0,0,0,'Paladin - Judgement of Vengeance'),
+(33619,0,0,0,0,'Priest - Reflective Shield'),
+(33745,0,0,0.01,0.01,'Druid - Lacerate'),
+(33763,0,0.09518,0,0,'Druid - Lifebloom'),
+(34433,0.65,0,0,0,'Priest - Shadowfiend'),
+(34913,0,0,0,0,'Mage - Molten Armor Triggered'),
+(34914,0,0.4,0,0,'Priest - Vampiric Touch'),
+(38395,0,0,0,0,'Item - Siphon Essence'),
+(40293,0,0,0,0,'Item - Siphon Essence'),
+(42208,0.1437,0,0,0,'Mage - Blizzard Triggered'),
+(42223,0.285714,0,0,0,'Warlock - Rain of Fire Triggered'),
+(42231,0.12898,0,0,0,'Druid - Hurricane Triggered'),
+(42463,0,0,0.003,0,'Paladin - Seal of Vengeance (full stack proc)'),
+(43733,0,0,0,0,'Item - Lightning Zap'),
+(44203,0.538,0,0,0,'Druid - Tranquility Triggered'),
+(44425,0.714286,0,0,0,'Mage - Arcane Barrage'),
+(44614,0.8571,0,0,0,'Mage - Frostfire Bolt'),
+(45477,0,0,0.1,0,'Death Knight - Icy Touch'),
+(46567,0,0,0,0,'Item - Goblin Rocket Launcher'),
+(47476,0,0,0.06,0,'Death Knight - Strangulate'),
+(47632,0,0,0.15,0,'Death Knight - Death Coil Damage'),
+(47633,0,0,0.15,0,'Death Knight - Death Coil Heal'),
+(47666,0.229,0,0,0,'Penance - dmg effect'),
+(47750,0.537,0,0,0,'Penance - heal effect'),
+(47897,0.1064,0,0,0,'Warlock - Shadowflame Direct'),
+(47960,0,0.06666,0,0,'Warlock - Shadowflame DoT'),
+(48181,0.4729,0,0,0,'Warlock - Haunt'),
+(48438,0,0.11505,0,0,'Druid - Wild Growth'),
+(48721,0,0,0.04,0,'Death Knight - Blood Boil'),
+(48743,0,0,0,0,'Death Knight - Death Pact'),
+(49184,0,0,0.2,0,'Death Knight - Howling Blast'),
+(49821,0.2857,0,0,0,'Priest - Mind Sear Trigger'),
+(50288,0.3,0,0,0,'Druid - Starfall'),
+(50401,0,0,0,0,'Death Knight - Razor Frost'),
+(50464,0.6611,0,0,0,'Druid - Nourish'),
+(50536,0,0,0,0.013,'Death Knight - Unholy Blight Triggered'),
+(50842,0,0,0.04,0,'Death Knight - Pestilence'),
+(52212,0,0,0.0475,0,'Death Knight - Death and Decay Triggered'),
+(53595,0,0,0,0,'Paladin - Hammer of the Righteous'),
+(53600,0,0,0,0,'Paladin - Shield of Righteousness'),
+(53733,0,0,0,0,'Paladin - Judgement of Corruption'),
+(54158,0.25,0,0,0,'Paladin - Judgement'),
+(54181,0,0,0,0,'Warlock - Fel Synergy'),
+(54757,0,0,0,0,'Generic - Pyro Rocket'),
+(55078,0,0,0,0.06325,'Death Knight - Blood Plague'),
+(55095,0,0,0,0.06325,'Death Knight - Frost Fever'),
+(56131,0,0,0,0,'Item - Glyph of Dispel Magic'),
+(56160,0,0,0,0,'Item - Glyph of Power Word: Shield'),
+(56903,0,0,0,0,'Death Knight - Lichflame'),
+(59626,0,0,0,0,'Enchant - Black Magic'),
+(60089,0,0,0.15,0,'Druid - Faerie Fire (Feral) Triggered'),
+(61295,0.4,0.18,0,0,'Shaman - Riptide'),
+(63106,0,0,0,0,'Warlock - Siphon Life Triggered'),
+(63544,0,0,0,0,'Priest - Empowered Renew Triggered'),
+(63675,0,0,0,0,'Priest - Improved Devouring Plague Triggered'),
+(64085,1.2,0,0,0,'Priest - Vampiric Touch Dispel'),
+(64569,0,0,0,0,'Item - Blood Reserve'),
+(71824,0,0,0,0,'Item - Shaman T9 Elemental 4P Bonus');
 /*!40000 ALTER TABLE `spell_bonus_data` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +184,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-19  0:46:00
+-- Dump completed on 2022-07-05 13:05:02

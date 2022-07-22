@@ -40,7 +40,7 @@ CREATE TABLE `db_version` (
 
 LOCK TABLES `db_version` WRITE;
 /*!40000 ALTER TABLE `db_version` DISABLE KEYS */;
-INSERT INTO `db_version` VALUES (21,2,1,'Add_field_comments','Base Database from 20150409 to Rel21_2_1'),(21,3,1,'Update Row format and engine','Update Row format and engine'),(21,4,1,'fix account table errors','fix account table errors'),(22,1,1,'Release 22','Release 22');
+INSERT INTO `db_version` VALUES (21,2,1,'Add_field_comments','Base Database FDB_21_02_01'),(21,3,1,'Update Row format and engine','Update to FDB_21_03_01'),(21,4,1,'fix account table errors','Update to FDB_21_04_01'),(22,1,1,'New DB Release 22','Update to FDB_22_01_01');
 /*!40000 ALTER TABLE `db_version` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
