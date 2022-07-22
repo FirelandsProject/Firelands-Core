@@ -15,9 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// \addtogroup authserver Realm Daemon
-/// @{
-/// \file
+ /// \addtogroup authserver Realm Daemon
+ /// @{
+ /// \file
 
 #include "Common.h"
 #include "Database/DatabaseEnv.h"
@@ -40,6 +40,7 @@
 #include <ace/ACE.h>
 #include <ace/Acceptor.h>
 #include <ace/SOCK_Acceptor.h>
+#include "Banner.h"
 
 #ifdef WIN32
 #include "ServiceWin32.h"
@@ -69,19 +70,19 @@ DatabaseType LoginDatabase;                                 ///< Accessor to the
 void usage(const char* prog)
 {
     sLog.outString("Usage: \n %s [<options>]\n"
-                   "    -v, --version            print version and exist\n\r"
-                   "    -c config_file           use config_file as configuration file\n\r"
+        "    -v, --version            print version and exist\n\r"
+        "    -c config_file           use config_file as configuration file\n\r"
 #ifdef WIN32
-                   "    Running as service functions:\n\r"
-                   "    -s run                   run as service\n\r"
-                   "    -s install               install service\n\r"
-                   "    -s uninstall             uninstall service\n\r"
+        "    Running as service functions:\n\r"
+        "    -s run                   run as service\n\r"
+        "    -s install               install service\n\r"
+        "    -s uninstall             uninstall service\n\r"
 #else
-                   "    Running as daemon functions:\n\r"
-                   "    -s run                   run as daemon\n\r"
-                   "    -s stop                  stop daemon\n\r"
+        "    Running as daemon functions:\n\r"
+        "    -s run                   run as daemon\n\r"
+        "    -s stop                  stop daemon\n\r"
 #endif
-                   , prog);
+        , prog);
 }
 
 /// Launch the realm server
@@ -102,76 +103,76 @@ extern int main(int argc, char** argv)
     {
         switch (option)
         {
-            case 'c':
-                cfg_file = cmd_opts.opt_arg();
-                break;
-            case 'v':
-                printf("%s\n", GitRevision::GetProjectRevision());
-                return 0;
+        case 'c':
+            cfg_file = cmd_opts.opt_arg();
+            break;
+        case 'v':
+            printf("%s\n", GitRevision::GetProjectRevision());
+            return 0;
 
-            case 's':
+        case 's':
+        {
+            const char* mode = cmd_opts.opt_arg();
+
+            if (!strcmp(mode, "run"))
             {
-                const char* mode = cmd_opts.opt_arg();
-
-                if (!strcmp(mode, "run"))
-                {
-                    serviceDaemonMode = 'r';
-                }
-#ifdef WIN32
-                else if (!strcmp(mode, "install"))
-                {
-                    serviceDaemonMode = 'i';
-                }
-                else if (!strcmp(mode, "uninstall"))
-                {
-                    serviceDaemonMode = 'u';
-                }
-#else
-                else if (!strcmp(mode, "stop"))
-                {
-                    serviceDaemonMode = 's';
-                }
-#endif
-                else
-                {
-                    sLog.outError("Runtime-Error: -%c unsupported argument %s", cmd_opts.opt_opt(), mode);
-                    usage(argv[0]);
-                    Log::WaitBeforeContinueIfNeed();
-                    return 1;
-                }
-                break;
+                serviceDaemonMode = 'r';
             }
-            case ':':
-                sLog.outError("Runtime-Error: -%c option requires an input argument", cmd_opts.opt_opt());
+#ifdef WIN32
+            else if (!strcmp(mode, "install"))
+            {
+                serviceDaemonMode = 'i';
+            }
+            else if (!strcmp(mode, "uninstall"))
+            {
+                serviceDaemonMode = 'u';
+            }
+#else
+            else if (!strcmp(mode, "stop"))
+            {
+                serviceDaemonMode = 's';
+            }
+#endif
+            else
+            {
+                sLog.outError("Runtime-Error: -%c unsupported argument %s", cmd_opts.opt_opt(), mode);
                 usage(argv[0]);
                 Log::WaitBeforeContinueIfNeed();
                 return 1;
-            default:
-                sLog.outError("Runtime-Error: bad format of commandline arguments");
-                usage(argv[0]);
-                Log::WaitBeforeContinueIfNeed();
-                return 1;
+            }
+            break;
+        }
+        case ':':
+            sLog.outError("Runtime-Error: -%c option requires an input argument", cmd_opts.opt_opt());
+            usage(argv[0]);
+            Log::WaitBeforeContinueIfNeed();
+            return 1;
+        default:
+            sLog.outError("Runtime-Error: bad format of commandline arguments");
+            usage(argv[0]);
+            Log::WaitBeforeContinueIfNeed();
+            return 1;
         }
     }
 
 #ifdef WIN32                                                // windows service command need execute before config read
     switch (serviceDaemonMode)
     {
-        case 'i':
-            if (WinServiceInstall())
-            {
-                sLog.outString("Installing service");
-            }
-            return 1;
-        case 'u':
-            if (WinServiceUninstall())
-            {
-                sLog.outString("Uninstalling service");
-            }
-            return 1;
-        case 'r':
-            WinServiceRun();
-            break;
+    case 'i':
+        if (WinServiceInstall())
+        {
+            sLog.outString("Installing service");
+        }
+        return 1;
+    case 'u':
+        if (WinServiceUninstall())
+        {
+            sLog.outString("Uninstalling service");
+        }
+        return 1;
+    case 'r':
+        WinServiceRun();
+        break;
     }
 #endif
 
@@ -185,20 +186,20 @@ extern int main(int argc, char** argv)
 #ifndef WIN32                                               // posix daemon commands need apply after config read
     switch (serviceDaemonMode)
     {
-        case 'r':
-            startDaemon();
-            break;
-        case 's':
-            stopDaemon();
-            break;
+    case 'r':
+        startDaemon();
+        break;
+    case 's':
+        stopDaemon();
+        break;
     }
 #endif
 
     sLog.Initialize();
 
     sLog.outString("%s [realm-daemon]", GitRevision::GetProjectRevision());
+    Firelands::Banner::Show();
     sLog.outString("%s", GitRevision::GetFullRevision());
-    sLog.outString("<Ctrl-C> to stop.\n");
     sLog.outString("Using configuration file %s.", cfg_file);
 
     ///- Check the version of the configuration file
@@ -389,14 +390,14 @@ void OnSignal(int s)
 {
     switch (s)
     {
-        case SIGINT:
-        case SIGTERM:
-            stopEvent = true;
-            break;
+    case SIGINT:
+    case SIGTERM:
+        stopEvent = true;
+        break;
 #ifdef _WIN32
-        case SIGBREAK:
-            stopEvent = true;
-            break;
+    case SIGBREAK:
+        stopEvent = true;
+        break;
 #endif
     }
 
