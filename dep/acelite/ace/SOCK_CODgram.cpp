@@ -1,9 +1,8 @@
+// $Id: SOCK_CODgram.cpp 91287 2010-08-05 10:30:49Z johnnyw $
+
 #include "ace/SOCK_CODgram.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/OS_NS_sys_socket.h"
-#if defined (ACE_HAS_ALLOC_HOOKS)
-# include "ace/Malloc_Base.h"
-#endif /* ACE_HAS_ALLOC_HOOKS */
 
 #if !defined (__ACE_INLINE__)
 #include "ace/SOCK_CODgram.inl"
@@ -35,7 +34,7 @@ ACE_SOCK_CODgram::ACE_SOCK_CODgram (const ACE_Addr &remote,
                   protocol_family,
                   protocol,
                   reuse_addr) == -1)
-    ACELIB_ERROR ((LM_ERROR, ACE_TEXT ("%p\n"), ACE_TEXT ("ACE_SOCK_CODgram")));
+    ACE_ERROR ((LM_ERROR, ACE_TEXT ("%p\n"), ACE_TEXT ("ACE_SOCK_CODgram")));
 }
 
 /* This is the general-purpose open routine.  Note that it performs

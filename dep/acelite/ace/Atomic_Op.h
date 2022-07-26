@@ -4,7 +4,9 @@
 /**
  *  @file    Atomic_Op.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Atomic_Op.h 95225 2011-12-05 20:25:15Z shuston $
+ *
+ *  @author Douglas C. Schmidt <schmidt@uci.edu>
  */
 //=============================================================================
 
@@ -142,12 +144,14 @@ public:
   static void init_functions (void);
 
 private:
+
   /// This function cannot be supported by this template specialization.
   /// If you need access to an underlying lock, use the ACE_Atomic_Op_Ex
   /// template instead.
   ACE_Thread_Mutex &mutex (void);
 
 private:
+
   /// Current object decorated by the atomic op.
   volatile long value_;
 
@@ -240,12 +244,14 @@ public:
   static void init_functions (void);
 
 private:
+
   /// This function cannot be supported by this template specialization.
   /// If you need access to an underlying lock, use the ACE_Atomic_Op_Ex
   /// template instead.
   ACE_Thread_Mutex &mutex (void);
 
 private:
+
   /// Current object decorated by the atomic op.
   volatile unsigned long value_;
 
@@ -305,31 +311,6 @@ public:
   ACE_Atomic_Op (const ACE_Atomic_Op<ACE_Thread_Mutex, unsigned long> &c);
   ACE_Atomic_Op<ACE_Thread_Mutex, unsigned long> &operator= (unsigned long rhs);
 };
-
-// The long long intrinsics are not available on PPC
-#if !defined (__powerpc__)
-template<>
-class ACE_Export ACE_Atomic_Op<ACE_Thread_Mutex, long long>
-: public ACE_Atomic_Op_GCC<long long>
-{
-public:
-  ACE_Atomic_Op (void);
-  ACE_Atomic_Op (long long c);
-  ACE_Atomic_Op (const ACE_Atomic_Op<ACE_Thread_Mutex, long long> &c);
-  ACE_Atomic_Op<ACE_Thread_Mutex, long long> &operator= (long long rhs);
-};
-
-template<>
-class ACE_Export ACE_Atomic_Op<ACE_Thread_Mutex, unsigned long long>
-: public ACE_Atomic_Op_GCC<unsigned long long>
-{
-public:
-  ACE_Atomic_Op (void);
-  ACE_Atomic_Op (unsigned long long c);
-  ACE_Atomic_Op (const ACE_Atomic_Op<ACE_Thread_Mutex, unsigned long long> &c);
-  ACE_Atomic_Op<ACE_Thread_Mutex, unsigned long long> &operator= (unsigned long long rhs);
-};
-#endif /* !__powerpc__ */
 
 #if !defined (ACE_LACKS_GCC_ATOMIC_BUILTINS_2)
 template<>

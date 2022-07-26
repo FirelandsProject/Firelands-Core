@@ -4,8 +4,10 @@
 /**
  *  @file    Future.h
  *
+ *  $Id: Future.h 91626 2010-09-07 10:59:20Z johnnyw $
+ *
  *  @author Andres Kruse <Andres.Kruse@cern.ch>
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  *  @author Per Andersson <Per.Andersson@hfera.ericsson.se> and
  *  @author John Tucker <johnny_tucker@yahoo.com>
  */
@@ -81,8 +83,8 @@ public:
 
   /// Declare the dynamic allocation hooks.
   ACE_ALLOC_HOOK_DECLARE;
-
 protected:
+
   /// Constructor
   ACE_Future_Observer (void);
 };
@@ -94,7 +96,7 @@ protected:
  *
  * @brief ACE_Future_Rep<T>
  *
- * An ACE_Future_Rep<T> object encapsulates a pointer to an object
+ * An ACE_Future_Rep<T> object encapsules a pointer to an object
  * of class T which is the result of an asynchronous method
  * invocation. It is pointed to by ACE_Future<T> object[s] and
  * only accessible through them.
@@ -217,10 +219,13 @@ private:
   mutable ACE_SYNCH_RECURSIVE_CONDITION value_ready_;
 
 private:
+
   ACE_Future_Rep (void);
 
 protected:
+
   ~ACE_Future_Rep (void);
+
 };
 
 /**
@@ -234,6 +239,7 @@ template <class T>
 class ACE_Future
 {
 public:
+  // = Initialization and termination methods.
   /// Constructor.
   ACE_Future (void);
 

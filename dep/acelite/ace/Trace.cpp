@@ -1,3 +1,5 @@
+// $Id: Trace.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/Trace.h"
 
 // Turn off tracing for the duration of this file.
@@ -6,11 +8,8 @@
 #endif /* ACE_NTRACE */
 #define ACE_NTRACE 1
 
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/Object_Manager_Base.h"
-#if defined (ACE_HAS_ALLOC_HOOKS)
-# include "ace/Malloc_Base.h"
-#endif /* ACE_HAS_ALLOC_HOOKS */
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
@@ -94,7 +93,7 @@ ACE_Trace::ACE_Trace (const ACE_TCHAR *n,
           && lm->trace_active () == 0)
         {
           lm->trace_active (1);
-          ACELIB_DEBUG ((LM_TRACE,
+          ACE_DEBUG ((LM_TRACE,
                       ACE_TEXT ("%*s(%t) calling %s in file `%s' on line %d\n"),
                       ACE_Trace::nesting_indent_ * lm->inc (),
                       ACE_TEXT (""),
@@ -120,7 +119,7 @@ ACE_Trace::~ACE_Trace (void)
           && lm->trace_active () == 0)
         {
           lm->trace_active (1);
-          ACELIB_DEBUG ((LM_TRACE,
+          ACE_DEBUG ((LM_TRACE,
                       ACE_TEXT ("%*s(%t) leaving %s\n"),
                       ACE_Trace::nesting_indent_ * lm->dec (),
                       ACE_TEXT (""),

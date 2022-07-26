@@ -1,3 +1,5 @@
+// $Id: Message_Queue_T.cpp 96070 2012-08-17 09:07:16Z mcorino $
+
 #ifndef ACE_MESSAGE_QUEUE_T_CPP
 #define ACE_MESSAGE_QUEUE_T_CPP
 
@@ -5,7 +7,7 @@
 // circular include problems.
 #include "ace/Message_Queue.h"
 #include "ace/Message_Queue_Vx.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/OS_NS_sys_time.h"
 
 #if defined (ACE_HAS_WIN32_OVERLAPPED_IO)
@@ -28,10 +30,10 @@
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-ACE_ALLOC_HOOK_DEFINE_Tyc(ACE_Message_Queue)
-ACE_ALLOC_HOOK_DEFINE_Tyc(ACE_Dynamic_Message_Queue)
-ACE_ALLOC_HOOK_DEFINE_Tcyc(ACE_Message_Queue_Ex)
-ACE_ALLOC_HOOK_DEFINE_Tcyc(ACE_Message_Queue_Ex_N)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue)
+ACE_ALLOC_HOOK_DEFINE(ACE_Dynamic_Message_Queue)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue_Ex)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue_Ex_N)
 
 template <class ACE_MESSAGE_TYPE, ACE_SYNCH_DECL, class TIME_POLICY> void
 ACE_Message_Queue_Ex<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::dump (void) const
@@ -67,7 +69,7 @@ ACE_Message_Queue_Ex<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::ACE_Message_
   ACE_TRACE ("ACE_Message_Queue_Ex<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::ACE_Message_Queue_Ex");
 
   if (this->queue_.open (high_water_mark, low_water_mark, ns) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("ACE_Message_Queue_Ex")));
 }
 
@@ -381,7 +383,7 @@ ACE_Message_Queue_Ex_Iterator<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::dum
   this->iter_.dump ();
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tcyc(ACE_Message_Queue_Ex_Iterator)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue_Ex_Iterator)
 
 template <class ACE_MESSAGE_TYPE, ACE_SYNCH_DECL, class TIME_POLICY>
 ACE_Message_Queue_Ex_Reverse_Iterator<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::
@@ -422,7 +424,7 @@ ACE_Message_Queue_Ex_Reverse_Iterator<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLI
   this->iter_.dump ();
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tcyc(ACE_Message_Queue_Ex_Reverse_Iterator)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue_Ex_Reverse_Iterator)
 
 template <class ACE_MESSAGE_TYPE, ACE_SYNCH_DECL, class TIME_POLICY>
 ACE_Message_Queue_Ex_N<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::ACE_Message_Queue_Ex_N
@@ -530,7 +532,7 @@ ACE_Message_Queue_Ex_N<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::wrap_with_
   return mb_head;
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tyc(ACE_Message_Queue_Reverse_Iterator)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue_Reverse_Iterator)
 
 template <class ACE_MESSAGE_TYPE, ACE_SYNCH_DECL, class TIME_POLICY> int
 ACE_Message_Queue_Ex<ACE_MESSAGE_TYPE, ACE_SYNCH_USE, TIME_POLICY>::dequeue (ACE_MESSAGE_TYPE *&first_item,
@@ -739,7 +741,7 @@ ACE_Message_Queue_Iterator<ACE_SYNCH_USE, TIME_POLICY>::dump (void) const
 #endif /* ACE_HAS_DUMP */
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tyc(ACE_Message_Queue_Iterator)
+ACE_ALLOC_HOOK_DEFINE(ACE_Message_Queue_Iterator)
 
 template <ACE_SYNCH_DECL, class TIME_POLICY>
 ACE_Message_Queue_Reverse_Iterator<ACE_SYNCH_USE, TIME_POLICY>::ACE_Message_Queue_Reverse_Iterator (ACE_Message_Queue <ACE_SYNCH_USE, TIME_POLICY> &q)
@@ -982,23 +984,23 @@ ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump");
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
   switch (this->state_)
     {
     case ACE_Message_Queue_Base::ACTIVATED:
-      ACELIB_DEBUG ((LM_DEBUG,
+      ACE_DEBUG ((LM_DEBUG,
                   ACE_TEXT ("state = ACTIVATED\n")));
       break;
     case ACE_Message_Queue_Base::DEACTIVATED:
-      ACELIB_DEBUG ((LM_DEBUG,
+      ACE_DEBUG ((LM_DEBUG,
                   ACE_TEXT ("state = DEACTIVATED\n")));
       break;
     case ACE_Message_Queue_Base::PULSED:
-      ACELIB_DEBUG ((LM_DEBUG,
+      ACE_DEBUG ((LM_DEBUG,
                   ACE_TEXT ("state = PULSED\n")));
       break;
     }
-  ACELIB_DEBUG ((LM_DEBUG,
+  ACE_DEBUG ((LM_DEBUG,
               ACE_TEXT ("low_water_mark = %d\n")
               ACE_TEXT ("high_water_mark = %d\n")
               ACE_TEXT ("cur_bytes = %d\n")
@@ -1013,11 +1015,11 @@ ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump (void) const
               this->cur_count_,
               this->head_,
               this->tail_));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("not_full_cond:\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("not_full_cond:\n")));
   not_full_cond_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("not_empty_cond:\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("not_empty_cond:\n")));
   not_empty_cond_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
@@ -1054,7 +1056,7 @@ ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::ACE_Message_Queue (size_t hwm,
   ACE_TRACE ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::ACE_Message_Queue");
 
   if (this->open (hwm, lwm, ns) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("open")));
 
 #if defined (ACE_HAS_MONITOR_POINTS) && (ACE_HAS_MONITOR_POINTS == 1)
@@ -1085,7 +1087,7 @@ ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::~ACE_Message_Queue (void)
 {
   ACE_TRACE ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::~ACE_Message_Queue");
   if (this->head_ != 0 && this->close () == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("close")));
 
 #if defined (ACE_HAS_MONITOR_POINTS) && (ACE_HAS_MONITOR_POINTS == 1)
@@ -1476,7 +1478,7 @@ template <ACE_SYNCH_DECL, class TIME_POLICY> int
 ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dequeue_head_i (ACE_Message_Block *&first_item)
 {
   if (this->head_ ==0)
-    ACELIB_ERROR_RETURN ((LM_ERROR,
+    ACE_ERROR_RETURN ((LM_ERROR,
                        ACE_TEXT ("Attempting to dequeue from empty queue")),
                       -1);
   ACE_TRACE ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dequeue_head_i");
@@ -1602,7 +1604,7 @@ template <ACE_SYNCH_DECL, class TIME_POLICY> int
 ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dequeue_tail_i (ACE_Message_Block *&dequeued)
 {
   if (this->head_ == 0)
-    ACELIB_ERROR_RETURN ((LM_ERROR,
+    ACE_ERROR_RETURN ((LM_ERROR,
                        ACE_TEXT ("Attempting to dequeue from empty queue")),
                       -1);
   ACE_TRACE ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dequeue_tail_i");
@@ -1652,7 +1654,7 @@ ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dequeue_deadline_i (ACE_Message_B
 {
 #if defined (ACE_HAS_TIMED_MESSAGE_BLOCKS)
   if (this->head_ == 0)
-    ACELIB_ERROR_RETURN ((LM_ERROR,
+    ACE_ERROR_RETURN ((LM_ERROR,
                        ACE_TEXT ("Attempting to dequeue from empty queue")),
                       -1);
   ACE_TRACE ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dequeue_deadline_i");
@@ -2052,6 +2054,7 @@ ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::notify (void)
     return this->notification_strategy_->notify ();
 }
 
+// = Initialization and termination methods.
 template <ACE_SYNCH_DECL, class TIME_POLICY>
 ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::ACE_Dynamic_Message_Queue (ACE_Dynamic_Message_Strategy & message_strategy,
                                                                      size_t hwm,
@@ -2264,12 +2267,12 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump");
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY> (base class):\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY> (base class):\n")));
   this->ACE_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump ();
 
-  ACELIB_DEBUG ((LM_DEBUG,
+  ACE_DEBUG ((LM_DEBUG,
               ACE_TEXT ("pending_head_ = %u\n")
               ACE_TEXT ("pending_tail_ = %u\n")
               ACE_TEXT ("late_head_ = %u\n")
@@ -2283,10 +2286,10 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::dump (void) const
               this->beyond_late_head_,
               this->beyond_late_tail_));
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("message_strategy_ :\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("message_strategy_ :\n")));
   message_strategy_.dump ();
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
   // dump the state of the queue
@@ -2709,12 +2712,12 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::refresh_pending_queue (co
               else if (current_status != ACE_Dynamic_Message_Strategy::LATE)
                 {
                   // if we got here, something is *seriously* wrong with the queue
-                  ACELIB_ERROR_RETURN ((LM_ERROR,
+                  ACE_ERROR_RETURN ((LM_ERROR,
                                      ACE_TEXT ("Unexpected message priority status [%d] (expected LATE)"),
                                      (int) current_status),
                                     -1);
                 }
-              /* FALLTHROUGH */
+              /* FALLTHRU */
             }
           else
             {
@@ -2751,7 +2754,7 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::refresh_pending_queue (co
             {
               if (current_status != ACE_Dynamic_Message_Strategy::PENDING)
                 // if we got here, something is *seriously* wrong with the queue
-                ACELIB_ERROR_RETURN((LM_ERROR,
+                ACE_ERROR_RETURN((LM_ERROR,
                                   ACE_TEXT ("Unexpected message priority status [%d] (expected PENDING)"),
                                   (int) current_status),
                                  -1);
@@ -2773,7 +2776,7 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::refresh_pending_queue (co
           break; // switch
         default:
           // if we got here, something is *seriously* wrong with the queue
-          ACELIB_ERROR_RETURN((LM_ERROR,
+          ACE_ERROR_RETURN((LM_ERROR,
                             ACE_TEXT ("Unknown message priority status [%d]"),
                             (int) current_status),
                            -1);
@@ -2829,7 +2832,7 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::refresh_late_queue (const
                 }
               else if (current_status != ACE_Dynamic_Message_Strategy::LATE)
                 // if we got here, something is *seriously* wrong with the queue
-                ACELIB_ERROR_RETURN ((LM_ERROR,
+                ACE_ERROR_RETURN ((LM_ERROR,
                                    ACE_TEXT ("Unexpected message priority status [%d] (expected LATE)"),
                                    (int) current_status),
                                   -1);
@@ -2850,14 +2853,14 @@ ACE_Dynamic_Message_Queue<ACE_SYNCH_USE, TIME_POLICY>::refresh_late_queue (const
 
         case ACE_Dynamic_Message_Strategy::PENDING:
           // if we got here, something is *seriously* wrong with the queue
-          ACELIB_ERROR_RETURN ((LM_ERROR,
+          ACE_ERROR_RETURN ((LM_ERROR,
                              ACE_TEXT ("Unexpected message priority status ")
                              ACE_TEXT ("[%d] (expected LATE or BEYOND_LATE)"),
                              (int) current_status),
                             -1);
         default:
           // if we got here, something is *seriously* wrong with the queue
-          ACELIB_ERROR_RETURN ((LM_ERROR,
+          ACE_ERROR_RETURN ((LM_ERROR,
                              ACE_TEXT ("Unknown message priority status [%d]"),
                              (int) current_status),
                             -1);

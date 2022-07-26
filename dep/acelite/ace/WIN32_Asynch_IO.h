@@ -4,11 +4,15 @@
 /**
  *  @file    WIN32_Asynch_IO.h
  *
+ *  $Id: WIN32_Asynch_IO.h 92298 2010-10-21 11:15:17Z johnnyw $
+ *
+ *
  *  These classes only works on Win32 platforms.
  *
  *  The implementation of ACE_Asynch_Transmit_File,
  *  ACE_Asynch_Accept, and ACE_Asynch_Connect are only supported if
  *  ACE_HAS_WINSOCK2 is defined or you are on WinNT 4.0 or higher.
+ *
  *
  *  @author Irfan Pyarali <irfan@cs.wustl.edu>
  *  @author Tim Harrison <harrison@cs.wustl.edu>
@@ -147,6 +151,7 @@ protected:
  *
  * @brief This class abstracts out the common things needed for
  * implementing Asynch_Operation for WIN32 platform.
+ *
  */
 class ACE_Export ACE_WIN32_Asynch_Operation : public virtual ACE_Asynch_Operation_Impl
 {
@@ -483,6 +488,7 @@ protected:
  * @brief This class is a factory for starting off asynchronous writes
  *    on a stream.
  *
+ *
  *     Once open() is called, multiple asynchronous <writes>s can
  *     started using this class.  A ACE_Asynch_Write_Stream::Result
  *     will be passed back to the @a handler when the asynchronous
@@ -542,6 +548,11 @@ public:
 
   /// Return the underlying proactor.
   ACE_Proactor* proactor (void) const;
+
+protected:
+  /// This is the method which does the real work and is there so that
+  /// the ACE_Asynch_Write_File class can use it too.
+  int shared_write (ACE_WIN32_Asynch_Write_Stream_Result *result);
 };
 
 /**
@@ -932,7 +943,7 @@ private:
   /**
    * This method belongs to ACE_WIN32_Asynch_Write_Stream. It is here
    * to avoid compiler warnings. This method is forwarded to the
-   * Write_File specific method with 0 offset values.
+   * ACE_WIN32_Asynch_Write_Stream class.
    */
   int write (ACE_Message_Block &message_block,
              size_t bytes_to_write,
@@ -1337,6 +1348,7 @@ private:
 /**
  * @class ACE_WIN32_Asynch_Transmit_File_Result
  *
+ *
  * @brief This class implements ACE_Asynch_Transmit_File::Result for
  *     WIN32 platforms.
  *
@@ -1666,6 +1678,7 @@ protected:
  *     will be passed back to the @a handler when the asynchronous
  *     reads completes through the <ACE_Handler::handle_read_stream>
  *     callback.
+ *
  */
 class ACE_Export ACE_WIN32_Asynch_Read_Dgram : public virtual ACE_Asynch_Read_Dgram_Impl,
                                                public ACE_WIN32_Asynch_Operation
@@ -1843,6 +1856,7 @@ protected:
  *
  * @brief This class is a factory for starting off asynchronous writes
  *    on a UDP socket.
+ *
  *
  *     Once <open> is called, multiple asynchronous <writes>s can
  *     started using this class.  A ACE_Asynch_Write_Stream::Result

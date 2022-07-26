@@ -1,68 +1,72 @@
-# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
 #
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the
-# Free Software Foundation; either version 2 of the License, or (at your
-# option) any later version.
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
 #
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-# more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program. If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-add_library(g3dlite STATIC
-    G3D/AABox.cpp
-    G3D/Any.cpp
-    G3D/BinaryFormat.cpp
-    G3D/BinaryInput.cpp
-    G3D/BinaryOutput.cpp
-    G3D/Box.cpp
-    G3D/Capsule.cpp
-    G3D/CollisionDetection.cpp
-    G3D/CoordinateFrame.cpp
-    G3D/Crypto.cpp
-    G3D/Cylinder.cpp
-    G3D/FileSystem.cpp
-    G3D/Line.cpp
-    G3D/LineSegment.cpp
-    G3D/Log.cpp
-    G3D/Matrix3.cpp
-    G3D/Matrix4.cpp
-    G3D/MemoryManager.cpp
-    G3D/PhysicsFrame.cpp
-    G3D/Plane.cpp
-    G3D/Quat.cpp
-    G3D/Random.cpp
-    G3D/Ray.cpp
-    G3D/ReferenceCount.cpp
-    G3D/RegistryUtil.cpp
-    G3D/Sphere.cpp
-    G3D/System.cpp
-    G3D/TextInput.cpp
-    G3D/TextOutput.cpp
-    G3D/Triangle.cpp
-    G3D/UprightFrame.cpp
-    G3D/Vector2.cpp
-    G3D/Vector3.cpp
-    G3D/Vector4.cpp
-    G3D/debugAssert.cpp
-    G3D/fileutils.cpp
-    G3D/format.cpp
-    G3D/g3dfnmatch.cpp
-    G3D/g3dmath.cpp
-    G3D/prompt.cpp
-    G3D/stringutils.cpp
-    G3D/uint128.cpp
+
+set(g3dlib_STAT_SRCS
+  source/AABox.cpp
+  source/Any.cpp
+  source/BinaryFormat.cpp
+  source/BinaryInput.cpp
+  source/BinaryOutput.cpp
+  source/Box.cpp
+  source/Capsule.cpp
+  source/CollisionDetection.cpp
+  source/CoordinateFrame.cpp
+  source/Crypto.cpp
+  source/Cylinder.cpp
+  source/debugAssert.cpp
+  source/FileSystem.cpp
+  source/fileutils.cpp
+  source/format.cpp
+  source/g3dfnmatch.cpp
+  source/g3dmath.cpp
+  source/Line.cpp
+  source/LineSegment.cpp
+  source/Log.cpp
+  source/Matrix3.cpp
+  source/Matrix4.cpp
+  source/MemoryManager.cpp
+  source/PhysicsFrame.cpp
+  source/Plane.cpp
+  source/prompt.cpp
+  source/Quat.cpp
+  source/Random.cpp
+  source/Ray.cpp
+  source/ReferenceCount.cpp
+  source/RegistryUtil.cpp
+  source/Sphere.cpp
+  source/stringutils.cpp
+  source/System.cpp
+  source/TextInput.cpp
+  source/TextOutput.cpp
+  source/Triangle.cpp
+  source/uint128.cpp
+  source/UprightFrame.cpp
+  source/Vector2.cpp
+  source/Vector3.cpp
+  source/Vector4.cpp
 )
 
-target_link_libraries(g3dlite
-    PRIVATE
-        ZLIB::ZLIB
-)
+if(WIN32)
+  include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/dep/zlib
+  )
+else()
+  include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+  )
+endif()
 
-target_include_directories(g3dlite
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+add_library(g3dlib STATIC ${g3dlib_STAT_SRCS})
+
+target_link_libraries(g3dlib
+  ${ZLIB_LIBRARIES}
 )

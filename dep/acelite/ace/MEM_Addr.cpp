@@ -1,3 +1,5 @@
+// $Id: MEM_Addr.cpp 91368 2010-08-16 13:03:34Z mhengstmengel $
+
 // Defines the Internet domain address family address format.
 
 #include "ace/MEM_Addr.h"
@@ -8,13 +10,10 @@
 #include "ace/MEM_Addr.inl"
 #endif /* __ACE_INLINE__ */
 
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/OS_NS_stdlib.h"
 #include "ace/OS_NS_unistd.h"
 #include "ace/os_include/os_netdb.h"
-#if defined (ACE_HAS_ALLOC_HOOKS)
-# include "ace/Malloc_Base.h"
-#endif /* ACE_HAS_ALLOC_HOOKS */
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
@@ -118,7 +117,7 @@ ACE_MEM_Addr::get_addr (void) const
 
 // Set a pointer to the address.
 void
-ACE_MEM_Addr::set_addr (const void *addr, int len)
+ACE_MEM_Addr::set_addr (void *addr, int len)
 {
   ACE_TRACE ("ACE_MEM_Addr::set_addr");
 
@@ -155,10 +154,10 @@ ACE_MEM_Addr::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_MEM_Addr::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
   this->external_.dump ();
   this->internal_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 

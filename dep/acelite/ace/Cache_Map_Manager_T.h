@@ -4,6 +4,8 @@
 /**
  *  @file    Cache_Map_Manager_T.h
  *
+ *  $Id: Cache_Map_Manager_T.h 92097 2010-09-30 05:41:49Z msmit $
+ *
  *  @author Kirthika Parameswaran <kirthika@cs.wustl.edu>
  */
 //=============================================================================
@@ -59,6 +61,7 @@ template <class KEY, class VALUE, class CMAP_TYPE, class ITERATOR_IMPL, class RE
 class ACE_Cache_Map_Manager
 {
 public:
+
   // = Traits.
   typedef KEY key_type;
   typedef VALUE mapped_type;
@@ -89,6 +92,8 @@ public:
    * class.
    */
   typedef std::pair<VALUE, ATTRIBUTES> CACHE_VALUE;
+
+  // = Initialization and termination methods.
 
   /// Initialize a <Cache_Map_Manager> with <caching_strategy> and
   /// @a size entries.
@@ -214,9 +219,6 @@ public:
   /// The caching strategy used on the cache.
   CACHING_STRATEGY &caching_strategy (void);
 
-  /// Declare the dynamic allocation hooks.
-  ACE_ALLOC_HOOK_DECLARE;
-
 protected:
 
   /// The underlying map which needs to be cached.
@@ -226,9 +228,11 @@ protected:
   CACHING_STRATEGY &caching_strategy_;
 
 private:
+
   // = Disallow these operations.
   ACE_UNIMPLEMENTED_FUNC (void operator= (const ACE_Cache_Map_Manager<KEY, VALUE, CMAP_TYPE, ITERATOR_IMPL, REVERSE_ITERATOR_IMPL, CACHING_STRATEGY, ATTRIBUTES> &))
   ACE_UNIMPLEMENTED_FUNC (ACE_Cache_Map_Manager (const ACE_Cache_Map_Manager<KEY, VALUE, CMAP_TYPE, ITERATOR_IMPL, REVERSE_ITERATOR_IMPL, CACHING_STRATEGY, ATTRIBUTES> &))
+
 };
 
 /**
@@ -242,7 +246,9 @@ private:
 template <class KEY, class VALUE, class IMPLEMENTATION, class CACHING_STRATEGY, class ATTRIBUTES>
 class ACE_Cache_Map_Iterator
 {
+
 public:
+
   // = Traits.
   /// The actual value mapped to the key in the cache. The <attributes>
   /// are used by the strategy and is transparent to the cache user.
@@ -318,6 +324,7 @@ template <class KEY, class VALUE, class REVERSE_IMPLEMENTATION, class CACHING_ST
 class ACE_Cache_Map_Reverse_Iterator
 {
 public:
+
   // = Traits.
   /// The actual value mapped to the key in the cache. The <attributes>
   /// are used by the strategy and is transparent to the cache user.

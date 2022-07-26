@@ -4,9 +4,11 @@
 /**
  *  @file    Local_Name_Space_T.h
  *
+ *  $Id: Local_Name_Space_T.h 93359 2011-02-11 11:33:12Z mcorino $
+ *
  *  @author Prashant Jain <pjain@cs.wustl.edu>
  *  @author Irfan Pyarali <irfan@wuerl.wustl.edu> and
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -102,6 +104,7 @@ template <ACE_MEM_POOL_1, class ACE_LOCK>
 class ACE_Local_Name_Space : public ACE_Name_Space
 {
 public:
+  // = Initialization and termination methods.
   /// "Do-nothing" constructor.
   ACE_Local_Name_Space (void);
 
@@ -210,8 +213,6 @@ public:
   // = I just know this is going to cause problems on some platform...
   typedef ACE_Allocator_Adapter <ACE_Malloc <ACE_MEM_POOL_2, ACE_LOCK> >
           ALLOCATOR;
-
-  ACE_ALLOC_HOOK_DECLARE;
 
 private:
 #if defined (ACE_WIN32)

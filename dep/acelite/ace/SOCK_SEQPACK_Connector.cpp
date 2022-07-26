@@ -1,7 +1,9 @@
+// $Id: SOCK_SEQPACK_Connector.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/SOCK_SEQPACK_Connector.h"
 
 #include "ace/INET_Addr.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/Time_Value.h"
 #include "ace/OS_Memory.h"
 #include "ace/OS_NS_string.h"
@@ -133,11 +135,7 @@ ACE_SOCK_SEQPACK_Connector::shared_connect_start (ACE_SOCK_SEQPACK_Association &
       // representations of the primary and secondary
       // addresses.
       sockaddr_in*  local_inet_addrs = 0;
-#if defined(ACE_HAS_ALLOC_HOOKS)
-      ACE_ALLOCATOR_NORETURN (local_inet_addrs, static_cast<sockaddr_in*>(ACE_Allocator::instance()->malloc(sizeof(sockaddr_in) * (num_addresses))));
-#else
       ACE_NEW_NORETURN (local_inet_addrs, sockaddr_in[num_addresses]);
-#endif
       if (!local_inet_addrs)
         return -1;
 
@@ -219,11 +217,7 @@ ACE_SOCK_SEQPACK_Connector::shared_connect_start (ACE_SOCK_SEQPACK_Association &
         }
 #endif /* ACE_HAS_LKSCTP */
 
-#if defined (ACE_HAS_ALLOC_HOOKS)
-      ACE_Allocator::instance()->free(local_inet_addrs);
-#else
       delete [] local_inet_addrs;
-#endif /* ACE_HAS_ALLOC_HOOKS */
     }
 
   // Enable non-blocking, if required.
@@ -413,7 +407,7 @@ ACE_SOCK_SEQPACK_Connector::ACE_SOCK_SEQPACK_Connector (ACE_SOCK_SEQPACK_Associa
                      protocol) == -1
       && timeout != 0
       && !(errno == EWOULDBLOCK || errno == ETIME || errno == ETIMEDOUT))
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_SOCK_SEQPACK_Connector::ACE_SOCK_SEQPACK_Connector")));
 }
@@ -440,7 +434,7 @@ ACE_SOCK_SEQPACK_Connector::ACE_SOCK_SEQPACK_Connector (ACE_SOCK_SEQPACK_Associa
                      protocol) == -1
       && timeout != 0
       && !(errno == EWOULDBLOCK || errno == ETIME || errno == ETIMEDOUT))
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_SOCK_SEQPACK_Connector::ACE_SOCK_SEQPACK_Connector")));
 }

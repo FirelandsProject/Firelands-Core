@@ -1,11 +1,14 @@
+// $Id: Sig_Adapter.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/Sig_Adapter.h"
+
+
+
 
 ACE_Sig_Adapter::ACE_Sig_Adapter (ACE_Sig_Action &sa, int sigkey)
   : sigkey_ (sigkey),
     type_ (SIG_ACTION),
-    sa_ (sa),
-    eh_ (0),
-    sig_func_ (0)
+    sa_ (sa)
 {
   // ACE_TRACE ("ACE_Sig_Adapter::ACE_Sig_Adapter");
 }
@@ -14,8 +17,7 @@ ACE_Sig_Adapter::ACE_Sig_Adapter (ACE_Event_Handler *eh,
                                   int sigkey)
   : sigkey_ (sigkey),
     type_ (ACE_HANDLER),
-    eh_ (eh),
-    sig_func_ (0)
+    eh_ (eh)
 {
   // ACE_TRACE ("ACE_Sig_Adapter::ACE_Sig_Adapter");
 }
@@ -24,7 +26,6 @@ ACE_Sig_Adapter::ACE_Sig_Adapter (ACE_Sig_Handler_Ex sig_func,
                                   int sigkey)
   : sigkey_ (sigkey),
     type_ (C_FUNCTION),
-    eh_ (0),
     sig_func_ (sig_func)
 {
   // ACE_TRACE ("ACE_Sig_Adapter::ACE_Sig_Adapter");
@@ -33,8 +34,6 @@ ACE_Sig_Adapter::ACE_Sig_Adapter (ACE_Sig_Handler_Ex sig_func,
 ACE_Sig_Adapter::~ACE_Sig_Adapter ()
 {
 }
-
-ACE_ALLOC_HOOK_DEFINE(ACE_Sig_Adapter)
 
 int
 ACE_Sig_Adapter::sigkey (void)

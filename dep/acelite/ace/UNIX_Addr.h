@@ -4,6 +4,8 @@
 /**
  *  @file    UNIX_Addr.h
  *
+ *  $Id: UNIX_Addr.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -23,7 +25,7 @@
 #if !defined (ACE_LACKS_UNIX_DOMAIN_SOCKETS)
 
 #include "ace/Addr.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/ACE.h"
 #include "ace/os_include/sys/os_un.h"
 
@@ -37,6 +39,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_UNIX_Addr : public ACE_Addr
 {
 public:
+  // = Initialization methods.
   /// Default constructor.
   ACE_UNIX_Addr (void);
 
@@ -62,7 +65,7 @@ public:
   virtual void *get_addr (void) const;
 
   /// Set a pointer to the underlying network address.
-  virtual void set_addr (const void *addr, int len);
+  virtual void set_addr (void *addr, int len);
 
   /// Transform the current address into string format.
   virtual int addr_to_string (ACE_TCHAR addr[], size_t) const;

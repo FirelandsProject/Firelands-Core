@@ -4,6 +4,8 @@
 /**
  *  @file    Argv_Type_Converter.h
  *
+ *  $Id: Argv_Type_Converter.h 93359 2011-02-11 11:33:12Z mcorino $
+ *
  *  @author Si Mong Park <spark@ociweb.com>
  */
 //=============================================================================
@@ -37,6 +39,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_Argv_Type_Converter
 {
 public:
+
   ACE_Argv_Type_Converter (int &argc, char** argv);
 
 #if defined (ACE_USES_WCHAR)
@@ -55,6 +58,7 @@ public:
   int& get_argc (void);
 
 private:
+
   /// Copy Constructor should not be used.
   ACE_Argv_Type_Converter (const ACE_Argv_Type_Converter&);
 

@@ -4,7 +4,9 @@
 /**
  *  @file   Global_Macros.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Global_Macros.h 96084 2012-08-20 18:07:57Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  *  @author Jesper S. M|ller<stophph@diku.dk>
  *  @author and a cast of thousands...
  *
@@ -25,7 +27,7 @@
 # pragma once
 #endif /* ACE_LACKS_PRAGMA_ONCE */
 
-#include /**/ "ace/config-lite.h"
+#include "ace/config-lite.h"
 #include "ace/Assert.h" // For ACE_ASSERT
 
 // Start Global Macros
@@ -37,6 +39,40 @@
 # else
 #   define ACE_DB(X) X
 # endif /* ACE_NDEBUG */
+
+// ACE_NO_HEAP_CHECK macro can be used to suppress false report of
+// memory leaks. It turns off the built-in heap checking until the
+// block is left. The old state will then be restored Only used for
+// Win32 (in the moment).
+# if defined (ACE_WIN32)
+
+#   if defined (_DEBUG) && !defined (ACE_HAS_WINCE) && !defined (__BORLANDC__)
+# include /**/ <crtdbg.h>
+
+// Open versioned namespace, if enabled by the user.
+ACE_BEGIN_VERSIONED_NAMESPACE_DECL
+
+class ACE_Export ACE_No_Heap_Check
+{
+public:
+  ACE_No_Heap_Check (void)
+    : old_state (_CrtSetDbgFlag (_CRTDBG_REPORT_FLAG))
+  { _CrtSetDbgFlag (old_state & ~_CRTDBG_ALLOC_MEM_DF);}
+  ~ACE_No_Heap_Check (void) { _CrtSetDbgFlag (old_state);}
+private:
+  int old_state;
+};
+
+// Close versioned namespace, if enabled by the user.
+ACE_END_VERSIONED_NAMESPACE_DECL
+
+#     define ACE_NO_HEAP_CHECK ACE_No_Heap_Check ____no_heap;
+#   else /* !_DEBUG */
+#     define ACE_NO_HEAP_CHECK
+#   endif /* _DEBUG */
+# else /* !ACE_WIN32 */
+#   define ACE_NO_HEAP_CHECK
+# endif /* ACE_WIN32 */
 
 // Turn a number into a string.
 # define ACE_ITOA(X) #X
@@ -61,60 +97,28 @@
 #  define ACE_ENDLESS_LOOP
 # endif /* ! ACE_ENDLESS_LOOP */
 
-# if defined (ACE_NEEDS_FUNC_DEFINITIONS) && !defined (ACE_HAS_CPP11)
+# if defined (ACE_NEEDS_FUNC_DEFINITIONS)
     // It just evaporated ;-)  Not pleasant.
 #   define ACE_UNIMPLEMENTED_FUNC(f)
 # else
-#   if defined (ACE_HAS_CPP11)
-#     define ACE_UNIMPLEMENTED_FUNC(f) f = delete;
-#   else
-#     define ACE_UNIMPLEMENTED_FUNC(f) f;
-#   endif
+#   define ACE_UNIMPLEMENTED_FUNC(f) f;
 # endif /* ACE_NEEDS_FUNC_DEFINITIONS */
-
-// noexcept(false) specification to specify that the operation can
-// throw an exception
-#if defined (ACE_HAS_CPP11)
-#define ACE_NOEXCEPT_FALSE noexcept(false)
-#else
-#define ACE_NOEXCEPT_FALSE
-#endif
 
 // ----------------------------------------------------------------
 
 // FUZZ: disable check_for_ACE_Guard
 
-/* Convenient macro for testing for deadlock, as well as for detecting
- * when mutexes fail.
- *
- * The parameters to the ACE_GUARD_XXX macros are used as follows:
- *
- * MUTEX - This is the type used as the template parameter for ACE_Guard
- *
- * OBJ - Name for the guard object. This name should not be declared
- *       outside the macro.
- *
- * LOCK - The actual lock (mutex) variable. This should be a variable
- *        of type MUTEX, see above.
- *
- * ACTION - Code segment to be run, if and only if the lock is
- *          acquired.
- *
- * REACTION - Code segment to be run, if and only if the lock is not
- *            acquired.
- *
- * RETURN - A value to be returned from the calling function, if and
- *          only if the lock is not acquired.
- *
- * @warning
- *   Use of ACE_GUARD() is rarely correct.  ACE_GUARD() causes the
- *   current function to return if the lock is not acquired.  Since
- *   merely returning (no value) almost certainly fails to handle the
- *   acquisition failure and almost certainly fails to communicate the
- *   failure to the caller for the caller to handle, ACE_GUARD() is
- *   almost always the wrong thing to do.  The same goes for
- *   ACE_WRITE_GUARD() and ACE_READ_GUARD() .  ACE_GUARD_REACTION() is
- *   better because it lets you specify error handling code.
+// Convenient macro for testing for deadlock, as well as for detecting
+// when mutexes fail.
+/* @warning
+ *   Use of ACE_GUARD() is rarely correct.  ACE_GUARD() causes the current
+ *   function to return if the lock is not acquired.  Since merely returning
+ *   (no value) almost certainly fails to handle the acquisition failure
+ *   and almost certainly fails to communicate the failure to the caller
+ *   for the caller to handle, ACE_GUARD() is almost always the wrong
+ *   thing to do.  The same goes for ACE_WRITE_GUARD() and ACE_READ_GUARD() .
+ *   ACE_GUARD_REACTION() is better because it lets you specify error
+ *   handling code.
  */
 #if !defined (ACE_GUARD_ACTION)
 #define ACE_GUARD_ACTION(MUTEX, OBJ, LOCK, ACTION, REACTION) \
@@ -219,13 +223,6 @@
             (POINTER)->~CLASS (); \
             DEALLOCATOR (POINTER); \
           } \
-      } \
-   while (0)
-
-# define ACE_DES_FREE_THIS(DEALLOCATOR,CLASS) \
-   do { \
-        this->~CLASS (); \
-        DEALLOCATOR (this); \
       } \
    while (0)
 
@@ -479,9 +476,9 @@ typedef void (*ACE_Service_Object_Exterminator)(void *);
  *
  * The following macros are used to define helper objects used in
  * ACE's Service Configurator framework, which is described in
- * Chapter 5 of C++NPv2 <www.dre.vanderbilt.edu/~schmidt/ACE/book2/>.  This
+ * Chapter 5 of C++NPv2 <www.cs.wustl.edu/~schmidt/ACE/book2/>.  This
  * framework implements the Component Configurator pattern, which is
- * described in Chapter 2 of POSA2 <www.dre.vanderbilt.edu/~schmidt/POSA/>.
+ * described in Chapter 2 of POSA2 <www.cs.wustl.edu/~schmidt/POSA/>.
  * The intent of this pattern is to allow developers to dynamically
  * load and configure services into a system.  With a little help from
  * this macros statically linked services can also be dynamically
@@ -641,6 +638,7 @@ static ACE_Static_Svc_##SERVICE_CLASS ace_static_svc_##SERVICE_CLASS;
  *        service.
  * @param SERVICE_CLASS must match the name of the class that
  *        implements the service.
+ *
  */
 # define ACE_FACTORY_DECLARE(CLS,SERVICE_CLASS) \
 extern "C" CLS##_Export ACE_VERSIONED_NAMESPACE_NAME::ACE_Service_Object * \
@@ -773,6 +771,7 @@ ACE_MAKE_SVC_CONFIG_FACTORY_NAME(ACE_VERSIONED_NAMESPACE_NAME,SERVICE_CLASS) (AC
  *
  * The ACE services defined in netsvcs use this helper macros for
  * simplicity.
+ *
  */
 //@{
 # define ACE_SVC_FACTORY_DECLARE(X) ACE_FACTORY_DECLARE (ACE_Svc, X)
@@ -842,7 +841,7 @@ ACE_MAKE_SVC_CONFIG_FACTORY_NAME(ACE_VERSIONED_NAMESPACE_NAME,SERVICE_CLASS) (AC
 #endif /* ACE_WIN32 */
 
 
-// Some useful abstractions for expressions involving
+// Some useful abstrations for expressions involving
 // ACE_Allocator.malloc ().  The difference between ACE_NEW_MALLOC*
 // with ACE_ALLOCATOR* is that they call constructors also.
 
@@ -929,35 +928,32 @@ ACE_MAKE_SVC_CONFIG_FACTORY_NAME(ACE_VERSIONED_NAMESPACE_NAME,SERVICE_CLASS) (AC
 #endif /* ACE_WIN32 */
 
 // Handle ACE_Message_Queue.
-#   define ACE_SYNCH_DECL typename _ACE_SYNCH
+#   define ACE_SYNCH_DECL class _ACE_SYNCH
 #   define ACE_SYNCH_USE _ACE_SYNCH
 #   define ACE_SYNCH_MUTEX_T typename _ACE_SYNCH::MUTEX
 #   define ACE_SYNCH_CONDITION_T typename _ACE_SYNCH::CONDITION
 #   define ACE_SYNCH_SEMAPHORE_T typename _ACE_SYNCH::SEMAPHORE
 
 // Handle ACE_Malloc*
-#   define ACE_MEM_POOL_1 typename _ACE_MEM_POOL
+#   define ACE_MEM_POOL_1 class _ACE_MEM_POOL
 #   define ACE_MEM_POOL_2 _ACE_MEM_POOL
 #   define ACE_MEM_POOL _ACE_MEM_POOL
 #   define ACE_MEM_POOL_OPTIONS typename _ACE_MEM_POOL::OPTIONS
 
-// @deprecated These macros are not longer used in ACE_Svc_Handler.
 // Handle ACE_Svc_Handler
-#   define ACE_PEER_STREAM_1 typename _ACE_PEER_STREAM
+#   define ACE_PEER_STREAM_1 class _ACE_PEER_STREAM
 #   define ACE_PEER_STREAM_2 _ACE_PEER_STREAM
 #   define ACE_PEER_STREAM _ACE_PEER_STREAM
 #   define ACE_PEER_STREAM_ADDR typename _ACE_PEER_STREAM::PEER_ADDR
 
-// @deprecated These macros are not longer used in ACE_Acceptor.
 // Handle ACE_Acceptor
-#   define ACE_PEER_ACCEPTOR_1 typename _ACE_PEER_ACCEPTOR
+#   define ACE_PEER_ACCEPTOR_1 class _ACE_PEER_ACCEPTOR
 #   define ACE_PEER_ACCEPTOR_2 _ACE_PEER_ACCEPTOR
 #   define ACE_PEER_ACCEPTOR _ACE_PEER_ACCEPTOR
 #   define ACE_PEER_ACCEPTOR_ADDR typename _ACE_PEER_ACCEPTOR::PEER_ADDR
 
-// @deprecated These macros are not longer used in ACE_Connector.
 // Handle ACE_Connector
-#   define ACE_PEER_CONNECTOR_1 typename _ACE_PEER_CONNECTOR
+#   define ACE_PEER_CONNECTOR_1 class _ACE_PEER_CONNECTOR
 #   define ACE_PEER_CONNECTOR_2 _ACE_PEER_CONNECTOR
 #   define ACE_PEER_CONNECTOR _ACE_PEER_CONNECTOR
 #   define ACE_PEER_CONNECTOR_ADDR typename ACE_PEER_CONNECTOR::PEER_ADDR
@@ -1008,6 +1004,16 @@ ACE_MAKE_SVC_CONFIG_FACTORY_NAME(ACE_VERSIONED_NAMESPACE_NAME,SERVICE_CLASS) (AC
 #   define ACE_SHARED_MEMORY_POOL ACE_Shared_Memory_Pool
 #   define ACE_LOCAL_MEMORY_POOL ACE_Local_Memory_Pool
 #   define ACE_PAGEFILE_MEMORY_POOL ACE_Pagefile_Memory_Pool
+
+// Work around compilers that don't like in-class static integral
+// constants.  Constants in this case are meant to be compile-time
+// constants so that they may be used as template arguments, for
+// example.  BOOST provides a similar macro.
+#ifndef ACE_LACKS_STATIC_IN_CLASS_CONSTANTS
+# define ACE_STATIC_CONSTANT(TYPE, ASSIGNMENT) static TYPE const ASSIGNMENT
+#else
+# define ACE_STATIC_CONSTANT(TYPE, ASSIGNMENT) enum { ASSIGNMENT }
+#endif  /* !ACE_LACKS_STATIC_IN_CLASS_CONSTANTS */
 
 #include /**/ "ace/post.h"
 

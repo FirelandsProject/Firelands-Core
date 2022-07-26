@@ -4,7 +4,9 @@
 /**
  *  @file    Profile_Timer.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Profile_Timer.h 93359 2011-02-11 11:33:12Z mcorino $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //==========================================================================
 
@@ -32,6 +34,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_Profile_Timer
 {
 public:
+
   /**
    * @class ACE_Elapsed_Time
    *
@@ -53,6 +56,7 @@ public:
 
   typedef ACE_Rusage Rusage;
 
+  // = Initialization and termination methods.
   /// Default constructor. Clears all time values to 0.
   ACE_Profile_Timer (void);
 

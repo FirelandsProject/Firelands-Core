@@ -4,7 +4,9 @@
 /**
  *  @file  OS.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: OS.h 95319 2011-12-13 14:54:44Z mhengstmengel $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  *  @author Jesper S. M|ller<stophph@diku.dk>
  *  @author and a cast of thousands...
  */

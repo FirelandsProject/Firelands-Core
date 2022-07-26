@@ -4,6 +4,8 @@
 /**
  *  @file    Stats.h
  *
+ *  $Id: Stats.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author David L. Levine
  */
 //==========================================================================
@@ -21,7 +23,7 @@
 #endif /* ACE_LACKS_PRAGMA_ONCE */
 
 #include "ace/Unbounded_Queue.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/Basic_Stats.h"
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
@@ -165,13 +167,7 @@ public:
    */
   int print_summary (const u_int precision,
                      const ACE_UINT32 scale_factor = 1,
-                     FILE *
-#ifdef ACE_LACKS_STDOUT
-                     = 0
-#else
-                     = stdout
-#endif
-                     ) const;
+                     FILE * = stdout) const;
 
   /// Initialize internal state.
   void reset (void);

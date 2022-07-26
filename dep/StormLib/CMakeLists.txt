@@ -1,17 +1,3 @@
-project(StormLib)
-cmake_minimum_required(VERSION 2.8.12)
-
-set(LIBRARY_NAME stormlib)
-
-include(CMakeDependentOption)
-
-option(BUILD_SHARED_LIBS "Compile shared libraries" OFF)
-option(STORM_SKIP_INSTALL "Skip installing files" OFF)
-option(STORM_BUILD_TESTS
-    "Compile StormLib test application" OFF
-#   "BUILD_TESTING" OFF # Stay coherent with CTest variables
-)
-
 set(SRC_FILES
            src/adpcm/adpcm.cpp
            src/huffman/huff.cpp
@@ -24,9 +10,7 @@ set(SRC_FILES
            src/sparse/sparse.cpp
            src/FileStream.cpp
            src/SBaseCommon.cpp
-           src/SBaseDumpData.cpp
            src/SBaseFileTable.cpp
-           src/SBaseSubTypes.cpp
            src/SCompression.cpp
            src/SFileAddFile.cpp
            src/SFileAttributes.cpp
@@ -34,24 +18,13 @@ set(SRC_FILES
            src/SFileCreateArchive.cpp
            src/SFileExtractFile.cpp
            src/SFileFindFile.cpp
-           src/SFileGetFileInfo.cpp
            src/SFileListFile.cpp
            src/SFileOpenArchive.cpp
            src/SFileOpenFileEx.cpp
            src/SFilePatchArchives.cpp
            src/SFileReadFile.cpp
            src/SFileVerify.cpp
-           src/libtomcrypt/src/pk/rsa/rsa_verify_simple.c
-           src/libtomcrypt/src/misc/crypt_libc.c
 )
-
-if(MSVC)
-    # This file is used to create a DLL on windows
-    # Use BUILD_SHARED_LIBS to create StormLib.dll
-    set(STORM_DEF_FILES
-           src/DllMain.def
-    )
-endif()
 
 set(TOMCRYPT_FILES
            src/libtomcrypt/src/hashes/hash_memory.c
@@ -66,6 +39,7 @@ set(TOMCRYPT_FILES
            src/libtomcrypt/src/misc/crypt_find_prng.c
            src/libtomcrypt/src/misc/crypt_hash_descriptor.c
            src/libtomcrypt/src/misc/crypt_hash_is_valid.c
+           src/libtomcrypt/src/misc/crypt_libc.c
            src/libtomcrypt/src/misc/crypt_ltc_mp_descriptor.c
            src/libtomcrypt/src/misc/crypt_prng_descriptor.c
            src/libtomcrypt/src/misc/crypt_prng_is_valid.c
@@ -86,20 +60,6 @@ set(TOMCRYPT_FILES
            src/libtomcrypt/src/pk/asn1/der_decode_short_integer.c
            src/libtomcrypt/src/pk/asn1/der_decode_utctime.c
            src/libtomcrypt/src/pk/asn1/der_decode_utf8_string.c
-           src/libtomcrypt/src/pk/asn1/der_encode_bit_string.c
-           src/libtomcrypt/src/pk/asn1/der_encode_boolean.c
-           src/libtomcrypt/src/pk/asn1/der_encode_ia5_string.c
-           src/libtomcrypt/src/pk/asn1/der_encode_integer.c
-           src/libtomcrypt/src/pk/asn1/der_encode_object_identifier.c
-           src/libtomcrypt/src/pk/asn1/der_encode_octet_string.c
-           src/libtomcrypt/src/pk/asn1/der_encode_printable_string.c
-           src/libtomcrypt/src/pk/asn1/der_encode_sequence_ex.c
-           src/libtomcrypt/src/pk/asn1/der_encode_sequence_multi.c
-           src/libtomcrypt/src/pk/asn1/der_encode_set.c
-           src/libtomcrypt/src/pk/asn1/der_encode_setof.c
-           src/libtomcrypt/src/pk/asn1/der_encode_short_integer.c
-           src/libtomcrypt/src/pk/asn1/der_encode_utctime.c
-           src/libtomcrypt/src/pk/asn1/der_encode_utf8_string.c
            src/libtomcrypt/src/pk/asn1/der_length_bit_string.c
            src/libtomcrypt/src/pk/asn1/der_length_boolean.c
            src/libtomcrypt/src/pk/asn1/der_length_ia5_string.c
@@ -121,15 +81,13 @@ set(TOMCRYPT_FILES
            src/libtomcrypt/src/pk/pkcs1/pkcs_1_mgf1.c
            src/libtomcrypt/src/pk/pkcs1/pkcs_1_oaep_decode.c
            src/libtomcrypt/src/pk/pkcs1/pkcs_1_pss_decode.c
-           src/libtomcrypt/src/pk/pkcs1/pkcs_1_pss_encode.c
            src/libtomcrypt/src/pk/pkcs1/pkcs_1_v1_5_decode.c
-           src/libtomcrypt/src/pk/pkcs1/pkcs_1_v1_5_encode.c
            src/libtomcrypt/src/pk/rsa/rsa_exptmod.c
            src/libtomcrypt/src/pk/rsa/rsa_free.c
            src/libtomcrypt/src/pk/rsa/rsa_import.c
            src/libtomcrypt/src/pk/rsa/rsa_make_key.c
-           src/libtomcrypt/src/pk/rsa/rsa_sign_hash.c
            src/libtomcrypt/src/pk/rsa/rsa_verify_hash.c
+           src/libtomcrypt/src/pk/rsa/rsa_verify_simple.c
 )
 
 set(TOMMATH_FILES
@@ -253,7 +211,6 @@ set(TOMMATH_FILES
            src/libtommath/bn_s_mp_sub.c
 )
 
-# Needed for Windows
 set(ZLIB_BZIP2_FILES
            src/bzip2/blocksort.c
            src/bzip2/bzlib.c
@@ -263,7 +220,7 @@ set(ZLIB_BZIP2_FILES
            src/bzip2/huffman.c
            src/bzip2/randtable.c
            src/zlib/adler32.c
-           src/zlib/compress.c
+           src/zlib/compress2.c
            src/zlib/crc32.c
            src/zlib/deflate.c
            src/zlib/inffast.c
@@ -274,101 +231,42 @@ set(ZLIB_BZIP2_FILES
 )
 
 set(TEST_SRC_FILES
-           test/StormTest.cpp
+           test/Test.cpp
 )
 
 add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI)
 
 if(WIN32)
+    if(MSVC)
+        add_definitions(-D_7ZIP_ST -DWIN32)
+    endif()
     set(SRC_ADDITIONAL_FILES ${ZLIB_BZIP2_FILES} ${TOMCRYPT_FILES} ${TOMMATH_FILES})
     set(LINK_LIBS wininet)
-else()
-    find_package(ZLIB REQUIRED)
-    find_package(BZip2 REQUIRED)
+endif()
 
-    include_directories(${ZLIB_INCLUDE_DIR} ${BZIP2_INCLUDE_DIR})
-    set(LINK_LIBS ${ZLIB_LIBRARY} ${BZIP2_LIBRARIES})
+if(APPLE)
+    set(LINK_LIBS z bz2)
+    set(SRC_ADDITIONAL_FILES ${TOMCRYPT_FILES} ${TOMMATH_FILES})
+endif()
 
-    add_definitions(-D__SYS_ZLIB -D__SYS_BZLIB)
-
+if (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
     option(WITH_LIBTOMCRYPT "Use system LibTomCrypt library" OFF)
     if(WITH_LIBTOMCRYPT)
-        set(LINK_LIBS ${LINK_LIBS} tomcrypt)
+        set(LINK_LIBS z bz2 tomcrypt)
     else()
+        set(LINK_LIBS z bz2)
         set(SRC_ADDITIONAL_FILES ${TOMCRYPT_FILES} ${TOMMATH_FILES})
     endif()
 endif()
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
-    message(STATUS "Using FreeBSD port")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DO_LARGEFILE=0 -Dstat64=stat -Dlstat64=lstat -Dlseek64=lseek -Doff64_t=off_t -Dfstat64=fstat -Dftruncate64=ftruncate")
+add_library(storm STATIC ${SRC_FILES} ${SRC_ADDITIONAL_FILES})
+target_link_libraries(storm ${LINK_LIBS})
+
+if(UNIX)
+    set_target_properties(storm PROPERTIES SOVERSION 0)
 endif()
 
-add_library(${LIBRARY_NAME} ${LIB_TYPE} ${SRC_FILES} ${SRC_ADDITIONAL_FILES} ${STORM_DEF_FILES})
-
-target_link_libraries(${LIBRARY_NAME} ${LINK_LIBS})
-target_compile_definitions(${LIBRARY_NAME} INTERFACE STORMLIB_NO_AUTO_LINK) #CMake will take care of the linking
-target_include_directories(${LIBRARY_NAME} PUBLIC src/)
-set_target_properties(${LIBRARY_NAME} PROPERTIES PUBLIC_HEADER "src/StormLib.h;src/StormPort.h")
-if(BUILD_SHARED_LIBS)
-    message(STATUS "Linking against dependent libraries dynamically")
-
-    if(APPLE)
-        set_target_properties(${LIBRARY_NAME} PROPERTIES FRAMEWORK true)
-        set_target_properties(${LIBRARY_NAME} PROPERTIES LINK_FLAGS "-framework Carbon")
-    endif()
-    if(UNIX)
-        SET(VERSION_MAJOR "9")
-        SET(VERSION_MINOR "22")
-        SET(VERSION_PATCH "0")
-        SET(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-        set_target_properties(${LIBRARY_NAME} PROPERTIES VERSION "${VERSION_STRING}")
-        set_target_properties(${LIBRARY_NAME} PROPERTIES SOVERSION "${VERSION_MAJOR}")
-    endif()
-else()
-    message(STATUS "Linking against dependent libraries statically")
+# On Win32, build StormLib.dll since we don't want to clash with Storm.dll
+if(WIN32)
+    set_target_properties(storm PROPERTIES OUTPUT_NAME StormLib)
 endif()
-
-if (NOT STORM_SKIP_INSTALL)
-    install(TARGETS ${LIBRARY_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        FRAMEWORK DESTINATION /Library/Frameworks
-        PUBLIC_HEADER DESTINATION include
-        INCLUDES DESTINATION include)
-
-        #CPack configurtion
-        SET(CPACK_GENERATOR "DEB" "RPM")
-        SET(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-        SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "MPQ manipulation library")
-        SET(CPACK_PACKAGE_VENDOR "Ladislav Zezula")
-        SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-        SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-        SET(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
-        SET(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
-        SET(CPACK_PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
-
-        #DEB configuration
-        SET(CPACK_DEBIAN_PACKAGE_SECTION "libs")
-        SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://www.zezula.net/en/mpq/stormlib.html")
-        SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "imbacen@gmail.com")
-        SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
-        SET(CPACK_DEBIAN_PACKAGE_DEPENDS "zlib1g,bzip2")
-
-        #RPM configuration
-        SET(CPACK_RPM_PACKAGE_RELEASE 1)
-        SET(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-        SET(CPACK_RPM_PACKAGE_GROUP "${PROJECT_NAME}")
-        SET(CPACK_RPM_PACKAGE_URL "http://www.zezula.net/en/mpq/stormlib.html")
-        SET(CPACK_RPM_PACKAGE_REQUIRES "zlib,bzip2")
-
-        INCLUDE(CPack)
-endif()
-
-if(STORM_BUILD_TESTS)
-    add_executable(StormLib_test ${TEST_SRC_FILES})
-    target_link_libraries(StormLib_test ${LIBRARY_NAME})
-    install(TARGETS StormLib_test RUNTIME DESTINATION bin)
-endif()
-

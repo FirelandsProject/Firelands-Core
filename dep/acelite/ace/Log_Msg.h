@@ -4,7 +4,9 @@
 /**
  *  @file    Log_Msg.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Log_Msg.h 95128 2011-11-27 21:22:15Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -23,7 +25,6 @@
 #include "ace/Log_Priority.h"
 #include "ace/os_include/os_limits.h"
 #include "ace/Synch_Traits.h"
-#include "ace/Basic_Types.h"
 
 // The ACE_ASSERT macro used to be defined here, include ace/Assert.h
 // for backwards compatibility.
@@ -72,63 +73,32 @@
   } while (0)
 #endif
 #if !defined (ACE_ERROR_RETURN)
-# ifdef ACE_LACKS_VA_FUNCTIONS
-#  define ACE_ERROR_RETURN(X, Y) \
+#define ACE_ERROR_RETURN(X, Y) \
   do { \
     int const __ace_error = ACE_Log_Msg::last_error_adapter (); \
     ACE_Log_Msg *ace___ = ACE_Log_Msg::instance (); \
     ace___->conditional_set (__FILE__, __LINE__, Y, __ace_error); \
-    ace___->log (X);                                              \
+    ace___->log X; \
     return Y; \
   } while (0)
-# else /* ACE_LACKS_VA_FUNCTIONS */
-#  define ACE_ERROR_RETURN(X, Y) \
-  do { \
-    int const __ace_error = ACE_Log_Msg::last_error_adapter (); \
-    ACE_Log_Msg *ace___ = ACE_Log_Msg::instance (); \
-    ace___->conditional_set (__FILE__, __LINE__, Y, __ace_error); \
-    ace___->log X;                                              \
-    return Y; \
-  } while (0)
-# endif /* ACE_LACKS_VA_FUNCTIONS */
 #endif
 #if !defined (ACE_ERROR)
-# ifdef ACE_LACKS_VA_FUNCTIONS
-#  define ACE_ERROR(X) \
-  do { \
-    int const __ace_error = ACE_Log_Msg::last_error_adapter (); \
-    ACE_Log_Msg *ace___ = ACE_Log_Msg::instance (); \
-    ace___->conditional_set (__FILE__, __LINE__, -1, __ace_error); \
-    ace___->log (X);                                               \
-  } while (0)
-# else /* ACE_LACKS_VA_FUNCTIONS */
-#  define ACE_ERROR(X) \
+#define ACE_ERROR(X) \
   do { \
     int const __ace_error = ACE_Log_Msg::last_error_adapter (); \
     ACE_Log_Msg *ace___ = ACE_Log_Msg::instance (); \
     ace___->conditional_set (__FILE__, __LINE__, -1, __ace_error); \
     ace___->log X; \
   } while (0)
-# endif /* ACE_LACKS_VA_FUNCTIONS */
 #endif
 #if !defined (ACE_DEBUG)
-# ifdef ACE_LACKS_VA_FUNCTIONS
-#  define ACE_DEBUG(X) \
-  do { \
-    int const __ace_error = ACE_Log_Msg::last_error_adapter (); \
-    ACE_Log_Msg *ace___ = ACE_Log_Msg::instance (); \
-    ace___->conditional_set (__FILE__, __LINE__, 0, __ace_error); \
-    ace___->log (X);                                              \
-  } while (0)
-# else /* ACE_LACKS_VA_FUNCTIONS */
-#  define ACE_DEBUG(X) \
+#define ACE_DEBUG(X) \
   do { \
     int const __ace_error = ACE_Log_Msg::last_error_adapter (); \
     ACE_Log_Msg *ace___ = ACE_Log_Msg::instance (); \
     ace___->conditional_set (__FILE__, __LINE__, 0, __ace_error); \
     ace___->log X; \
   } while (0)
-# endif /* ACE_LACKS_VA_FUNCTIONS */
 #endif
 #if !defined (ACE_ERROR_INIT)
 #define ACE_ERROR_INIT(VALUE, FLAGS) \
@@ -161,14 +131,6 @@
 # undef THREAD
 #endif /* THREAD */
 
-#ifndef ACE_DEFAULT_LOG_FLAGS
-#  ifdef ACE_ANDROID
-#    define ACE_DEFAULT_LOG_FLAGS ACE_Log_Msg::STDERR | ACE_Log_Msg::SYSLOG
-#  else
-#    define ACE_DEFAULT_LOG_FLAGS ACE_Log_Msg::STDERR
-#  endif
-#endif
-
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 class ACE_Log_Msg_Callback;
@@ -181,9 +143,7 @@ class ACE_Log_Msg_Backend;
 // Forward declaration
 class ACE_Thread_Descriptor;
 class ACE_Log_Record;
-class ACE_Log_Category_TSS;
 template<typename M, typename T> class ACE_Atomic_Op;
-class ACE_Log_Formatter;
 
 /**
  * @class ACE_Log_Msg
@@ -242,7 +202,9 @@ public:
     SYSLOG = 128,
     /// Write messages to the user provided backend
     CUSTOM = 256
-  };
+ };
+
+  // = Initialization and termination routines.
 
   /// Returns a pointer to the Singleton.
   static ACE_Log_Msg *instance (void);
@@ -290,7 +252,7 @@ public:
    *                       @a logger_key is 0, @a prog_name is used.
    */
   int open (const ACE_TCHAR *prog_name,
-            u_long options_flags = ACE_DEFAULT_LOG_FLAGS,
+            u_long options_flags = ACE_Log_Msg::STDERR,
             const ACE_TCHAR *logger_key = 0);
 
   // = Set/get the options flags.
@@ -409,6 +371,7 @@ public:
    * @note Be aware that because of the current architecture there is
    * no guarantee that open (), reset () and close () will be called
    * on a backend object.
+   *
    */
   static ACE_Log_Msg_Backend *msg_backend (ACE_Log_Msg_Backend *b);
   static ACE_Log_Msg_Backend *msg_backend (void);
@@ -466,14 +429,12 @@ public:
   /// Return true if the requested priority is enabled.
   int log_priority_enabled (ACE_Log_Priority log_priority);
 
-#ifndef ACE_LACKS_VA_FUNCTIONS
   /// Return true if the requested priority is enabled.
   int log_priority_enabled (ACE_Log_Priority log_priority,
                             const char *,
                             ...);
-#endif
 
-#if defined (ACE_USES_WCHAR) && !defined ACE_LACKS_VA_FUNCTIONS
+#if defined (ACE_USES_WCHAR)
   // We are not using ACE_TCHAR for this since ACE_HEX_DUMP
   // doesn't take in a ACE_TCHAR.  log_hexdump takes in a char
   // string, so this must be able to take in a char string even
@@ -514,7 +475,6 @@ public:
                         int op_status,
                         int errnum);
 
-#ifndef ACE_LACKS_VA_FUNCTIONS
   /**
    * Format a message to the thread-safe ACE logging mechanism.  Valid
    * options (prefixed by '%', as in printf format strings) include:
@@ -572,13 +532,6 @@ public:
   ssize_t log (ACE_Log_Priority priority, const ACE_ANTI_TCHAR *format, ...);
 #endif /* ACE_HAS_WCHAR */
 
-#else /* ACE_LACKS_VA_FUNCTIONS */
-  friend class ACE_Log_Formatter;
-
-  ssize_t log (const ACE_Log_Formatter &formatter);
-
-#endif /* ACE_LACKS_VA_FUNCTIONS */
-
   /**
    * An alternative logging mechanism that makes it possible to
    * integrate variable argument lists from other logging mechanisms
@@ -586,8 +539,7 @@ public:
    */
   ssize_t log (const ACE_TCHAR *format,
                ACE_Log_Priority priority,
-               va_list argp,
-               ACE_Log_Category_TSS* category=0);
+               va_list argp);
 
   /// Log a custom built log record to the currently enabled logging
   /// sinks.
@@ -602,8 +554,7 @@ public:
   int log_hexdump (ACE_Log_Priority log_priority,
                    const char *buffer,
                    size_t size,
-                   const ACE_TCHAR *text = 0,
-                   ACE_Log_Category_TSS* category=0);
+                   const ACE_TCHAR *text = 0);
 
   /**
    * Init hook, create a Log_Msg_Attribute object, initialize its
@@ -714,6 +665,9 @@ private:
   /// Name of the local host (used when printing messages).
   static const ACE_TCHAR *local_host_;
 
+  /// Process id of the current process.
+  static pid_t pid_;
+
   /// Options flags used to hold the logger flag options, e.g.,
   /// STDERR, LOGGER, OSTREAM, MSG_CALLBACK, etc.
   static u_long flags_;
@@ -764,152 +718,6 @@ private:
   ACE_Log_Msg (const ACE_Log_Msg &);
 };
 
-#ifdef ACE_LACKS_VA_FUNCTIONS
-class ACE_Time_Value;
-/// Alternative to varargs for formatting log messages.
-/// When this implementation is enabled, the logging macros (ACE_DEBUG, etc.)
-/// are modified to change from logger->log(LM_FOO, "fmt_str", arg1, arg2) to
-/// logger->log((LM_FOO, "fmt_str", arg1, arg2)).  Due to the extra set of
-/// parens, the various overloaded comma operators below take the place of the
-/// varargs function.  The first operator called is the non-member
-/// operator,(ACE_Log_Priority, const char*) which returns an ACE_Log_Formatter
-/// object.  The subsequent comma operators (for the actual variable args) are
-/// members of the ACE_Log_Formatter class.
-class ACE_Export ACE_Log_Formatter
-{
-public:
-  ACE_Log_Formatter (ACE_Log_Priority prio, const char *fmt);
-
-  // Notes:
-  // - ACE_OS::snprintf() is assumed to work.  The fallback to ACE_OS::sprintf()
-  ///  is not implemented.
-  // - Other than special cases (listed below), the names of the parameters
-  //   indicate which formatters they are used for (pct_c => %c).
-  // - size_t (%B), ssize_t (%b), and time_t (%:) will use one of the
-  //   other overloads (int, INT64, UINT64) depending on the platform.
-  // - %*s (etc) uses the int or uint overloads for the size argument.
-  // - No support for ACE_USES_WCHAR has been attempted.
-  // - Not all platform-specific features from the varargs implementation have
-  //   been ported over to this implementation.
-
-  ACE_Log_Formatter &operator, (int pct_adiRS);
-
-  ACE_Log_Formatter &operator, (unsigned int pct_ouxX);
-
-  ACE_Log_Formatter &operator, (double pct_AeEfFgG);
-
-  ACE_Log_Formatter &operator, (long double pct_AeEfFgG);
-
-  ACE_Log_Formatter &operator, (char pct_c);
-
-  ACE_Log_Formatter &operator, (const char *pct_Cps);
-
-  ACE_Log_Formatter &operator, (ACE_INT64 pct_q);
-
-  ACE_Log_Formatter &operator, (ACE_UINT64 pct_Q);
-
-  ACE_Log_Formatter &operator, (void (*pct_r) ());
-
-  ACE_Log_Formatter &operator, (ACE_WCHAR_T pct_wz);
-
-  ACE_Log_Formatter &operator, (const ACE_WCHAR_T *pct_WZ);
-
-  ACE_Log_Formatter &operator, (const void *pct_at);
-
-  ACE_Log_Formatter &operator, (const ACE_Time_Value *pct_DT);
-
-#if ACE_SIZEOF_LONG == 4
-  ACE_Log_Formatter &operator, (long pct_Lmodifier);
-
-  ACE_Log_Formatter &operator, (unsigned long pct_Lmodifier);
-#endif
-
-  bool abort () const { return this->abort_; }
-
-  int saved_errno () const { return this->saved_errno_; }
-
-  bool to_record (ACE_Log_Record &record);
-
-  ACE_Log_Priority priority () const { return this->priority_; }
-
-private:
-  /// Parse the format_ string up to the point where an argument is needed.
-  /// Set up fmt_out_ as a format string that goes out to snprintf.
-  void prepare_format ();
-
-  /// Helper function for prepare_format.  Processes as much of one conversion
-  /// specification as possible.  Returns true if prepare_format can continue
-  /// parsing, false if prepare_format needs to return to get more input.
-  bool process_conversion ();
-
-  /// Copy up to 'limit' characters of 'str' to the resulting buffer (bp_).
-  /// Returns the number of characters copied.
-  int copy_trunc (const char *str, int limit);
-
-  /// Insert one argument into the formatted buffer.
-  /// arg is not a pointer (pointers use the overload below).
-  /// If allow_star is true, the argument can be the length for a conversion
-  /// that uses the '*' for width or precision.
-  template <typename ArgT>
-  void insert_arg (ArgT arg, bool allow_star = false);
-
-  /// Insert one pointer-typed argument into the formatted buffer.
-  /// These could be strings (so ArgT is const char or const wchar_t) or void*.
-  template <typename ArgT>
-  void insert_arg (ArgT *arg);
-
-  /// Core functionality common to both insert_arg overloads.
-  template <typename ArgT>
-  void insert_arg_i (ArgT arg);
-
-  /// Insert the %S (signal name) conversion specification into the buffer.
-  void insert_pct_S (int sig);
-
-  /// Save errno at the start of the log formatting so it can be restored later.
-  const int saved_errno_;
-
-  /// Priority of this message.
-  const ACE_Log_Priority priority_;
-
-  /// Remaining format string (from user) that's left to process.
-  const char *format_;
-
-  /// The ACE_Log_Msg object that this formatter works with.
-  ACE_Log_Msg *const logger_;
-
-  /// Saved state of the %a (abort) processing.
-  enum { ABRT_NONE, ABRT_AFTER_FORMAT, ABRT_NEED_ARG } abort_;
-
-  /// The current log priority is enabled on the logger object.
-  bool enabled_;
-
-  /// Which specifier is currently being processed (' ' for none).
-  char in_prog_;
-
-  /// The value last read in from the "varargs" for '*' in width or precision.
-  int last_star_;
-
-  /// Buffer pointer into ACE_Log_Msg's resulting buffer.
-  char *bp_;
-
-  /// Buffer space available for bp_ to advance.
-  size_t bspace_;
-
-  /// Local buffer for outgoing (given to snprintf) format strings.
-  char fmt_out_[128];
-
-  /// Format pointer: current position in fmt_out_.
-  char *fp_;
-
-  /// Saved value of ACE_Log_Msg::msg_off_ in case of reentrant logging (%r).
-  ptrdiff_t offset_;
-};
-
-ACE_Export
-ACE_Log_Formatter operator, (ACE_Log_Priority prio, const char *fmt);
-
-#endif /* ACE_LACKS_VA_FUNCTIONS */
-
 ACE_END_VERSIONED_NAMESPACE_DECL
 
 #if defined (ACE_MT_SAFE) && (ACE_MT_SAFE != 0)
@@ -934,7 +742,6 @@ void
 ACE_TSS_CLEANUP_NAME (void *ptr);
 # endif /* ACE_HAS_THREAD_SPECIFIC_STORAGE || ACE_HAS_TSS_EMULATION */
 #endif /* ACE_MT_SAFE */
-
 
 #if defined (__ACE_INLINE__)
 #include "ace/Log_Msg.inl"

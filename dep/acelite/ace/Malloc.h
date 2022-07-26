@@ -4,6 +4,8 @@
 /**
  *  @file    Malloc.h
  *
+ *  $Id: Malloc.h 81796 2008-05-28 13:46:21Z sma $
+ *
  *  @author Doug Schmidt and Irfan Pyarali
  */
 //==========================================================================
@@ -19,7 +21,7 @@
 # pragma once
 #endif /* ACE_LACKS_PRAGMA_ONCE */
 
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 
 #if defined (ACE_HAS_MALLOC_STATS)
 #  include "ace/Atomic_Op.h"
@@ -300,6 +302,7 @@ public:
   class ACE_Export ACE_Name_Node
   {
   public:
+    // = Initialization methods.
     /// Constructor.
     ACE_Name_Node (const char *name,
                    char *name_ptr,

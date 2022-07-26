@@ -4,6 +4,8 @@
 /**
  * @file    ACE.h
  *
+ * $Id: ACE.h 93276 2011-02-04 20:03:53Z olli $
+ *
  * This file contains value added ACE functions that extend the
  * behavior of the UNIX and Win32 OS calls.
  *
@@ -11,7 +13,7 @@
  * in order to manage the namespace better.  These functions are put
  * here rather than in @c ACE_OS in order to separate concerns.
  *
- * @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ * @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -20,13 +22,18 @@
 
 #include /**/ "ace/pre.h"
 
-#include /**/ "ace/config-lite.h"
+#include "ace/config-lite.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 # pragma once
 #endif /* ACE_LACKS_PRAGMA_ONCE */
 
-#include "ace/Basic_Types.h"
+#include "ace/OS_NS_math.h"
+#include "ace/Flag_Manip.h"
+#include "ace/Handle_Ops.h"
+#include "ace/Lib_Find.h"
+#include "ace/Init_ACE.h"
+#include "ace/Sock_Connect.h"
 #include "ace/Default_Constants.h"
 
 #if defined (ACE_EXPORT_MACRO)
@@ -54,18 +61,14 @@ class ACE_Handle_Set;
 namespace ACE
 {
   // = ACE version information.
-  /// e.g., the "6" in ACE 6.3.4
+  /// e.g., the "5" in ACE 5.1.12.
   extern ACE_Export u_int major_version (void);
 
-  /// e.g., the "3" in ACE 6.3.4
+  /// e.g., the "1" in ACE 5.1.12.
   extern ACE_Export u_int minor_version (void);
 
-  /// e.g., the "4" in ACE 6.3.4
-  /// Returns 0 for "stable" (non-micro) releases.
-  extern ACE_Export u_int micro_version (void);
-
-  /// e.g., the "4" in ACE 6.3.4
-  /// Returns 0 for "stable" (non-micro) releases.
+  /// e.g., the "12" in ACE 5.1.12.
+  /// Returns 0 for "stable" (non-beta) releases.
   extern ACE_Export u_int beta_version (void);
 
   // = C++ compiler version information.
@@ -215,9 +218,7 @@ namespace ACE
    *
    * @return -1 on error, else total number of bytes received.
    */
-#if !defined (ACE_LACKS_VA_FUNCTIONS)
   extern ACE_Export ssize_t recv (ACE_HANDLE handle, size_t n, ...);
-#endif /* ACE_LACKS_VA_FUNCTIONS */
 
   extern ACE_Export ssize_t recvv (ACE_HANDLE handle,
                                    iovec *iov,
@@ -298,9 +299,7 @@ namespace ACE
                   size_t *bytes_transferred = 0);
 
   /// Varargs variant.
-#if !defined (ACE_LACKS_VA_FUNCTIONS)
   extern ACE_Export ssize_t send (ACE_HANDLE handle, size_t n, ...);
-#endif /* ACE_LACKS_VA_FUNCTIONS */
 
   extern ACE_Export ssize_t sendv (ACE_HANDLE handle,
                                    const iovec *iov,

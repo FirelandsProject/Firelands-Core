@@ -1,9 +1,8 @@
+// $Id: FILE_Connector.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/FILE_Connector.h"
 #include "ace/Handle_Ops.h"
 #include "ace/OS_NS_stdlib.h"
-#if defined (ACE_HAS_ALLOC_HOOKS)
-# include "ace/Malloc_Base.h"
-#endif /* ACE_HAS_ALLOC_HOOKS */
 
 #if !defined (__ACE_INLINE__)
 #include "ace/FILE_Connector.inl"
@@ -21,9 +20,9 @@ ACE_FILE_Connector::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_FILE_Connector::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG,  ACE_TEXT ("\n")));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 

@@ -4,6 +4,8 @@
 /**
  *  @file    IO_SAP.h
  *
+ *  $Id: IO_SAP.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -79,6 +81,9 @@ protected:
 private:
   /// Underlying I/O handle.
   ACE_HANDLE handle_;
+
+  /// Cache the process ID.
+  static pid_t pid_;
 };
 
 ACE_END_VERSIONED_NAMESPACE_DECL

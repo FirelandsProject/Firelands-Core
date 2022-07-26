@@ -20,8 +20,7 @@
 /* 12.11.03  1.02  Dan  Macintosh compatibility                              */
 /* 24.07.04  1.03  Sam  Mac OS X compatibility                               */
 /* 22.11.06  1.04  Sam  Mac OS X compatibility (for StormLib 6.0)            */
-/* 31.12.06  1.05  XPinguin  Full GNU/Linux compatibility                     */
-/* 17.10.12  1.05  Lad  Moved error codes so they don't overlap with errno.h */
+/* 31.12.06  1.05  XPinguin  Full GNU/Linux compatibility		             */
 /*****************************************************************************/
 
 #ifndef __STORMPORT_H__
@@ -33,10 +32,8 @@
   #define false 0
 #endif
 
-//-----------------------------------------------------------------------------
 // Defines for Windows
-
-#if !defined(STORMLIB_PLATFORM_DEFINED) && defined(_WIN32)
+#if !defined(PLATFORM_DEFINED) && (defined(WIN32) || defined(WIN64))
 
   // In MSVC 8.0, there are some functions declared as deprecated.
   #if _MSC_VER >= 1400
@@ -48,31 +45,23 @@
   #include <assert.h>
   #include <ctype.h>
   #include <stdio.h>
-
-  // Suppress definitions of `min` and `max` macros by <windows.h>:
-  #define NOMINMAX 1
   #include <windows.h>
-
   #include <wininet.h>
-  #define STORMLIB_LITTLE_ENDIAN
+  #define PLATFORM_LITTLE_ENDIAN
 
-  #ifdef _WIN64
-    #define STORMLIB_64BIT
+  #ifdef WIN64
+    #define PLATFORM_64BIT
   #else
-    #define STORMLIB_32BIT
+    #define PLATFORM_32BIT
   #endif
 
-  #define STORMLIB_CDECL __cdecl
-
-  #define STORMLIB_WINDOWS
-  #define STORMLIB_PLATFORM_DEFINED             // The platform is known now
+  #define PLATFORM_WINDOWS
+  #define PLATFORM_DEFINED                  // The platform is known now
 
 #endif
 
-//-----------------------------------------------------------------------------
-// Defines for Mac
-
-#if !defined(STORMLIB_PLATFORM_DEFINED) && defined(__APPLE__)  // Mac BSD API
+// Defines for Mac 
+#if !defined(PLATFORM_DEFINED) && defined(__APPLE__)  // Mac BSD API
 
   // Macintosh
   #include <sys/types.h>
@@ -82,55 +71,22 @@
   #include <fcntl.h>
   #include <stdlib.h>
   #include <errno.h>
-
-  // Support for PowerPC on Max OS X
-  #if (__ppc__ == 1) || (__POWERPC__ == 1) || (_ARCH_PPC == 1)
-    #include <stdint.h>
-    #include <CoreFoundation/CFByteOrder.h>
-  #endif
-
+  
   #define    PKEXPORT
   #define    __SYS_ZLIB
   #define    __SYS_BZLIB
 
   #ifndef __BIG_ENDIAN__
-    #define STORMLIB_LITTLE_ENDIAN
+    #define PLATFORM_LITTLE_ENDIAN
   #endif
 
-  #define STORMLIB_MAC
-  #define STORMLIB_PLATFORM_DEFINED                  // The platform is known now
+  #define PLATFORM_MAC
+  #define PLATFORM_DEFINED                  // The platform is known now
 
 #endif
 
-#if !defined(STORMLIB_PLATFORM_DEFINED) && defined(__HAIKU__)
-
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <sys/mman.h>
-  #include <fcntl.h>
-  #include <unistd.h>
-  #include <stdint.h>
-  #include <stdlib.h>
-  #include <stdio.h>
-  #include <stdarg.h>
-  #include <string.h>
-  #include <ctype.h>
-  #include <assert.h>
-  #include <errno.h>
-
-  #ifndef __BIG_ENDIAN__
-    #define STORMLIB_LITTLE_ENDIAN
-  #endif
-
-  #define STORMLIB_HAIKU
-  #define STORMLIB_PLATFORM_DEFINED                  // The platform is known now
-
-#endif
-
-//-----------------------------------------------------------------------------
 // Assumption: we are not on Windows nor Macintosh, so this must be linux *grin*
-
-#if !defined(STORMLIB_PLATFORM_DEFINED)
+#if !defined(PLATFORM_DEFINED)
 
   #include <sys/types.h>
   #include <sys/stat.h>
@@ -142,29 +98,23 @@
   #include <stdio.h>
   #include <stdarg.h>
   #include <string.h>
-  #include <strings.h>
   #include <ctype.h>
   #include <assert.h>
   #include <errno.h>
 
-  #define STORMLIB_LITTLE_ENDIAN
-  #define STORMLIB_LINUX
-  #define STORMLIB_PLATFORM_DEFINED
+  #define PLATFORM_LITTLE_ENDIAN
+  #define PLATFORM_LINUX
+  #define PLATFORM_DEFINED
 
 #endif
 
-//-----------------------------------------------------------------------------
-// Definition of Windows-specific types for non-Windows platforms
-
-#ifndef STORMLIB_WINDOWS
+// Definition of Windows-specific structures for non-Windows platforms
+#ifndef PLATFORM_WINDOWS
   #if __LP64__
-    #define STORMLIB_64BIT
+    #define PLATFORM_64BIT
   #else
-    #define STORMLIB_32BIT
+    #define PLATFORM_32BIT
   #endif
-
-  // __cdecl meand nothing on non-Windows
-  #define STORMLIB_CDECL /* */
 
   // Typedefs for ANSI C
   typedef unsigned char  BYTE;
@@ -183,12 +133,8 @@
   typedef LONG         * PLONG;
   typedef DWORD        * LPDWORD;
   typedef BYTE         * LPBYTE;
-  typedef const char   * LPCTSTR;
-  typedef const char   * LPCSTR;
-  typedef char         * LPTSTR;
-  typedef char         * LPSTR;
 
-  #ifdef STORMLIB_32BIT
+  #ifdef PLATFORM_32BIT
     #define _LZMA_UINT32_IS_ULONG
   #endif
 
@@ -197,7 +143,7 @@
     #define MAX_PATH 1024
   #endif
 
-  #define WINAPI
+  #define WINAPI 
 
   #define FILE_BEGIN    SEEK_SET
   #define FILE_CURRENT  SEEK_CUR
@@ -207,60 +153,46 @@
   #define _tcslen   strlen
   #define _tcscpy   strcpy
   #define _tcscat   strcat
-  #define _tcschr   strchr
   #define _tcsrchr  strrchr
-  #define _tcsstr   strstr
-  #define _tcsnicmp strncasecmp
   #define _tprintf  printf
   #define _stprintf sprintf
   #define _tremove  remove
-  #define _tmain    main
 
   #define _stricmp  strcasecmp
   #define _strnicmp strncasecmp
-  #define _tcsicmp  strcasecmp
   #define _tcsnicmp strncasecmp
 
-#endif // !STORMLIB_WINDOWS
+#endif // !WIN32
 
 // 64-bit calls are supplied by "normal" calls on Mac
-#if defined(STORMLIB_MAC) || defined(STORMLIB_HAIKU)
+#if defined(PLATFORM_MAC)
   #define stat64  stat
   #define fstat64 fstat
   #define lseek64 lseek
-  #define ftruncate64 ftruncate
   #define off64_t off_t
   #define O_LARGEFILE 0
 #endif
 
 // Platform-specific error codes for UNIX-based platforms
-#if defined(STORMLIB_MAC) || defined(STORMLIB_LINUX) || defined(STORMLIB_HAIKU)
+#if defined(PLATFORM_MAC) || defined(PLATFORM_LINUX)
   #define ERROR_SUCCESS                  0
   #define ERROR_FILE_NOT_FOUND           ENOENT
   #define ERROR_ACCESS_DENIED            EPERM
   #define ERROR_INVALID_HANDLE           EBADF
   #define ERROR_NOT_ENOUGH_MEMORY        ENOMEM
+  #define ERROR_BAD_FORMAT               105         // No such error code under Linux
+  #define ERROR_NO_MORE_FILES            106
+  #define ERROR_HANDLE_EOF               107         // No such error code under Linux
   #define ERROR_NOT_SUPPORTED            ENOTSUP
   #define ERROR_INVALID_PARAMETER        EINVAL
-  #define ERROR_NEGATIVE_SEEK            ESPIPE
   #define ERROR_DISK_FULL                ENOSPC
   #define ERROR_ALREADY_EXISTS           EEXIST
+  #define ERROR_CAN_NOT_COMPLETE         108         // No such error code under Linux
+  #define ERROR_FILE_CORRUPT             109         // No such error code under Linux
   #define ERROR_INSUFFICIENT_BUFFER      ENOBUFS
-  #define ERROR_BAD_FORMAT               1000        // No such error code under Linux
-  #define ERROR_NO_MORE_FILES            1001        // No such error code under Linux
-  #define ERROR_HANDLE_EOF               1002        // No such error code under Linux
-  #define ERROR_CAN_NOT_COMPLETE         1003        // No such error code under Linux
-  #define ERROR_FILE_CORRUPT             1004        // No such error code under Linux
 #endif
 
-#ifndef _countof
-  #define _countof(x)  (sizeof(x) / sizeof(x[0]))
-#endif
-
-//-----------------------------------------------------------------------------
-// Swapping functions
-
-#ifdef STORMLIB_LITTLE_ENDIAN
+#ifdef PLATFORM_LITTLE_ENDIAN
     #define    BSWAP_INT16_UNSIGNED(a)          (a)
     #define    BSWAP_INT16_SIGNED(a)            (a)
     #define    BSWAP_INT32_UNSIGNED(a)          (a)
@@ -271,13 +203,9 @@
     #define    BSWAP_ARRAY32_UNSIGNED(a,b)      {}
     #define    BSWAP_ARRAY64_UNSIGNED(a,b)      {}
     #define    BSWAP_PART_HEADER(a)             {}
-    #define    BSWAP_TMPQHEADER(a,b)            {}
-    #define    BSWAP_TMPKHEADER(a)              {}
+    #define    BSWAP_TMPQUSERDATA(a)            {}
+    #define    BSWAP_TMPQHEADER(a)              {}
 #else
-
-#ifdef __cplusplus
-  extern "C" {
-#endif
     int16_t  SwapInt16(uint16_t);
     uint16_t SwapUInt16(uint16_t);
     int32_t  SwapInt32(uint32_t);
@@ -287,12 +215,9 @@
     void ConvertUInt16Buffer(void * ptr, size_t length);
     void ConvertUInt32Buffer(void * ptr, size_t length);
     void ConvertUInt64Buffer(void * ptr, size_t length);
+    void ConvertPartHeader(void * partHeader);
     void ConvertTMPQUserData(void *userData);
-    void ConvertTMPQHeader(void *header, uint16_t wPart);
-    void ConvertTMPKHeader(void *header);
-#ifdef __cplusplus
-  }
-#endif
+    void ConvertTMPQHeader(void *header);
     #define    BSWAP_INT16_SIGNED(a)            SwapInt16((a))
     #define    BSWAP_INT16_UNSIGNED(a)          SwapUInt16((a))
     #define    BSWAP_INT32_SIGNED(a)            SwapInt32((a))
@@ -302,35 +227,9 @@
     #define    BSWAP_ARRAY16_UNSIGNED(a,b)      ConvertUInt16Buffer((a),(b))
     #define    BSWAP_ARRAY32_UNSIGNED(a,b)      ConvertUInt32Buffer((a),(b))
     #define    BSWAP_ARRAY64_UNSIGNED(a,b)      ConvertUInt64Buffer((a),(b))
-    #define    BSWAP_TMPQHEADER(a,b)            ConvertTMPQHeader((a),(b))
-    #define    BSWAP_TMPKHEADER(a)              ConvertTMPKHeader((a))
+    #define    BSWAP_PART_HEADER(a)             ConvertPartHeader(a)
+    #define    BSWAP_TMPQUSERDATA(a)            ConvertTMPQUserData((a))
+    #define    BSWAP_TMPQHEADER(a)              ConvertTMPQHeader((a))
 #endif
-
-//-----------------------------------------------------------------------------
-// Macro for deprecated symbols
-
-/*
-#ifdef _MSC_VER
-  #if _MSC_FULL_VER >= 140050320
-    #define STORMLIB_DEPRECATED(_Text) __declspec(deprecated(_Text))
-  #else
-    #define STORMLIB_DEPRECATED(_Text) __declspec(deprecated)
-  #endif
-#else
-  #ifdef __GNUC__
-    #define STORMLIB_DEPRECATED(_Text) __attribute__((deprecated))
-  #else
-    #define STORMLIB_DEPRECATED(_Text) __attribute__((deprecated(_Text)))
-  #endif
-#endif
-
-// When a flag is deprecated, use this macro
-#ifndef _STORMLIB_NO_DEPRECATE
-  #define STORMLIB_DEPRECATED_FLAG(type, oldflag, newflag)    \
-    const STORMLIB_DEPRECATED(#oldflag " is deprecated. Use " #newflag ". To supress this warning, define _STORMLIB_NO_DEPRECATE") static type oldflag = (type)newflag;
-#else
-#define STORMLIB_DEPRECATED_FLAG(type, oldflag, newflag) static type oldflag = (type)newflag;
-#endif
-*/
 
 #endif // __STORMPORT_H__

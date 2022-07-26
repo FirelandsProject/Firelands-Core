@@ -4,7 +4,9 @@
 /**
  *  @file    SString.h
  *
- *  @author Douglas C. Schmidt (d.schmidt@vanderbilt.edu)
+ *  $Id: SString.h 92580 2010-11-15 09:48:02Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt (schmidt@cs.wustl.edu)
  */
 //=============================================================================
 
@@ -56,6 +58,7 @@ template class ACE_Export ACE_String_Base_Const_Iterator<ACE_WSTRING_TYPE>;
 class ACE_Export ACE_NS_WString : public ACE_WString
 {
 public:
+
   using ACE_WString::size_type;
 
   /// Default constructor.
@@ -130,6 +133,7 @@ ACE_NS_WString operator + (const ACE_NS_WString &,
 class ACE_Export ACE_SString
 {
 public:
+
   typedef ACE_Allocator::size_type size_type;
 
   /// No position constant
@@ -154,11 +158,11 @@ public:
   /// Default destructor.
   ~ACE_SString (void);
 
-  /// Return the slot'th character in the string (doesn't perform
+  /// Return the <slot'th> character in the string (doesn't perform
   /// bounds checking).
   char operator [] (size_type slot) const;
 
-  /// Return the slot'th character by reference in the string
+  /// Return the <slot'th> character by reference in the string
   /// (doesn't perform bounds checking).
   char &operator [] (size_type slot);
 
@@ -202,7 +206,7 @@ public:
   /// location that matches (will be >= pos), else npos.
   size_type find (const ACE_SString &str, size_type pos = 0) const;
 
-  /// Find @a s starting at pos.  Returns the slot of the first
+  /// Find <s> starting at pos.  Returns the slot of the first
   /// location that matches (will be >= pos), else npos.
   size_type find (const char *s, size_type pos = 0) const;
 

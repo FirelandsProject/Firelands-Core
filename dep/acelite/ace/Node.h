@@ -4,6 +4,8 @@
 /**
  *  @file Node.h
  *
+ *  $Id: Node.h 81624 2008-05-06 17:14:57Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -52,9 +54,8 @@ public:
   /// This isn't necessary, but it keeps some compilers happy.
   ~ACE_Node (void);
 
-  ACE_ALLOC_HOOK_DECLARE;
-
 private:
+  // = Initialization methods
   ACE_Node (const T &i, ACE_Node<T, C> *n);
   ACE_Node (ACE_Node<T, C> *n = 0, int = 0);
   ACE_Node (const ACE_Node<T, C> &n);

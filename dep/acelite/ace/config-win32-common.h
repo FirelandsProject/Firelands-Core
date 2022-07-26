@@ -1,4 +1,6 @@
 /* -*- C++ -*- */
+// $Id: config-win32-common.h 96094 2012-08-22 11:51:11Z johnnyw $
+
 
 #ifndef ACE_CONFIG_WIN32_COMMON_H
 #define ACE_CONFIG_WIN32_COMMON_H
@@ -40,8 +42,8 @@
 #  define ACE_WIN64
 
 // MPC template adds _AMD64_ but user projects not generated using MPC
-// may want to use _AMD64_ as well. Ensure it's there in all non ARM cases
-#  if !defined (_AMD64_) && !defined(_ARM_) && !defined(_ARM64_)
+// may want to use _AMD64_ as well. Ensure it's there in all cases.
+#  ifndef _AMD64_
 #    define _AMD64_
 #  endif
 
@@ -55,6 +57,10 @@
 #  endif  /* !_FILE_OFFSET_BITS */
 #endif /* _WIN64 || WIN64 */
 
+#if !defined (_WIN32_WINNT)
+# define _WIN32_WINNT 0x0501 // pretend it's at least Windows XP or Win2003
+#endif
+
 // If the invoking procedure turned off debugging by setting NDEBUG, then
 // also set ACE_NDEBUG, unless the user has already set it.
 #if defined (NDEBUG)
@@ -67,7 +73,7 @@
 // be defined, if your application uses MFC.
 //  Setting applies to  : building ACE
 //  Runtime restrictions: MFC DLLs must be installed
-//  Additional notes    : If both ACE_HAS_MFC and ACE_MT_SAFE are
+//  Additonal notes             : If both ACE_HAS_MFC and ACE_MT_SAFE are
 //                        defined, the MFC DLL (not the static lib)
 //                        will be used from ACE.
 #if !defined (ACE_HAS_MFC)
@@ -128,7 +134,7 @@
 //  #endif
 
 // Define the special export macros needed to export symbols outside a dll
-#if !defined (ACE_HAS_CUSTOM_EXPORT_MACROS) || (ACE_HAS_CUSTOM_EXPORT_MACROS == 0)
+#if !defined(__BORLANDC__) && (!defined (ACE_HAS_CUSTOM_EXPORT_MACROS) || (ACE_HAS_CUSTOM_EXPORT_MACROS == 0))
 #if defined (ACE_HAS_CUSTOM_EXPORT_MACROS)
 #undef ACE_HAS_CUSTOM_EXPORT_MACROS
 #endif
@@ -139,7 +145,7 @@
 #define ACE_EXPORT_SINGLETON_DECLARE(SINGLETON_TYPE, CLASS, LOCK) template class __declspec (dllexport) SINGLETON_TYPE<CLASS, LOCK>;
 #define ACE_IMPORT_SINGLETON_DECLARATION(T) extern template class T
 #define ACE_IMPORT_SINGLETON_DECLARE(SINGLETON_TYPE, CLASS, LOCK) extern template class SINGLETON_TYPE <CLASS, LOCK>;
-#endif /* !ACE_HAS_CUSTOM_EXPORT_MACROS || ACE_HAS_CUSTOM_EXPORT_MACROS==0 */
+#endif /* !__BORLANDC__ */
 
 // Define ACE_HAS_WINSOCK2 to 0 in your config.h file if you do *not*
 // want to compile with WinSock 2.0.
@@ -150,7 +156,7 @@
 // By default, we use non-static object manager on Win32.  That is,
 // the object manager is allocated in main's stack memory.  If this
 // does not suit your need, i.e., if your programs depend on the use
-// of static object manager, you need to disable the behavior by adding
+// of static object manager, you neet to disable the behavior by adding
 //
 //   #undef ACE_HAS_NONSTATIC_OBJECT_MANAGER
 //
@@ -163,7 +169,7 @@
 // either:
 //
 // 1. Using static object manager (as described above), however, using
-// the non-static object manager is preferred, therefore,
+// the non-static object manager is prefered, therefore,
 // 2. Instantiate the non-static object manager yourself by either 1)
 //    call ACE::init () at the beginning and ACE::fini () at the end,
 //    _or_ 2) instantiate the ACE_Object_Manager in your CWinApp
@@ -231,14 +237,9 @@
 
 #define ACE_HAS_DIRENT
 #define ACE_HAS_MSG
-#define ACE_HAS_NONCONST_INET_NTOP
 #define ACE_HAS_RECURSIVE_MUTEXES
 #define ACE_HAS_SOCKADDR_MSG_NAME
 #define ACE_HAS_THREAD_SAFE_ACCEPT
-
-/* MS is phasing out the GetVersion API so let's prepare */
-/* For now all releases still provide it. */
-#define ACE_HAS_WIN32_GETVERSION
 
 /* LACKS dir-related facilities */
 #define ACE_LACKS_READDIR_R
@@ -249,8 +250,6 @@
 #define ACE_LACKS_CLOCKID_T
 #define ACE_LACKS_CLOCK_REALTIME
 #define ACE_LACKS_CLOCK_MONOTONIC
-#define ACE_HAS_MONOTONIC_TIME_POLICY
-#define ACE_HAS_MONOTONIC_CONDITIONS
 
 /* LACKS gid/pid/sid/uid facilities */
 #define ACE_LACKS_GETPGID
@@ -278,10 +277,6 @@
 #define ACE_LACKS_GETIPNODEBYNAME_IPV6
 #define ACE_LACKS_KILL
 #define ACE_LACKS_INET_ATON
-#if _WIN32_WINNT < 0x0600
-# define ACE_LACKS_INET_NTOP
-# define ACE_LACKS_INET_PTON
-#endif
 #define ACE_LACKS_MADVISE
 #define ACE_LACKS_MKFIFO
 #define ACE_LACKS_MODE_MASKS
@@ -314,9 +309,6 @@
 #define ACE_LACKS_CADDR_T
 #if !defined(__MINGW32__) && !defined (__BORLANDC__)
 # define ACE_LACKS_MODE_T
-#endif
-#if !defined(__MINGW32__)
-# define ACE_LACKS_PID_T
 #endif
 #if !defined (__BORLANDC__)
 # define ACE_LACKS_NLINK_T
@@ -535,9 +527,9 @@
 #  else
 #    pragma comment(lib, "ws2_32.lib")
 #    pragma comment(lib, "mswsock.lib")
-#    if defined (ACE_HAS_IPV6)
+// #    if defined (ACE_HAS_IPV6)
 #      pragma comment(lib, "iphlpapi.lib")
-#    endif
+// #    endif
 #  endif /* ACE_HAS_WINCE */
 # endif /* _MSC_VER */
 
@@ -562,14 +554,6 @@
 # define ACE_WSOCK_VERSION 1, 1
 #endif /* ACE_HAS_WINSOCK2 */
 
-#if _WIN32_WINNT >= 0x400
-# define ACE_HAS_WIN32_TRYLOCK
-#endif
-#if _WIN32_WINNT < 0x600
-# define ACE_LACKS_IF_NAMETOINDEX
-#endif
-#define ACE_LACKS_IF_NAMEINDEX
-
 // Platform supports IP multicast on Winsock 2
 #if defined (ACE_HAS_WINSOCK2) && (ACE_HAS_WINSOCK2 != 0)
 # define ACE_HAS_IP_MULTICAST
@@ -578,12 +562,10 @@
 #if !defined (ACE_HAS_WINCE)
 # define ACE_HAS_INTERLOCKED_EXCHANGEADD
 #endif
+#define ACE_HAS_WIN32_TRYLOCK
 
 #if !defined (ACE_HAS_WINCE) && !defined (ACE_HAS_PHARLAP)
-
-# if _WIN32_WINNT >= 0x400
-#  define ACE_HAS_SIGNAL_OBJECT_AND_WAIT
-# endif
+# define ACE_HAS_SIGNAL_OBJECT_AND_WAIT
 
 // If CancelIO is undefined get the updated sp2-sdk from MS
 # define ACE_HAS_CANCEL_IO
@@ -621,13 +603,20 @@
 #define ACE_LACKS_ALPHASORT
 #define ACE_LACKS_MKSTEMP
 #define ACE_LACKS_LSTAT
-// Looks like Win32 has a non-const swab function, and it takes the
-// non-standard int len (rather than ssize_t).
+// Looks like Win32 has a non-const swab function
 #define ACE_HAS_NONCONST_SWAB
-#define ACE_HAS_INT_SWAB
 
 // gethostbyaddr does not handle IPv6-mapped-IPv4 addresses
 #define ACE_HAS_BROKEN_GETHOSTBYADDR_V4MAPPED
+
+// If we are using winsock2 then the SO_REUSEADDR feature is broken
+// SO_REUSEADDR=1 behaves like SO_REUSEPORT=1. (SO_REUSEPORT is an
+// extension to sockets on some platforms)
+// We define SO_REUSEPORT here so that ACE_OS::setsockopt() can still
+// allow the user to specify that a socketaddr can *always* be reused.
+#if defined (ACE_HAS_WINSOCK2) && ACE_HAS_WINSOCK2 != 0 && ! defined(SO_REUSEPORT)
+#define SO_REUSEPORT 0x0400  // We just have to pick a value that won't conflict
+#endif
 
 #if defined (ACE_WIN64)
 // Data must be aligned on 8-byte boundaries, at a minimum.
@@ -671,7 +660,7 @@
 
 #if (WINVER>=0x0600)
 // Windows Server 2008 definitions go here
-// Windows Vista definitions go here
+// Windows Vista defintions go here
 #  if ! defined(ACE_DEFAULT_THREAD_KEYS)
 #    define ACE_DEFAULT_THREAD_KEYS 1088
 #  endif // ! defined(ACE_DEFAULT_THREAD_KEYS)

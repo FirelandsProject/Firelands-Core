@@ -4,6 +4,8 @@
 /**
  *  @file    Priority_Reactor.h
  *
+ *  $Id: Priority_Reactor.h 82723 2008-09-16 09:35:44Z johnnyw $
+ *
  *  @author Carlos O'Ryan <coryan@uci.edu>
  */
 //=============================================================================
@@ -35,6 +37,8 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_Priority_Reactor : public ACE_Select_Reactor
 {
 public:
+  // = Initialization and termination methods.
+
   /// Initialize ACE_Priority_Reactor with the default size.
   ACE_Priority_Reactor (ACE_Sig_Handler * = 0,
                         ACE_Timer_Queue * = 0);

@@ -1,17 +1,35 @@
-project(Recast VERSION 1.0.0)
+# Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
+#
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-file(GLOB RCT_SOURCES Source/*.cpp)
-file(GLOB RCT_INCLUDES Include/*.h)
-
-add_library(Recast STATIC ${RCT_SOURCES} ${RCT_INCLUDES})
-add_library(RecastNavigation::Recast ALIAS Recast)
-
-target_include_directories(Recast
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/Include
+set(Recast_STAT_SRCS
+    Source/Recast.cpp 
+    Source/RecastAlloc.cpp 
+    Source/RecastArea.cpp 
+    Source/RecastContour.cpp 
+    Source/RecastFilter.cpp 
+	Source/RecastLayers.cpp
+    Source/RecastMesh.cpp 
+    Source/RecastMeshDetail.cpp 
+    Source/RecastRasterization.cpp 
+    Source/RecastRegion.cpp 
 )
 
-set_target_properties(Recast
-    PROPERTIES
-        VERSION 1.0.0
-)
+include_directories(Include)
+
+if(WIN32)
+  include_directories(
+    ${CMAKE_SOURCE_DIR}/dep/zlib
+  )
+endif()
+
+add_library(Recast STATIC ${Recast_STAT_SRCS})
+
+target_link_libraries(Recast ${ZLIB_LIBRARIES})

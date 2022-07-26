@@ -1,21 +1,21 @@
-REVOKE ALL PRIVILEGES ON * . * FROM 'firelands'@'localhost';
+REVOKE ALL PRIVILEGES ON * . * FROM 'cataclysm'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_world` . * FROM 'firelands'@'localhost';
+REVOKE ALL PRIVILEGES ON `cataclysm_world` . * FROM 'cataclysm'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_world` . * FROM 'firelands'@'localhost';
+REVOKE GRANT OPTION ON `cataclysm_world` . * FROM 'cataclysm'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_characters` . * FROM 'firelands'@'localhost';
+REVOKE ALL PRIVILEGES ON `cataclysm_characters` . * FROM 'cataclysm'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_characters` . * FROM 'firelands'@'localhost';
+REVOKE GRANT OPTION ON `cataclysm_characters` . * FROM 'cataclysm'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `firelands_auth` . * FROM 'firelands'@'localhost';
+REVOKE ALL PRIVILEGES ON `cataclysm_auth` . * FROM 'cataclysm'@'localhost';
 
-REVOKE GRANT OPTION ON `firelands_auth` . * FROM 'firelands'@'localhost';
+REVOKE GRANT OPTION ON `cataclysm_auth` . * FROM 'cataclysm'@'localhost';
 
-DROP USER 'firelands'@'localhost';
+DROP USER 'cataclysm'@'localhost';
 
-DROP DATABASE IF EXISTS `firelands_world`;
+DROP DATABASE IF EXISTS `cataclysm_world`;
 
-DROP DATABASE IF EXISTS `firelands_characters`;
+DROP DATABASE IF EXISTS `cataclysm_characters`;
 
-DROP DATABASE IF EXISTS `firelands_auth`;
+DROP DATABASE IF EXISTS `cataclysm_auth`;

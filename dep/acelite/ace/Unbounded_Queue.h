@@ -4,7 +4,9 @@
 /**
  *  @file Unbounded_Queue.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Unbounded_Queue.h 84316 2009-02-03 19:46:05Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -36,6 +38,7 @@ template <class T>
 class ACE_Unbounded_Queue_Iterator
 {
 public:
+  // = Initialization method.
   ACE_Unbounded_Queue_Iterator (ACE_Unbounded_Queue<T> &q, int end = 0);
 
   // = Iteration methods.
@@ -78,6 +81,7 @@ template <class T>
 class ACE_Unbounded_Queue_Const_Iterator
 {
 public:
+  // = Initialization method.
   ACE_Unbounded_Queue_Const_Iterator (const ACE_Unbounded_Queue<T> &q, int end = 0);
 
   // = Iteration methods.
@@ -140,6 +144,7 @@ private:
  *       -# Default constructor
  *       -# Copy constructor
  *       -# operator=
+ *
  */
 template <class T>
 class ACE_Unbounded_Queue
@@ -152,6 +157,7 @@ public:
   typedef ACE_Unbounded_Queue_Iterator<T> ITERATOR;
   typedef ACE_Unbounded_Queue_Const_Iterator<T> CONST_ITERATOR;
 
+  // = Initialization and termination methods.
   /// Construction.  Use user specified allocation strategy
   /// if specified.
   /**

@@ -4,6 +4,8 @@
 /**
  *  @file    TLI_Connector.h
  *
+ *  $Id: TLI_Connector.h 82723 2008-09-16 09:35:44Z johnnyw $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -14,7 +16,7 @@
 #include /**/ "ace/pre.h"
 
 #include "ace/TLI_Stream.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 # pragma once
@@ -33,6 +35,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_TLI_Connector
 {
 public:
+  // = Initialization methods.
   /// Default constructor.
   ACE_TLI_Connector (void);
 

@@ -6,6 +6,8 @@
  *
  *  data returned by the stat() function
  *
+ *  $Id: os_stat.h 95718 2012-05-01 11:42:47Z johnnyw $
+ *
  *  @author Don Hinton <dhinton@dresystems.com>
  *  @author This code was originally in various places including ace/OS.h.
  */
@@ -16,7 +18,7 @@
 
 #include /**/ "ace/pre.h"
 
-#include /**/ "ace/config-lite.h"
+#include "ace/config-lite.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 # pragma once
@@ -98,11 +100,6 @@ extern "C"
 #   define S_ISLNK(mode) 0
 # endif /* S_IFLNK */
 #endif /* S_ISLNK */
-
-// Visual Studio doesn't define S_ISDIR
-#if !defined (S_ISDIR)
-# define S_ISDIR(mode)   ((mode&S_IFMT) == S_IFDIR)
-#endif
 
 #if defined (ACE_HAS_WINCE)
 

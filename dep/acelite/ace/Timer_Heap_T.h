@@ -4,7 +4,9 @@
 /**
  *  @file    Timer_Heap_T.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Timer_Heap_T.h 95368 2011-12-19 13:38:49Z mcorino $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -59,9 +61,6 @@ public:
   /// Returns the node at the current position in the sequence
   virtual ACE_Timer_Node_T<TYPE> *item (void);
 
-  /// Declare the dynamic allocation hooks.
-  ACE_ALLOC_HOOK_DECLARE;
-
 protected:
   /// Pointer to the ACE_Timer_Heap that we are iterating over.
   Heap & timer_heap_;
@@ -93,6 +92,7 @@ public:
 
   typedef ACE_Timer_Queue_T<TYPE, FUNCTOR, ACE_LOCK, TIME_POLICY> Base_Time_Policy;
 
+  // = Initialization and termination methods.
   /**
    * The Constructor creates a heap with specified number of elements.
    * This can also take in a upcall functor and freelist (if 0, then
@@ -188,9 +188,6 @@ public:
 
   /// Reads the earliest node from the queue and returns it.
   virtual ACE_Timer_Node_T<TYPE> *get_first (void);
-
-  /// Declare the dynamic allocation hooks.
-  ACE_ALLOC_HOOK_DECLARE;
 
 protected:
 

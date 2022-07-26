@@ -1,9 +1,7 @@
-#include "ace/Signal.h"
-// #include "ace/Log_Category.h"
+// $Id: Signal.cpp 91286 2010-08-05 09:04:31Z johnnyw $
 
-#if defined (ACE_HAS_ALLOC_HOOKS)
-# include "ace/Malloc_Base.h"
-#endif /* ACE_HAS_ALLOC_HOOKS */
+#include "ace/Signal.h"
+// #include "ace/Log_Msg.h"
 
 #if !defined (__ACE_INLINE__)
 #include "ace/Signal.inl"

@@ -4,7 +4,9 @@
 /**
  *  @file   OS_NS_sys_socket.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: OS_NS_sys_socket.h 95533 2012-02-14 22:59:17Z wotte $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  *  @author Jesper S. M|ller<stophph@diku.dk>
  *  @author and a cast of thousands...
  *
@@ -57,18 +59,6 @@
 #else
 #define ACE_SHUTDOWN_BOTH 2
 #endif /* SD_BOTH */
-
-#if defined (IP_RECVDSTADDR)
-#define ACE_RECVPKTINFO IP_RECVDSTADDR
-#elif defined (IP_PKTINFO)
-#define ACE_RECVPKTINFO IP_PKTINFO
-#endif
-
-#if defined (ACE_HAS_IPV6)
-#if defined (IPV6_RECVPKTINFO)
-#define ACE_RECVPKTINFO6 IPV6_RECVPKTINFO
-#endif
-#endif
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
@@ -191,14 +181,6 @@ namespace ACE_OS
                    struct msghdr *msg,
                    int flags);
 
-#if !defined ACE_LACKS_RECVMSG && defined ACE_HAS_WINSOCK2 && ACE_HAS_WINSOCK2
-  extern ACE_Export
-  int recvmsg_win32_i (ACE_HANDLE handle,
-                       msghdr *msg,
-                       int flags,
-                       unsigned long &bytes_received);
-#endif
-
   ACE_NAMESPACE_INLINE_FUNCTION
   ssize_t recvv (ACE_HANDLE handle,
                  iovec *iov,
@@ -222,14 +204,6 @@ namespace ACE_OS
   ssize_t sendmsg (ACE_HANDLE handle,
                    const struct msghdr *msg,
                    int flags);
-
-#if !defined ACE_LACKS_RECVMSG && defined ACE_HAS_WINSOCK2 && ACE_HAS_WINSOCK2
-  extern ACE_Export
-  int sendmsg_win32_i (ACE_HANDLE handle,
-                       msghdr const *msg,
-                       int flags,
-                       unsigned long &bytes_sent);
-#endif
 
   ACE_NAMESPACE_INLINE_FUNCTION
   ssize_t sendto (ACE_HANDLE handle,
@@ -274,17 +248,19 @@ namespace ACE_OS
   int shutdown (ACE_HANDLE handle,
                 int how);
 
-  //ACE_NAMESPACE_INLINE_FUNCTION
-  //unsigned int if_nametoindex (const char *ifname);
+#if defined (ACE_LINUX) && defined (ACE_HAS_IPV6)
+  ACE_NAMESPACE_INLINE_FUNCTION
+  unsigned int if_nametoindex (const char *ifname);
 
-  //ACE_NAMESPACE_INLINE_FUNCTION
-  //char *if_indextoname (unsigned int ifindex, char *ifname);
+  ACE_NAMESPACE_INLINE_FUNCTION
+  char *if_indextoname (unsigned int ifindex, char *ifname);
 
   ACE_NAMESPACE_INLINE_FUNCTION
   struct if_nameindex *if_nameindex (void);
 
   ACE_NAMESPACE_INLINE_FUNCTION
   void if_freenameindex (struct if_nameindex *ptr);
+#endif /* ACE_LINUX && ACE_HAS_IPV6 */
 
   /// Initialize WinSock before first use (e.g., when a DLL is first
   /// loaded or the first use of a socket() call.

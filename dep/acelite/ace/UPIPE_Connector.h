@@ -4,6 +4,8 @@
 /**
  *  @file    UPIPE_Connector.h
  *
+ *  $Id: UPIPE_Connector.h 82723 2008-09-16 09:35:44Z johnnyw $
+ *
  *  @author Gerhard Lenzer and Douglas C. Schmidt
  */
 //=============================================================================
@@ -32,6 +34,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_UPIPE_Connector
 {
 public:
+  // = Initialization methods.
   /// Default constructor.
   ACE_UPIPE_Connector (void);
 

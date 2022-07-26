@@ -4,8 +4,10 @@
 /**
  *  @file    Reactor.h
  *
+ *  $Id: Reactor.h 95774 2012-05-17 15:45:58Z shuston $
+ *
  *  @author Irfan Pyarali <irfan@cs.wustl.edu>
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -341,6 +343,7 @@ public:
                         ACE_Reactor_Mask mask);
 
 #if defined (ACE_WIN32)
+
   /**
    * Register handler for OS events.
    *
@@ -359,6 +362,7 @@ public:
    */
   int register_handler (ACE_Event_Handler *event_handler,
                         ACE_HANDLE event_handle = ACE_INVALID_HANDLE);
+
 #endif /* ACE_WIN32 */
 
   /**
@@ -458,12 +462,15 @@ public:
    * Install the new disposition (if given) and return the previous
    * disposition (if desired by the caller).
    *
-   * Note that the registered handler's ACE_Event_Handler::handle_close ()
-   * callback will be called to indicate the signal handler has been removed.
-   * Unlike with I/O handles, there is no way to prevent this callback. The
-   * handle_close() callback can check the passed mask for the value
-   * ACE_Event_Handler::SIGNAL_MASK to tell when the callback is the result
-   * of a signal handler removal.
+   * Note that, unlike removing handler for I/O events,
+   * ACE_Event_Handler::handle_close() will not be called when the
+   * handler is removed. Neither will any reference-counting activity be
+   * involved.
+   *
+   * @note There's an existing enhancement request in Bugzilla,
+   * #2368, to change this behavior so that ACE_Event_Handler::handle_close()
+   * is called when the signal handler is removed. Thus, there's some chance
+   * this behavior will change in a future version of ACE.
    */
   int remove_handler (int signum,
                       ACE_Sig_Action *new_disp,
@@ -576,19 +583,7 @@ public:
                                const ACE_Time_Value &delay,
                                const ACE_Time_Value &interval =
                                 ACE_Time_Value::zero);
-#if defined (ACE_HAS_CPP11)
-  template<class Rep1, class Period1, class Rep2 = int, class Period2 = std::ratio<1>>
-  long schedule_timer (ACE_Event_Handler *event_handler,
-                       const void *arg,
-                       const std::chrono::duration<Rep1, Period1>& delay,
-                       const std::chrono::duration<Rep2, Period2>& interval =
-                        std::chrono::duration<Rep2, Period2>::zero ())
-  {
-    ACE_Time_Value const tv_delay (delay);
-    ACE_Time_Value const tv_interval (interval);
-    return this->schedule_timer (event_handler, arg, tv_delay, tv_interval);
-  }
-#endif
+
   /**
    * Reset recurring timer interval.
    *
@@ -602,15 +597,6 @@ public:
    */
   virtual int reset_timer_interval (long timer_id,
                                     const ACE_Time_Value &interval);
-#if defined (ACE_HAS_CPP11)
-  template<class Rep, class Period>
-  int reset_timer_interval (long timer_id,
-                            const std::chrono::duration<Rep, Period>& interval)
-  {
-    ACE_Time_Value const tv_interval (interval);
-    return this->reset_timer_interval (timer_id, tv_interval);
-  }
-#endif
 
   /**
    * Cancel timer.
@@ -641,9 +627,6 @@ public:
    * number of timers associated with the event handler.
    * ACE_Event_Handler::remove_reference() will also be called once
    * for every timer associated with the event handler.
-   *
-   * In case this operation is called with a nil event_handler
-   * it returns with 0 as the number of handlers cancelled.
    *
    * Returns number of handlers cancelled.
    */

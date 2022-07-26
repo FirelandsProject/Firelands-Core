@@ -1,3 +1,5 @@
+// $Id: High_Res_Timer.cpp 95788 2012-05-24 07:59:51Z johnnyw $
+
 // Be very carefull before changing the calculations inside
 // ACE_High_Res_Timer.  The precision matters and we are using integer
 // calculations not floating point.  Also look good at the emulated 64
@@ -70,7 +72,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 /* static */
 int ACE_High_Res_Timer::global_scale_factor_status_ = 0;
 
-#if defined (ACE_LINUX) && !defined (ACE_LACKS_SSCANF)
+#if defined (ACE_LINUX)
 // Determine the apparent CPU clock speed from /proc/cpuinfo
 ACE_UINT32
 ACE_High_Res_Timer::get_cpuinfo (void)
@@ -93,7 +95,7 @@ ACE_High_Res_Timer::get_cpuinfo (void)
     {
       char buf[128];
 
-      // ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("\nReading /proc/cpuinfo...")));
+      // ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("\nReading /proc/cpuinfo...")));
 
       while (ACE_OS::fgets (buf, sizeof buf, cpuinfo))
         {
@@ -160,12 +162,12 @@ ACE_High_Res_Timer::get_cpuinfo (void)
               if (supported)
                 {
                   scale_factor = (ACE_UINT32) (bmips + 0.5);
-                  // ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT (" setting the clock scale factor to %u"), scale_factor));
+                  // ACE_DEBUG ((LM_DEBUG, ACE_TEXT (" setting the clock scale factor to %u"), scale_factor));
                 }
 #if 0
               else
                 {
-                  ACELIB_DEBUG ((LM_DEBUG,
+                  ACE_DEBUG ((LM_DEBUG,
                               ACE_TEXT ("\nThe BogoMIPS metric is not supported on this platform"
                                          "\n\tReport the results of the clock calibration and"
                                          "\n\tthe contents of /proc/cpuinfo to the ace-users mailing list")));
@@ -176,14 +178,15 @@ ACE_High_Res_Timer::get_cpuinfo (void)
 #endif /* __alpha__ */
         }
 
-      // ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT (" (done)\n")));
+      // ACE_DEBUG ((LM_DEBUG, ACE_TEXT (" (done)\n")));
 
       ACE_OS::fclose (cpuinfo);
     }
 
   return scale_factor;
 }
-#endif /* ACE_LINUX && !ACE_LACKS_SSCANF*/
+#endif /* ACE_LINUX */
+
 
 ACE_High_Res_Timer::global_scale_factor_type
 ACE_High_Res_Timer::global_scale_factor (void)
@@ -206,43 +209,33 @@ ACE_High_Res_Timer::global_scale_factor (void)
       if (ACE_High_Res_Timer::global_scale_factor_status_ == 0)
         {
 #         if defined (ACE_WIN32)
-          // This a higher-precision version, specific for Windows systems
-          LARGE_INTEGER freq;
-          if (::QueryPerformanceFrequency (&freq))
-          {
-            ACE_High_Res_Timer::global_scale_factor(freq.QuadPart);
+            // This a higher-precision version, specific for Windows systems
+            LARGE_INTEGER freq;
+            if (::QueryPerformanceFrequency (&freq))
+            {
+                ACE_High_Res_Timer::global_scale_factor(freq.QuadPart);
 
-            // Succeeded in setting the global scale factor
-            ACE_High_Res_Timer::global_scale_factor_status_ = 1;
-          }
-          else
-          {
-            // High-Res timers not supported
-            ACE_High_Res_Timer::global_scale_factor_status_ = -1;
-          }
+                ACE_High_Res_Timer::global_scale_factor_status_ = 1;
+            }
+            else
+            {
+              // High-Res timers not supported
+              ACE_High_Res_Timer::global_scale_factor_status_ = -1;
+            }
+            return ACE_High_Res_Timer::global_scale_factor_;
 #         elif defined (ACE_LINUX)
-#          if defined (ACE_LACKS_SSCANF)
-            ACE_High_Res_Timer::global_scale_factor (1);
-#          else
-          ACE_High_Res_Timer::global_scale_factor (ACE_High_Res_Timer::get_cpuinfo ());
-#          endif /* ACE_LACKS_SSCANF */
+            ACE_High_Res_Timer::global_scale_factor (ACE_High_Res_Timer::get_cpuinfo ());
 #         endif /* ! ACE_WIN32 && ! (ACE_LINUX && __alpha__) */
 
 #         if !defined (ACE_WIN32)
           if (ACE_High_Res_Timer::global_scale_factor_ <= 1u)
             // Failed to retrieve CPU speed from system, so calculate it.
             ACE_High_Res_Timer::calibrate ();
-
-          // We have set the global scale factor so set out status
-          // to 1, this way we only set the global_scale_factor_ once.
-          // Must be in the !ACE_WIN32 block to make sure that we
-          // not change a value of -1 (only done for ACE_WINC32) by accident
-          // to 1
-          ACE_High_Res_Timer::global_scale_factor_status_ = 1;
 #         endif // (ACE_WIN32)
         }
     }
 
+  ACE_High_Res_Timer::global_scale_factor_status_ = 1;
 #endif /* (ACE_WIN32 || ACE_HAS_POWERPC_TIMER || \
            ACE_HAS_PENTIUM || ACE_HAS_ALPHA_TIMER) && \
           ! ACE_HAS_HI_RES_TIMER &&
@@ -309,10 +302,10 @@ ACE_High_Res_Timer::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_High_Res_Timer::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("\nglobal_scale_factor_: %u\n"),
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("\nglobal_scale_factor_: %u\n"),
              global_scale_factor ()));
-  ACELIB_DEBUG ((LM_DEBUG,
+  ACE_DEBUG ((LM_DEBUG,
               ACE_TEXT (":\nstart_.hi ():     %8x; start_.lo ():      %8x;\n")
               ACE_TEXT ("end_.hi ():       %8x; end_.lo ():        %8x;\n")
               ACE_TEXT ("total_.hi ():     %8x; total_.lo ():      %8x;\n")
@@ -325,7 +318,7 @@ ACE_High_Res_Timer::dump (void) const
               static_cast<ACE_UINT32> (total_ & 0xfffffffful),
               static_cast<ACE_UINT32> (start_incr_ >> 32),
               static_cast<ACE_UINT32> (start_incr_ & 0xfffffffful)));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
@@ -443,18 +436,18 @@ ACE_High_Res_Timer::print_ave (const ACE_TCHAR *str,
   if (count > 1)
     {
       ACE_hrtime_t avg_nsecs = total_nanoseconds / (ACE_UINT32) count;
-      ACE_OS::snprintf (buf, 100,
-                        ACE_TEXT (" count = %d, total (secs %lu, usecs %u), avg usecs = %lu\n"),
-                        count,
-                        total_secs,
-                        (extra_nsecs + 500u) / 1000u,
-                        (u_long) ((avg_nsecs + 500u) / 1000u));
+      ACE_OS::sprintf (buf,
+                       ACE_TEXT (" count = %d, total (secs %lu, usecs %u), avg usecs = %lu\n"),
+                       count,
+                       total_secs,
+                       (extra_nsecs + 500u) / 1000u,
+                       (u_long) ((avg_nsecs + 500u) / 1000u));
     }
   else
-    ACE_OS::snprintf (buf, 100,
-                      ACE_TEXT (" total %3lu.%06lu secs\n"),
-                      total_secs,
-                      (extra_nsecs + 500lu) / 1000lu);
+    ACE_OS::sprintf (buf,
+                     ACE_TEXT (" total %3lu.%06lu secs\n"),
+                     total_secs,
+                     (extra_nsecs + 500lu) / 1000lu);
 
   ACE_OS::write (handle,
                  str,
@@ -486,18 +479,18 @@ ACE_High_Res_Timer::print_total (const ACE_TCHAR *str,
     {
       ACE_hrtime_t avg_nsecs = this->total_ / (ACE_UINT32) count;
 
-      ACE_OS::snprintf (buf, 100,
-                        ACE_TEXT (" count = %d, total (secs %lu, usecs %u), avg usecs = %lu\n"),
-                        count,
-                        total_secs,
-                        (extra_nsecs + 500u) / 1000u,
-                        (u_long) ((avg_nsecs + 500u) / 1000u));
+      ACE_OS::sprintf (buf,
+                       ACE_TEXT (" count = %d, total (secs %lu, usecs %u), avg usecs = %lu\n"),
+                       count,
+                       total_secs,
+                       (extra_nsecs + 500u) / 1000u,
+                       (u_long) ((avg_nsecs + 500u) / 1000u));
     }
   else
-    ACE_OS::snprintf (buf, 100,
-                      ACE_TEXT (" total %3lu.%06u secs\n"),
-                      total_secs,
-                      (extra_nsecs + 500u) / 1000u);
+    ACE_OS::sprintf (buf,
+                     ACE_TEXT (" total %3lu.%06u secs\n"),
+                     total_secs,
+                     (extra_nsecs + 500u) / 1000u);
 
   ACE_OS::write (handle,
                  str,

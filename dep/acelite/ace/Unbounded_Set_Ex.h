@@ -4,7 +4,9 @@
 /**
  *  @file Unbounded_Set_Ex.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Unbounded_Set_Ex.h 88978 2010-02-13 16:03:31Z hillj $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -52,6 +54,7 @@ public:
   typedef typename container_type::pointer         pointer;
   typedef typename container_type::difference_type difference_type;
 
+  // = Initialization method.
   ACE_Unbounded_Set_Ex_Iterator (ACE_Unbounded_Set_Ex<T, C> &s, bool end = false);
 
   // = Iteration methods.
@@ -119,6 +122,7 @@ public:
   typedef typename container_type::const_pointer    pointer;
   typedef typename container_type::difference_type  difference_type;
 
+  // = Initialization method.
   ACE_Unbounded_Set_Ex_Const_Iterator (const ACE_Unbounded_Set_Ex<T, C> &s,
                                        bool end = false);
 
@@ -205,6 +209,7 @@ private:
  *       -# Copy constructor
  *       -# operator=
  *       -# operator== const
+ *
  */
 template <class T, class C>
 class ACE_Unbounded_Set_Ex
@@ -230,6 +235,7 @@ public:
   typedef const_value_type *  const_pointer;
   typedef ptrdiff_t           difference_type;
 
+  // = Initialization and termination methods.
   /// Constructor.  Use user specified allocation strategy
   /// if specified.
   /**

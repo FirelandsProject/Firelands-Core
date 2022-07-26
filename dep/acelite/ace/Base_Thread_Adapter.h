@@ -4,6 +4,8 @@
 /**
  *  @file    Base_Thread_Adapter.h
  *
+ *  $Id: Base_Thread_Adapter.h 95595 2012-03-07 13:33:25Z johnnyw $
+ *
  *  @author Nanbor Wang <nanbor@cs.wustl.edu>
  */
 //=============================================================================
@@ -87,6 +89,7 @@ class ACE_Service_Gestalt;
 class ACE_Export ACE_Base_Thread_Adapter
 {
 public:
+
   virtual ~ACE_Base_Thread_Adapter (void);
 
   /// Virtual method invoked by the thread entry point.

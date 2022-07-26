@@ -4,7 +4,9 @@
 /**
  *  @file    FILE_IO.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: FILE_IO.h 92298 2010-10-21 11:15:17Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -44,6 +46,7 @@ class ACE_Export ACE_FILE_IO : public ACE_FILE
 public:
   friend class ACE_FILE_Connector;
 
+  // = Initialization method.
   /// Default constructor.
   ACE_FILE_IO (void);
 

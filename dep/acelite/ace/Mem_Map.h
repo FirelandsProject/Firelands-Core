@@ -4,7 +4,9 @@
 /**
  *  @file    Mem_Map.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Mem_Map.h 91066 2010-07-12 11:05:04Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //==========================================================================
 
@@ -39,6 +41,8 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_Mem_Map : private ACE_Copy_Disabled
 {
 public:
+  // = Initialization and termination methods.
+
   /// Default constructor.
   ACE_Mem_Map (void);
 

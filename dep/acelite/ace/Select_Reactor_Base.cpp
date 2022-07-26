@@ -1,10 +1,12 @@
+// $Id: Select_Reactor_Base.cpp 95574 2012-02-29 07:26:08Z johnnyw $
+
 #include "ace/Select_Reactor_Base.h"
 #include "ace/Reactor.h"
 #include "ace/Thread.h"
 #include "ace/SOCK_Acceptor.h"
 #include "ace/SOCK_Connector.h"
 #include "ace/Timer_Queue.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/Signal.h"
 #include "ace/OS_NS_fcntl.h"
 
@@ -12,25 +14,21 @@
 #include "ace/Select_Reactor_Base.inl"
 #endif /* __ACE_INLINE__ */
 
-#ifndef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifndef ACE_WIN32
 # include <algorithm>
-#endif  /* !ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif  /* !ACE_WIN32 */
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
-
-ACE_ALLOC_HOOK_DEFINE(ACE_Select_Reactor_Notify)
-ACE_ALLOC_HOOK_DEFINE(ACE_Select_Reactor_Handler_Repository)
-ACE_ALLOC_HOOK_DEFINE(ACE_Select_Reactor_Handler_Repository_Iterator)
 
 template<typename iterator>
 inline ACE_Event_Handler *
 ACE_SELECT_REACTOR_EVENT_HANDLER (iterator i)
 {
-#ifdef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifdef ACE_WIN32
   return (*i).item ();
 #else
   return (*i);
-#endif  /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif  /* ACE_WIN32 */
 }
 
 // Performs sanity checking on the ACE_HANDLE.
@@ -39,14 +37,14 @@ bool
 ACE_Select_Reactor_Handler_Repository::invalid_handle (ACE_HANDLE handle)
 {
   ACE_TRACE ("ACE_Select_Reactor_Handler_Repository::invalid_handle");
-#if defined (ACE_SELECT_REACTOR_BASE_USES_HASH_MAP)
+#if defined (ACE_WIN32)
   // It's too expensive to perform more exhaustive validity checks on
   // Win32 due to the way that they implement SOCKET HANDLEs.
   if (handle == ACE_INVALID_HANDLE)
-#else /* !ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#else /* !ACE_WIN32 */
   if (handle < 0
       || static_cast<size_type> (handle) >= this->event_handlers_.size ())
-#endif /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif /* ACE_WIN32 */
     {
       errno = EINVAL;
       return true;
@@ -61,13 +59,13 @@ bool
 ACE_Select_Reactor_Handler_Repository::handle_in_range (ACE_HANDLE handle)
 {
   ACE_TRACE ("ACE_Select_Reactor_Handler_Repository::handle_in_range");
-#if defined (ACE_SELECT_REACTOR_BASE_USES_HASH_MAP)
+#if defined (ACE_WIN32)
   // It's too expensive to perform more exhaustive validity checks on
   // Win32 due to the way that they implement SOCKET HANDLEs.
   if (handle != ACE_INVALID_HANDLE)
-#else /* !ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#else /* !ACE_WIN32 */
   if (handle >= 0 && handle < this->max_handlep1_)
-#endif /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif /* ACE_WIN32 */
     {
       return true;
     }
@@ -84,7 +82,7 @@ ACE_Select_Reactor_Handler_Repository::open (size_type size)
 {
   ACE_TRACE ("ACE_Select_Reactor_Handler_Repository::open");
 
-#if defined (ACE_SELECT_REACTOR_BASE_USES_HASH_MAP)
+#if defined (ACE_WIN32)
   if (this->event_handlers_.open (size) == -1)
     return -1;
 #else
@@ -97,7 +95,7 @@ ACE_Select_Reactor_Handler_Repository::open (size_type size)
              static_cast<ACE_Event_Handler *> (0));
 
   this->max_handlep1_ = 0;
-#endif /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif /* ACE_WIN32 */
 
   // Try to increase the number of handles if <size> is greater than
   // the current limit.
@@ -108,9 +106,9 @@ ACE_Select_Reactor_Handler_Repository::open (size_type size)
 
 ACE_Select_Reactor_Handler_Repository::ACE_Select_Reactor_Handler_Repository (ACE_Select_Reactor_Impl &select_reactor)
   : select_reactor_ (select_reactor),
-#ifndef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifndef ACE_WIN32
     max_handlep1_ (0),
-#endif  /* !ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif  /* !ACE_WIN32 */
     event_handlers_ ()
 {
   ACE_TRACE ("ACE_Select_Reactor_Handler_Repository::ACE_Select_Reactor_Handler_Repository");
@@ -120,7 +118,7 @@ int
 ACE_Select_Reactor_Handler_Repository::unbind_all (void)
 {
   // Unbind all of the <handle, ACE_Event_Handler>s.
-#ifdef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifdef ACE_WIN32
   map_type::iterator const end = this->event_handlers_.end ();
   for (map_type::iterator pos = this->event_handlers_.begin ();
        pos != end;
@@ -152,7 +150,7 @@ ACE_Select_Reactor_Handler_Repository::unbind_all (void)
                            ACE_Event_Handler::ALL_EVENTS_MASK);
       ++pos;
     }
-#endif  /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif  /* ACE_WIN32 */
 
   return 0;
 }
@@ -173,14 +171,14 @@ ACE_Select_Reactor_Handler_Repository::find_eh (ACE_HANDLE handle)
   map_type::iterator pos (this->event_handlers_.end ());
 
   // this code assumes the handle is in range.
-#if defined (ACE_SELECT_REACTOR_BASE_USES_HASH_MAP)
+#if defined (ACE_WIN32)
   this->event_handlers_.find (handle, pos);
 #else
   map_type::iterator const tmp = &this->event_handlers_[handle];
 
   if (*tmp != 0)
     pos = tmp;
-#endif /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif /* ACE_WIN32 */
 
   return pos;
 }
@@ -205,7 +203,7 @@ ACE_Select_Reactor_Handler_Repository::bind (ACE_HANDLE handle,
   // Is this handle already in the Reactor?
   bool existing_handle = false;
 
-#if defined (ACE_SELECT_REACTOR_BASE_USES_HASH_MAP)
+#if defined (ACE_WIN32)
 
   map_type::ENTRY * entry = 0;
 
@@ -253,7 +251,7 @@ ACE_Select_Reactor_Handler_Repository::bind (ACE_HANDLE handle,
   if (this->max_handlep1_ < handle + 1)
     this->max_handlep1_ = handle + 1;
 
-#endif /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif /* ACE_WIN32 */
 
   if (this->select_reactor_.is_suspended_i (handle))
     {
@@ -333,7 +331,7 @@ ACE_Select_Reactor_Handler_Repository::unbind (
 
   if (!has_any_wait_mask && !has_any_suspend_mask)
     {
-#if defined (ACE_SELECT_REACTOR_BASE_USES_HASH_MAP)
+#if defined (ACE_WIN32)
       if (event_handler != 0 && this->event_handlers_.unbind (pos) == -1)
         return -1;  // Should not happen!
 #else
@@ -375,7 +373,7 @@ ACE_Select_Reactor_Handler_Repository::unbind (
           ++this->max_handlep1_;
         }
 
-#endif /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif /* ACE_WIN32 */
 
       // The handle has been completely removed.
       complete_removal = true;
@@ -408,7 +406,7 @@ ACE_Select_Reactor_Handler_Repository_Iterator::ACE_Select_Reactor_Handler_Repos
     : rep_ (s),
       current_ (s->event_handlers_.begin ())
 {
-#ifndef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifndef ACE_WIN32
   // Don't use ACE_Array_Base::end() since it may be larger than
   // event_handlers[max_handlep1_].
   const_base_iterator const end =
@@ -444,7 +442,7 @@ ACE_Select_Reactor_Handler_Repository_Iterator::next (
 bool
 ACE_Select_Reactor_Handler_Repository_Iterator::advance (void)
 {
-#ifdef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifdef ACE_WIN32
   // No need to explicitly limit search to "current" to
   // max_handlep1_ range.
   const_base_iterator const end = this->rep_->event_handlers_.end ();
@@ -453,18 +451,18 @@ ACE_Select_Reactor_Handler_Repository_Iterator::advance (void)
   // event_handlers[max_handlep1_].
   const_base_iterator const end =
     &this->rep_->event_handlers_[this->rep_->max_handlep1 ()];
-#endif  /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif  /* ACE_WIN32 */
 
   if (this->current_ != end)
     ++this->current_;
 
-#ifndef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+#ifndef ACE_WIN32
   // Advance to the next element containing a non-zero event handler.
   // There's no need to do this for the Windows case since the hash
   // map will only contain non-zero event handlers.
   while (this->current_ != end && (*(this->current_) == 0))
     ++this->current_;
-#endif  /* !ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+#endif  /* !ACE_WIN32 */
 
   return this->current_ != end;
 }
@@ -477,15 +475,15 @@ ACE_Select_Reactor_Handler_Repository_Iterator::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_Select_Reactor_Handler_Repository_Iterator::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("rep_ = %u"), this->rep_));
-# ifdef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("current_ = ")));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("rep_ = %u"), this->rep_));
+# ifdef ACE_WIN32
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("current_ = ")));
   this->current_.dump ();
 # else
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("current_ = %@"), this->current_));
-# endif  /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("current_ = %@"), this->current_));
+# endif  /* ACE_WIN32 */
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
@@ -495,28 +493,28 @@ ACE_Select_Reactor_Handler_Repository::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_Select_Reactor_Handler_Repository::dump");
 
-# ifdef ACE_SELECT_REACTOR_BASE_USES_HASH_MAP
+# ifdef ACE_WIN32
 #  define ACE_HANDLE_FORMAT_SPECIFIER ACE_TEXT("%@")
 #  define ACE_MAX_HANDLEP1_FORMAT_SPECIFIER ACE_TEXT("%u")
 # else
 #  define ACE_HANDLE_FORMAT_SPECIFIER ACE_TEXT("%d")
 #  define ACE_MAX_HANDLEP1_FORMAT_SPECIFIER ACE_TEXT("%d")
-# endif  /* ACE_SELECT_REACTOR_BASE_USES_HASH_MAP */
+# endif  /* ACE_WIN32 */
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG,
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG,
               ACE_TEXT ("max_handlep1_ = ")
               ACE_MAX_HANDLEP1_FORMAT_SPECIFIER
               ACE_TEXT ("\n"),
               this->max_handlep1 ()));
-  ACELIB_DEBUG ((LM_DEBUG,  ACE_TEXT ("[")));
+  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("[")));
 
   ACE_Event_Handler *event_handler = 0;
 
   for (ACE_Select_Reactor_Handler_Repository_Iterator iter (this);
        iter.next (event_handler) != 0;
        iter.advance ())
-    ACELIB_DEBUG ((LM_DEBUG,
+    ACE_DEBUG ((LM_DEBUG,
                 ACE_TEXT (" (event_handler = %@,")
                 ACE_TEXT (" event_handler->handle_ = ")
                 ACE_HANDLE_FORMAT_SPECIFIER
@@ -524,10 +522,12 @@ ACE_Select_Reactor_Handler_Repository::dump (void) const
                 event_handler,
                 event_handler->get_handle ()));
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT (" ]\n")));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT (" ]\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
+
+ACE_ALLOC_HOOK_DEFINE(ACE_Select_Reactor_Handler_Repository_Iterator)
 
 ACE_Select_Reactor_Notify::ACE_Select_Reactor_Notify (void)
   : select_reactor_ (0)
@@ -584,10 +584,10 @@ ACE_Select_Reactor_Notify::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_Select_Reactor_Notify::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("select_reactor_ = %x"), this->select_reactor_));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("select_reactor_ = %x"), this->select_reactor_));
   this->notification_pipe_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
@@ -610,16 +610,9 @@ ACE_Select_Reactor_Notify::open (ACE_Reactor_Impl *r,
 
       if (this->notification_pipe_.open () == -1)
         return -1;
-#if defined (F_SETFD) && !defined (ACE_LACKS_FCNTL)
-      if (ACE_OS::fcntl (this->notification_pipe_.read_handle (), F_SETFD, 1) == -1)
-        {
-          return -1;
-        }
-
-      if (ACE_OS::fcntl (this->notification_pipe_.write_handle (), F_SETFD, 1) == -1)
-        {
-          return -1;
-        }
+#if defined (F_SETFD)
+      ACE_OS::fcntl (this->notification_pipe_.read_handle (), F_SETFD, 1);
+      ACE_OS::fcntl (this->notification_pipe_.write_handle (), F_SETFD, 1);
 #endif /* F_SETFD */
 
 #if defined (ACE_HAS_REACTOR_NOTIFICATION_QUEUE)
@@ -627,13 +620,6 @@ ACE_Select_Reactor_Notify::open (ACE_Reactor_Impl *r,
         {
           return -1;
         }
-
-# if defined (ACE_LACKS_LISTEN) && defined (ACE_LACKS_SOCKETPAIR) \
-  && !defined (ACE_HAS_STREAM_PIPES)
-      if (ACE::set_flags (this->notification_pipe_.write_handle (),
-                          ACE_NONBLOCK) == -1)
-        return -1;
-# endif
 #endif /* ACE_HAS_REACTOR_NOTIFICATION_QUEUE */
 
       // There seems to be a Win32 bug with this...  Set this into
@@ -858,7 +844,7 @@ ACE_Select_Reactor_Notify::dispatch_notify (ACE_Notification_Buffer &buffer)
           break;
         default:
           // Should we bail out if we get an invalid mask?
-          ACELIB_ERROR ((LM_ERROR,
+          ACE_ERROR ((LM_ERROR,
                       ACE_TEXT ("invalid mask = %d\n"),
                       buffer.mask_));
         }
@@ -906,7 +892,7 @@ ACE_Select_Reactor_Notify::read_notify_pipe (ACE_HANDLE handle,
   if (n > 0)
     {
       // Check to see if we've got a short read.
-      if ((size_t)n != sizeof buffer)
+      if (n != sizeof buffer)
         {
           ssize_t const remainder = sizeof buffer - n;
 
@@ -919,6 +905,7 @@ ACE_Select_Reactor_Notify::read_notify_pipe (ACE_HANDLE handle,
                            remainder) != remainder)
             return -1;
         }
+
 
       return 1;
     }
@@ -1026,7 +1013,7 @@ ACE_Select_Reactor_Impl::bit_ops (ACE_HANDLE handle,
     {
     case ACE_Reactor::GET_MASK:
       // The work for this operation is done in all cases at the
-      // beginning of the function.
+      // begining of the function.
       break;
     case ACE_Reactor::CLR_MASK:
       ptmf = &ACE_Handle_Set::clr_bit;

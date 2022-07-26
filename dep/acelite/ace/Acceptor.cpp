@@ -1,3 +1,5 @@
+// $Id: Acceptor.cpp 95730 2012-05-04 17:28:19Z johnnyw $
+
 #ifndef ACE_ACCEPTOR_CPP
 #define ACE_ACCEPTOR_CPP
 
@@ -15,40 +17,40 @@
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-ACE_ALLOC_HOOK_DEFINE_Tca(ACE_Acceptor)
+ACE_ALLOC_HOOK_DEFINE(ACE_Acceptor)
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> void
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> void
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
   this->peer_acceptor_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::operator PEER_ACCEPTOR & () const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::operator ACE_PEER_ACCEPTOR & () const
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::operator PEER_ACCEPTOR &");
-  return (PEER_ACCEPTOR &) this->peer_acceptor_;
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::operator ACE_PEER_ACCEPTOR &");
+  return (ACE_PEER_ACCEPTOR &) this->peer_acceptor_;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> PEER_ACCEPTOR &
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> ACE_PEER_ACCEPTOR &
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::acceptor (void) const
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor");
-  return const_cast<PEER_ACCEPTOR &> (this->peer_acceptor_);
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::acceptor");
+  return const_cast<ACE_PEER_ACCEPTOR &> (this->peer_acceptor_);
 }
 
 // Returns ACE_HANDLE of the underlying Acceptor_Strategy.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> ACE_HANDLE
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> ACE_HANDLE
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::get_handle (void) const
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::get_handle");
   return this->peer_acceptor_.get_handle ();
 }
 
@@ -57,15 +59,15 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle (void) const
 // with the Reactor and listen for connection requests at the
 // designated <local_addr>.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
-  (const typename PEER_ACCEPTOR::PEER_ADDR &local_addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open
+  (const ACE_PEER_ACCEPTOR_ADDR &local_addr,
    ACE_Reactor *reactor,
    int flags,
    int use_select,
    int reuse_addr)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open");
   this->flags_ = flags;
   this->use_select_ = use_select;
   this->reuse_addr_ = reuse_addr;
@@ -79,7 +81,6 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
       return -1;
     }
 
-  // Open the underlying PEER_ACCEPTOR.
   if (this->peer_acceptor_.open (local_addr, reuse_addr) == -1)
     return -1;
 
@@ -103,80 +104,80 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
 
 // Simple constructor.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Acceptor (ACE_Reactor *reactor,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Acceptor (ACE_Reactor *reactor,
                                                               int use_select)
   :flags_ (0),
    use_select_ (use_select),
    reuse_addr_ (1)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Acceptor");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Acceptor");
 
   this->reactor (reactor);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Acceptor
-  (const typename PEER_ACCEPTOR::PEER_ADDR &addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Acceptor
+  (const ACE_PEER_ACCEPTOR_ADDR &addr,
    ACE_Reactor *reactor,
    int flags,
    int use_select,
    int reuse_addr)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Acceptor");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Acceptor");
 
   if (this->open (addr,
                   reactor,
                   flags,
                   use_select,
                   reuse_addr) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_Acceptor::ACE_Acceptor")));
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Acceptor (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Acceptor (void)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Acceptor");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Acceptor");
   this->handle_close ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::fini (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::fini (void)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::fini");
-  return ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close ();
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::fini");
+  return ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close ();
 }
 
 // Hook called by the explicit dynamic linking facility.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::init (int, ACE_TCHAR *[])
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::init (int, ACE_TCHAR *[])
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::init");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::init");
   return -1;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::info (ACE_TCHAR **strp,
                                                       size_t length) const
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::info");
   ACE_TCHAR buf[BUFSIZ];
   ACE_TCHAR addr_str[BUFSIZ];
-  typename PEER_ACCEPTOR::PEER_ADDR addr;
+  ACE_PEER_ACCEPTOR_ADDR addr;
 
   if (this->acceptor ().get_local_addr (addr) == -1)
     return -1;
   else if (addr.addr_to_string (addr_str, sizeof addr_str) == -1)
     return -1;
 
-  ACE_OS::snprintf (buf, BUFSIZ,
-                    ACE_TEXT ("%s\t %s %s"),
-                    ACE_TEXT ("ACE_Acceptor"),
-                    addr_str,
-                    ACE_TEXT ("# acceptor factory\n"));
+  ACE_OS::sprintf (buf,
+                   ACE_TEXT ("%s\t %s %s"),
+                   ACE_TEXT ("ACE_Acceptor"),
+                   addr_str,
+                   ACE_TEXT ("# acceptor factory\n"));
 
   if (*strp == 0 && (*strp = ACE_OS::strdup (buf)) == 0)
     return -1;
@@ -185,42 +186,42 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
   return static_cast<int> (ACE_OS::strlen (buf));
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend (void)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend");
   return this->reactor ()->suspend_handler (this);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume (void)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume");
   return this->reactor ()->resume_handler (this);
 }
 
 // Perform termination activities when <this> is removed from the
 // <reactor>.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::close (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::close (void)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::close");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::close");
   return this->handle_close ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_accept_error (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_accept_error (void)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_accept_error");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_accept_error");
   return 0;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close (ACE_HANDLE,
                                                               ACE_Reactor_Mask)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close");
   // Guard against multiple closes.
   if (this->reactor () != 0)
     {
@@ -234,7 +235,7 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
 
       // Shut down the listen socket to recycle the handles.
       if (this->peer_acceptor_.close () == -1)
-        ACELIB_ERROR ((LM_ERROR,
+        ACE_ERROR ((LM_ERROR,
                     ACE_TEXT ("close\n")));
       // Set the Reactor to 0 so that we don't try to close down
       // again.
@@ -251,10 +252,10 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
 // subclass instances of SVC_HANDLER, using a singleton, dynamically
 // linking the handler, etc.).
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::make_svc_handler (SVC_HANDLER *&sh)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::make_svc_handler (SVC_HANDLER *&sh)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::make_svc_handler");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::make_svc_handler");
 
   if (sh == 0)
     ACE_NEW_RETURN (sh,
@@ -271,11 +272,11 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::make_svc_handler (SVC_HANDLER *&sh)
 // <svc_handler>.  The default behavior delegates to the
 // <PEER_ACCEPTOR::accept> in the Acceptor_Strategy.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept_svc_handler
   (SVC_HANDLER *svc_handler)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept_svc_handler");
 
   // Try to find out if the implementation of the reactor that we are
   // using requires us to reset the event association for the newly
@@ -287,9 +288,7 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler
   bool reset_new_handle;
 
   if (reactor)
-    {
-      reset_new_handle = reactor->uses_event_associations ();
-    }
+    reset_new_handle = reactor->uses_event_associations ();
   else
     {
       // Acceptor is closed, so reject this call
@@ -325,11 +324,11 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler
 // concurrency activations (such as creating the SVC_HANDLER as an
 // "active object" via multi-threading or multi-processing).
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler
   (SVC_HANDLER *svc_handler)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler");
 
   int result = 0;
 
@@ -360,10 +359,10 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler
 // creation strategy), accept the connection into the SVC_HANDLER, and
 // then activate the SVC_HANDLER.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE listener)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_input (ACE_HANDLE listener)
 {
-  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input");
+  ACE_TRACE ("ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_input");
 
   // Default is "timeout (0, 0)," which means "poll."
   ACE_Time_Value timeout;
@@ -398,7 +397,7 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE listener)
         {
           if (ACE::debug ())
             {
-              ACELIB_DEBUG ((LM_DEBUG,
+              ACE_DEBUG ((LM_DEBUG,
                           ACE_TEXT ("%p\n"),
                           ACE_TEXT ("make_svc_handler")));
             }
@@ -411,7 +410,7 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE listener)
           // on failure.
           if (ACE::debug ())
             {
-              ACELIB_DEBUG ((LM_DEBUG,
+              ACE_DEBUG ((LM_DEBUG,
                           ACE_TEXT ("%p\n"),
                           ACE_TEXT ("accept_svc_handler")));
             }
@@ -434,7 +433,7 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE listener)
 
           if (ACE::debug ())
             {
-              ACELIB_DEBUG ((LM_DEBUG,
+              ACE_DEBUG ((LM_DEBUG,
                           ACE_TEXT ("%p\n"),
                           ACE_TEXT ("activate_svc_handler")));
             }
@@ -447,77 +446,77 @@ ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE listener)
   return 0;
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tca(ACE_Strategy_Acceptor)
+ACE_ALLOC_HOOK_DEFINE(ACE_Strategy_Acceptor)
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend (void)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend");
 
   // First suspend the SVC_HANDLER's we've created.
   if (this->scheduling_strategy_->suspend () == -1)
     return -1;
   else   // Then suspend ourselves.
-    return ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend ();
+    return ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume (void)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume");
 
   // First resume ourselves.
-  if (ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume () == -1)
+  if (ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume () == -1)
     return -1;
   else // Then resume the SVC_HANDLER's we've created.
     return this->scheduling_strategy_->resume ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> void
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> void
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACE_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump ();
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump ();
   this->creation_strategy_->dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_creation_strategy_ = %d"), delete_creation_strategy_));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_creation_strategy_ = %d"), delete_creation_strategy_));
   this->accept_strategy_->dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_accept_strategy_ = %d"), delete_accept_strategy_));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_accept_strategy_ = %d"), delete_accept_strategy_));
   this->concurrency_strategy_->dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_concurrency_strategy_ = %d"), delete_concurrency_strategy_));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_concurrency_strategy_ = %d"), delete_concurrency_strategy_));
   this->scheduling_strategy_->dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_scheduling_strategy_ = %d"), delete_scheduling_strategy_));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("\nservice_name_ = %s"),
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("delete_scheduling_strategy_ = %d"), delete_scheduling_strategy_));
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("\nservice_name_ = %s"),
               this->service_name_ == 0 ? ACE_TEXT ("<unknown>") : this->service_name_));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("\nservice_description_ = %s"),
+  ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("\nservice_description_ = %s"),
               this->service_description_ == 0 ? ACE_TEXT ("<unknown>") : this->service_description_));
   this->service_addr_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> PEER_ACCEPTOR &
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> ACE_PEER_ACCEPTOR &
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::acceptor (void) const
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::acceptor");
   return this->accept_strategy_->acceptor ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::operator PEER_ACCEPTOR & () const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::operator ACE_PEER_ACCEPTOR & () const
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::operator PEER_ACCEPTOR &");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::operator ACE_PEER_ACCEPTOR &");
   return this->accept_strategy_->acceptor ();
 }
 
 // Returns ACE_HANDLE of the underlying Acceptor_Strategy.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> ACE_HANDLE
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> ACE_HANDLE
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::get_handle (void) const
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::get_handle");
   return this->accept_strategy_->get_handle ();
 }
 
@@ -525,26 +524,26 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle (void) const
 // connection acceptance, and concurrency, and then register <this>
 // with the Reactor and listen for connection requests at the
 // designated <local_addr>.
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
-  (const typename PEER_ACCEPTOR::PEER_ADDR &local_addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open
+  (const ACE_PEER_ACCEPTOR_ADDR &local_addr,
    ACE_Reactor *reactor,
    int /* flags unused */,
    int use_select,
    int reuse_addr)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open");
   return this->open
     (local_addr, reactor, 0, 0, 0, 0, 0, 0, use_select, reuse_addr);
 }
 
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
-  (const typename PEER_ACCEPTOR::PEER_ADDR &local_addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open
+  (const ACE_PEER_ACCEPTOR_ADDR &local_addr,
    ACE_Reactor *reactor,
    ACE_Creation_Strategy<SVC_HANDLER> *cre_s,
-   ACE_Accept_Strategy<SVC_HANDLER, PEER_ACCEPTOR> *acc_s,
+   ACE_Accept_Strategy<SVC_HANDLER, ACE_PEER_ACCEPTOR_2> *acc_s,
    ACE_Concurrency_Strategy<SVC_HANDLER> *con_s,
    ACE_Scheduling_Strategy<SVC_HANDLER> *sch_s,
    const ACE_TCHAR *service_name,
@@ -552,7 +551,7 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
    int use_select,
    int reuse_addr)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open");
 
   if (this->service_name_ == 0 && service_name != 0)
     ACE_ALLOCATOR_RETURN (this->service_name_,
@@ -636,8 +635,8 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
 
 // Simple constructor.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Strategy_Acceptor
   (const ACE_TCHAR service_name[],
    const ACE_TCHAR service_description[],
    int use_select,
@@ -653,7 +652,7 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
       service_name_ (0),
       service_description_ (0)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Strategy_Acceptor");
 
   if (service_name != 0)
     ACE_ALLOCATOR (this->service_name_,
@@ -665,12 +664,12 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
   this->reuse_addr_ = reuse_addr;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
-  (const typename PEER_ACCEPTOR::PEER_ADDR &addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Strategy_Acceptor
+  (const ACE_PEER_ACCEPTOR_ADDR &addr,
    ACE_Reactor *reactor,
    ACE_Creation_Strategy<SVC_HANDLER> *cre_s,
-   ACE_Accept_Strategy<SVC_HANDLER, PEER_ACCEPTOR> *acc_s,
+   ACE_Accept_Strategy<SVC_HANDLER, ACE_PEER_ACCEPTOR_2> *acc_s,
    ACE_Concurrency_Strategy<SVC_HANDLER> *con_s,
    ACE_Scheduling_Strategy<SVC_HANDLER> *sch_s,
    const ACE_TCHAR service_name[],
@@ -688,7 +687,7 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
       service_name_ (0),
       service_description_ (0)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Strategy_Acceptor");
 
   if (this->open (addr,
                   reactor,
@@ -700,7 +699,7 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
                   service_description,
                   use_select,
                   reuse_addr) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_Strategy_Acceptor::ACE_Strategy_Acceptor")));
 }
@@ -708,11 +707,11 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Strategy_Acceptor
 // Perform termination activities when <this> is removed from the
 // <ACE_Reactor>.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close (ACE_HANDLE,
                                                                        ACE_Reactor_Mask)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close");
   // Guard against multiple closes.
   if (this->reactor () != 0)
     {
@@ -760,10 +759,10 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
 // creating subclass instances of <SVC_HANDLER>, using a singleton,
 // dynamically linking the handler, etc.).
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::make_svc_handler (SVC_HANDLER *&sh)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::make_svc_handler (SVC_HANDLER *&sh)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::make_svc_handler");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::make_svc_handler");
   return this->creation_strategy_->make_svc_handler (sh);
 }
 
@@ -771,11 +770,11 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::make_svc_handler (SVC_HANDLER
 // <svc_handler>.  The default behavior delegates to the
 // <Strategy_Acceptor::accept> in the Acceptor_Strategy.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept_svc_handler
   (SVC_HANDLER *svc_handler)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept_svc_handler");
   return this->accept_strategy_->accept_svc_handler (svc_handler);
 }
 
@@ -787,20 +786,20 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept_svc_handler
 // concurrency activations (such as creating the SVC_HANDLER as an
 // "active object" via multi-threading or multi-processing).
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler
   (SVC_HANDLER *svc_handler)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler");
   return this->concurrency_strategy_->activate_svc_handler
     (svc_handler,
      (void *) this);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Strategy_Acceptor (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Strategy_Acceptor (void)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Strategy_Acceptor");
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Strategy_Acceptor");
   ACE_OS::free ((void *) this->service_name_);
   ACE_OS::free ((void *) this->service_description_);
   this->handle_close ();
@@ -808,22 +807,22 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Strategy_Acceptor (void)
 
 // Signal the server to shutdown gracefully.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_signal (int, siginfo_t *, ucontext_t *)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_signal (int, siginfo_t *, ucontext_t *)
 {
   ACE_Reactor::instance()->end_reactor_event_loop ();
   return 0;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::info (ACE_TCHAR **strp,
                                                                size_t length) const
 {
   ACE_TRACE ("ACE_Strategy_Acceptor::info");
 
   ACE_TCHAR buf[BUFSIZ];
   ACE_TCHAR service_addr_str[BUFSIZ];
-  typename PEER_ACCEPTOR::PEER_ADDR addr;
+  ACE_PEER_ACCEPTOR_ADDR addr;
 
   if (this->acceptor ().get_local_addr (addr) == -1)
     return -1;
@@ -832,15 +831,15 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
     return -1;
 
   // @@ Should add the protocol in...
-  ACE_OS::snprintf (buf, BUFSIZ,
-                    ACE_TEXT ("%s\t %s #%s\n"),
-                    this->service_name_ == 0
-                    ? ACE_TEXT ("<unknown>")
-                    : this->service_name_,
-                    service_addr_str,
-                    this->service_description_ == 0
-                    ? ACE_TEXT ("<unknown>")
-                    : this->service_description_);
+  ACE_OS::sprintf (buf,
+                   ACE_TEXT ("%s\t %s #%s\n"),
+                   this->service_name_ == 0
+                   ? ACE_TEXT ("<unknown>")
+                   : this->service_name_,
+                   service_addr_str,
+                   this->service_description_ == 0
+                   ? ACE_TEXT ("<unknown>")
+                   : this->service_description_);
 
   if (*strp == 0 && (*strp = ACE_OS::strdup (buf)) == 0)
     return -1;
@@ -849,39 +848,39 @@ ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
   return static_cast<int> (ACE_OS::strlen (buf));
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::fini (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::fini (void)
 {
-  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::fini");
-  return this->ACE_Strategy_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close ();
+  ACE_TRACE ("ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::fini");
+  return this->ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close ();
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tca(ACE_Oneshot_Acceptor)
+ACE_ALLOC_HOOK_DEFINE(ACE_Oneshot_Acceptor)
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> void
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> void
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::dump");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG,  ACE_TEXT ("\nsvc_handler_ = %x"), this->svc_handler_));
-  ACELIB_DEBUG ((LM_DEBUG,  ACE_TEXT ("\nrestart_ = %d"), this->restart_));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("\nsvc_handler_ = %x"), this->svc_handler_));
+  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("\nrestart_ = %d"), this->restart_));
   this->peer_acceptor_.dump ();
-  ACELIB_DEBUG ((LM_DEBUG,  ACE_TEXT ("delete_concurrency_strategy_ = %d"),
+  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("delete_concurrency_strategy_ = %d"),
               delete_concurrency_strategy_));
   this->concurrency_strategy_->dump ();
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
-  (const typename PEER_ACCEPTOR::PEER_ADDR &local_addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open
+  (const ACE_PEER_ACCEPTOR_ADDR &local_addr,
    ACE_Reactor *reactor,
    ACE_Concurrency_Strategy<SVC_HANDLER> *con_s)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open");
   this->reactor (reactor);
 
   // Initialize the concurrency strategy.
@@ -899,20 +898,20 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::open
   return this->peer_acceptor_.open (local_addr, 1);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Oneshot_Acceptor (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Oneshot_Acceptor (void)
   : svc_handler_ (0),
     restart_ (false),
     concurrency_strategy_ (0),
     delete_concurrency_strategy_ (false)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Oneshot_Acceptor");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Oneshot_Acceptor");
   this->reactor (0);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Oneshot_Acceptor
-  (const typename PEER_ACCEPTOR::PEER_ADDR &local_addr,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Oneshot_Acceptor
+  (const ACE_PEER_ACCEPTOR_ADDR &local_addr,
    ACE_Reactor *reactor,
    ACE_Concurrency_Strategy<SVC_HANDLER> *cs)
     : svc_handler_ (0),
@@ -920,32 +919,32 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Oneshot_Acceptor
       concurrency_strategy_ (0),
       delete_concurrency_strategy_ (false)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::ACE_Oneshot_Acceptor");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Oneshot_Acceptor");
   if (this->open (local_addr, reactor, cs) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_Oneshot_Acceptor::ACE_Oneshot_Acceptor")));
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Oneshot_Acceptor (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Oneshot_Acceptor (void)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::~ACE_Oneshot_Acceptor");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Oneshot_Acceptor");
   this->handle_close ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::close (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::close (void)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::close");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::close");
   return this->handle_close ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close (ACE_HANDLE,
                                                                       ACE_Reactor_Mask)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_close");
 
   // Guard against multiple closes.
   if (this->delete_concurrency_strategy_)
@@ -963,17 +962,17 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_close (ACE_HANDLE,
        ACE_Event_Handler::ACCEPT_MASK | ACE_Event_Handler::DONT_CALL);
 
   if (this->peer_acceptor_.close () == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("close\n")));
   return 0;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_timeout
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_timeout
   (const ACE_Time_Value &tv,
    const void *arg)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_timeout");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_timeout");
   errno = ETIME;
 
   if (this->svc_handler_->handle_timeout (tv, arg) == -1)
@@ -988,20 +987,20 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_timeout
   return 0;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::cancel (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::cancel (void)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::cancel");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::cancel");
   return this->reactor () && this->reactor ()->cancel_timer (this);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::register_handler
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::register_handler
   (SVC_HANDLER *svc_handler,
    const ACE_Synch_Options &synch_options,
    bool restart)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::register_handler");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::register_handler");
   // Can't do this if we don't have a Reactor.
   if (this->reactor () == 0)
     {
@@ -1034,11 +1033,11 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::register_handler
 // concurrency activations (such as creating the SVC_HANDLER as an
 // "active object" via multi-threading or multi-processing).
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler
   (SVC_HANDLER *svc_handler)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler");
   return this->concurrency_strategy_->activate_svc_handler
     (svc_handler,
      (void *) this);
@@ -1047,15 +1046,15 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::activate_svc_handler
 // Factors out the code shared between the <accept> and <handle_input>
 // methods.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::shared_accept
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::shared_accept
   (SVC_HANDLER *svc_handler,
-   typename PEER_ACCEPTOR::PEER_ADDR *remote_addr,
+   ACE_PEER_ACCEPTOR_ADDR *remote_addr,
    ACE_Time_Value *timeout,
    bool restart,
    bool reset_new_handle)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::shared_accept");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::shared_accept");
   if (svc_handler == 0)
     return -1;
 
@@ -1084,15 +1083,15 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::shared_accept
 // then activate the SVC_HANDLER.  Note that SVC_HANDLER::open()
 // decides what type of concurrency strategy to use.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept
   (SVC_HANDLER *svc_handler,
-   typename PEER_ACCEPTOR::PEER_ADDR *remote_addr,
+   ACE_PEER_ACCEPTOR_ADDR *remote_addr,
    const ACE_Synch_Options &synch_options,
    bool restart,
    bool reset_new_handle)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept");
   // Note that if timeout == ACE_Time_Value (x, y) where (x > 0 || y >
   // 0) then this->connector_.connect() will block synchronously.  If
   // <use_reactor> is set then we don't want this to happen (since we
@@ -1129,10 +1128,10 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::accept
 // Accepts one pending connection from a client (since we're the
 // "oneshot" Acceptor).
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_input (ACE_HANDLE)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_input");
   int result = 0;
 
   // Cancel any timer that might be pending.
@@ -1143,20 +1142,16 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE)
   // created handle.  This is because the newly created handle will
   // inherit the properties of the listen handle, including its event
   // associations.
-  ACE_Reactor *reactor = this->reactor ();
-  bool reset_new_handle = false;
+  bool const reset_new_handle = this->reactor ()->uses_event_associations ();
 
   // There is a use-case whereby this object will be gone upon return
   // from shared_accept - if the Svc_Handler deletes this Oneshot_Acceptor
   // during the shared_accept/activation steps. So, do whatever we need
   // to do with this object before calling shared_accept.
-  if (reactor)
-    {
-      reset_new_handle = reactor->uses_event_associations ();
-      reactor->remove_handler
-        (this,
-        ACE_Event_Handler::ACCEPT_MASK | ACE_Event_Handler::DONT_CALL);
-    }
+  if (this->reactor ())
+    this->reactor ()->remove_handler
+      (this,
+       ACE_Event_Handler::ACCEPT_MASK | ACE_Event_Handler::DONT_CALL);
 
   if (this->shared_accept (this->svc_handler_, // stream
                            0, // remote address
@@ -1171,39 +1166,39 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::handle_input (ACE_HANDLE)
 
 // Hook called by the explicit dynamic linking facility.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::init (int, ACE_TCHAR *[])
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::init (int, ACE_TCHAR *[])
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::init");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::init");
   return -1;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::fini (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::fini (void)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::fini");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::fini");
   return this->handle_close ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
-                                                        size_t length) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::info (ACE_TCHAR **strp,
+                                                              size_t length) const
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::info");
   ACE_TCHAR buf[BUFSIZ];
   ACE_TCHAR addr_str[BUFSIZ];
-  typename PEER_ACCEPTOR::PEER_ADDR addr;
+  ACE_PEER_ACCEPTOR_ADDR addr;
 
   if (this->peer_acceptor_.get_local_addr (addr) == -1)
     return -1;
   else if (addr.addr_to_string (addr_str, sizeof addr_str) == -1)
     return -1;
 
-  ACE_OS::snprintf (buf, BUFSIZ,
-                    ACE_TEXT ("%s\t %s %s"),
-                    ACE_TEXT ("ACE_Oneshot_Acceptor"),
-                    addr_str,
-                    ACE_TEXT ("#oneshot acceptor factory\n"));
+  ACE_OS::sprintf (buf,
+                   ACE_TEXT ("%s\t %s %s"),
+                   ACE_TEXT ("ACE_Oneshot_Acceptor"),
+                   addr_str,
+                   ACE_TEXT ("#oneshot acceptor factory\n"));
 
   if (*strp == 0 && (*strp = ACE_OS::strdup (buf)) == 0)
     return -1;
@@ -1212,41 +1207,41 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::info (ACE_TCHAR **strp,
   return static_cast<int> (ACE_OS::strlen (buf));
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend (void)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::suspend");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::suspend");
   return this->reactor () && this->reactor ()->suspend_handler (this);
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume (void)
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume (void)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::resume");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::resume");
   return this->reactor () && this->reactor ()->resume_handler (this);
 }
 
 // Returns ACE_HANDLE of the underlying peer_acceptor.
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> ACE_HANDLE
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> ACE_HANDLE
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::get_handle (void) const
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::get_handle");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::get_handle");
   return this->peer_acceptor_.get_handle ();
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR> PEER_ACCEPTOR &
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor (void) const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> ACE_PEER_ACCEPTOR &
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::acceptor (void) const
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor");
-  return (PEER_ACCEPTOR &) this->peer_acceptor_;
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::acceptor");
+  return (ACE_PEER_ACCEPTOR &) this->peer_acceptor_;
 }
 
-template <typename SVC_HANDLER, typename PEER_ACCEPTOR>
-ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::operator PEER_ACCEPTOR & () const
+template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1>
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::operator ACE_PEER_ACCEPTOR & () const
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::operator PEER_ACCEPTOR &");
-  return (PEER_ACCEPTOR &) this->peer_acceptor_;
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::operator ACE_PEER_ACCEPTOR &");
+  return (ACE_PEER_ACCEPTOR &) this->peer_acceptor_;
 }
 
 ACE_END_VERSIONED_NAMESPACE_DECL

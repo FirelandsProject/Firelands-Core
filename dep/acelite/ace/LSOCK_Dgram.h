@@ -4,6 +4,8 @@
 /**
  *  @file    LSOCK_Dgram.h
  *
+ *  $Id: LSOCK_Dgram.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -34,6 +36,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_LSOCK_Dgram : public ACE_SOCK_Dgram, public ACE_LSOCK
 {
 public:
+  // = Initialization methods.
   /// Default constructor.
   ACE_LSOCK_Dgram (void);
 

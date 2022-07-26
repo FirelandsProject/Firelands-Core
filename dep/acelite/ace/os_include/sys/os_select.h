@@ -6,6 +6,8 @@
  *
  *  select types
  *
+ *  $Id: os_select.h 93359 2011-02-11 11:33:12Z mcorino $
+ *
  *  @author Don Hinton <dhinton@dresystems.com>
  *  @author This code was originally in various places including ace/OS.h.
  */
@@ -16,7 +18,7 @@
 
 #include /**/ "ace/pre.h"
 
-#include /**/ "ace/config-lite.h"
+#include "ace/config-lite.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 # pragma once

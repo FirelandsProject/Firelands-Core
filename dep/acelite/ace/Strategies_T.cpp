@@ -1,3 +1,5 @@
+// $Id: Strategies_T.cpp 95630 2012-03-22 13:04:47Z johnnyw $
+
 #ifndef ACE_STRATEGIES_T_CPP
 #define ACE_STRATEGIES_T_CPP
 
@@ -274,7 +276,7 @@ ACE_Thread_Strategy<SVC_HANDLER>::open (ACE_Thread_Manager *thr_mgr,
 
   // Must have a thread manager!
   if (this->thr_mgr_ == 0)
-    ACELIB_ERROR_RETURN ((LM_ERROR,
+    ACE_ERROR_RETURN ((LM_ERROR,
                        ACE_TEXT ("error: must have a non-NULL thread manager\n")),
                       -1);
   else
@@ -312,9 +314,7 @@ ACE_Accept_Strategy<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::open
   // socket handle is "ready" and when we call <accept>.  During this
   // interval, the client can shutdown the connection, in which case,
   // the <accept> call can hang!
-  if (this->peer_acceptor_.enable (ACE_NONBLOCK) == -1)
-    return -1;
-
+  this->peer_acceptor_.enable (ACE_NONBLOCK);
   return 0;
 }
 
@@ -328,7 +328,7 @@ ACE_Accept_Strategy<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Accept_Strategy
   ACE_TRACE ("ACE_Accept_Strategy<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::ACE_Accept_Strategy");
 
   if (this->open (local_addr, reuse_addr) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("open")));
 }
@@ -436,12 +436,12 @@ ACE_Process_Strategy<SVC_HANDLER>::activate_svc_handler (SVC_HANDLER *svc_handle
   // If <flags_> is non-0 then we won't create zombies.
   switch (ACE::fork (ACE_TEXT ("child"), this->flags_))
     {
-    case static_cast<pid_t>(-1):
+    case -1:
       {
         ACE_Errno_Guard error (errno);
         svc_handler->close ();
       }
-      ACELIB_ERROR_RETURN ((LM_ERROR,
+      ACE_ERROR_RETURN ((LM_ERROR,
                          ACE_TEXT ("%p\n"),
                          ACE_TEXT ("fork")),
                         -1);
@@ -499,7 +499,7 @@ ACE_Cached_Connect_Strategy<SVC_HANDLER, ACE_PEER_CONNECTOR_2, MUTEX>::ACE_Cache
   if (this->open (cre_s,
                   con_s,
                   rec_s) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_Cached_Connect_Strategy::ACE_Cached_Connect_Strategy")));
 }
@@ -1380,8 +1380,8 @@ ACE_Scheduling_Strategy<SVC_HANDLER>::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_Scheduling_Strategy<SVC_HANDLER>::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
@@ -1489,15 +1489,16 @@ ACE_NOOP_Concurrency_Strategy<SVC_HANDLER>::activate_svc_handler (SVC_HANDLER *,
   return 0;
 }
 
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_Creation_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_Singleton_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_DLL_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_Concurrency_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_Reactive_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_Thread_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tc(ACE_Process_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tca(ACE_Accept_Strategy)
-ACE_ALLOC_HOOK_DEFINE_Tco(ACE_Connect_Strategy)
+
+ACE_ALLOC_HOOK_DEFINE(ACE_Creation_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Singleton_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_DLL_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Concurrency_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Thread_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Connect_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Process_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Accept_Strategy)
+ACE_ALLOC_HOOK_DEFINE(ACE_Thread_Strategy)
 
 ACE_END_VERSIONED_NAMESPACE_DECL
 

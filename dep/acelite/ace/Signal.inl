@@ -1,4 +1,7 @@
 // -*- C++ -*-
+//
+// $Id: Signal.inl 92069 2010-09-28 11:38:59Z johnnyw $
+
 #include "ace/OS_NS_signal.h"
 #include "ace/config-all.h"
 #include "ace/Trace.h"
@@ -166,6 +169,14 @@ ACE_Sig_Action::operator struct sigaction * ()
 {
   ACE_TRACE ("ACE_Sig_Action::operator struct sigaction *");
   return &this->sa_;
+}
+
+ACE_INLINE
+ACE_Sig_Action::ACE_Sig_Action (const ACE_Sig_Action &s)
+  // : sa_ ()
+{
+  ACE_TRACE ("ACE_Sig_Action::ACE_Sig_Action");
+  *this = s; // structure copy.
 }
 
 ACE_INLINE int

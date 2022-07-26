@@ -4,6 +4,8 @@
 /**
  *  @file    UPIPE_Stream.h
  *
+ *  $Id: UPIPE_Stream.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Gerhard Lenzer
  *  @author Douglas C. Schmidt
  */
@@ -40,6 +42,8 @@ public:
   friend class ACE_UPIPE_Connector;
 
   typedef ACE_Stream<ACE_SYNCH> MT_Stream;
+
+  // = Initialization and Termination.
 
   ACE_UPIPE_Stream (void);
 

@@ -1,3 +1,5 @@
+// $Id: MEM_SAP.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/MEM_SAP.h"
 
 #if (ACE_HAS_POSITION_INDEPENDENT_POINTERS == 1)
@@ -10,7 +12,7 @@
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-ACE_ALLOC_HOOK_DEFINE(ACE_MEM_SAP)
+ACE_ALLOC_HOOK_DEFINE(ACE_IPC_SAP)
 
 void
 ACE_MEM_SAP::dump (void) const
@@ -18,12 +20,12 @@ ACE_MEM_SAP::dump (void) const
 #if defined (ACE_HAS_DUMP)
   ACE_TRACE ("ACE_MEM_SAP::dump");
 
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
   if (this->shm_malloc_ != 0)
     this->shm_malloc_->dump ();
   else
-    ACELIB_DEBUG ((LM_DEBUG, ACE_TEXT ("ACE_MEM_SAP uninitialized.\n")));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+    ACE_DEBUG ((LM_DEBUG, ACE_TEXT ("ACE_MEM_SAP uninitialized.\n")));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 
@@ -82,9 +84,7 @@ ACE_MEM_SAP::close_shm_malloc (void)
   int retv = -1;
 
   if (this->shm_malloc_ != 0)
-    if (this->shm_malloc_->release (1) == 0)
-      ACE_Process_Mutex::unlink (this->shm_malloc_->memory_pool ().
-                                 mmap ().filename ());
+    this->shm_malloc_->release (1);
 
   delete this->shm_malloc_;
   this->shm_malloc_ = 0;

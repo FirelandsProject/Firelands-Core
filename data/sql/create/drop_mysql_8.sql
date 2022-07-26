@@ -1,9 +1,9 @@
-REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'firelands'@'localhost';
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'cataclysm'@'localhost';
 
-DROP USER 'firelands'@'localhost';
+DROP USER 'cataclysm'@'localhost';
 
-DROP DATABASE IF EXISTS `firelands_world`;
+DROP DATABASE IF EXISTS `cataclysm_world`;
 
-DROP DATABASE IF EXISTS `firelands_characters`;
+DROP DATABASE IF EXISTS `cataclysm_characters`;
 
-DROP DATABASE IF EXISTS `firelands_auth`;
+DROP DATABASE IF EXISTS `cataclysm_auth`;

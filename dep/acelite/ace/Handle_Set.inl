@@ -1,5 +1,8 @@
 // -*- C++ -*-
-#include "ace/Log_Category.h"
+//
+// $Id: Handle_Set.inl 96017 2012-08-08 22:18:09Z mitza $
+
+#include "ace/Log_Msg.h"
 
 // AIX defines bzero() in this odd file... used by FD_ZERO
 #if defined (ACE_HAS_STRINGS)
@@ -65,16 +68,19 @@ ACE_INLINE int
 ACE_Handle_Set::is_set (ACE_HANDLE handle) const
 {
   ACE_TRACE ("ACE_Handle_Set::is_set");
-
-  fd_set *set = const_cast<fd_set*> (&this->mask_);
-  int ret = FD_ISSET (handle, set);
-
 #if defined (ACE_HAS_BIG_FD_SET)
-  ret = ret && this->size_ > 0;
+  return FD_ISSET (handle,
+                   &this->mask_)
+    && this->size_ > 0;
+#elif defined (ACE_HAS_NONCONST_FD_ISSET)
+  return FD_ISSET (handle,
+                   const_cast<fd_set*> (&this->mask_));
 #elif defined (ACE_VXWORKS) && ACE_VXWORKS >= 0x690
-  ret = ret != 0;
-#endif
-  return ret;
+  return static_cast<int> (FD_ISSET (handle, &this->mask_));
+#else
+  return FD_ISSET (handle,
+                   &this->mask_);
+#endif /* ACE_HAS_BIG_FD_SET */
 }
 
 // Enables the handle.
@@ -86,11 +92,11 @@ ACE_Handle_Set::set_bit (ACE_HANDLE handle)
   if ((handle != ACE_INVALID_HANDLE)
       && (!this->is_set (handle)))
     {
-#if defined (ACE_HANDLE_SET_USES_FD_ARRAY)
+#if defined (ACE_WIN32)
       FD_SET ((SOCKET) handle,
               &this->mask_);
       ++this->size_;
-#else /* ACE_HANDLE_SET_USES_FD_ARRAY */
+#else /* ACE_WIN32 */
 #if defined (ACE_HAS_BIG_FD_SET)
       if (this->size_ == 0)
         FD_ZERO (&this->mask_);
@@ -105,7 +111,7 @@ ACE_Handle_Set::set_bit (ACE_HANDLE handle)
 
       if (handle > this->max_handle_)
         this->max_handle_ = handle;
-#endif /* ACE_HANDLE_SET_USES_FD_ARRAY */
+#endif /* ACE_WIN32 */
     }
 }
 
@@ -123,10 +129,10 @@ ACE_Handle_Set::clr_bit (ACE_HANDLE handle)
               &this->mask_);
       --this->size_;
 
-#if !defined (ACE_HANDLE_SET_USES_FD_ARRAY)
+#if !defined (ACE_WIN32)
       if (handle == this->max_handle_)
         this->set_max (this->max_handle_);
-#endif /* !ACE_HANDLE_SET_USES_FD_ARRAY */
+#endif /* !ACE_WIN32 */
     }
 }
 
@@ -136,11 +142,11 @@ ACE_INLINE int
 ACE_Handle_Set::num_set (void) const
 {
   ACE_TRACE ("ACE_Handle_Set::num_set");
-#if defined (ACE_HANDLE_SET_USES_FD_ARRAY)
+#if defined (ACE_WIN32)
   return this->mask_.fd_count;
-#else /* !ACE_HANDLE_SET_USES_FD_ARRAY */
+#else /* !ACE_WIN32 */
   return this->size_;
-#endif /* ACE_HANDLE_SET_USES_FD_ARRAY */
+#endif /* ACE_WIN32 */
 }
 
 // Returns a pointer to the underlying fd_set.

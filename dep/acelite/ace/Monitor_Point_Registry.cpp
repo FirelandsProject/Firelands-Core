@@ -1,9 +1,10 @@
+// $Id: Monitor_Point_Registry.cpp 91813 2010-09-17 07:52:52Z johnnyw $
+
 #include "ace/Monitor_Point_Registry.h"
 
 #if defined (ACE_HAS_MONITOR_FRAMEWORK) && (ACE_HAS_MONITOR_FRAMEWORK == 1)
 
 #include "ace/Monitor_Base.h"
-#include "ace/Guard_T.h"
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
@@ -28,7 +29,7 @@ namespace ACE
     {
       if (type == 0)
         {
-          ACELIB_ERROR_RETURN ((LM_ERROR,
+          ACE_ERROR_RETURN ((LM_ERROR,
                              "registry add: null type\n"),
                             false);
         }
@@ -43,12 +44,12 @@ namespace ACE
         status = this->map_.bind (type->name (), type);
 
         /// Temporary debugging code.
-//        ACELIB_DEBUG ((LM_DEBUG, "adding %s\n", type->name ()));
+//        ACE_DEBUG ((LM_DEBUG, "adding %s\n", type->name ()));
       }
 
       if (status == -1)
         {
-          ACELIB_ERROR_RETURN ((LM_ERROR,
+          ACE_ERROR_RETURN ((LM_ERROR,
                              "registry add: map bind failed\n"),
                             false);
         }
@@ -61,7 +62,7 @@ namespace ACE
     {
       if (name == 0)
         {
-          ACELIB_ERROR_RETURN ((LM_ERROR,
+          ACE_ERROR_RETURN ((LM_ERROR,
                              "registry remove: null name\n"),
                             false);
         }
@@ -76,7 +77,7 @@ namespace ACE
         status = this->map_.unbind (name_str, mp);
 
         /// Temporary debugging code.
-//        ACELIB_DEBUG ((LM_DEBUG, "removing %s\n", name_str.c_str ()));
+//        ACE_DEBUG ((LM_DEBUG, "removing %s\n", name_str.c_str ()));
       }
 
       if (status == -1)
@@ -87,7 +88,7 @@ namespace ACE
 //      is using malloc with placement, then free, which may bypass the
 //      normal destructors. In any case, it happens only at shutdown
 //      and there seems to be no memory leak.
-//          ACELIB_ERROR_RETURN ((LM_ERROR,
+//          ACE_ERROR_RETURN ((LM_ERROR,
 //                             "registry remove: unbind failed for %s\n",
 //                             name),
 //                            false);

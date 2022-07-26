@@ -1,10 +1,9 @@
+// $Id: SV_Semaphore_Simple.cpp 91287 2010-08-05 10:30:49Z johnnyw $
+
 #include "ace/SV_Semaphore_Simple.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/ACE.h"
 #include "ace/os_include/sys/os_sem.h"
-#if defined (ACE_HAS_ALLOC_HOOKS)
-# include "ace/Malloc_Base.h"
-#endif /* ACE_HAS_ALLOC_HOOKS */
 
 #if !defined (__ACE_INLINE__)
 #include "ace/SV_Semaphore_Simple.inl"
@@ -42,7 +41,6 @@ ACE_SV_Semaphore_Simple::control (int cmd,
     }
 }
 
-#ifdef ACE_HAS_SYSV_IPC
 int
 ACE_SV_Semaphore_Simple::init (key_t k, int i)
 {
@@ -51,7 +49,6 @@ ACE_SV_Semaphore_Simple::init (key_t k, int i)
   this->internal_id_ = i;
   return 0;
 }
-#endif
 
 // General ACE_SV_Semaphore operation. Increment or decrement by a
 // specific amount (positive or negative; amount can`t be zero).
@@ -86,10 +83,8 @@ ACE_SV_Semaphore_Simple::open (key_t k,
   ACE_TRACE ("ACE_SV_Semaphore_Simple::open");
   union semun ivalue;
 
-#ifdef ACE_HAS_SYSV_IPC
   if (k == IPC_PRIVATE || k == static_cast<key_t> (ACE_INVALID_SEM_KEY))
     return -1;
-#endif
 
   ivalue.val = initial_value;
   this->key_ = k;
@@ -117,7 +112,7 @@ ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple (key_t k,
 {
   ACE_TRACE ("ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple");
   if (this->open (k, flags, initial_value, n, perms) == -1)
-    ACELIB_ERROR ((LM_ERROR,  ACE_TEXT ("%p\n"),  ACE_TEXT ("ACE_SV_Semaphore::ACE_SV_Semaphore")));
+    ACE_ERROR ((LM_ERROR,  ACE_TEXT ("%p\n"),  ACE_TEXT ("ACE_SV_Semaphore::ACE_SV_Semaphore")));
 }
 
 // Convert name to key.  This function is used internally to create keys
@@ -135,12 +130,7 @@ ACE_SV_Semaphore_Simple::name_2_key (const char *name)
   if (name == 0)
     {
       errno = EINVAL;
-#ifdef ACE_HAS_SYSV_IPC
       return static_cast<key_t> (ACE_INVALID_SEM_KEY);
-#else
-      key_t ret = ACE_DEFAULT_SEM_KEY;
-      return ret;
-#endif
     }
 
   // Basically "hash" the values in the <name>.  This won't
@@ -151,14 +141,7 @@ ACE_SV_Semaphore_Simple::name_2_key (const char *name)
 #  pragma warning(push)
 #  pragma warning(disable : 4312)
 #endif /* defined (ACE_WIN32) && defined (_MSC_VER) */
-
-#ifdef ACE_HAS_SYSV_IPC
   return (key_t) ACE::crc32 (name);
-#else
-  key_t ret = ACE_DEFAULT_SEM_KEY;
-  return ret;
-#endif
-
 #if defined (ACE_WIN32) && defined (_MSC_VER)
 #  pragma warning(pop)
 #endif /* defined (ACE_WIN32) && defined (_MSC_VER) */
@@ -176,14 +159,12 @@ ACE_SV_Semaphore_Simple::open (const char *name,
 {
   ACE_TRACE ("ACE_SV_Semaphore_Simple::open");
 
-  key_t key = ACE_DEFAULT_SEM_KEY;
+  key_t key;
 
-#ifdef ACE_HAS_SYSV_IPC
-  if (name != 0)
+  if (name == 0)
+    key = ACE_DEFAULT_SEM_KEY;
+  else
     key = this->name_2_key (name);
-#else
-  ACE_UNUSED_ARG (name);
-#endif
 
   return this->open (key, flags, initial_value, n, perms);
 }
@@ -200,7 +181,7 @@ ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple (const char *name,
                   initial_value,
                   n,
                   perms) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple")));
 }
@@ -218,7 +199,7 @@ ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple (const wchar_t *name,
                   initial_value,
                   nsems,
                   perms) == -1)
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("%p\n"),
                 ACE_TEXT ("ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple")));
 }
@@ -230,13 +211,10 @@ ACE_SV_Semaphore_Simple::~ACE_SV_Semaphore_Simple (void)
   this->close ();
 }
 
-ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple (void) :
-  sem_number_ (0)
+ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple (void)
 {
   ACE_TRACE ("ACE_SV_Semaphore_Simple::ACE_SV_Semaphore_Simple");
-#ifdef ACE_HAS_SYSV_IPC
   this->init ();
-#endif
 }
 
 // Remove all SV_Semaphores associated with a particular key.  This
@@ -250,9 +228,7 @@ ACE_SV_Semaphore_Simple::remove (void) const
 {
   ACE_TRACE ("ACE_SV_Semaphore_Simple::remove");
   int const result = this->control (IPC_RMID);
-#ifdef ACE_HAS_SYSV_IPC
   ((ACE_SV_Semaphore_Simple *) this)->init ();
-#endif
   return result;
 }
 

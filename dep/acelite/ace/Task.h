@@ -4,7 +4,9 @@
 /**
  *  @file    Task.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Task.h 91688 2010-09-09 11:21:50Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -64,11 +66,14 @@ namespace ACE_Task_Flags
 class ACE_Export ACE_Task_Base : public ACE_Service_Object
 {
 public:
+  // = Initialization and termination methods.
   /// Constructor.
   ACE_Task_Base (ACE_Thread_Manager * = 0);
 
   /// Destructor.
   virtual ~ACE_Task_Base (void);
+
+  // = Initialization and termination hooks.
 
   // These methods should be overridden by subclasses if you'd like to
   // provide <Task>-specific initialization and termination behavior.
@@ -276,7 +281,7 @@ protected:
 #if defined (ACE_MT_SAFE) && (ACE_MT_SAFE != 0)
   /// Protect the state of a Task during concurrent operations, but
   /// only if we're configured as MT safe...
-  mutable ACE_Thread_Mutex lock_;
+  ACE_Thread_Mutex lock_;
 #endif /* ACE_MT_SAFE */
 
   /// Holds the thread ID of the last thread to exit svc() in this object.

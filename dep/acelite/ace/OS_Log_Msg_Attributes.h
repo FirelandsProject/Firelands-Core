@@ -4,6 +4,8 @@
 /**
  *  @file    OS_Log_Msg_Attributes.h
  *
+ *  $Id: OS_Log_Msg_Attributes.h 91066 2010-07-12 11:05:04Z johnnyw $
+ *
  *  @author Carlos O'Ryan
  */
 //=============================================================================
@@ -21,7 +23,7 @@
 #include /**/ "ace/ACE_export.h"
 #include "ace/os_include/os_stdio.h"
 #include "ace/iosfwd.h"
-#include "ace/Global_Macros.h"
+#include "ace/Copy_Disabled.h"
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
@@ -38,7 +40,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * The contents of the class must be made available to the OS layer,
  * because they are part of the thread descriptor.
  */
-class ACE_Export ACE_OS_Log_Msg_Attributes
+class ACE_Export ACE_OS_Log_Msg_Attributes : private ACE_Copy_Disabled
 {
 public:
   /// Constructor
@@ -69,10 +71,6 @@ protected:
   ACE_SEH_EXCEPT_HANDLER seh_except_selector_;
   ACE_SEH_EXCEPT_HANDLER seh_except_handler_;
 #endif /* ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS */
-
-private:
-  ACE_UNIMPLEMENTED_FUNC (void operator= (const ACE_OS_Log_Msg_Attributes &))
-  ACE_UNIMPLEMENTED_FUNC (ACE_OS_Log_Msg_Attributes (const ACE_OS_Log_Msg_Attributes &))
 };
 
 ACE_END_VERSIONED_NAMESPACE_DECL

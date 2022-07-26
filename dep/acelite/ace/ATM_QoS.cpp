@@ -1,4 +1,8 @@
+// $Id: ATM_QoS.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/ATM_QoS.h"
+
+
 
 #if defined (ACE_HAS_ATM)
 
@@ -113,7 +117,7 @@ ACE_ATM_QoS::ACE_ATM_QoS(int rate,
 
   qos_.ProviderSpecific.buf = (char *) ACE_OS::malloc(size);
   if (qos_.ProviderSpecific.buf == 0) {
-    ACELIB_ERROR((LM_ERROR,
+    ACE_ERROR((LM_ERROR,
                ACE_TEXT ("ACE_ATM_QoS::ACE_ATM_QoS: Unable to allocate %d bytes for qos_.ProviderSpecific.buf\n"),
                size));
     return;
@@ -293,7 +297,7 @@ ACE_ATM_QoS::set_cbr_rate (int rate,
 
   qos_.ProviderSpecific.buf = (char *) ACE_OS::malloc(size);
   if (qos_.ProviderSpecific.buf == 0) {
-    ACELIB_ERROR((LM_ERROR,
+    ACE_ERROR((LM_ERROR,
                ACE_TEXT ("ACE_ATM_QoS::ACE_ATM_QoS: Unable to allocate %d bytes for qos_.ProviderSpecific.buf\n"),
                size));
     return;
@@ -463,7 +467,7 @@ ACE_ATM_QoS::construct_options (ACE_HANDLE fd,
   buf = (char *) ACE_OS::malloc (info.options);
 
   if (buf == 0)
-    ACELIB_ERROR_RETURN ((LM_ERROR,
+    ACE_ERROR_RETURN ((LM_ERROR,
                        ACE_TEXT ("Unable to allocate %d bytes for options\n"),
                        info.options),
                       0);
@@ -499,7 +503,7 @@ ACE_ATM_QoS::construct_options (ACE_HANDLE fd,
                             LOCALNAME) < 0)
         {
           ACE_OS::t_error("t_getname (local_address)");
-          ACELIB_ERROR ((LM_ERROR,
+          ACE_ERROR ((LM_ERROR,
                       ACE_TEXT ("Can't get local address!\n")));
           ACE_OS::free (buf);
           return 0;

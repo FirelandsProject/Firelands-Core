@@ -1,4 +1,7 @@
 // -*- C++ -*-
+//
+// $Id: Process.inl 83405 2008-10-23 06:30:06Z johnnyw $
+
 #include "ace/ACE.h"
 #include "ace/OS_NS_sys_wait.h"
 #include "ace/OS_NS_signal.h"
@@ -45,7 +48,8 @@ ACE_Process::gethandle (void) const
 }
 
 ACE_INLINE pid_t
-ACE_Process::getpid (void) const
+ACE_Process::getpid (void)
+    const
 {
 #if defined (ACE_WIN32)
   return process_info_.dwProcessId;
@@ -219,11 +223,6 @@ ACE_Process_Options::set_thread_attributes (void)
 #endif /* !ACE_HAS_WINCE */
 }
 
-ACE_INLINE HANDLE ACE_Process_Options::get_user_token (void) const
-{
-  return user_token_;
-}
-
 #else /* !defined (ACE_WIN32) */
 
 ACE_INLINE ACE_HANDLE
@@ -328,7 +327,7 @@ ACE_Process_Options::getegid (void) const
 #endif /* ACE_WIN32 */
 
 ACE_INLINE ACE_TCHAR *
-ACE_Process_Options::command_line_buf (size_t *max_lenp)
+ACE_Process_Options::command_line_buf (int *max_lenp)
 {
   if (max_lenp != 0)
     *max_lenp = this->command_line_buf_len_;

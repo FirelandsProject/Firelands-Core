@@ -4,6 +4,8 @@
 /**
  *  @file    Typed_SV_Message.h
  *
+ *  $Id: Typed_SV_Message.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //==========================================================================
@@ -32,6 +34,7 @@ template <class T>
 class ACE_Typed_SV_Message
 {
 public:
+  // = Initialization and termination methods.
   ACE_Typed_SV_Message (long type = 0,
                         int length = sizeof (T),
                         int max_size = sizeof (T));

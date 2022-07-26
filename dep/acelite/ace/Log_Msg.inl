@@ -1,4 +1,7 @@
 // -*- C++ -*-
+//
+// $Id: Log_Msg.inl 82723 2008-09-16 09:35:44Z johnnyw $
+
 #include "ace/OS_NS_string.h"
 #include "ace/OS_NS_unistd.h"
 
@@ -220,7 +223,13 @@ ACE_INLINE
 pid_t
 ACE_Log_Msg::getpid (void) const
 {
-  return ACE_OS::getpid ();
+  if (ACE_Log_Msg::pid_ == -2)
+    ACE_Log_Msg::pid_ = ACE_OS::getpid ();
+
+  return ACE_Log_Msg::pid_;
 }
 
+
+
 ACE_END_VERSIONED_NAMESPACE_DECL
+

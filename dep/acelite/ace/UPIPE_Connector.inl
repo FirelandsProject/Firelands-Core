@@ -1,4 +1,7 @@
 // -*- C++ -*-
+//
+// $Id: UPIPE_Connector.inl 82723 2008-09-16 09:35:44Z johnnyw $
+
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 // Creates a Local ACE_UPIPE.
@@ -15,7 +18,7 @@ ACE_UPIPE_Connector::ACE_UPIPE_Connector (ACE_UPIPE_Stream &new_stream,
   if (this->connect (new_stream, addr, timeout, local_sap,
                      reuse_addr, flags, perms) == -1
       && timeout != 0 && !(errno == EWOULDBLOCK || errno == ETIME))
-    ACELIB_ERROR ((LM_ERROR,
+    ACE_ERROR ((LM_ERROR,
                 ACE_TEXT ("address %s, %p\n"),
                 addr.get_path_name (),
                 ACE_TEXT ("ACE_UPIPE_Connector")));

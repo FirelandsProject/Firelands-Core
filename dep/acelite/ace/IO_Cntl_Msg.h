@@ -4,6 +4,8 @@
 /**
  *  @file    IO_Cntl_Msg.h
  *
+ *  $Id: IO_Cntl_Msg.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //==========================================================================
@@ -49,6 +51,7 @@ public:
 
   typedef unsigned short ACE_IO_Cntl_Cmds;
 
+  // = Initialization method.
   /// Initialize the control message.
   ACE_IO_Cntl_Msg (ACE_IO_Cntl_Cmds c);
 

@@ -1,4 +1,7 @@
 // -*- C++ -*-
+//
+// $Id: Stats.inl 80826 2008-03-04 14:51:23Z wotte $
+
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ACE_INLINE
@@ -56,7 +59,7 @@ void
 ACE_Stats_Value::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
-  ACELIB_DEBUG ((LM_DEBUG,
+  ACE_DEBUG ((LM_DEBUG,
               ACE_TEXT ("precision: %u digits; whole: %u, fractional: %u\n"),
               precision_, whole_, fractional_));
 #endif /* ACE_HAS_DUMP */

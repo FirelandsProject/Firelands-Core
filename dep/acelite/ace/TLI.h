@@ -4,6 +4,8 @@
 /**
  *  @file    TLI.h
  *
+ *  $Id: TLI.h 80826 2008-03-04 14:51:23Z wotte $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -13,7 +15,7 @@
 #define ACE_TLI_H
 #include /**/ "ace/pre.h"
 
-#include /**/ "ace/config-lite.h"
+#include "ace/config-lite.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 # pragma once
@@ -53,6 +55,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_TLI : public ACE_IPC_SAP
 {
 public:
+  // = Initialization and termination methods.
   /// Initialize a TLI endpoint.
   ACE_HANDLE open (const char device[],
                    int oflag = O_RDWR,

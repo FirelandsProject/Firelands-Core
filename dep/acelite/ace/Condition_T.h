@@ -4,9 +4,11 @@
 /**
  *  @file    Condition_T.h
  *
+ *  $Id: Condition_T.h 96061 2012-08-16 09:36:07Z mcorino $
+ *
  *   Moved from Synch.h.
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //==========================================================================
 
@@ -103,8 +105,8 @@ public:
   /// Dump the state of an object.
   void dump (void) const;
 
-  /// Declare the dynamic allocation hooks.
-  ACE_ALLOC_HOOK_DECLARE;
+  // ACE_ALLOC_HOOK_DECLARE;
+  // Declare the dynamic allocation hooks.
 
 protected:
   /// Condition variable.
@@ -140,13 +142,14 @@ template <class MUTEX>
 class ACE_Thread_Condition : public ACE_Condition<MUTEX>
 {
 public:
+  // = Initialization method.
   ACE_Thread_Condition (MUTEX &m, const ACE_TCHAR *name = 0, void *arg = 0);
 
   /// Dump the state of an object.
   void dump (void) const;
 
-  /// Declare the dynamic allocation hooks.
-  ACE_ALLOC_HOOK_DECLARE;
+  // ACE_ALLOC_HOOK_DECLARE;
+  // Declare the dynamic allocation hooks.
 };
 
 ACE_END_VERSIONED_NAMESPACE_DECL

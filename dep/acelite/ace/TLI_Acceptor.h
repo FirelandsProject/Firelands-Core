@@ -4,6 +4,8 @@
 /**
  *  @file    TLI_Acceptor.h
  *
+ *  $Id: TLI_Acceptor.h 82723 2008-09-16 09:35:44Z johnnyw $
+ *
  *  @author Doug Schmidt
  */
 //=============================================================================
@@ -45,6 +47,7 @@ class ACE_Export ACE_TLI_Acceptor : public ACE_TLI
 public:
   friend class ACE_Request_Queue;
 
+  // = Initialization and termination methods.
   /// Default constructor.
   ACE_TLI_Acceptor (void);
 

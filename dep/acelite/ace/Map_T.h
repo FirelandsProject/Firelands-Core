@@ -4,6 +4,8 @@
 /**
  *  @file    Map_T.h
  *
+ *  $Id: Map_T.h 93792 2011-04-07 11:48:50Z mcorino $
+ *
  *  @author Irfan Pyarali <irfan@cs.wustl.edu>
  */
 //=============================================================================
@@ -545,6 +547,7 @@ template <class KEY, class VALUE, class IMPLEMENTATION, class ITERATOR, class RE
 class ACE_Map_Impl : public ACE_Map<KEY, VALUE>
 {
 public:
+
   // = Traits.
   typedef ACE_Map_Impl_Iterator_Adapter<typename ACE_Map<KEY, VALUE>::value_type, ITERATOR, ENTRY>
           iterator_impl;
@@ -554,6 +557,7 @@ public:
   typedef IMPLEMENTATION
           implementation;
 
+  // = Initialization and termination methods.
   /// Initialize with the ACE_DEFAULT_MAP_SIZE.
   ACE_Map_Impl (ACE_Allocator *alloc = 0);
 
@@ -824,6 +828,7 @@ template <class KEY, class VALUE, class KEY_ADAPTER>
 class ACE_Active_Map_Manager_Adapter : public ACE_Map<KEY, VALUE>
 {
 public:
+
   // = Traits.
   typedef std::pair<KEY, VALUE>
           expanded_value;
@@ -834,6 +839,7 @@ public:
   typedef ACE_Active_Map_Manager<expanded_value>
           implementation;
 
+  // = Initialization and termination methods.
   /// Initialize with the ACE_DEFAULT_MAP_SIZE.
   ACE_Active_Map_Manager_Adapter (ACE_Allocator *alloc = 0);
 
@@ -1117,6 +1123,7 @@ template <class KEY, class VALUE, class HASH_KEY, class COMPARE_KEYS, class KEY_
 class ACE_Hash_Map_Manager_Ex_Adapter : public ACE_Map<KEY, VALUE>
 {
 public:
+
   // = Traits.
   typedef ACE_Hash_Map_Manager_Ex_Iterator_Adapter<ACE_Reference_Pair<const KEY, VALUE>, KEY, VALUE, HASH_KEY, COMPARE_KEYS>
           iterator_impl;
@@ -1125,6 +1132,7 @@ public:
   typedef ACE_Hash_Map_Manager_Ex<KEY, VALUE, HASH_KEY, COMPARE_KEYS, ACE_Null_Mutex>
           implementation;
 
+  // = Initialization and termination methods.
   /// Initialize with the ACE_DEFAULT_MAP_SIZE.
   ACE_Hash_Map_Manager_Ex_Adapter (ACE_Allocator *alloc = 0);
 
@@ -1401,6 +1409,7 @@ template <class KEY, class VALUE, class KEY_GENERATOR>
 class ACE_Map_Manager_Adapter : public ACE_Map<KEY, VALUE>
 {
 public:
+
   // = Traits.
   typedef ACE_Map_Manager_Iterator_Adapter<ACE_Reference_Pair<const KEY, VALUE>, KEY, VALUE>
           iterator_impl;
@@ -1409,6 +1418,7 @@ public:
   typedef ACE_Map_Manager<KEY, VALUE, ACE_Null_Mutex>
           implementation;
 
+  // = Initialization and termination methods.
   /// Initialize with the ACE_DEFAULT_MAP_SIZE.
   ACE_Map_Manager_Adapter (ACE_Allocator *alloc = 0);
 

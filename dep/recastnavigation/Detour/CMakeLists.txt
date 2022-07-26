@@ -1,22 +1,30 @@
-project(Detour VERSION 1.0.0)
+# Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
+#
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-file(GLOB DTR_SOURCES Source/*.cpp)
-file(GLOB DTR_INCLUDES Include/*.h)
-
-add_library(Detour STATIC ${DTR_SOURCES} ${DTR_INCLUDES})
-add_library(RecastNavigation::Detour ALIAS Detour)
-
-target_include_directories(Detour
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/Include
+set(Detour_STAT_SRCS
+    Source/DetourAlloc.cpp 
+    Source/DetourCommon.cpp 
+    Source/DetourNavMesh.cpp 
+    Source/DetourNavMeshBuilder.cpp 
+    Source/DetourNavMeshQuery.cpp 
+    Source/DetourNode.cpp 
 )
+include_directories(Include)
 
-target_compile_definitions(Detour
-    PUBLIC
-        DT_POLYREF64
-)
+if(WIN32)
+  include_directories(
+    ${CMAKE_SOURCE_DIR}/dep/zlib
+  )
+endif()
 
-set_target_properties(Detour
-    PROPERTIES
-        VERSION 1.0.0
-)
+add_library(Detour STATIC ${Detour_STAT_SRCS})
+
+target_link_libraries(Detour ${ZLIB_LIBRARIES})

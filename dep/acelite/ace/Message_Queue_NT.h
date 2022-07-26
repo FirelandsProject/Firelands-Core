@@ -4,7 +4,9 @@
 /**
  *  @file    Message_Queue_NT.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Message_Queue_NT.h 82723 2008-09-16 09:35:44Z johnnyw $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -46,6 +48,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 class ACE_Export ACE_Message_Queue_NT : public ACE_Message_Queue_Base
 {
 public:
+  // = Initialization and termination methods.
   ACE_Message_Queue_NT (DWORD max_threads = ACE_Message_Queue_Base::DEFAULT_HWM);
 
   /**

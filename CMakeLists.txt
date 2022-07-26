@@ -1,126 +1,76 @@
+# Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
+# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
 #
-# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
 #
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the
-# Free Software Foundation; either version 2 of the License, or (at your
-# option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-# more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program. If not, see <http://www.gnu.org/licenses/>.
-#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+# Set projectname (must be done AFTER setting configurationtypes)
+project(FirelandsCata)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+# CMake policies (can not be handled elsewhere)
+cmake_minimum_required(VERSION 2.8)
+cmake_policy(SET CMP0005 OLD)
 
-cmake_policy(SET CMP0028 NEW)
-cmake_policy(SET CMP0054 NEW)
-cmake_policy(SET CMP0042 NEW)
-cmake_policy(SET CMP0048 NEW)
-cmake_policy(SET CMP0063 NEW)
+# add this options before PROJECT keyword
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# Set RPATH-handing (CMake parameters)
+set(CMAKE_SKIP_BUILD_RPATH 0)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH 0)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
 
-set_property(GLOBAL
-  PROPERTY USE_FOLDERS ON
-)
+# set macro-directory
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/macros")
 
-# ==================================================================================
-# Define available cmake options below
-option(BUILD_SERVER "Build the worldserver" ON)
-option(BUILD_AUTH "Build the authserver" ON)
-option(BUILD_TOOLS "Build the map/vmap/mmap extractors" ON)
-option(SCRIPT_LIB_ELUNA "Compile with support for Eluna scripts" ON)
-option(SCRIPT_LIB_SD3 "Compile with support for ScriptDev3 scripts" ON)
-option(PLAYERBOTS "Enable Player Bots" OFF)
-option(SOAP "Enable remote access via SOAP" OFF)
-option(PCH "Enable precompiled headers" ON)
-option(DEBUG "Enable debug build (only on non IDEs)" OFF)
-
-# ==================================================================================
-message("")
-message(
-  "This script builds the Firelands Cata server.
-  Options that can be used in order to configure the process:
-   General:
-    CMAKE_INSTALL_PREFIX    Path where the server should be installed to
-    BUILD_SERVER            Build the main server
-    BUILD_AUTH              Build the authserver
-    BUILD_TOOLS             Build the map/vmap/mmap extractors
-    SOAP                    Enable remote access via SOAP
-    PCH                     Enable use of precompiled headers
-    DEBUG                   Debug build, only for systems without IDE (Linux, *BSD)
-   Scripting engines:
-    SCRIPT_LIB_ELUNA        Compile with support for Eluna scripts
-    SCRIPT_LIB_SD3          Compile with support for ScriptDev3 scripts
-   Modules:
-    PLAYERBOTS              Enable Player Bots
-
-  To set an option simply type -D<OPTION>=<VALUE> after 'cmake <srcs>'.
-  Also, you can specify the generator with -G. See 'cmake --help' for more details
-  For example: cmake .. -DCMAKE_INSTALL_PREFIX=/opt/firelands -DSCRIPT_LIB_SD3=0"
-)
-message("")
-
-# ==================================================================================#
-project(firelands-cata VERSION 0.1.0)
-
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Default install directory" FORCE)
+# build in Release-mode by default if not explicitly set
+if( NOT CMAKE_BUILD_TYPE )
+  set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-if(DEBUG)
-  set(CMAKE_BUILD_TYPE Debug)
-else()
-  set(CMAKE_BUILD_TYPE Release)
+include(CheckCXXSourceRuns)
+include(CheckIncludeFiles)
+
+# set default buildoptions and print them
+include(cmake/options.cmake)
+
+# turn off PCH totally if enabled (hidden setting, mainly for devs)
+if( NOPCH )
+  set(USE_COREPCH 0)
+  set(USE_SCRIPTPCH 0)
 endif()
 
-if(UNIX)
-  set(BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+include(CheckPlatform)
 
-  if(NOT CONF_INSTALL_DIR)
-    set(CONF_INSTALL_DIR ../etc)
-  endif()
-else()
-  set(BIN_DIR ${CMAKE_INSTALL_PREFIX})
-
-  if(NOT CONF_INSTALL_DIR)
-    set(CONF_INSTALL_DIR .)
-  endif()
-endif()
-
-if(NOT WITHOUT_GIT)
-  find_package(Git)
-endif()
-
-find_package(Threads REQUIRED)
-find_package(MySQL REQUIRED)
-find_package(DL REQUIRED)
-
-find_package(ZLIB QUIET)
-find_package(BZip2 QUIET)
-
+# basic packagesearching and setup (further support will be needed, this is a preliminary release!)
+find_package(PCHSupport)
+find_package(ACE REQUIRED)
 find_package(OpenSSL REQUIRED)
-
-include(${CMAKE_SOURCE_DIR}/cmake/GenRevision.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/EnsureVersion.cmake)
-
-include(${CMAKE_SOURCE_DIR}/cmake/FirelandsParams.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/SetDefinitions.cmake)
-
-if(PCH)
-  include(${CMAKE_SOURCE_DIR}/cmake/PCHSupport.cmake)
+if( NOT USE_MYSQL_SOURCES )
+  find_package(MySQL REQUIRED)
 endif()
 
-add_subdirectory(dep)
-add_subdirectory(src)
+if( UNIX )
+  find_package(Readline)
+  find_package(ZLIB)
+  find_package(BZip2)
+  find_package(Threads REQUIRED)
+endif()
 
-include(${CMAKE_SOURCE_DIR}/cmake/StatusInfo.cmake)
+# Find revision ID and hash of the sourcetree
+include(cmake/genrev.cmake)
+
+# print out the results before continuing
+include(cmake/showoptions.cmake)
+
+# add dependencies
+add_subdirectory(dep)
+
+# add core sources
+add_subdirectory(src)

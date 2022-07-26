@@ -1,3 +1,5 @@
+// $Id: Atomic_Op_GCC_T.cpp 91286 2010-08-05 09:04:31Z johnnyw $
+
 #include "ace/OS_NS_unistd.h"
 
 #if defined (ACE_HAS_GCC_ATOMIC_BUILTINS) && (ACE_HAS_GCC_ATOMIC_BUILTINS == 1)
@@ -13,8 +15,8 @@ void
 ACE_Atomic_Op_GCC<T>::dump (void) const
 {
 #if defined (ACE_HAS_DUMP)
-  ACELIB_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
-  ACELIB_DEBUG ((LM_DEBUG, ACE_END_DUMP));
+  ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
+  ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
 #endif /* ACE_HAS_DUMP */
 }
 

@@ -1,45 +1,47 @@
-# This file is part of the Firelands Core Project. See AUTHORS file for Copyright information
+# Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
 #
-# This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the
-# Free Software Foundation; either version 2 of the License, or (at your
-# option) any later version.
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
 #
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-# more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program. If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-if(NOT TARGET "ZLIB::ZLIB")
-    add_subdirectory(zlib)
+if( CMAKE_COMPILER_IS_GNUCXX )
+  add_definitions(--no-warnings)
+elseif( MSVC )
+  add_definitions(/W0)
 endif()
 
-if(NOT TARGET "BZip2::BZip2")
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  if((AUTHSERVER OR WORLDSERVER) AND NOT NOJEM)
+    add_subdirectory(jemalloc)  
+  endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  add_subdirectory(acelite)
+  if(USE_MYSQL_SOURCES AND (AUTHSERVER OR WORLDSERVER))
+      add_subdirectory(mysqllite)
+  endif()
+  if(TOOLS)
     add_subdirectory(bzip2)
+  endif()
+  if(AUTHSERVER OR WORLDSERVER OR TOOLS)
+    add_subdirectory(zlib)
+  endif()
 endif()
 
-add_subdirectory(acelite)
-add_subdirectory(utf8cpp)
-
-if(BUILD_SERVER)
-    if(SCRIPT_LIB_ELUNA)
-        add_subdirectory(lualib)
-    endif()
-
-    if(SOAP)
-        add_subdirectory(gsoap)
-    endif()
+if(WORLDSERVER OR TOOLS)
+  add_subdirectory(g3dlite)
+  add_subdirectory(recastnavigation)
 endif()
 
-if(BUILD_SERVER OR BUILD_TOOLS)
-    add_subdirectory(recastnavigation)
-    add_subdirectory(g3dlite)
+if(WORLDSERVER)
+  add_subdirectory(gsoap)
 endif()
 
-if(BUILD_TOOLS)
-    add_subdirectory(StormLib)
-    add_subdirectory(loadlib)
+if(TOOLS)
+  add_subdirectory(StormLib)
 endif()

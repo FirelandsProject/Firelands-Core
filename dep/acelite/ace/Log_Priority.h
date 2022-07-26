@@ -4,7 +4,9 @@
 /**
  *  @file    Log_Priority.h
  *
- *  @author Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: Log_Priority.h 80826 2008-03-04 14:51:23Z wotte $
+ *
+ *  @author Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -13,7 +15,7 @@
 
 #include /**/ "ace/pre.h"
 
-#include /**/ "ace/config-lite.h"
+#include "ace/config-lite.h"
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 

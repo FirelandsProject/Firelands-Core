@@ -4,7 +4,9 @@
 /**
  *  @file    DEV_Connector.h
  *
- *  @author Gerhard Lenzer and Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+ *  $Id: DEV_Connector.h 82723 2008-09-16 09:35:44Z johnnyw $
+ *
+ *  @author Gerhard Lenzer and Douglas C. Schmidt <schmidt@cs.wustl.edu>
  */
 //=============================================================================
 
@@ -13,12 +15,13 @@
 #include /**/ "ace/pre.h"
 
 #include "ace/DEV_IO.h"
-#include "ace/Log_Category.h"
+#include "ace/Log_Msg.h"
 #include "ace/os_include/os_fcntl.h"
 
 #if !defined (ACE_LACKS_PRAGMA_ONCE)
 # pragma once
 #endif /* ACE_LACKS_PRAGMA_ONCE */
+
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 

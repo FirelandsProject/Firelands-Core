@@ -1,4 +1,7 @@
 // -*- C++ -*-
+//
+// $Id: Local_Tokens.inl 92069 2010-09-28 11:38:59Z johnnyw $
+
 #if defined (ACE_HAS_TOKENS_LIBRARY)
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
@@ -71,7 +74,7 @@ ACE_Tokens::dec_reference (void)
   ACE_TRACE ("ACE_Tokens::dec_reference");
   if (this->reference_count_ == 0)
     {
-      ACELIB_DEBUG ((LM_DEBUG,  ACE_TEXT ("dec_reference already zero")));
+      ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("dec_reference already zero")));
       return 0;
     }
 
