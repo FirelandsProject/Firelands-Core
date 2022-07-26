@@ -18,10 +18,10 @@ endif()
 
 if( AUTHSERVER OR WORLDSERVER )
   set(sources_Debugging
-    ${CMAKE_SOURCE_DIR}/src/server/shared/Debugging/WheatyExceptionReport.cpp
-    ${CMAKE_SOURCE_DIR}/src/server/shared/Debugging/WheatyExceptionReport.h
+    ${CMAKE_SOURCE_DIR}/src/server/common/Debugging/WheatyExceptionReport.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/common/Debugging/WheatyExceptionReport.h
   )
-  add_subdirectory(shared)
+  add_subdirectory(common)
   if( AUTHSERVER )
     add_subdirectory(authserver)
   endif()
