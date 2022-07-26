@@ -24,25 +24,41 @@
    #ifdef malloc 
    #define LTC_NO_PROTOTYPES
    #endif
+#if defined(__APPLE__)
+#define XMALLOC  malloc
+#else
 #define XMALLOC  LibTomMalloc
+#endif
 #endif
 #ifndef XREALLOC
    #ifdef realloc 
    #define LTC_NO_PROTOTYPES
    #endif
+#if defined(__APPLE__)
+#define XREALLOC realloc
+#else
 #define XREALLOC LibTomRealloc
+#endif
 #endif
 #ifndef XCALLOC
    #ifdef calloc 
    #define LTC_NO_PROTOTYPES
    #endif
+#if defined(__APPLE__)
+#define XCALLOC  calloc
+#else
 #define XCALLOC  LibTomCalloc
+#endif
 #endif
 #ifndef XFREE
    #ifdef free
    #define LTC_NO_PROTOTYPES
    #endif
+#if defined(__APPLE__)
+#define XFREE    free
+#else
 #define XFREE    LibTomFree
+#endif
 #endif
 
 #ifndef XMEMSET
@@ -71,7 +87,11 @@
 #endif
 
 #ifndef XCLOCK
+#if defined(__APPLE__)
+#define XCLOCK   clock
+#else
 #define XCLOCK   LibTomClock
+#endif
 #endif
 #ifndef XCLOCKS_PER_SEC
 #define XCLOCKS_PER_SEC CLOCKS_PER_SEC
@@ -81,7 +101,11 @@
    #ifdef qsort
    #define LTC_NO_PROTOTYPES
    #endif
+#if defined(__APPLE__)
+#define XQSORT qsort
+#else
 #define XQSORT LibTomQsort
+#endif
 #endif
 
 /* Easy button? */
