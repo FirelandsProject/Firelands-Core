@@ -1,7 +1,172 @@
-if(AUTHSERVER)
-    add_subdirectory(authserver)
-endif()
+# Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+#
 
-if(WORLDSERVER)
-    add_subdirectory(worldserver)
-endif()
+# Make the script module list available in the current scope
+GetApplicationsList(APPLICATIONS_BUILD_LIST)
+
+# Set the SCRIPTS_${BUILD_APP} variables from the
+# variables set above
+foreach(BUILD_APP ${APPLICATIONS_BUILD_LIST})
+    ApplicationNameToVariable(${BUILD_APP} BUILD_APP_VARIABLE)
+
+    if(${BUILD_APP_VARIABLE} STREQUAL "default")
+        set(${BUILD_APP_VARIABLE} ${APPS_DEFAULT_BUILD})
+    endif()
+
+    # Build the Graph values
+    if(${BUILD_APP_VARIABLE} MATCHES "enabled")
+        list(APPEND BUILD_APP_GRAPH_KEYS apps)
+        set(BUILD_APP_VALUE_DISPLAY_apps apps)
+        list(APPEND BUILD_APP_VALUE_CONTAINS_apps ${BUILD_APP})
+
+    else()
+        list(APPEND BUILD_APP_GRAPH_KEYS disabled)
+        set(BUILD_APP_VALUE_DISPLAY_disabled disabled)
+        list(APPEND BUILD_APP_VALUE_CONTAINS_disabled ${BUILD_APP})
+    endif()
+endforeach()
+
+list(SORT BUILD_APP_GRAPH_KEYS)
+list(REMOVE_DUPLICATES BUILD_APP_GRAPH_KEYS)
+
+# Display the graphs
+message("")
+message("* Apps build list (${APPS_BUILD}):")
+message("  |")
+
+foreach(BUILD_APP_GRAPH_KEY ${BUILD_APP_GRAPH_KEYS})
+    if(NOT BUILD_APP_GRAPH_KEY STREQUAL "disabled")
+        message("  +- ${BUILD_APP_VALUE_DISPLAY_${BUILD_APP_GRAPH_KEY}}")
+    else()
+        message("  |  ${BUILD_APP_VALUE_DISPLAY_${BUILD_APP_GRAPH_KEY}}")
+    endif()
+
+    foreach(BUILD_APP_GRAPH_ENTRY ${BUILD_APP_VALUE_CONTAINS_${BUILD_APP_GRAPH_KEY}})
+        message("  |   +- ${BUILD_APP_GRAPH_ENTRY}")
+    endforeach()
+
+    message("  |")
+endforeach()
+
+message("")
+
+GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
+
+# Generates the actual apps projects
+foreach(APPLICATION_NAME ${APPLICATIONS_BUILD_LIST})
+    GetPathToApplication(${APPLICATION_NAME} SOURCE_APP_PATH)
+    ApplicationNameToVariable(${APPLICATION_NAME} BUILD_APP_VARIABLE)
+
+    if(${BUILD_APP_VARIABLE} STREQUAL "disabled")
+        continue()
+    endif()
+
+    unset(APP_PRIVATE_SOURCES)
+    CollectSourceFiles(
+        ${SOURCE_APP_PATH}
+        APP_PRIVATE_SOURCES
+
+        # Exclude
+        ${SOURCE_APP_PATH}/PrecompiledHeaders)
+
+    if(WIN32)
+        list(APPEND APP_PRIVATE_SOURCES ${winDebugging})
+
+        if(${APPLICATION_NAME} MATCHES "worldserver")
+            list(APPEND APP_PRIVATE_SOURCES ${winService})
+        endif()
+
+        if(MSVC)
+            list(APPEND APP_PRIVATE_SOURCES ${SOURCE_APP_PATH}/${APPLICATION_NAME}.rc)
+        endif()
+    endif()
+
+    GetProjectNameOfApplicationName(${APPLICATION_NAME} APP_PROJECT_NAME)
+
+    # Create the application project
+    add_executable(${APP_PROJECT_NAME}
+        ${APP_PRIVATE_SOURCES})
+
+    add_dependencies(${APP_PROJECT_NAME} revision.h)
+
+    target_link_libraries(${APP_PROJECT_NAME}
+        PRIVATE
+        fc-core-interface)
+
+    if(${APP_PROJECT_NAME} MATCHES "authserver")
+        target_link_libraries(${APP_PROJECT_NAME}
+            PUBLIC
+            shared)
+    elseif(${APP_PROJECT_NAME} MATCHES "worldserver")
+        target_link_libraries(${APP_PROJECT_NAME}
+            PUBLIC
+            modules
+            scripts
+            game
+            gsoap
+            readline)
+
+        if(UNIX AND NOT NOJEM)
+            set(${APP_PROJECT_NAME}_LINK_FLAGS "-pthread -lncurses ${${APP_PROJECT_NAME}_LINK_FLAGS}")
+        endif()
+
+        set_target_properties(${APP_PROJECT_NAME} PROPERTIES LINK_FLAGS "${${APP_PROJECT_NAME}_LINK_FLAGS}")
+
+        # Add all dynamic projects as dependency to the worldserver
+        if(WORLDSERVER_DYNAMIC_SCRIPT_MODULES_DEPENDENCIES)
+            add_dependencies(${APP_PROJECT_NAME} ${WORLDSERVER_DYNAMIC_SCRIPT_MODULES_DEPENDENCIES})
+        endif()
+    endif()
+
+    unset(APP_PUBLIC_INCLUDES)
+    CollectIncludeDirectories(
+        ${SOURCE_APP_PATH}
+        APP_PUBLIC_INCLUDES
+
+        # Exclude
+        ${SOURCE_APP_PATH}/PrecompiledHeaders)
+
+    target_include_directories(${APP_PROJECT_NAME}
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR})
+
+    target_include_directories(${APP_PROJECT_NAME}
+        PUBLIC
+        ${APP_PUBLIC_INCLUDES}
+        PRIVATE
+        ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_NAME})
+
+    set_target_properties(${APP_PROJECT_NAME}
+        PROPERTIES
+        FOLDER
+        "server")
+
+    # Install config
+    CopyApplicationConfig(${APP_PROJECT_NAME} ${APPLICATION_NAME})
+
+    if(UNIX)
+        install(TARGETS ${APP_PROJECT_NAME} DESTINATION bin)
+    elseif(WIN32)
+        install(TARGETS ${APP_PROJECT_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}")
+    endif()
+
+    set(PATH_TO_PCH ${SOURCE_APP_PATH}/PrecompiledHeaders/${APPLICATION_NAME}PCH.h)
+
+    # Generate precompiled header
+    if(USE_COREPCH AND EXISTS ${PATH_TO_PCH})
+        add_cxx_pch(${APP_PROJECT_NAME} ${PATH_TO_PCH})
+    endif()
+endforeach()

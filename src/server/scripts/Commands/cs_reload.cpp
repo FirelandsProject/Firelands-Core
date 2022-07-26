@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -738,7 +738,7 @@ public:
     static bool HandleReloadTrinityStringCommand(ChatHandler* handler, const char* /*args*/)
     {
         LOG_INFO("misc", "Re-Loading firelands_string Table!");
-        sObjectMgr->LoadTrinityStrings();
+        sObjectMgr->LoadFirelandsStrings();
         handler->SendGlobalGMSysMessage("DB table `firelands_string` reloaded.");
         return true;
     }

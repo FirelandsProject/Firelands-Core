@@ -1,7 +1,6 @@
 /*
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
-* Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,60 +19,77 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <string>
-#include <list>
-#include <ace/Singleton.h>
-#include <ace/Configuration_Import_Export.h>
-#include <ace/Thread_Mutex.h>
-#include <AutoPtr.h>
-
-typedef Firelands::AutoPtr<ACE_Configuration_Heap, ACE_Null_Mutex> Config;
+#include "Define.h"
+#include <stdexcept>
+#include <string_view>
+#include <vector>
 
 class ConfigMgr
 {
-    friend class ACE_Singleton<ConfigMgr, ACE_Null_Mutex>;
-    friend class ConfigLoader;
-
-    ConfigMgr() { }
-    ~ConfigMgr() { }
+    ConfigMgr() = default;
+    ConfigMgr(ConfigMgr const&) = delete;
+    ConfigMgr& operator=(ConfigMgr const&) = delete;
+    ~ConfigMgr() = default;
 
 public:
-    /// Method used only for loading main configuration files (authserver.conf and worldserver.conf)
-    bool LoadInitial(char const* file);
+    bool LoadAppConfigs(bool isReload = false);
+    bool LoadModulesConfigs(bool isReload = false, bool isNeedPrintInfo = true);
+    void Configure(std::string const& initFileName, std::vector<std::string> args, std::string_view modulesConfigList = {});
 
-    /**
-     * This method loads additional configuration files
-     * It is recommended to use this method in WorldScript::OnConfigLoad hooks
-     *
-     * @return true if loading was successful
-     */
-    bool LoadMore(char const* file);
+    static ConfigMgr* instance();
 
     bool Reload();
 
-    std::string GetStringDefault(const char* name, const std::string& def);
-    bool GetBoolDefault(const char* name, bool def);
-    int GetIntDefault(const char* name, int def);
-    float GetFloatDefault(const char* name, float def);
+    std::string const GetFilename();
+    std::string const GetConfigPath();
+    [[nodiscard]] std::vector<std::string> const& GetArguments() const;
+    std::vector<std::string> GetKeysByString(std::string const& name);
 
-    std::string const& GetFilename();
-    std::list<std::string> GetKeysByString(std::string const& name);
+    template<class T>
+    T GetOption(std::string const& name, T const& def, bool showLogs = true) const;
+
+    /*
+     * Deprecated geters. This geters will be deleted
+     */
+
+    [[deprecated("Use GetOption<std::string> instead")]]
+    std::string GetStringDefault(std::string const& name, const std::string& def, bool showLogs = true);
+
+    [[deprecated("Use GetOption<bool> instead")]]
+    bool GetBoolDefault(std::string const& name, bool def, bool showLogs = true);
+
+    [[deprecated("Use GetOption<int32> instead")]]
+    int GetIntDefault(std::string const& name, int def, bool showLogs = true);
+
+    [[deprecated("Use GetOption<float> instead")]]
+    float GetFloatDefault(std::string const& name, float def, bool showLogs = true);
+
+    /*
+     * End deprecated geters
+     */
+
+    bool isDryRun() { return dryRun; }
+    void setDryRun(bool mode) { dryRun = mode; }
 
 private:
-    bool GetValueHelper(const char* name, ACE_TString &result);
-    bool LoadData(char const* file);
+    /// Method used only for loading main configuration files (authserver.conf and worldserver.conf)
+    bool LoadInitial(std::string const& file, bool isReload = false);
+    bool LoadAdditionalFile(std::string file, bool isOptional = false, bool isReload = false);
 
-    typedef ACE_Thread_Mutex LockType;
-    typedef ACE_Guard<LockType> GuardType;
+    template<class T>
+    T GetValueDefault(std::string const& name, T const& def, bool showLogs = true) const;
 
-    std::string _filename;
-    Config _config;
-    LockType _configLock;
+    bool dryRun = false;
 
-    ConfigMgr(ConfigMgr const&);
-    ConfigMgr& operator=(ConfigMgr const&);
+    std::vector<std::string /*config variant*/> _moduleConfigFiles;
 };
 
-#define sConfigMgr ACE_Singleton<ConfigMgr, ACE_Null_Mutex>::instance()
+class ConfigException : public std::length_error
+{
+public:
+    explicit ConfigException(std::string const& message) : std::length_error(message) { }
+};
+
+#define sConfigMgr ConfigMgr::instance()
 
 #endif

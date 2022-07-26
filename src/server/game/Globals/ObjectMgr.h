@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1019,8 +1019,8 @@ class ObjectMgr
         void LoadBroadcastTextLocales();
         void LoadBroadcastTextHelpers();
         void LoadBroadcastGroups();
-        bool LoadTrinityStrings(char const* table, int32 min_value, int32 max_value);
-        bool LoadTrinityStrings() { return LoadTrinityStrings("firelands_string", MIN_FIRELANDS_STRING_ID, MAX_FIRELANDS_STRING_ID); }
+        bool LoadFirelandsStrings(char const* table, int32 min_value, int32 max_value);
+        bool LoadFirelandsStrings() { return LoadFirelandsStrings("firelands_string", MIN_FIRELANDS_STRING_ID, MAX_FIRELANDS_STRING_ID); }
         void LoadDbScriptStrings();
         void LoadCreatureClassLevelStats();
         void LoadCreatureLocales();
@@ -1606,6 +1606,6 @@ class ObjectMgr
 #define sObjectMgr ACE_Singleton<ObjectMgr, ACE_Null_Mutex>::instance()
 
 // scripting access functions
-bool LoadTrinityStrings(char const* table, int32 start_value = MAX_CREATURE_AI_TEXT_STRING_ID, int32 end_value = std::numeric_limits<int32>::min());
+bool LoadFirelandsStrings(char const* table, int32 start_value = MAX_CREATURE_AI_TEXT_STRING_ID, int32 end_value = std::numeric_limits<int32>::min());
 
 #endif

@@ -19,7 +19,7 @@
  */
 
 /** \file
-    \ingroup Trinityd
+    \ingroup Firelandsd
 */
 
 #include "Common.h"

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -20,28 +20,21 @@
 #ifndef DATABASEENV_H
 #define DATABASEENV_H
 
-#include "Common.h"
-#include "Errors.h"
-#include "Log.h"
-
-#include "Field.h"
-#include "QueryResult.h"
-
-#include "MySQLThreading.h"
-#include "Transaction.h"
-
-#define _LIKE_           "LIKE"
-#define _TABLE_SIM_      "`"
-#define _CONCAT3_(A, B, C) "CONCAT( " A ", " B ", " C " )"
-#define _OFFSET_         "LIMIT %d, 1"
+#include "DatabaseWorkerPool.h"
+#include "Define.h"
 
 #include "Implementation/LoginDatabase.h"
 #include "Implementation/CharacterDatabase.h"
 #include "Implementation/WorldDatabase.h"
 
-extern WorldDatabaseWorkerPool WorldDatabase;
-extern CharacterDatabaseWorkerPool CharacterDatabase;
-extern LoginDatabaseWorkerPool LoginDatabase;
+#include "Field.h"
+#include "PreparedStatement.h"
+#include "QueryResult.h"
+#include "Transaction.h"
+
+FC_DATABASE_API extern WorldDatabaseWorkerPool WorldDatabase;
+FC_DATABASE_API extern CharacterDatabaseWorkerPool CharacterDatabase;
+FC_DATABASE_API extern LoginDatabaseWorkerPool LoginDatabase;
 
 #endif
 

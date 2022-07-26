@@ -22,7 +22,7 @@
 
 #include "Define.h"
 #include "LogCommon.h"
-#include "Utilities/StringFormat.h"
+#include "StringFormat.h"
 #include <memory>
 #include <unordered_map>
 #include <vector>

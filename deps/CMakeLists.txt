@@ -24,7 +24,7 @@ add_subdirectory(openssl)
 add_subdirectory(stdfs)
 add_subdirectory(threads)
 
-# add_subdirectory(utf8cpp)
+add_subdirectory(utf8cpp)
 if(AUTHSERVER OR WORLDSERVER)
     add_subdirectory(mysql)
 endif()

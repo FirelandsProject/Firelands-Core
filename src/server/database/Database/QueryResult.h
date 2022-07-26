@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,90 +19,107 @@
 #ifndef QUERYRESULT_H
 #define QUERYRESULT_H
 
-#include "AutoPtr.h"
-#include <ace/Thread_Mutex.h>
-
+#include "DatabaseEnvFwd.h"
+#include "Define.h"
 #include "Field.h"
+#include <tuple>
+#include <vector>
 
-#ifdef _WIN32
-  #include <winsock2.h>
-#endif
-#include <mysql.h>
-
-class ResultSet
+class FC_DATABASE_API ResultSet
 {
-    public:
-        ResultSet(MYSQL_RES* result, MYSQL_FIELD* fields, uint64 rowCount, uint32 fieldCount);
-        ~ResultSet();
+public:
+    ResultSet(MySQLResult* result, MySQLField* fields, uint64 rowCount, uint32 fieldCount);
+    ~ResultSet();
 
-        bool NextRow();
-        uint64 GetRowCount() const { return _rowCount; }
-        uint32 GetFieldCount() const { return _fieldCount; }
+    bool NextRow();
+    [[nodiscard]] uint64 GetRowCount() const { return _rowCount; }
+    [[nodiscard]] uint32 GetFieldCount() const { return _fieldCount; }
+    [[nodiscard]] std::string GetFieldName(uint32 index) const;
 
-        Field* Fetch() const { return _currentRow; }
-        const Field & operator [] (uint32 index) const
-        {
-            ASSERT(index < _fieldCount);
-            return _currentRow[index];
-        }
+    [[nodiscard]] Field* Fetch() const { return _currentRow; }
+    Field const& operator[](std::size_t index) const;
 
-    protected:
-        uint64 _rowCount;
-        Field* _currentRow;
-        uint32 _fieldCount;
+    template<typename... Ts>
+    inline std::tuple<Ts...> FetchTuple()
+    {
+        AssertRows(sizeof...(Ts));
 
-    private:
-        void CleanUp();
-        MYSQL_RES* _result;
-        MYSQL_FIELD* _fields;
+        std::tuple<Ts...> theTuple = {};
+
+        std::apply([this](Ts&... args)
+            {
+                uint8 index{ 0 };
+                ((args = _currentRow[index].Get<Ts>(), index++), ...);
+            }, theTuple);
+
+        return theTuple;
+    }
+
+protected:
+    std::vector<QueryResultFieldMetadata> _fieldMetadata;
+    uint64 _rowCount;
+    Field* _currentRow;
+    uint32 _fieldCount;
+
+private:
+    void CleanUp();
+    void AssertRows(std::size_t sizeRows);
+
+    MySQLResult* _result;
+    MySQLField* _fields;
+
+    ResultSet(ResultSet const& right) = delete;
+    ResultSet& operator=(ResultSet const& right) = delete;
 };
 
-typedef Firelands::AutoPtr<ResultSet, ACE_Thread_Mutex> QueryResult;
-
-class PreparedResultSet
+class FC_DATABASE_API PreparedResultSet
 {
-    public:
-        PreparedResultSet(MYSQL_STMT* stmt, MYSQL_RES* result, uint64 rowCount, uint32 fieldCount);
-        ~PreparedResultSet();
+public:
+    PreparedResultSet(MySQLStmt* stmt, MySQLResult* result, uint64 rowCount, uint32 fieldCount);
+    ~PreparedResultSet();
 
-        bool NextRow();
-        uint64 GetRowCount() const { return m_rowCount; }
-        uint32 GetFieldCount() const { return m_fieldCount; }
+    bool NextRow();
+    [[nodiscard]] uint64 GetRowCount() const { return m_rowCount; }
+    [[nodiscard]] uint32 GetFieldCount() const { return m_fieldCount; }
 
-        Field* Fetch() const
-        {
-            ASSERT(m_rowPosition < m_rowCount);
-            return m_rows[uint32(m_rowPosition)];
-        }
+    [[nodiscard]] Field* Fetch() const;
+    Field const& operator[](std::size_t index) const;
 
-        const Field & operator [] (uint32 index) const
-        {
-            ASSERT(m_rowPosition < m_rowCount);
-            ASSERT(index < m_fieldCount);
-            return m_rows[uint32(m_rowPosition)][index];
-        }
+    template<typename... Ts>
+    inline std::tuple<Ts...> FetchTuple()
+    {
+        AssertRows(sizeof...(Ts));
 
-    protected:
-        std::vector<Field*> m_rows;
-        uint64 m_rowCount;
-        uint64 m_rowPosition;
-        uint32 m_fieldCount;
+        std::tuple<Ts...> theTuple = {};
 
-    private:
-        MYSQL_BIND* m_rBind;
-        MYSQL_STMT* m_stmt;
-        MYSQL_RES* m_res;
+        std::apply([this](Ts&... args)
+            {
+                uint8 index{ 0 };
+                ((args = m_rows[uint32(m_rowPosition) * m_fieldCount + index].Get<Ts>(), index++), ...);
+            }, theTuple);
 
-        my_bool* m_isNull;
-        unsigned long* m_length;
+        return theTuple;
+    }
 
-        void FreeBindBuffer();
-        void CleanUp();
-        bool _NextRow();
+protected:
+    std::vector<QueryResultFieldMetadata> m_fieldMetadata;
+    std::vector<Field> m_rows;
+    uint64 m_rowCount;
+    uint64 m_rowPosition;
+    uint32 m_fieldCount;
 
+private:
+    MySQLBind* m_rBind;
+    MySQLStmt* m_stmt;
+    MySQLResult* m_metadataResult;    ///< Field metadata, returned by mysql_stmt_result_metadata
+
+    void CleanUp();
+    bool _NextRow();
+
+    void AssertRows(std::size_t sizeRows);
+
+    PreparedResultSet(PreparedResultSet const& right) = delete;
+    PreparedResultSet& operator=(PreparedResultSet const& right) = delete;
 };
 
-typedef Firelands::AutoPtr<PreparedResultSet, ACE_Thread_Mutex> PreparedQueryResult;
-
 #endif
-

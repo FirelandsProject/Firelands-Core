@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,77 +21,117 @@
 #define _AUTH_BIGNUMBER_H
 
 #include "Define.h"
-#include <ace/Auto_Ptr.h>
+#include <array>
+#include <memory>
+#include <string>
+#include <vector>
 
 struct bignum_st;
 
-class BigNumber
+class FC_COMMON_API BigNumber
 {
 public:
     BigNumber();
     BigNumber(BigNumber const& bn);
-    BigNumber(uint32);
+    BigNumber(uint32 v) : BigNumber() { SetDword(v); }
+    BigNumber(int32 v) : BigNumber() { SetDword(v); }
+    BigNumber(std::string const& v) : BigNumber() { SetHexStr(v); }
+
+    template <size_t Size>
+    BigNumber(std::array<uint8, Size> const& v, bool littleEndian = true) : BigNumber() { SetBinary(v.data(), Size, littleEndian); }
+
     ~BigNumber();
 
+    void SetDword(int32);
     void SetDword(uint32);
     void SetQword(uint64);
-    void SetBinary(uint8 const* bytes, int32 len);
-    void SetHexStr(char const* str);
+    void SetBinary(uint8 const* bytes, int32 len, bool littleEndian = true);
+
+    template <typename Container>
+    auto SetBinary(Container const& c, bool littleEndian = true) -> std::enable_if_t<!std::is_pointer_v<std::decay_t<Container>>> { SetBinary(std::data(c), std::size(c), littleEndian); }
+
+    bool SetHexStr(char const* str);
+    bool SetHexStr(std::string const& str) { return SetHexStr(str.c_str()); }
 
     void SetRand(int32 numbits);
 
     BigNumber& operator=(BigNumber const& bn);
 
-    BigNumber operator+=(BigNumber const& bn);
-    BigNumber operator+(BigNumber const& bn)
+    BigNumber& operator+=(BigNumber const& bn);
+    BigNumber operator+(BigNumber const& bn) const
     {
         BigNumber t(*this);
         return t += bn;
     }
 
-    BigNumber operator-=(BigNumber const& bn);
-    BigNumber operator-(BigNumber const& bn)
+    BigNumber& operator-=(BigNumber const& bn);
+    BigNumber operator-(BigNumber const& bn) const
     {
         BigNumber t(*this);
         return t -= bn;
     }
 
-    BigNumber operator*=(BigNumber const& bn);
-    BigNumber operator*(BigNumber const& bn)
+    BigNumber& operator*=(BigNumber const& bn);
+    BigNumber operator*(BigNumber const& bn) const
     {
         BigNumber t(*this);
         return t *= bn;
     }
 
-    BigNumber operator/=(BigNumber const& bn);
-    BigNumber operator/(BigNumber const& bn)
+    BigNumber& operator/=(BigNumber const& bn);
+    BigNumber operator/(BigNumber const& bn) const
     {
         BigNumber t(*this);
         return t /= bn;
     }
 
-    BigNumber operator%=(BigNumber const& bn);
-    BigNumber operator%(BigNumber const& bn)
+    BigNumber& operator%=(BigNumber const& bn);
+    BigNumber operator%(BigNumber const& bn) const
     {
         BigNumber t(*this);
         return t %= bn;
     }
 
-    bool isZero() const;
+    BigNumber& operator<<=(int n);
+    BigNumber operator<<(int n) const
+    {
+        BigNumber t(*this);
+        return t <<= n;
+    }
 
-    BigNumber ModExp(BigNumber const& bn1, BigNumber const& bn2);
-    BigNumber Exp(BigNumber const&);
+    [[nodiscard]] int CompareTo(BigNumber const& bn) const;
+    bool operator<=(BigNumber const& bn) const { return (CompareTo(bn) <= 0); }
+    bool operator==(BigNumber const& bn) const { return (CompareTo(bn) == 0); }
+    bool operator>=(BigNumber const& bn) const { return (CompareTo(bn) >= 0); }
+    bool operator<(BigNumber const& bn) const { return (CompareTo(bn) < 0); }
+    bool operator>(BigNumber const& bn) const { return (CompareTo(bn) > 0); }
 
-    int32 GetNumBytes(void);
+    [[nodiscard]] bool IsZero() const;
+    [[nodiscard]] bool IsNegative() const;
+
+    [[nodiscard]] BigNumber ModExp(BigNumber const& bn1, BigNumber const& bn2) const;
+    [[nodiscard]] BigNumber Exp(BigNumber const&) const;
+
+    [[nodiscard]] int32 GetNumBytes() const;
 
     struct bignum_st* BN() { return _bn; }
+    [[nodiscard]] struct bignum_st const* BN() const { return _bn; }
 
-    uint32 AsDword();
+    [[nodiscard]] uint32 AsDword() const;
 
-    ACE_Auto_Array_Ptr<uint8> AsByteArray(int32 minSize = 0, bool littleEndian = true);
+    void GetBytes(uint8* buf, size_t bufsize, bool littleEndian = true) const;
+    [[nodiscard]] std::vector<uint8> ToByteVector(int32 minSize = 0, bool littleEndian = true) const;
 
-    char* AsHexStr() const;
-    char* AsDecStr() const;
+    template <std::size_t Size>
+    std::array<uint8, Size> ToByteArray(bool littleEndian = true) const
+    {
+        std::array<uint8, Size> buf;
+        GetBytes(buf.data(), Size, littleEndian);
+        return buf;
+    }
+
+    [[nodiscard]] std::string AsHexStr() const;
+    [[nodiscard]] std::string AsDecStr() const;
 
 private:
     struct bignum_st* _bn;

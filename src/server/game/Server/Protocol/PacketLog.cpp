@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -36,20 +36,20 @@ PacketLog::~PacketLog()
 
 void PacketLog::Initialize()
 {
-    std::string logsDir = sConfigMgr->GetStringDefault("LogsDir", "");
+    std::string logsDir = sConfigMgr->GetOption<std::string>("LogsDir", "");
 
     if (!logsDir.empty())
-        if ((logsDir.at(logsDir.length()-1) != '/') && (logsDir.at(logsDir.length()-1) != '\\'))
+        if ((logsDir.at(logsDir.length() - 1) != '/') && (logsDir.at(logsDir.length() - 1) != '\\'))
             logsDir.push_back('/');
 
-    std::string logname = sConfigMgr->GetStringDefault("PacketLogFile", "");
+    std::string logname = sConfigMgr->GetOption<std::string>("PacketLogFile", "");
     if (!logname.empty())
         _file = fopen((logsDir + logname).c_str(), "wb");
 }
 
 void PacketLog::LogPacket(WorldPacket const& packet, Direction direction)
 {
-    ByteBuffer data(4+4+4+1+packet.size());
+    ByteBuffer data(4 + 4 + 4 + 1 + packet.size());
     data << int32(packet.GetOpcode());
     data << int32(packet.size());
     data << uint32(time(NULL));

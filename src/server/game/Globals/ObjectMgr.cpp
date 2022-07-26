@@ -7840,7 +7840,7 @@ void ObjectMgr::LoadGameObjectForQuests()
     LOG_INFO("server.loading", ">> Loaded %u GameObjects for quests in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
-bool ObjectMgr::LoadTrinityStrings(const char* table, int32 min_value, int32 max_value)
+bool ObjectMgr::LoadFirelandsStrings(const char* table, int32 min_value, int32 max_value)
 {
     uint32 oldMSTime = getMSTime();
 
@@ -9289,7 +9289,7 @@ void ObjectMgr::CheckScripts(ScriptsType type, std::set<int32>& ids)
 
 void ObjectMgr::LoadDbScriptStrings()
 {
-    LoadTrinityStrings("db_script_string", MIN_DB_SCRIPT_STRING_ID, MAX_DB_SCRIPT_STRING_ID);
+    LoadFirelandsStrings("db_script_string", MIN_DB_SCRIPT_STRING_ID, MAX_DB_SCRIPT_STRING_ID);
 
     std::set<int32> ids;
 
@@ -9304,7 +9304,7 @@ void ObjectMgr::LoadDbScriptStrings()
         LOG_ERROR("sql.sql", "Table `db_script_string` has unused string id  %u", *itr);
 }
 
-bool LoadTrinityStrings(const char* table, int32 start_value, int32 end_value)
+bool LoadFirelandsStrings(const char* table, int32 start_value, int32 end_value)
 {
     // MAX_DB_SCRIPT_STRING_ID is max allowed negative value for scripts (scrpts can use only more deep negative values
     // start/end reversed for negative values
@@ -9314,7 +9314,7 @@ bool LoadTrinityStrings(const char* table, int32 start_value, int32 end_value)
         return false;
     }
 
-    return sObjectMgr->LoadTrinityStrings(table, start_value, end_value);
+    return sObjectMgr->LoadFirelandsStrings(table, start_value, end_value);
 }
 
 CreatureBaseStats const* ObjectMgr::GetCreatureBaseStats(uint8 level, uint8 unitClass)
