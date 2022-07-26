@@ -17,6 +17,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 if(AUTHSERVER OR WORLDSERVER)
+    add_subdirectory(shared)
     add_subdirectory(database)
     add_subdirectory(apps)
 

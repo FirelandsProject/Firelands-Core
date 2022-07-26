@@ -32,20 +32,21 @@ set(collision_STAT_SRCS
 
 include_directories(
   ${CMAKE_BINARY_DIR}
-  ${CMAKE_SOURCE_DIR}/dep/g3dlite/include
-  ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour
-  ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour/Include
-  ${CMAKE_SOURCE_DIR}/src/server/shared
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Configuration
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Debugging
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Database
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Debugging
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Dynamic
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Dynamic/LinkedReference
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Logging
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Threading
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Packets
-  ${CMAKE_SOURCE_DIR}/src/server/shared/Utilities
+  ${CMAKE_SOURCE_DIR}/deps/g3dlite/include
+  ${CMAKE_SOURCE_DIR}/deps/recastnavigation/Detour
+  ${CMAKE_SOURCE_DIR}/deps/recastnavigation/Detour/Include
+  ${CMAKE_SOURCE_DIR}/src/server/common
+  ${CMAKE_SOURCE_DIR}/src/server/common/Configuration
+  ${CMAKE_SOURCE_DIR}/src/server/common/Debugging
+  ${CMAKE_SOURCE_DIR}/src/server/common/Database
+  ${CMAKE_SOURCE_DIR}/src/server/common/Debugging
+  ${CMAKE_SOURCE_DIR}/src/server/common/Dynamic
+  ${CMAKE_SOURCE_DIR}/src/server/common/Dynamic/LinkedReference
+  ${CMAKE_SOURCE_DIR}/src/server/common/Logging
+  ${CMAKE_SOURCE_DIR}/src/server/common/Threading
+  ${CMAKE_SOURCE_DIR}/src/server/common/Packets
+  ${CMAKE_SOURCE_DIR}/src/server/common/Utilities
+  ${CMAKE_SOURCE_DIR}/src/server/common/DataStores
   ${CMAKE_SOURCE_DIR}/src/server/shared/DataStores
   ${CMAKE_SOURCE_DIR}/src/server/game/Addons
   ${CMAKE_SOURCE_DIR}/src/server/game/Conditions
@@ -75,7 +76,6 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/Management
   ${CMAKE_CURRENT_SOURCE_DIR}/Maps
   ${CMAKE_CURRENT_SOURCE_DIR}/Models
-  ${ACE_INCLUDE_DIR}
   ${MYSQL_INCLUDE_DIR}
 )
 
