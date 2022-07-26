@@ -106,7 +106,7 @@ void LFGQueue::AddToQueue(uint64 guid)
     LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(guid);
     if (itQueue == QueueDataStore.end())
     {
-        TC_LOG_ERROR("lfg", "LFGQueue::AddToQueue: Queue data not found for [" UI64FMTD "]", guid);
+        LOG_ERROR("lfg", "LFGQueue::AddToQueue: Queue data not found for [" UI64FMTD "]", guid);
         return;
     }
 
@@ -212,7 +212,7 @@ void LFGQueue::RemoveFromCompatibles(uint64 guid)
     out << guid;
     std::string strGuid = out.str();
 
-    TC_LOG_DEBUG("lfg", "LFGQueue::RemoveFromCompatibles: Removing [" UI64FMTD "]", guid);
+    LOG_DEBUG("lfg", "LFGQueue::RemoveFromCompatibles: Removing [" UI64FMTD "]", guid);
     for (LfgCompatibleContainer::iterator itNext = CompatibleMapStore.begin(); itNext != CompatibleMapStore.end();)
     {
         LfgCompatibleContainer::iterator it = itNext++;
@@ -269,7 +269,7 @@ uint8 LFGQueue::FindGroups()
     while (!newToQueueStore.empty())
     {
         uint64 frontguid = newToQueueStore.front();
-        TC_LOG_DEBUG("lfg", "LFGQueue::FindGroups: checking [" UI64FMTD "] newToQueue(%u), currentQueue(%u)", frontguid, uint32(newToQueueStore.size()), uint32(currentQueueStore.size()));
+        LOG_DEBUG("lfg", "LFGQueue::FindGroups: checking [" UI64FMTD "] newToQueue(%u), currentQueue(%u)", frontguid, uint32(newToQueueStore.size()), uint32(currentQueueStore.size()));
         firstNew.clear();
         firstNew.push_back(frontguid);
         RemoveFromNewQueue(frontguid);
@@ -297,13 +297,13 @@ LfgCompatibility LFGQueue::FindNewGroups(LfgGuidList& check, LfgGuidList& all)
     std::string strGuids = ConcatenateGuids(check);
     LfgCompatibility compatibles = GetCompatibles(strGuids);
 
-    TC_LOG_DEBUG("lfg", "LFGQueue::FindNewGroup: (%s): %s - all(%s)", strGuids.c_str(), GetCompatibleString(compatibles), ConcatenateGuids(all).c_str());
+    LOG_DEBUG("lfg", "LFGQueue::FindNewGroup: (%s): %s - all(%s)", strGuids.c_str(), GetCompatibleString(compatibles), ConcatenateGuids(all).c_str());
     if (compatibles == LFG_COMPATIBILITY_PENDING) // Not previously cached, calculate
         compatibles = CheckCompatibility(check);
 
     if (compatibles == LFG_COMPATIBLES_BAD_STATES && sLFGMgr->AllQueued(check))
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::FindNewGroup: (%s) compatibles (cached) changed from bad states to match", strGuids.c_str());
+        LOG_DEBUG("lfg", "LFGQueue::FindNewGroup: (%s) compatibles (cached) changed from bad states to match", strGuids.c_str());
         SetCompatibles(strGuids, LFG_COMPATIBLES_MATCH);
         return LFG_COMPATIBLES_MATCH;
     }
@@ -341,7 +341,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
     // Check for correct size
     if (check.empty())
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s): Size wrong - Not compatibles", strGuids.c_str());
+        LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s): Size wrong - Not compatibles", strGuids.c_str());
         return LFG_INCOMPATIBLES_WRONG_GROUP_SIZE;
     }
 
@@ -355,7 +355,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
         LfgCompatibility child_compatibles = CheckCompatibility(check);
         if (child_compatibles < LFG_COMPATIBLES_WITH_LESS_PLAYERS) // Group not compatible
         {
-            TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) child %s not compatibles", strGuids.c_str(), ConcatenateGuids(check).c_str());
+            LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) child %s not compatibles", strGuids.c_str(), ConcatenateGuids(check).c_str());
             SetCompatibles(strGuids, child_compatibles);
             return child_compatibles;
         }
@@ -395,7 +395,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
     {
         if (proposalDungeons.empty())
         {
-            TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) No compatible dungeons%s", strGuids.c_str(), o.str().c_str());
+            LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) No compatible dungeons%s", strGuids.c_str(), o.str().c_str());
             SetCompatibles(strGuids, LFG_INCOMPATIBLES_NO_DUNGEONS);
             return LFG_INCOMPATIBLES_NO_DUNGEONS;
         }
@@ -409,7 +409,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
     // Check for correct size
     if (check.size() > dungeon->GetMaxGroupSize())
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s): Size wrong - Not compatibles", strGuids.c_str());
+        LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s): Size wrong - Not compatibles", strGuids.c_str());
         return LFG_INCOMPATIBLES_WRONG_GROUP_SIZE;
     }
 
@@ -422,7 +422,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
         LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(guid);
         if (itQueue == QueueDataStore.end())
         {
-            TC_LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: [" UI64FMTD "] is not queued but listed as queued!", guid);
+            LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: [" UI64FMTD "] is not queued but listed as queued!", guid);
             RemoveFromQueue(guid);
             return LFG_COMPATIBILITY_PENDING;
         }
@@ -443,14 +443,14 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
 
     if (numLfgGroups > 1)
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) More than one Lfggroup (%u)", strGuids.c_str(), numLfgGroups);
+        LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) More than one Lfggroup (%u)", strGuids.c_str(), numLfgGroups);
         SetCompatibles(strGuids, LFG_INCOMPATIBLES_MULTIPLE_LFG_GROUPS);
         return LFG_INCOMPATIBLES_MULTIPLE_LFG_GROUPS;
     }
 
     if (numPlayers > dungeon->GetMaxGroupSize())
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Too much players (%u)", strGuids.c_str(), numPlayers);
+        LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Too much players (%u)", strGuids.c_str(), numPlayers);
         SetCompatibles(strGuids, LFG_INCOMPATIBLES_TOO_MUCH_PLAYERS);
         return LFG_INCOMPATIBLES_TOO_MUCH_PLAYERS;
     }
@@ -468,7 +468,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
                 for (itPlayer = proposalRoles.begin(); itPlayer != proposalRoles.end(); ++itPlayer)
                 {
                     if (itRoles->first == itPlayer->first)
-                        TC_LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: ERROR! Player multiple times in queue! [" UI64FMTD "]", itRoles->first);
+                        LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: ERROR! Player multiple times in queue! [" UI64FMTD "]", itRoles->first);
                     else if (sLFGMgr->HasIgnore(itRoles->first, itPlayer->first))
                         break;
                 }
@@ -479,7 +479,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
 
         if (uint8 playersize = numPlayers - proposalRoles.size())
         {
-            TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) not compatible, %u players are ignoring each other", strGuids.c_str(), playersize);
+            LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) not compatible, %u players are ignoring each other", strGuids.c_str(), playersize);
             SetCompatibles(strGuids, LFG_INCOMPATIBLES_HAS_IGNORES);
             return LFG_INCOMPATIBLES_HAS_IGNORES;
         }
@@ -494,7 +494,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
                     o << ", " << it->first << ": " << GetRolesString(it->second);
             }
 
-            TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Roles not compatible%s", strGuids.c_str(), o.str().c_str());
+            LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Roles not compatible%s", strGuids.c_str(), o.str().c_str());
             SetCompatibles(strGuids, LFG_INCOMPATIBLES_NO_ROLES);
             return LFG_INCOMPATIBLES_NO_ROLES;
         }
@@ -508,7 +508,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
     // Enough players?
     if (numPlayers != dungeon->GetMaxGroupSize())
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Compatibles but not enough players(%u)", strGuids.c_str(), numPlayers);
+        LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Compatibles but not enough players(%u)", strGuids.c_str(), numPlayers);
         LfgCompatibilityData data(LFG_COMPATIBLES_WITH_LESS_PLAYERS);
         data.roles = proposalRoles;
 
@@ -525,7 +525,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
 
     if (!sLFGMgr->AllQueued(check))
     {
-        TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Group MATCH but can't create proposal!", strGuids.c_str());
+        LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) Group MATCH but can't create proposal!", strGuids.c_str());
         SetCompatibles(strGuids, LFG_COMPATIBLES_BAD_STATES);
         return LFG_COMPATIBLES_BAD_STATES;
     }
@@ -566,14 +566,14 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
 
     sLFGMgr->AddProposal(proposal);
 
-    TC_LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) MATCH! Group formed", strGuids.c_str());
+    LOG_DEBUG("lfg", "LFGQueue::CheckCompatibility: (%s) MATCH! Group formed", strGuids.c_str());
     SetCompatibles(strGuids, LFG_COMPATIBLES_MATCH);
     return LFG_COMPATIBLES_MATCH;
 }
 
 void LFGQueue::UpdateQueueTimers(uint8 queueId, time_t currTime, uint32 &tankCount, uint32 &healerCount, uint32 &dpsCount)
 {
-    TC_LOG_TRACE("lfg", "Updating queue timers...");
+    LOG_TRACE("lfg", "Updating queue timers...");
     for (LfgQueueDataContainer::iterator itQueue = QueueDataStore.begin(); itQueue != QueueDataStore.end(); ++itQueue)
     {
         LfgQueueData& queueinfo = itQueue->second;
@@ -692,7 +692,7 @@ std::string LFGQueue::DumpCompatibleInfo(bool full /* = false */) const
 
 void LFGQueue::FindBestCompatibleInQueue(LfgQueueDataContainer::iterator itrQueue)
 {
-    TC_LOG_DEBUG("lfg", "LFGQueue::FindBestCompatibleInQueue: " UI64FMTD, itrQueue->first);
+    LOG_DEBUG("lfg", "LFGQueue::FindBestCompatibleInQueue: " UI64FMTD, itrQueue->first);
     std::ostringstream o;
     o << itrQueue->first;
     std::string sguid = o.str();
@@ -717,7 +717,7 @@ void LFGQueue::UpdateBestCompatibleInQueue(LfgQueueDataContainer::iterator itrQu
     if (size <= storedSize)
         return;
 
-    TC_LOG_DEBUG("lfg", "LFGQueue::UpdateBestCompatibleInQueue: Changed (%s) to (%s) as best compatible group for " UI64FMTD,
+    LOG_DEBUG("lfg", "LFGQueue::UpdateBestCompatibleInQueue: Changed (%s) to (%s) as best compatible group for " UI64FMTD,
         queueData.bestCompatible.c_str(), key.c_str(), itrQueue->first);
 
     queueData.bestCompatible = key;

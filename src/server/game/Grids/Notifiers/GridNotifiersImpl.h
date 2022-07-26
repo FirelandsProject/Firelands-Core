@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_GRIDNOTIFIERSIMPL_H
-#define TRINITY_GRIDNOTIFIERSIMPL_H
+#ifndef FIRELANDS_GRIDNOTIFIERSIMPL_H
+#define FIRELANDS_GRIDNOTIFIERSIMPL_H
 
 #include "GridNotifiers.h"
 #include "WorldPacket.h"
@@ -615,4 +615,4 @@ void Firelands::LocalizedPacketListDo<Builder>::operator()(Player* p)
         p->SendDirectMessage((*data_list)[i]);
 }
 
-#endif                                                      // TRINITY_GRIDNOTIFIERSIMPL_H
+#endif                                                      // FIRELANDS_GRIDNOTIFIERSIMPL_H

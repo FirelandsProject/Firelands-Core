@@ -111,7 +111,7 @@ public:
                     if (creature->isAlive())
                     {
                         ++m_uiFelOverseerCount;
-                        TC_LOG_DEBUG("scripts", "Shadow Labyrinth: counting %u Fel Overseers.", m_uiFelOverseerCount);
+                        LOG_DEBUG("scripts", "Shadow Labyrinth: counting %u Fel Overseers.", m_uiFelOverseerCount);
                     }
                     break;
             }
@@ -128,7 +128,7 @@ public:
                 case TYPE_OVERSEER:
                     if (uiData != DONE)
                     {
-                        TC_LOG_ERROR("scripts", "Shadow Labyrinth: TYPE_OVERSEER did not expect other data than DONE");
+                        LOG_ERROR("scripts", "Shadow Labyrinth: TYPE_OVERSEER did not expect other data than DONE");
                         return;
                     }
                     if (m_uiFelOverseerCount)
@@ -136,11 +136,11 @@ public:
                         --m_uiFelOverseerCount;
 
                         if (m_uiFelOverseerCount)
-                            TC_LOG_DEBUG("scripts", "Shadow Labyrinth: %u Fel Overseers left to kill.", m_uiFelOverseerCount);
+                            LOG_DEBUG("scripts", "Shadow Labyrinth: %u Fel Overseers left to kill.", m_uiFelOverseerCount);
                         else
                         {
                             m_auiEncounter[1] = DONE;
-                            TC_LOG_DEBUG("scripts", "Shadow Labyrinth: TYPE_OVERSEER == DONE");
+                            LOG_DEBUG("scripts", "Shadow Labyrinth: TYPE_OVERSEER == DONE");
                         }
                     }
                     break;

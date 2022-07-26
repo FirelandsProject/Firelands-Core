@@ -29,7 +29,7 @@ bool VerificationMgr::IsValidPlayerSpell(Player* player, uint32 spellId)
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
     if (!spellInfo)
     {
-        TC_LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell: Player %s (Guid: %u) failed check (unknown spell: %u)", player->GetName().c_str(), player->GetGUIDLow(), spellId);
+        LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell: Player %s (Guid: %u) failed check (unknown spell: %u)", player->GetName().c_str(), player->GetGUIDLow(), spellId);
         return false;
     }
 
@@ -38,19 +38,19 @@ bool VerificationMgr::IsValidPlayerSpell(Player* player, uint32 spellId)
     //bool valid = IsSpellFitBySkillLine(spellId, player->getRaceMask(), player->getClassMask(), AccountMgr::IsPlayerAccount(player->GetSession()->GetSecurity()));
 
     //if (!valid)
-    //    TC_LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell::ClassAndRace: Player %s (Guid: %u) failed check (spell: %u)", player->GetName().c_str(), player->GetGUIDLow(), spellId);
+    //    LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell::ClassAndRace: Player %s (Guid: %u) failed check (spell: %u)", player->GetName().c_str(), player->GetGUIDLow(), spellId);
 
     if ((spellInfo->AttributesEx7 & SPELL_ATTR7_HORDE_ONLY) && player->GetTeam() != HORDE)
     {
         valid &= false;
-        TC_LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell::SPELL_ATTR7_HORDE_ONLY: Player %s (Guid: %u) failed check (spell: %u)",
+        LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell::SPELL_ATTR7_HORDE_ONLY: Player %s (Guid: %u) failed check (spell: %u)",
             player->GetName().c_str(), player->GetGUIDLow(), spellId);
     }
 
     if ((spellInfo->AttributesEx7 & SPELL_ATTR7_ALLIANCE_ONLY) && player->GetTeam() != ALLIANCE)
     {
         valid &= false;
-        TC_LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell::SPELL_ATTR7_ALLIANCE_ONLY: Player %s (Guid: %u) failed check (spell: %u)",
+        LOG_ERROR("entities.player.skills", "VerificationMgr::PlayerSpell::SPELL_ATTR7_ALLIANCE_ONLY: Player %s (Guid: %u) failed check (spell: %u)",
             player->GetName().c_str(), player->GetGUIDLow(), spellId);
     }
 
@@ -75,7 +75,7 @@ bool VerificationMgr::CheckAllPlayerSpells()
         bool valid = IsSpellFitBySkillLine(spellId, 1 << (race - 1), 1 << (playerClass - 1));
 
         if (!valid)
-            TC_LOG_INFO("entities.player.skills", "VerificationMgr::CheckAllPlayerSpells: Player %s (Guid: %u) failed check (spell: %u)", name.c_str(), guid, spellId);
+            LOG_INFO("entities.player.skills", "VerificationMgr::CheckAllPlayerSpells: Player %s (Guid: %u) failed check (spell: %u)", name.c_str(), guid, spellId);
     }
     while (result->NextRow());
 

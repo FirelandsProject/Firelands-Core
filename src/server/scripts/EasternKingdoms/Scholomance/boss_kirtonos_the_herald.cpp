@@ -119,7 +119,7 @@ class boss_kirtonos_the_herald : public CreatureScript
                 // Crash fix
                 if (!me->GetInstanceScript())
                 {
-                    TC_LOG_INFO("entities.unit.bossai","Kirtonos the herald has been spawned outside of scholomance! Map: %u, X: %f, Y: %f, Z: %f, Summoner: %s", me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), summoner->GetName().c_str());
+                    LOG_INFO("entities.unit.bossai","Kirtonos the herald has been spawned outside of scholomance! Map: %u, X: %f, Y: %f, Z: %f, Summoner: %s", me->GetMapId(), me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), summoner->GetName().c_str());
                     return;
                 }
 

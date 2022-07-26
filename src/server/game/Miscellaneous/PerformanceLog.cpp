@@ -44,7 +44,7 @@ void PerformanceLog::Add(PerformanceEntry *pe)
         }
     }
     else
-        TC_LOG_ERROR("entities.unit", "PERFORMANCELOG: Invalid ID for class (%s)", pe->GetType());
+        LOG_ERROR("entities.unit", "PERFORMANCELOG: Invalid ID for class (%s)", pe->GetType());
 }
 
 void PerformanceLog::LoadConfig()

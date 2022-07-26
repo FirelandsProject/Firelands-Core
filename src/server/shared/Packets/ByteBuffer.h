@@ -55,7 +55,7 @@ class ByteBufferPositionException : public ByteBufferException
         {
             ACE_Stack_Trace trace;
 
-            TC_LOG_ERROR("network.opcode", "Attempted to %s value with size: " SIZEFMTD " in ByteBuffer (pos: " SIZEFMTD " size: " SIZEFMTD ")\n[Stack trace: %s]",
+            LOG_ERROR("network.opcode", "Attempted to %s value with size: " SIZEFMTD " in ByteBuffer (pos: " SIZEFMTD " size: " SIZEFMTD ")\n[Stack trace: %s]",
                 (_add ? "put" : "get"), ValueSize, Pos, Size, trace.c_str());
         }
 
@@ -77,7 +77,7 @@ class ByteBufferSourceException : public ByteBufferException
         {
             ACE_Stack_Trace trace;
 
-            TC_LOG_ERROR("network.opcode", "Attempted to put a %s in ByteBuffer (pos: " SIZEFMTD " size: " SIZEFMTD ")\n[Stack trace: %s]",
+            LOG_ERROR("network.opcode", "Attempted to put a %s in ByteBuffer (pos: " SIZEFMTD " size: " SIZEFMTD ")\n[Stack trace: %s]",
                 (ValueSize > 0 ? "NULL-pointer" : "zero-sized value"), Pos, Size, trace.c_str());
         }
 };
@@ -650,7 +650,7 @@ class ByteBuffer
                 o << read<uint8>(i) << " - ";
             o << " ";
 
-            TC_LOG_TRACE("network.opcode", "%s", o.str().c_str());
+            LOG_TRACE("network.opcode", "%s", o.str().c_str());
         }
 
         void textlike() const
@@ -667,7 +667,7 @@ class ByteBuffer
                 o << buf;
             }
             o << " ";
-            TC_LOG_TRACE("network.opcode", "%s", o.str().c_str());
+            LOG_TRACE("network.opcode", "%s", o.str().c_str());
         }
 
         void hexlike() const
@@ -699,7 +699,7 @@ class ByteBuffer
                 o << buf;
             }
             o << " ";
-            TC_LOG_TRACE("network.opcode", "%s", o.str().c_str());
+            LOG_TRACE("network.opcode", "%s", o.str().c_str());
         }
 
     protected:

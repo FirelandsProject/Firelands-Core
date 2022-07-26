@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_UNITAI_H
-#define TRINITY_UNITAI_H
+#ifndef FIRELANDS_UNITAI_H
+#define FIRELANDS_UNITAI_H
 
 #include "Define.h"
 #include "Unit.h"

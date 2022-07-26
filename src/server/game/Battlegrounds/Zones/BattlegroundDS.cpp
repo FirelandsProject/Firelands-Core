@@ -175,7 +175,7 @@ void BattlegroundDS::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        TC_LOG_ERROR("bg.battleground", "BattlegroundDS: Killer player not found");
+        LOG_ERROR("bg.battleground", "BattlegroundDS: Killer player not found");
         return;
     }
 
@@ -243,7 +243,7 @@ bool BattlegroundDS::SetupBattleground()
         || !AddCreature(BG_DS_NPC_TYPE_WATER_SPOUT, BG_DS_NPC_PIPE_KNOCKBACK_1, 0, 1369.514f, 817.064819f, 14.8535f, 3.106686f, RESPAWN_IMMEDIATELY)
         || !AddCreature(BG_DS_NPC_TYPE_WATER_SPOUT, BG_DS_NPC_PIPE_KNOCKBACK_2, 0, 1213.9684f, 764.606f, 14.767559f, 0.0f, RESPAWN_IMMEDIATELY))
     {
-        TC_LOG_ERROR("sql.sql", "BatteGroundDS: Failed to spawn some object!");
+        LOG_ERROR("sql.sql", "BatteGroundDS: Failed to spawn some object!");
         return false;
     }
 

@@ -371,7 +371,7 @@ void MovementInfo::Read_OLD(WorldPacket &data)
     MovementStatusElements const* sequence = GetMovementStatusElementsSequence(data.GetOpcode());
     if (sequence == NULL)
     {
-        TC_LOG_ERROR("network.opcode", "WorldSession::ReadMovementInfo: No movement sequence found for opcode 0x%04X", uint32(data.GetOpcode()));
+        LOG_ERROR("network.opcode", "WorldSession::ReadMovementInfo: No movement sequence found for opcode 0x%04X", uint32(data.GetOpcode()));
         return;
     }
 
@@ -595,7 +595,7 @@ void MovementInfo::Write_OLD(WorldPacket &data)
     MovementStatusElements const* sequence = GetMovementStatusElementsSequence(data.GetOpcode());
     if (!sequence)
     {
-        TC_LOG_ERROR("network.opcode", "WorldSession::WriteMovementInfo: No movement sequence found for opcode 0x%04X", uint32(data.GetOpcode()));
+        LOG_ERROR("network.opcode", "WorldSession::WriteMovementInfo: No movement sequence found for opcode 0x%04X", uint32(data.GetOpcode()));
         return;
     }
 

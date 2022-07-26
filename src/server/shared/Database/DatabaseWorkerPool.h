@@ -69,7 +69,7 @@ class DatabaseWorkerPool
             bool res = true;
             _connectionInfo = MySQLConnectionInfo(infoString);
 
-            TC_LOG_INFO("sql.driver", "Opening DatabasePool '%s'. Asynchronous connections: %u, synchronous connections: %u.",
+            LOG_INFO("sql.driver", "Opening DatabasePool '%s'. Asynchronous connections: %u, synchronous connections: %u.",
                 GetDatabaseName(), async_threads, synch_threads);
 
             //! Open asynchronous connections (delayed operations)
@@ -95,17 +95,17 @@ class DatabaseWorkerPool
             }
 
             if (res)
-                TC_LOG_INFO("sql.driver", "DatabasePool '%s' opened successfully. %u total connections running.", GetDatabaseName(),
+                LOG_INFO("sql.driver", "DatabasePool '%s' opened successfully. %u total connections running.", GetDatabaseName(),
                     (_connectionCount[IDX_SYNCH] + _connectionCount[IDX_ASYNC]));
             else
-                TC_LOG_ERROR("sql.driver", "DatabasePool %s NOT opened. There were errors opening the MySQL connections. Check your SQLDriverLogFile "
+                LOG_ERROR("sql.driver", "DatabasePool %s NOT opened. There were errors opening the MySQL connections. Check your SQLDriverLogFile "
                     "for specific errors.", GetDatabaseName());
             return res;
         }
 
         void Close()
         {
-            TC_LOG_INFO("sql.driver", "Closing down DatabasePool '%s'.", GetDatabaseName());
+            LOG_INFO("sql.driver", "Closing down DatabasePool '%s'.", GetDatabaseName());
 
             //! Shuts down delaythreads for this connection pool by underlying deactivate().
             //! The next dequeue attempt in the worker thread tasks will result in an error,
@@ -121,7 +121,7 @@ class DatabaseWorkerPool
                 t->Close();         //! Closes the actualy MySQL connection.
             }
 
-            TC_LOG_INFO("sql.driver", "Asynchronous connections on DatabasePool '%s' terminated. Proceeding with synchronous connections.",
+            LOG_INFO("sql.driver", "Asynchronous connections on DatabasePool '%s' terminated. Proceeding with synchronous connections.",
                 GetDatabaseName());
 
             //! Shut down the synchronous connections
@@ -134,7 +134,7 @@ class DatabaseWorkerPool
             //! Deletes the ACE_Activation_Queue object and its underlying ACE_Message_Queue
             delete _queue;
 
-            TC_LOG_INFO("sql.driver", "All connections on DatabasePool '%s' closed.", GetDatabaseName());
+            LOG_INFO("sql.driver", "All connections on DatabasePool '%s' closed.", GetDatabaseName());
         }
 
         /**
@@ -357,29 +357,29 @@ class DatabaseWorkerPool
         //! were appended to the transaction will be respected during execution.
         void CommitTransaction(SQLTransaction transaction)
         {
-            #ifdef TRINITY_DEBUG
+            #ifdef FIRELANDS_DEBUG
             //! Only analyze transaction weaknesses in Debug mode.
             //! Ideally we catch the faults in Debug mode and then correct them,
             //! so there's no need to waste these CPU cycles in Release mode.
             switch (transaction->GetSize())
             {
                 case 0:
-                    TC_LOG_DEBUG("sql.driver", "Transaction contains 0 queries. Not executing.");
+                    LOG_DEBUG("sql.driver", "Transaction contains 0 queries. Not executing.");
                     return;
                 case 1:
-                    TC_LOG_DEBUG("sql.driver", "Warning: Transaction only holds 1 query, consider removing Transaction context in code.");
+                    LOG_DEBUG("sql.driver", "Warning: Transaction only holds 1 query, consider removing Transaction context in code.");
                     break;
                 default:
                     break;
             }
-            #endif // TRINITY_DEBUG
+            #endif // FIRELANDS_DEBUG
 
             Enqueue(new TransactionTask(transaction));
         }
 
         SQLTransactionFuture CommitTransactionWithFuture(SQLTransaction transaction)
         {
-            #ifdef TRINITY_DEBUG
+            #ifdef FIRELANDS_DEBUG
             //! Only analyze transaction weaknesses in Debug mode.
             //! Ideally we catch the faults in Debug mode and then correct them,
             //! so there's no need to waste these CPU cycles in Release mode.
@@ -387,18 +387,18 @@ class DatabaseWorkerPool
             {
                 case 0:
                 {
-                    TC_LOG_DEBUG("sql.driver", "Transaction contains 0 queries. Not executing.");
+                    LOG_DEBUG("sql.driver", "Transaction contains 0 queries. Not executing.");
                     SQLTransactionPromise result;
                     result.set_value(false);
                     return result.get_future();
                 }
                 case 1:
-                    TC_LOG_DEBUG("sql.driver", "Warning: Transaction only holds 1 query, consider removing Transaction context in code.");
+                    LOG_DEBUG("sql.driver", "Warning: Transaction only holds 1 query, consider removing Transaction context in code.");
                     break;
                 default:
                     break;
             }
-            #endif // TRINITY_DEBUG
+            #endif // FIRELANDS_DEBUG
 
             TransactionTaskWithFuture* task = new TransactionTaskWithFuture(transaction);
             // Store future result before enqueueing - task might get already processed and deleted before returning from this method

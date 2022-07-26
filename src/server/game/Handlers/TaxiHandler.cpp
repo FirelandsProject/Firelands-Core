@@ -32,7 +32,7 @@
 
 void WorldSession::HandleTaxiNodeStatusQueryOpcode(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_TAXINODE_STATUS_QUERY");
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_TAXINODE_STATUS_QUERY");
 
     uint64 guid;
 
@@ -46,7 +46,7 @@ void WorldSession::SendTaxiStatus(uint64 guid)
     Creature* unit = GetPlayer()->GetMap()->GetCreature(guid);
     if (!unit)
     {
-        TC_LOG_DEBUG("network.opcode", "WorldSession::SendTaxiStatus - Unit (GUID: %u) not found.", uint32(GUID_LOPART(guid)));
+        LOG_DEBUG("network.opcode", "WorldSession::SendTaxiStatus - Unit (GUID: %u) not found.", uint32(GUID_LOPART(guid)));
         return;
     }
 
@@ -56,18 +56,18 @@ void WorldSession::SendTaxiStatus(uint64 guid)
     if (curloc == 0)
         return;
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: current location %u ", curloc);
+    LOG_DEBUG("network.opcode", "WORLD: current location %u ", curloc);
 
     WorldPacket data(SMSG_TAXINODE_STATUS, 9);
     data << guid;
     data << uint8(GetPlayer()->m_taxi.IsTaximaskNodeKnown(curloc) ? 1 : 0);
     SendPacket(&data);
-    TC_LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_TAXINODE_STATUS");
+    LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_TAXINODE_STATUS");
 }
 
 void WorldSession::HandleTaxiQueryAvailableNodes(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_TAXIQUERYAVAILABLENODES");
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_TAXIQUERYAVAILABLENODES");
 
     uint64 guid;
     recvData >> guid;
@@ -76,7 +76,7 @@ void WorldSession::HandleTaxiQueryAvailableNodes(WorldPacket& recvData)
     Creature* unit = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!unit)
     {
-        TC_LOG_DEBUG("network.opcode", "WORLD: HandleTaxiQueryAvailableNodes - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(guid)));
+        LOG_DEBUG("network.opcode", "WORLD: HandleTaxiQueryAvailableNodes - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(guid)));
         return;
     }
 
@@ -103,7 +103,7 @@ void WorldSession::SendTaxiMenu(Creature* unit)
     if (unit->GetEntry() == 29480)
         GetPlayer()->SetTaxiCheater(true); // Grimwing in Ebon Hold, special case. NOTE: Not perfect, Zul'Aman should not be included according to WoWhead, and I think taxicheat includes it.
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_TAXINODE_STATUS_QUERY %u ", curloc);
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_TAXINODE_STATUS_QUERY %u ", curloc);
 
     WorldPacket data(SMSG_SHOWTAXINODES, (4 + 8 + 4 + 8 * 4));
     data << uint32(1);
@@ -112,7 +112,7 @@ void WorldSession::SendTaxiMenu(Creature* unit)
     GetPlayer()->m_taxi.AppendTaximaskTo(data, GetPlayer()->isTaxiCheater());
     SendPacket(&data);
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_SHOWTAXINODES");
+    LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_SHOWTAXINODES");
 
     GetPlayer()->SetTaxiCheater(lastTaxiCheaterState);
 }
@@ -167,7 +167,7 @@ void WorldSession::SendDiscoverNewTaxiNode(uint32 nodeid)
 
 void WorldSession::HandleActivateTaxiExpressOpcode (WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXIEXPRESS");
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXIEXPRESS");
 
     uint64 guid;
     uint32 node_count;
@@ -177,7 +177,7 @@ void WorldSession::HandleActivateTaxiExpressOpcode (WorldPacket& recvData)
     Creature* npc = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!npc)
     {
-        TC_LOG_DEBUG("network.opcode", "WORLD: HandleActivateTaxiExpressOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(guid)));
+        LOG_DEBUG("network.opcode", "WORLD: HandleActivateTaxiExpressOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(guid)));
         return;
     }
     std::vector<uint32> nodes;
@@ -200,14 +200,14 @@ void WorldSession::HandleActivateTaxiExpressOpcode (WorldPacket& recvData)
     if (nodes.empty())
         return;
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXIEXPRESS from %d to %d", nodes.front(), nodes.back());
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXIEXPRESS from %d to %d", nodes.front(), nodes.back());
 
     GetPlayer()->ActivateTaxiPathTo(nodes, npc);
 }
 
 void WorldSession::HandleMoveSplineDoneOpcode(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_MOVE_SPLINE_DONE");
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_MOVE_SPLINE_DONE");
 
     uint32 splineID = recvData.read<uint32>();
 
@@ -263,7 +263,7 @@ void WorldSession::HandleMoveSplineDoneOpcode(WorldPacket& recvData)
             }
         }
 
-        TC_LOG_DEBUG("network.opcode", "WORLD: Taxi has to go from %u to %u", sourcenode, destinationnode);
+        LOG_DEBUG("network.opcode", "WORLD: Taxi has to go from %u to %u", sourcenode, destinationnode);
 
         uint32 mountDisplayId = sObjectMgr->GetTaxiMountDisplayId(sourcenode, GetPlayer()->GetTeam());
 
@@ -286,18 +286,18 @@ void WorldSession::HandleMoveSplineDoneOpcode(WorldPacket& recvData)
 
 void WorldSession::HandleActivateTaxiOpcode(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXI");
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXI");
 
     uint64 guid;
     std::vector<uint32> nodes;
     nodes.resize(2);
 
     recvData >> guid >> nodes[0] >> nodes[1];
-    TC_LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXI from %d to %d", nodes[0], nodes[1]);
+    LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ACTIVATETAXI from %d to %d", nodes[0], nodes[1]);
     Creature* npc = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!npc)
     {
-        TC_LOG_DEBUG("network.opcode", "WORLD: HandleActivateTaxiOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(guid)));
+        LOG_DEBUG("network.opcode", "WORLD: HandleActivateTaxiOpcode - Unit (GUID: %u) not found or you can't interact with it.", uint32(GUID_LOPART(guid)));
         return;
     }
 
@@ -319,5 +319,5 @@ void WorldSession::SendActivateTaxiReply(ActivateTaxiReply reply)
     data << uint32(reply);
     SendPacket(&data);
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ACTIVATETAXIREPLY");
+    LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ACTIVATETAXIREPLY");
 }

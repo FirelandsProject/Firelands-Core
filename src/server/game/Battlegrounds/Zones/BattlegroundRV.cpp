@@ -125,7 +125,7 @@ void BattlegroundRV::HandleKillPlayer(Player* player, Player* killer)
 
     if (!killer)
     {
-        TC_LOG_ERROR("bg.battleground", "BattlegroundRV: Killer player not found");
+        LOG_ERROR("bg.battleground", "BattlegroundRV: Killer player not found");
         return;
     }
 
@@ -206,7 +206,7 @@ bool BattlegroundRV::SetupBattleground()
         || !AddObject(BG_RV_OBJECT_PILAR_COLLISION_4, BG_RV_OBJECT_TYPE_PILAR_COLLISION_4, 802.211609f, -284.493256f, 32.382710f, 3.141593f, 0, 0, 0, RESPAWN_IMMEDIATELY)
         )
     {
-        TC_LOG_ERROR("sql.sql", "BatteGroundRV: Failed to spawn some object!");
+        LOG_ERROR("sql.sql", "BatteGroundRV: Failed to spawn some object!");
         return false;
     }
     // Toggle visual pillars, pulley, gear, and collision based on previous state

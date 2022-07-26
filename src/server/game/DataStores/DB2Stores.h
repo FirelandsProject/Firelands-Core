@@ -15,8 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_DB2STORES_H
-#define TRINITY_DB2STORES_H
+#ifndef FIRELANDS_DB2STORES_H
+#define FIRELANDS_DB2STORES_H
 
 #include "DB2Store.h"
 #include "DB2Structure.h"

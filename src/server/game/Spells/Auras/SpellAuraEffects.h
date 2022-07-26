@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_SPELLAURAEFFECTS_H
-#define TRINITY_SPELLAURAEFFECTS_H
+#ifndef FIRELANDS_SPELLAURAEFFECTS_H
+#define FIRELANDS_SPELLAURAEFFECTS_H
 
 class Unit;
 class AuraEffect;

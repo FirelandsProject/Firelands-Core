@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITYCORE_QUEST_H
-#define TRINITYCORE_QUEST_H
+#ifndef FIRELANDS_QUEST_H
+#define FIRELANDS_QUEST_H
 
 #include "Define.h"
 #include "DatabaseEnv.h"

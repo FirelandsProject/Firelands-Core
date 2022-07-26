@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_GAMEOBJECTAI_H
-#define TRINITY_GAMEOBJECTAI_H
+#ifndef FIRELANDS_GAMEOBJECTAI_H
+#define FIRELANDS_GAMEOBJECTAI_H
 
 #include "Define.h"
 #include <list>

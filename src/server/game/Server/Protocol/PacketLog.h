@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_PACKETLOG_H
-#define TRINITY_PACKETLOG_H
+#ifndef FIRELANDS_PACKETLOG_H
+#define FIRELANDS_PACKETLOG_H
 
 #include "Common.h"
 #include <ace/Singleton.h>

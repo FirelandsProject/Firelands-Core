@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_COMBATAI_H
-#define TRINITY_COMBATAI_H
+#ifndef FIRELANDS_COMBATAI_H
+#define FIRELANDS_COMBATAI_H
 
 #include "CreatureAI.h"
 #include "CreatureAIImpl.h"

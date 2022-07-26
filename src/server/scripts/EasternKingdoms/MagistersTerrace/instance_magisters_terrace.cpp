@@ -298,7 +298,7 @@ public:
                 case DATA_FEL_CRYSTAL:
                     if (FelCrystals.size() < felCristalIndex)
                     {
-                        TC_LOG_ERROR("scripts", "Magisters Terrace: No Fel Crystals loaded in Inst Data");
+                        LOG_ERROR("scripts", "Magisters Terrace: No Fel Crystals loaded in Inst Data");
                         return 0;
                     }
 

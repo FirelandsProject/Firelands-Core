@@ -327,7 +327,7 @@ public:
                             GridSearcherSucceeded = true;
                         }
                     }
-                } else TC_LOG_ERROR("scripts", "SD2 ERROR: No Channelers are stored in the list. This encounter will not work properly");
+                } else LOG_ERROR("scripts", "SD2 ERROR: No Channelers are stored in the list. This encounter will not work properly");
             }
         }
 
@@ -345,13 +345,13 @@ public:
             if (reseting)
                 return;
 
-            TC_LOG_DEBUG("scripts", "Increasing Death Count for Shade of Akama encounter");
+            LOG_DEBUG("scripts", "Increasing Death Count for Shade of Akama encounter");
             ++DeathCount;
             me->RemoveAuraFromStack(SPELL_SHADE_SOUL_CHANNEL_2);
             if (guid)
             {
                 if (Sorcerers.empty())
-                    TC_LOG_ERROR("scripts", "SD2 ERROR: Shade of Akama - attempt to remove guid " UI64FMTD " from Sorcerers list but list is already empty", guid);
+                    LOG_ERROR("scripts", "SD2 ERROR: Shade of Akama - attempt to remove guid " UI64FMTD " from Sorcerers list but list is already empty", guid);
                 else  Sorcerers.remove(guid);
             }
         }
@@ -403,17 +403,17 @@ public:
                 {
                     CAST_AI(mob_ashtongue_channeler::mob_ashtongue_channelerAI, (*itr)->AI())->ShadeGUID = me->GetGUID();
                     Channelers.push_back((*itr)->GetGUID());
-                    TC_LOG_DEBUG("scripts", "Shade of Akama Grid Search found channeler " UI64FMTD ". Adding to list", (*itr)->GetGUID());
+                    LOG_DEBUG("scripts", "Shade of Akama Grid Search found channeler " UI64FMTD ". Adding to list", (*itr)->GetGUID());
                 }
             }
-            else TC_LOG_ERROR("scripts", "SD2 ERROR: Grid Search was unable to find any channelers. Shade of Akama encounter will be buggy");
+            else LOG_ERROR("scripts", "SD2 ERROR: Grid Search was unable to find any channelers. Shade of Akama encounter will be buggy");
         }
 
         void SetSelectableChannelers()
         {
             if (Channelers.empty())
             {
-                TC_LOG_ERROR("scripts", "SD2 ERROR: Channeler List is empty, Shade of Akama encounter will be buggy");
+                LOG_ERROR("scripts", "SD2 ERROR: Channeler List is empty, Shade of Akama encounter will be buggy");
                 return;
             }
 
@@ -540,7 +540,7 @@ void mob_ashtongue_channeler::mob_ashtongue_channelerAI::JustDied(Unit* /*killer
     Creature* Shade = (Unit::GetCreature((*me), ShadeGUID));
     if (Shade && Shade->isAlive())
         CAST_AI(boss_shade_of_akama::boss_shade_of_akamaAI, Shade->AI())->IncrementDeathCount();
-    else TC_LOG_ERROR("scripts", "SD2 ERROR: Channeler dead but unable to increment DeathCount for Shade of Akama.");
+    else LOG_ERROR("scripts", "SD2 ERROR: Channeler dead but unable to increment DeathCount for Shade of Akama.");
 }
 
 void mob_ashtongue_sorcerer::mob_ashtongue_sorcererAI::JustDied(Unit* /*killer*/)
@@ -548,7 +548,7 @@ void mob_ashtongue_sorcerer::mob_ashtongue_sorcererAI::JustDied(Unit* /*killer*/
     Creature* Shade = (Unit::GetCreature((*me), ShadeGUID));
     if (Shade && Shade->isAlive())
         CAST_AI(boss_shade_of_akama::boss_shade_of_akamaAI, Shade->AI())->IncrementDeathCount(me->GetGUID());
-    else TC_LOG_ERROR("scripts", "SD2 ERROR: Sorcerer dead but unable to increment DeathCount for Shade of Akama.");
+    else LOG_ERROR("scripts", "SD2 ERROR: Sorcerer dead but unable to increment DeathCount for Shade of Akama.");
 }
 
 class npc_akama_shade : public CreatureScript

@@ -202,7 +202,7 @@ public:
                     else
                     {
                         me->GetMotionMaster()->MovePoint(1, anchorX, anchorY, me->GetPositionZ());
-                        //TC_LOG_DEBUG("scripts", "npc_unworthy_initiateAI: move to %f %f %f", anchorX, anchorY, me->GetPositionZ());
+                        //LOG_DEBUG("scripts", "npc_unworthy_initiateAI: move to %f %f %f", anchorX, anchorY, me->GetPositionZ());
                         phase = PHASE_EQUIPING;
                         wait_timer = 0;
                     }
@@ -1070,9 +1070,9 @@ public:
                     {
                         car->AI()->SetGUID(miner->GetGUID());
                         CAST_AI(npc_scarlet_miner::npc_scarlet_minerAI, miner->AI())->InitCartQuest(player);
-                    } else TC_LOG_ERROR("scripts", "OnGossipHello vehicle entry is not correct.");
-                } else TC_LOG_ERROR("scripts", "OnGossipHello player is not on the vehicle.");
-            } else TC_LOG_ERROR("scripts", "OnGossipHello Scarlet Miner cant be found by script.");
+                    } else LOG_ERROR("scripts", "OnGossipHello vehicle entry is not correct.");
+                } else LOG_ERROR("scripts", "OnGossipHello player is not on the vehicle.");
+            } else LOG_ERROR("scripts", "OnGossipHello Scarlet Miner cant be found by script.");
         }
         return true;
     }

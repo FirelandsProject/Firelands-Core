@@ -78,10 +78,10 @@ Group::~Group()
 {
     if (m_bgGroup)
     {
-        TC_LOG_DEBUG("bg.battleground", "Group::~Group: battleground group being deleted.");
+        LOG_DEBUG("bg.battleground", "Group::~Group: battleground group being deleted.");
         if (m_bgGroup->GetBgRaid(ALLIANCE) == this) m_bgGroup->SetBgRaid(ALLIANCE, NULL);
         else if (m_bgGroup->GetBgRaid(HORDE) == this) m_bgGroup->SetBgRaid(HORDE, NULL);
-        else TC_LOG_ERROR("misc", "Group::~Group: battleground group is not linked to the correct battleground.");
+        else LOG_ERROR("misc", "Group::~Group: battleground group is not linked to the correct battleground.");
     }
     Rolls::iterator itr;
     while (!RollId.empty())
@@ -1008,7 +1008,7 @@ void Group::GroupLoot(Loot* loot, WorldObject* pLootedObject)
         item = sObjectMgr->GetItemTemplate(i->itemid);
         if (!item)
         {
-            //TC_LOG_DEBUG("misc", "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
+            //LOG_DEBUG("misc", "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
             continue;
         }
 
@@ -1096,7 +1096,7 @@ void Group::GroupLoot(Loot* loot, WorldObject* pLootedObject)
         item = sObjectMgr->GetItemTemplate(i->itemid);
         if (!item)
         {
-            //TC_LOG_DEBUG("misc", "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
+            //LOG_DEBUG("misc", "Group::GroupLoot: missing item prototype for item with id: %d", i->itemid);
             continue;
         }
 
@@ -1306,7 +1306,7 @@ void Group::NeedBeforeGreed(Loot* loot, WorldObject* lootedObject)
 
 void Group::MasterLoot(Loot* /*loot*/, WorldObject* pLootedObject)
 {
-    TC_LOG_DEBUG("network.opcode", "Group::MasterLoot (SMSG_LOOT_MASTER_LIST)");
+    LOG_DEBUG("network.opcode", "Group::MasterLoot (SMSG_LOOT_MASTER_LIST)");
 
     uint32 real_count = 0;
 
@@ -2333,7 +2333,7 @@ InstanceGroupBind* Group::BindToInstance(InstanceSave* save, bool permanent, boo
     bind.save = save;
     bind.perm = permanent;
     if (!load)
-        TC_LOG_DEBUG("maps", "Group::BindToInstance: Group (guid: %u, storage id: %u) is now bound to map %d, instance %d, difficulty %d, isLfg %u",
+        LOG_DEBUG("maps", "Group::BindToInstance: Group (guid: %u, storage id: %u) is now bound to map %d, instance %d, difficulty %d, isLfg %u",
             GUID_LOPART(GetGUID()), m_dbStoreId, save->GetMapId(), save->GetInstanceId(), save->GetDifficulty(), isLFGGroup());
     return &bind;
 }
@@ -2376,7 +2376,7 @@ void Group::BroadcastGroupUpdate(void)
         {
             pp->ForceValuesUpdateAtIndex(UNIT_FIELD_BYTES_2);
             pp->ForceValuesUpdateAtIndex(UNIT_FIELD_FACTIONTEMPLATE);
-            TC_LOG_DEBUG("misc", "-- Forced group value update for '%s'", pp->GetName().c_str());
+            LOG_DEBUG("misc", "-- Forced group value update for '%s'", pp->GetName().c_str());
         }
     }
 }
@@ -2832,7 +2832,7 @@ void Group::ToggleGroupMemberFlag(member_witerator slot, uint8 flag, bool apply)
 
 void Group::SendRaidMarkerChanged()
 {
-    TC_LOG_DEBUG("network.opcode", "Group::MarkerChanged (SMSG_RAID_MARKERS_CHANGED)");
+    LOG_DEBUG("network.opcode", "Group::MarkerChanged (SMSG_RAID_MARKERS_CHANGED)");
 
      uint32 slots = 0;
      for (uint8 i = 0; i <= 5; ++i)
@@ -2871,7 +2871,7 @@ void Group::SetMarker(uint8 slot, Position const& destTarget, Unit* caster, Spel
 
 void Group::RemoveMarker(uint8 slot)
 {
-    TC_LOG_DEBUG("network.opcode", "Group::RemoveMarker");
+    LOG_DEBUG("network.opcode", "Group::RemoveMarker");
 
     if(m_markers[slot] != 0)
     {

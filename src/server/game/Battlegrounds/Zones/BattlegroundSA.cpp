@@ -169,7 +169,7 @@ bool BattlegroundSA::ResetObjs()
 
         if (!sg)
         {
-            TC_LOG_ERROR("bg.battleground", "SOTA: Can't find GY entry %u", BG_SA_GYEntries[i]);
+            LOG_ERROR("bg.battleground", "SOTA: Can't find GY entry %u", BG_SA_GYEntries[i]);
             return false;
         }
 
@@ -182,7 +182,7 @@ bool BattlegroundSA::ResetObjs()
         {
             GraveyardStatus[i] = ((Attackers == TEAM_HORDE)? TEAM_ALLIANCE : TEAM_HORDE);
             if (!AddSpiritGuide(i + BG_SA_MAXNPC, sg->x, sg->y, sg->z, BG_SA_GYOrientation[i], ((Attackers == TEAM_HORDE)? ALLIANCE : HORDE)))
-                TC_LOG_ERROR("bg.battleground", "SOTA: couldn't spawn GY: %u", i);
+                LOG_ERROR("bg.battleground", "SOTA: couldn't spawn GY: %u", i);
         }
     }
 
@@ -766,7 +766,7 @@ void BattlegroundSA::CaptureGraveyard(BG_SA_Graveyards i, Player* Source)
     WorldSafeLocsEntry const* sg = sWorldSafeLocsStore.LookupEntry(BG_SA_GYEntries[i]);
     if (!sg)
     {
-        TC_LOG_ERROR("bg.battleground", "BattlegroundSA::CaptureGraveyard: non-existant GY entry: %u", BG_SA_GYEntries[i]);
+        LOG_ERROR("bg.battleground", "BattlegroundSA::CaptureGraveyard: non-existant GY entry: %u", BG_SA_GYEntries[i]);
         return;
     }
 
@@ -1059,7 +1059,7 @@ void BattlegroundSA::UpdateObjectInteractionFlags(uint32 objectId)
                 GameObject* yellowGate = GetBGObject(BG_SA_YELLOW_GATE);
 
                 if (ancientGate && yellowGate)
-                    TC_LOG_ERROR("bg.battleground.sota", "BattlegroundSA::UpdateObjectInteractionFlags: Titan Relic got GO_FLAG_NOT_SELECTABLE: Ancient Gate state: %u, Yellow Gate state: %u", ancientGate->GetDestructibleState(), yellowGate->GetDestructibleState());
+                    LOG_ERROR("bg.battleground.sota", "BattlegroundSA::UpdateObjectInteractionFlags: Titan Relic got GO_FLAG_NOT_SELECTABLE: Ancient Gate state: %u, Yellow Gate state: %u", ancientGate->GetDestructibleState(), yellowGate->GetDestructibleState());
             }
         }
     }

@@ -31,10 +31,10 @@
 #include <ace/Semaphore.h>
 #include <ace/Task.h>
 
-class TCSoapRunnable: public ACE_Based::Runnable
+class FCSoapRunnable: public ACE_Based::Runnable
 {
     public:
-        TCSoapRunnable() { }
+        FCSoapRunnable() { }
         void run();
         void setListenArguments(std::string host, uint16 port)
         {

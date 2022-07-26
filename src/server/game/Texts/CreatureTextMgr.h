@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_CREATURE_TEXT_MGR_H
-#define TRINITY_CREATURE_TEXT_MGR_H
+#ifndef FIRELANDS_CREATURE_TEXT_MGR_H
+#define FIRELANDS_CREATURE_TEXT_MGR_H
 
 #include "Creature.h"
 #include "GridNotifiers.h"

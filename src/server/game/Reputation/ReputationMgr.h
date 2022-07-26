@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TRINITY_REPUTATION_MGR_H
-#define __TRINITY_REPUTATION_MGR_H
+#ifndef __FIRELANDS_REPUTATION_MGR_H
+#define __FIRELANDS_REPUTATION_MGR_H
 
 #include "Common.h"
 #include "SharedDefines.h"

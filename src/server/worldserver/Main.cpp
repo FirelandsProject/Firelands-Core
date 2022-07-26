@@ -32,9 +32,9 @@
 #include "Log.h"
 #include "Master.h"
 
-#ifndef _TRINITY_CORE_CONFIG
-# define _TRINITY_CORE_CONFIG  "worldserver.conf"
-#endif //_TRINITY_CORE_CONFIG
+#ifndef _FIRELANDS_CORE_CONFIG
+# define _FIRELANDS_CORE_CONFIG  "worldserver.conf"
+#endif //_FIRELANDS_CORE_CONFIG
 
 #ifdef _WIN32
 #include "ServiceWin32.h"
@@ -74,7 +74,7 @@ void usage(const char *prog)
 extern int main(int argc, char **argv)
 {
     ///- Command line parsing to get the configuration file name
-    char const* cfg_file = _TRINITY_CORE_CONFIG;
+    char const* cfg_file = _FIRELANDS_CORE_CONFIG;
     int c = 1;
     while ( c < argc )
     {
@@ -136,10 +136,10 @@ extern int main(int argc, char **argv)
         printf("Verify that the file exists and has \'[worldserver]' written in the top of the file!\n");
         return 1;
     }
-    TC_LOG_INFO("server.worldserver", "Using configuration file %s.", cfg_file);
+    LOG_INFO("server.worldserver", "Using configuration file %s.", cfg_file);
 
-    TC_LOG_INFO("server.worldserver", "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
-    TC_LOG_INFO("server.worldserver", "Using ACE version: %s", ACE_VERSION);
+    LOG_INFO("server.worldserver", "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
+    LOG_INFO("server.worldserver", "Using ACE version: %s", ACE_VERSION);
 
     ///- and run the 'Master'
     /// \todo Why do we need this 'Master'? Can't all of this be in the Main as for Realmd?

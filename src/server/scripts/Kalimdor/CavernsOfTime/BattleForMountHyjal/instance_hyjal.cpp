@@ -279,7 +279,7 @@ public:
                     break;
             }
 
-             TC_LOG_DEBUG("scripts", "Instance Hyjal: Instance data updated for event %u (Data=%u)", type, data);
+             LOG_DEBUG("scripts", "Instance Hyjal: Instance data updated for event %u (Data=%u)", type, data);
 
             if (data == DONE)
             {

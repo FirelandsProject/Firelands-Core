@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_BYTECONVERTER_H
-#define TRINITY_BYTECONVERTER_H
+#ifndef FIRELANDS_BYTECONVERTER_H
+#define FIRELANDS_BYTECONVERTER_H
 
 /** ByteConverter reverse your byte order.  This is use
     for cross platform where they have different endians.
@@ -45,7 +45,7 @@ namespace ByteConverter
     }
 }
 
-#if TRINITY_ENDIAN == TRINITY_BIGENDIAN
+#if FIRELANDS_ENDIAN == FIRELANDS_BIGENDIAN
 template<typename T> inline void EndianConvert(T& val) { ByteConverter::apply<T>(&val); }
 template<typename T> inline void EndianConvertReverse(T&) { }
 #else

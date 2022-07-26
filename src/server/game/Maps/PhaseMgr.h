@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_PHASEMGR_H
-#define TRINITY_PHASEMGR_H
+#ifndef FIRELANDS_PHASEMGR_H
+#define FIRELANDS_PHASEMGR_H
 
 #include "SharedDefines.h"
 #include "SpellAuras.h"

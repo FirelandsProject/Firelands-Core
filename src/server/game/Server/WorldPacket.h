@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITYCORE_WORLDPACKET_H
-#define TRINITYCORE_WORLDPACKET_H
+#ifndef FIRELANDS_WORLDPACKET_H
+#define FIRELANDS_WORLDPACKET_H
 
 #include "Common.h"
 #include "Opcodes.h"

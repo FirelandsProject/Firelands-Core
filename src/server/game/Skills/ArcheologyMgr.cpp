@@ -103,7 +103,7 @@ void ArcheologyMgr::SetActualDigSitePosition(bool force)
                             return;
                         }
 
-        TC_LOG_ERROR("misc", "ARCHAEOLOGY : digsite broken zone : %u", m_player->GetZoneId());
+        LOG_ERROR("misc", "ARCHAEOLOGY : digsite broken zone : %u", m_player->GetZoneId());
     }
 }
 

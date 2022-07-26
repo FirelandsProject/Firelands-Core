@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_TYPECONTAINERVISITOR_H
-#define TRINITY_TYPECONTAINERVISITOR_H
+#ifndef FIRELANDS_TYPECONTAINERVISITOR_H
+#define FIRELANDS_TYPECONTAINERVISITOR_H
 
 /*
  * @class TypeContainerVisitor is implemented as a visitor pattern.  It is

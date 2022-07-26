@@ -123,7 +123,7 @@ public:
                 }
             }
 
-            TC_LOG_DEBUG("scripts", "Instance Utgarde Keep: GetPlayerInMap, but PlayerList is empty!");
+            LOG_DEBUG("scripts", "Instance Utgarde Keep: GetPlayerInMap, but PlayerList is empty!");
             return NULL;
         }
 

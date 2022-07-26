@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_FORMULAS_H
-#define TRINITY_FORMULAS_H
+#ifndef FIRELANDS_FORMULAS_H
+#define FIRELANDS_FORMULAS_H
 
 #include "World.h"
 #include "SharedDefines.h"
@@ -133,7 +133,7 @@ namespace Firelands
                     nBaseExp = 1878;
                     break;
                 default:
-                    TC_LOG_ERROR("misc", "BaseGain: Unsupported content level %u", content);
+                    LOG_ERROR("misc", "BaseGain: Unsupported content level %u", content);
                     nBaseExp = 45;
                     break;
             }

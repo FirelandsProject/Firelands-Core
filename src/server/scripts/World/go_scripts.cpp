@@ -336,7 +336,7 @@ public:
                     if (Spell)
                         creature->CastSpell(player, Spell, false);
                     else
-                        TC_LOG_ERROR("scripts", "go_ethereum_prison summoned Creature (entry %u) but faction (%u) are not expected by script.", creature->GetEntry(), creature->getFaction());
+                        LOG_ERROR("scripts", "go_ethereum_prison summoned Creature (entry %u) but faction (%u) are not expected by script.", creature->GetEntry(), creature->getFaction());
                 }
             }
         }
@@ -1447,7 +1447,7 @@ public:
             spellid = SPELL_GOBLIN_BARBECUE_FEAST;
             break;
         default:
-            TC_LOG_ERROR("scripts", "Gameobject : %s (entry %u) with wrong spell %u with scriptname: go_goblin_barbecue.", go->GetName().c_str(), go->GetEntry(), go->GetSpellId());
+            LOG_ERROR("scripts", "Gameobject : %s (entry %u) with wrong spell %u with scriptname: go_goblin_barbecue.", go->GetName().c_str(), go->GetEntry(), go->GetSpellId());
             return false;
         }
 

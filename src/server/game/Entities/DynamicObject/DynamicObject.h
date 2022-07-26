@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITYCORE_DYNAMICOBJECT_H
-#define TRINITYCORE_DYNAMICOBJECT_H
+#ifndef FIRELANDS_DYNAMICOBJECT_H
+#define FIRELANDS_DYNAMICOBJECT_H
 
 #include "Object.h"
 

@@ -68,7 +68,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
     Map* oldMap = GetPlayer()->GetMap();
     if (GetPlayer()->IsInWorld())
     {
-        TC_LOG_ERROR("network.opcode", "Player (Name %s) is still in world when teleported from map %u to new map %u", GetPlayer()->GetName().c_str(), oldMap->GetId(), loc.GetMapId());
+        LOG_ERROR("network.opcode", "Player (Name %s) is still in world when teleported from map %u to new map %u", GetPlayer()->GetName().c_str(), oldMap->GetId(), loc.GetMapId());
         oldMap->RemovePlayerFromMap(GetPlayer(), false);
     }
 
@@ -78,7 +78,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
     // while the player is in transit, for example the map may get full
     if (!newMap || !newMap->CanEnter(GetPlayer()))
     {
-        TC_LOG_ERROR("network.opcode", "Map %d could not be created for player %d, porting player to homebind", loc.GetMapId(), GetPlayer()->GetGUIDLow());
+        LOG_ERROR("network.opcode", "Map %d could not be created for player %d, porting player to homebind", loc.GetMapId(), GetPlayer()->GetGUIDLow());
         GetPlayer()->TeleportTo(GetPlayer()->m_homebindMapId, GetPlayer()->m_homebindX, GetPlayer()->m_homebindY, GetPlayer()->m_homebindZ, GetPlayer()->GetOrientation());
         return;
     }
@@ -91,7 +91,7 @@ void WorldSession::HandleMoveWorldportAckOpcode()
     GetPlayer()->SendInitialPacketsBeforeAddToMap();
     if (!GetPlayer()->GetMap()->AddPlayerToMap(GetPlayer()))
     {
-        TC_LOG_ERROR("network.opcode", "WORLD: failed to teleport player %s (%d) to map %d because of unknown reason!",
+        LOG_ERROR("network.opcode", "WORLD: failed to teleport player %s (%d) to map %d because of unknown reason!",
             GetPlayer()->GetName().c_str(), GetPlayer()->GetGUIDLow(), loc.GetMapId());
         GetPlayer()->ResetMap();
         GetPlayer()->SetMap(oldMap);
@@ -528,7 +528,7 @@ void WorldSession::HandleMovementSpeedChangeAck(WorldPacket& recvPacket)
         case CMSG_MOVE_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK: moveType = MOVE_FLIGHT_BACK; updatePacketNotKnown = true; break;
         case CMSG_MOVE_FORCE_PITCH_RATE_CHANGE_ACK: moveType = MOVE_PITCH_RATE; updatePacketNotKnown = true; break;
         default:
-            TC_LOG_INFO("misc", "WorldSession::HandleMovementSpeedChangeAck for unknown opcode: %s", GetOpcodeNameForLogging(recvPacket.GetOpcode()).c_str());
+            LOG_INFO("misc", "WorldSession::HandleMovementSpeedChangeAck for unknown opcode: %s", GetOpcodeNameForLogging(recvPacket.GetOpcode()).c_str());
             return;
     }
 

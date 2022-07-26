@@ -88,7 +88,7 @@ bool ArenaTeam::Create(uint64 captainGuid, uint8 type, std::string const& arenaT
     // Add captain as member
     AddMember(CaptainGuid);
 
-    TC_LOG_DEBUG("bg.arena", "New ArenaTeam created [Id: %u] [Type: %u] [Captain low GUID: %u]", GetId(), GetType(), captainLowGuid);
+    LOG_DEBUG("bg.arena", "New ArenaTeam created [Id: %u] [Type: %u] [Captain low GUID: %u]", GetId(), GetType(), captainLowGuid);
     return true;
 }
 
@@ -135,7 +135,7 @@ bool ArenaTeam::AddMember(uint64 playerGuid)
     // Check if player is already in a similar arena team
     if ((player && player->GetArenaTeamId(GetSlot())) || Player::GetArenaTeamIdFromDB(playerGuid, GetType()) != 0)
     {
-        TC_LOG_DEBUG("bg.arena", "Arena: Player %s (guid: %u) already has an arena team of type %u", playerName.c_str(), GUID_LOPART(playerGuid), GetType());
+        LOG_DEBUG("bg.arena", "Arena: Player %s (guid: %u) already has an arena team of type %u", playerName.c_str(), GUID_LOPART(playerGuid), GetType());
         return false;
     }
 
@@ -202,7 +202,7 @@ bool ArenaTeam::AddMember(uint64 playerGuid)
             player->SetArenaTeamInfoField(GetSlot(), ARENA_TEAM_MEMBER, 1);
     }
 
-    TC_LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] joined arena team type: %u [Id: %u, Name: %s].", playerName.c_str(), GUID_LOPART(playerGuid), GetType(), GetId(), GetName().c_str());
+    LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] joined arena team type: %u [Id: %u, Name: %s].", playerName.c_str(), GUID_LOPART(playerGuid), GetType(), GetId(), GetName().c_str());
 
     return true;
 }
@@ -269,7 +269,7 @@ bool ArenaTeam::LoadMembersFromDB(QueryResult result)
         // Delete member if character information is missing
         if (newMember.Name.empty())
         {
-            TC_LOG_ERROR("sql.sql", "ArenaTeam %u has member with empty name - probably player %u doesn't exist, deleting him from memberlist!", arenaTeamId, GUID_LOPART(newMember.Guid));
+            LOG_ERROR("sql.sql", "ArenaTeam %u has member with empty name - probably player %u doesn't exist, deleting him from memberlist!", arenaTeamId, GUID_LOPART(newMember.Guid));
             DelMember(newMember.Guid, true);
             continue;
         }
@@ -286,7 +286,7 @@ bool ArenaTeam::LoadMembersFromDB(QueryResult result)
     if (Empty() || !captainPresentInTeam)
     {
         // Arena team is empty or captain is not in team, delete from db
-        TC_LOG_DEBUG("bg.arena", "ArenaTeam %u does not have any members or its captain is not in team, disbanding it...", TeamId);
+        LOG_DEBUG("bg.arena", "ArenaTeam %u does not have any members or its captain is not in team, disbanding it...", TeamId);
         return false;
     }
 
@@ -315,7 +315,7 @@ void ArenaTeam::SetCaptain(uint64 guid)
         newCaptain->SetArenaTeamInfoField(GetSlot(), ARENA_TEAM_MEMBER, 0);
         if (oldCaptain)
         {
-            TC_LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] promoted player: %s [GUID: %u] to leader of arena team [Id: %u] [Type: %u].",
+            LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] promoted player: %s [GUID: %u] to leader of arena team [Id: %u] [Type: %u].",
                 oldCaptain->GetName().c_str(), oldCaptain->GetGUIDLow(), newCaptain->GetName().c_str(),
                 newCaptain->GetGUIDLow(), GetId(), GetType());
         }
@@ -337,7 +337,7 @@ void ArenaTeam::DelMember(uint64 guid, bool cleanDb)
     {
         // delete all info regarding this team
         player->DeleteArenaTeam(GetSlot(), true);
-        TC_LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] left arena team type: %u [Id: %u].", player->GetName().c_str(), player->GetGUIDLow(), GetType(), GetId());
+        LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] left arena team type: %u [Id: %u].", player->GetName().c_str(), player->GetGUIDLow(), GetType(), GetId());
     }
 
     sInfoMgr->UpdateCharArenaTeam(GUID_LOPART(guid), 0, GetSlot());
@@ -359,7 +359,7 @@ void ArenaTeam::Disband(WorldSession* session)
     {
         BroadcastEvent(ERR_ARENA_TEAM_DISBANDED_S, 0, 2, session->GetPlayerName(), GetName(), "");
         if (Player* player = session->GetPlayer())
-            TC_LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] disbanded arena team type: %u [Id: %u].", player->GetName().c_str(), player->GetGUIDLow(), GetType(), GetId());
+            LOG_DEBUG("bg.arena", "Player: %s [GUID: %u] disbanded arena team type: %u [Id: %u].", player->GetName().c_str(), player->GetGUIDLow(), GetType(), GetId());
     }
 
     // Remove all members from arena team
@@ -451,7 +451,7 @@ void ArenaTeam::Roster(WorldSession* session)
     }
 
     session->SendPacket(&data);
-    TC_LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ARENA_TEAM_ROSTER");
+    LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ARENA_TEAM_ROSTER");
 }
 
 void ArenaTeam::Query(WorldSession* session)
@@ -466,7 +466,7 @@ void ArenaTeam::Query(WorldSession* session)
     data << uint32(BorderStyle);                            // border style
     data << uint32(BorderColor);                            // border color
     session->SendPacket(&data);
-    TC_LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ARENA_TEAM_QUERY_RESPONSE");
+    LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ARENA_TEAM_QUERY_RESPONSE");
 }
 
 void ArenaTeam::SendStats(WorldSession* session)
@@ -570,7 +570,7 @@ void ArenaTeam::BroadcastEvent(ArenaTeamEvents event, uint64 guid, uint8 strCoun
             data << str1 << str2 << str3;
             break;
         default:
-            TC_LOG_ERROR("bg.arena", "Unhandled strCount %u in ArenaTeam::BroadcastEvent", strCount);
+            LOG_ERROR("bg.arena", "Unhandled strCount %u in ArenaTeam::BroadcastEvent", strCount);
             return;
     }
 
@@ -579,7 +579,7 @@ void ArenaTeam::BroadcastEvent(ArenaTeamEvents event, uint64 guid, uint8 strCoun
 
     BroadcastPacket(&data);
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ARENA_TEAM_EVENT");
+    LOG_DEBUG("network.opcode", "WORLD: Sent SMSG_ARENA_TEAM_EVENT");
 }
 
 void ArenaTeam::MassInviteToEvent(WorldSession* session)
@@ -610,7 +610,7 @@ uint8 ArenaTeam::GetSlotByType(uint32 type)
         default:
             break;
     }
-    TC_LOG_ERROR("bg.arena", "FATAL: Unknown arena team type %u for some arena team", type);
+    LOG_ERROR("bg.arena", "FATAL: Unknown arena team type %u for some arena team", type);
     return 0xFF;
 }
 
@@ -625,7 +625,7 @@ uint8 ArenaTeam::GetTypeBySlot(uint8 slot)
         default:
             break;
     }
-    TC_LOG_ERROR("bg.arena", "FATAL: Unknown arena team slot %u for some arena team", slot);
+    LOG_ERROR("bg.arena", "FATAL: Unknown arena team slot %u for some arena team", slot);
     return 0xFF;
 }
 

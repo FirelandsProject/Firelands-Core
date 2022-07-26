@@ -78,7 +78,7 @@ void WorldSession::HandleSubmitComplainOpcode(WorldPacket & recvData)
     uint32 count = recvData.ReadBits(22);
     uint32* strLength = new uint32[count];
 
-    // TC_LOG_INFO("server.loading","CMSG_SUBMIT_COMPLAIN:: count:%u guid:%u option:%u length :%u;posY:%f ,posX:%f ,posZ:%f ,MAP:%u ,poso:%f  text:%s",count,guid,options,length,posY,posX,posZ,mapID,posO,text.c_str());
+    // LOG_INFO("server.loading","CMSG_SUBMIT_COMPLAIN:: count:%u guid:%u option:%u length :%u;posY:%f ,posX:%f ,posZ:%f ,MAP:%u ,poso:%f  text:%s",count,guid,options,length,posY,posX,posZ,mapID,posO,text.c_str());
 
     switch(options)
     {
@@ -94,13 +94,13 @@ void WorldSession::HandleSubmitComplainOpcode(WorldPacket & recvData)
 
             for (uint32 i = 0; i < count; ++i)
             {
-                TC_LOG_INFO("server.loading","time : %u",recvData.ReadPackedTime());
-                TC_LOG_INFO("server.loading","Text : %s",recvData.ReadString(strLength[i]).c_str());
+                LOG_INFO("server.loading","time : %u",recvData.ReadPackedTime());
+                LOG_INFO("server.loading","Text : %s",recvData.ReadString(strLength[i]).c_str());
             }
 
             break;
         default:
-             TC_LOG_INFO("server.loading","CMSG_SUBMIT_COMPLAIN::UNKNOW option:%u",options);
+             LOG_INFO("server.loading","CMSG_SUBMIT_COMPLAIN::UNKNOW option:%u",options);
 
     }
 }
@@ -191,7 +191,7 @@ void WorldSession::HandleGMTicketCreateOpcode(WorldPacket& recvData)
             }
             else
             {
-                TC_LOG_ERROR("network.opcode", "CMSG_GMTICKET_CREATE possibly corrupt. Uncompression failed.");
+                LOG_ERROR("network.opcode", "CMSG_GMTICKET_CREATE possibly corrupt. Uncompression failed.");
                 recvData.rfinish();
                 return;
             }

@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_DISABLEMGR_H
-#define TRINITY_DISABLEMGR_H
+#ifndef FIRELANDS_DISABLEMGR_H
+#define FIRELANDS_DISABLEMGR_H
 
 #include "Define.h"
 
@@ -71,4 +71,4 @@ namespace DisableMgr
     void CheckQuestDisables();
 }
 
-#endif //TRINITY_DISABLEMGR_H
+#endif //FIRELANDS_DISABLEMGR_H

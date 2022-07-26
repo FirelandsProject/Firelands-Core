@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_OBJECTREGISTRY_H
-#define TRINITY_OBJECTREGISTRY_H
+#ifndef FIRELANDS_OBJECTREGISTRY_H
+#define FIRELANDS_OBJECTREGISTRY_H
 
 #include "Define.h"
 #include "Dynamic/UnorderedMap.h"

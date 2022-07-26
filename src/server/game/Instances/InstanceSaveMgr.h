@@ -104,7 +104,7 @@ class InstanceSave
 
         /* online players bound to the instance (perm/solo)
            does not include the members of the group unless they have permanent saves */
-        void AddPlayer(Player* player) { TRINITY_GUARD(ACE_Thread_Mutex, _lock); m_playerList.push_back(player); }
+        void AddPlayer(Player* player) { FIRELANDS_GUARD(ACE_Thread_Mutex, _lock); m_playerList.push_back(player); }
         bool RemovePlayer(Player* player)
         {
             _lock.acquire();

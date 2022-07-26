@@ -414,11 +414,11 @@ public:
             }
             else
             {
-                TC_LOG_ERROR("misc", "Sending opcode that has unknown type '%s'", type.c_str());
+                LOG_ERROR("misc", "Sending opcode that has unknown type '%s'", type.c_str());
                 break;
             }
         }
-        TC_LOG_DEBUG("network.opcode", "Sending opcode %u", data.GetOpcode());
+        LOG_DEBUG("network.opcode", "Sending opcode %u", data.GetOpcode());
         data.hexlike();
         player->GetSession()->SendPacket(&data, true);
         handler->PSendSysMessage(LANG_COMMAND_OPCODESENT, data.GetOpcode(), unit->GetName().c_str());
@@ -861,7 +861,7 @@ public:
                     matchmakerRating += 1500;
             }
             matchmakerRating /= 10;
-            TC_LOG_DEBUG("bg.battleground", "Battleground: the following players are joining as group on Rated Battleground:");
+            LOG_DEBUG("bg.battleground", "Battleground: the following players are joining as group on Rated Battleground:");
             ginfo = bgQueue.AddGroup(target, grp, bgTypeId, bracketEntry, 0, true, false, 0, matchmakerRating, target->GetGUIDLow());
             avgTime = bgQueue.GetAverageQueueWaitTime(ginfo, bracketEntry->GetBracketId());
         }
@@ -889,10 +889,10 @@ public:
             WorldPacket data; // send status packet (in queue)
             sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, member, queueSlot, STATUS_WAIT_QUEUE, avgTime, ginfo->JoinTime, ginfo->ArenaType);
             member->GetSession()->SendPacket(&data);
-            TC_LOG_DEBUG("bg.battleground", "Battleground: player joined queue for rated bg queue type %u bg type %u: GUID %u, NAME %s",
+            LOG_DEBUG("bg.battleground", "Battleground: player joined queue for rated bg queue type %u bg type %u: GUID %u, NAME %s",
                            bgQueueTypeId, bgTypeId, member->GetGUIDLow(), member->GetName().c_str());
         }
-        TC_LOG_DEBUG("bg.battleground", "Battleground: group end");
+        LOG_DEBUG("bg.battleground", "Battleground: group end");
 
         sBattlegroundMgr->ScheduleQueueUpdate(0, 0, bgQueueTypeId, bgTypeId, bracketEntry->GetBracketId());
         return true;
@@ -1459,7 +1459,7 @@ public:
     {
         Player* player = handler->GetSession()->GetPlayer();
 
-        TC_LOG_INFO("sql.dev", "(@PATH, XX, %.3f, %.3f, %.5f, 0, 0, 0, 100, 0),", player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
+        LOG_INFO("sql.dev", "(@PATH, XX, %.3f, %.3f, %.5f, 0, 0, 0, 100, 0),", player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
 
         handler->PSendSysMessage("Waypoint SQL written to SQL Developer log");
         return true;

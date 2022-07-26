@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_GRIDSTATES_H
-#define TRINITY_GRIDSTATES_H
+#ifndef FIRELANDS_GRIDSTATES_H
+#define FIRELANDS_GRIDSTATES_H
 
 #include "Map.h"
 #include "Object.h"
@@ -26,14 +26,14 @@
 class GridState
 {
     public:
-#ifdef TRINITY_DEBUG
+#ifdef FIRELANDS_DEBUG
 #define MAGIC_TESTVAL 0xFBE823BA
         GridState() { i_Magic = MAGIC_TESTVAL; }
         bool checkMagic()
         {
             if (i_Magic != MAGIC_TESTVAL)
             {
-                TC_LOG_ERROR("misc", "!!! GridState: Magic value gone !!!");
+                LOG_ERROR("misc", "!!! GridState: Magic value gone !!!");
                 return false;
             }
             return true;

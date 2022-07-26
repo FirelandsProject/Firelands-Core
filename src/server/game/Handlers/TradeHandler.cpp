@@ -75,12 +75,12 @@ void WorldSession::SendTradeStatus(TradeStatus status)
 
 void WorldSession::HandleIgnoreTradeOpcode(WorldPacket& /*recvPacket*/)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Ignore Trade %u", _player->GetGUIDLow());
+    LOG_DEBUG("network.opcode", "WORLD: Ignore Trade %u", _player->GetGUIDLow());
 }
 
 void WorldSession::HandleBusyTradeOpcode(WorldPacket& /*recvPacket*/)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: Busy Trade %u", _player->GetGUIDLow());
+    LOG_DEBUG("network.opcode", "WORLD: Busy Trade %u", _player->GetGUIDLow());
 }
 
 void WorldSession::SendUpdateTrade(bool trader_data /*= true*/)
@@ -213,7 +213,7 @@ void WorldSession::moveItems(Item* myItems[], Item* hisItems[])
             if (myItems[i])
             {
                 // logging
-                TC_LOG_DEBUG("network.opcode", "partner storing: %u", myItems[i]->GetGUIDLow());
+                LOG_DEBUG("network.opcode", "partner storing: %u", myItems[i]->GetGUIDLow());
                 if (!AccountMgr::IsPlayerAccount(_player->GetSession()->GetSecurity()) && sWorld->getBoolConfig(CONFIG_GM_LOG_TRADE))
                 {
                     sLog->outCommand(_player->GetSession()->GetAccountId(), "GM %s (Account: %u) trade: %s (Entry: %d Count: %u) to player: %s (Account: %u)",
@@ -231,7 +231,7 @@ void WorldSession::moveItems(Item* myItems[], Item* hisItems[])
             if (hisItems[i])
             {
                 // logging
-                TC_LOG_DEBUG("network.opcode", "player storing: %u", hisItems[i]->GetGUIDLow());
+                LOG_DEBUG("network.opcode", "player storing: %u", hisItems[i]->GetGUIDLow());
                 if (!AccountMgr::IsPlayerAccount(trader->GetSession()->GetSecurity()) && sWorld->getBoolConfig(CONFIG_GM_LOG_TRADE))
                 {
                     sLog->outCommand(trader->GetSession()->GetAccountId(), "GM %s (Account: %u) trade: %s (Entry: %d Count: %u) to player: %s (Account: %u)",
@@ -254,21 +254,21 @@ void WorldSession::moveItems(Item* myItems[], Item* hisItems[])
             if (myItems[i])
             {
                 if (!traderCanTrade)
-                    TC_LOG_ERROR("network.opcode", "trader can't store item: %u", myItems[i]->GetGUIDLow());
+                    LOG_ERROR("network.opcode", "trader can't store item: %u", myItems[i]->GetGUIDLow());
                 if (_player->CanStoreItem(NULL_BAG, NULL_SLOT, playerDst, myItems[i], false) == EQUIP_ERR_OK)
                     _player->MoveItemToInventory(playerDst, myItems[i], true, true);
                 else
-                    TC_LOG_ERROR("network.opcode", "player can't take item back: %u", myItems[i]->GetGUIDLow());
+                    LOG_ERROR("network.opcode", "player can't take item back: %u", myItems[i]->GetGUIDLow());
             }
             // return the already removed items to the original owner
             if (hisItems[i])
             {
                 if (!playerCanTrade)
-                    TC_LOG_ERROR("network.opcode", "player can't store item: %u", hisItems[i]->GetGUIDLow());
+                    LOG_ERROR("network.opcode", "player can't store item: %u", hisItems[i]->GetGUIDLow());
                 if (trader->CanStoreItem(NULL_BAG, NULL_SLOT, traderDst, hisItems[i], false) == EQUIP_ERR_OK)
                     trader->MoveItemToInventory(traderDst, hisItems[i], true, true);
                 else
-                    TC_LOG_ERROR("network.opcode", "trader can't take item back: %u", hisItems[i]->GetGUIDLow());
+                    LOG_ERROR("network.opcode", "trader can't take item back: %u", hisItems[i]->GetGUIDLow());
             }
         }
     }
@@ -286,7 +286,7 @@ static void setAcceptTradeMode(TradeData* myTrade, TradeData* hisTrade, Item* *m
     {
         if (Item* item = myTrade->GetItem(TradeSlots(i)))
         {
-            TC_LOG_DEBUG("network.opcode", "player trade item %u bag: %u slot: %u", item->GetGUIDLow(), item->GetBagSlot(), item->GetSlot());
+            LOG_DEBUG("network.opcode", "player trade item %u bag: %u slot: %u", item->GetGUIDLow(), item->GetBagSlot(), item->GetSlot());
             //Can return NULL
             myItems[i] = item;
             myItems[i]->SetInTrade();
@@ -294,7 +294,7 @@ static void setAcceptTradeMode(TradeData* myTrade, TradeData* hisTrade, Item* *m
 
         if (Item* item = hisTrade->GetItem(TradeSlots(i)))
         {
-            TC_LOG_DEBUG("network.opcode", "partner trade item %u bag: %u slot: %u", item->GetGUIDLow(), item->GetBagSlot(), item->GetSlot());
+            LOG_DEBUG("network.opcode", "partner trade item %u bag: %u slot: %u", item->GetGUIDLow(), item->GetBagSlot(), item->GetSlot());
             hisItems[i] = item;
             hisItems[i]->SetInTrade();
         }

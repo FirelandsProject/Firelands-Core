@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_OBJECTACCESSOR_H
-#define TRINITY_OBJECTACCESSOR_H
+#ifndef FIRELANDS_OBJECTACCESSOR_H
+#define FIRELANDS_OBJECTACCESSOR_H
 
 #include "Define.h"
 #include <ace/Singleton.h>
@@ -52,19 +52,19 @@ class HashMapHolder
 
         static void Insert(T* o)
         {
-            TRINITY_WRITE_GUARD(LockType, i_lock);
+            FIRELANDS_WRITE_GUARD(LockType, i_lock);
             m_objectMap[o->GetGUID()] = o;
         }
 
         static void Remove(T* o)
         {
-            TRINITY_WRITE_GUARD(LockType, i_lock);
+            FIRELANDS_WRITE_GUARD(LockType, i_lock);
             m_objectMap.erase(o->GetGUID());
         }
 
         static T* Find(uint64 guid)
         {
-            TRINITY_READ_GUARD(LockType, i_lock);
+            FIRELANDS_READ_GUARD(LockType, i_lock);
             typename MapType::iterator itr = m_objectMap.find(guid);
             return (itr != m_objectMap.end()) ? itr->second : NULL;
         }
@@ -148,14 +148,14 @@ class ObjectAccessor
             CellCoord p = Firelands::ComputeCellCoord(x, y);
             if (!p.IsCoordValid())
             {
-                TC_LOG_ERROR("misc", "ObjectAccessor::GetObjectInWorld: invalid coordinates supplied X:%f Y:%f grid cell [%u:%u]", x, y, p.x_coord, p.y_coord);
+                LOG_ERROR("misc", "ObjectAccessor::GetObjectInWorld: invalid coordinates supplied X:%f Y:%f grid cell [%u:%u]", x, y, p.x_coord, p.y_coord);
                 return NULL;
             }
 
             CellCoord q = Firelands::ComputeCellCoord(obj->GetPositionX(), obj->GetPositionY());
             if (!q.IsCoordValid())
             {
-                TC_LOG_ERROR("misc", "ObjectAccessor::GetObjecInWorld: object (GUID: %u TypeId: %u) has invalid coordinates X:%f Y:%f grid cell [%u:%u]", obj->GetGUIDLow(), obj->GetTypeId(), obj->GetPositionX(), obj->GetPositionY(), q.x_coord, q.y_coord);
+                LOG_ERROR("misc", "ObjectAccessor::GetObjecInWorld: object (GUID: %u TypeId: %u) has invalid coordinates X:%f Y:%f grid cell [%u:%u]", obj->GetGUIDLow(), obj->GetTypeId(), obj->GetPositionX(), obj->GetPositionY(), q.x_coord, q.y_coord);
                 return NULL;
             }
 
@@ -222,13 +222,13 @@ class ObjectAccessor
         //non-static functions
         void AddUpdateObject(Object* obj)
         {
-            TRINITY_GUARD(ACE_Thread_Mutex, i_objectLock);
+            FIRELANDS_GUARD(ACE_Thread_Mutex, i_objectLock);
             i_objects.insert(obj);
         }
 
         void RemoveUpdateObject(Object* obj)
         {
-            TRINITY_GUARD(ACE_Thread_Mutex, i_objectLock);
+            FIRELANDS_GUARD(ACE_Thread_Mutex, i_objectLock);
             i_objects.erase(obj);
         }
 

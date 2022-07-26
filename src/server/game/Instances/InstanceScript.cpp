@@ -111,7 +111,7 @@ void InstanceScript::LoadMinionData(const MinionData* data)
 
         ++data;
     }
-    TC_LOG_DEBUG("scripts", "InstanceScript::LoadMinionData: " UI64FMTD " minions loaded.", uint64(minions.size()));
+    LOG_DEBUG("scripts", "InstanceScript::LoadMinionData: " UI64FMTD " minions loaded.", uint64(minions.size()));
 }
 
 void InstanceScript::LoadDoorData(const DoorData* data)
@@ -123,7 +123,7 @@ void InstanceScript::LoadDoorData(const DoorData* data)
 
         ++data;
     }
-    TC_LOG_DEBUG("scripts", "InstanceScript::LoadDoorData: " UI64FMTD " doors loaded.", uint64(doors.size()));
+    LOG_DEBUG("scripts", "InstanceScript::LoadDoorData: " UI64FMTD " doors loaded.", uint64(doors.size()));
 }
 
 void InstanceScript::LoadObjectData(ObjectData const* creatureData, ObjectData const* gameObjectData)
@@ -134,7 +134,7 @@ void InstanceScript::LoadObjectData(ObjectData const* creatureData, ObjectData c
     if (gameObjectData)
         LoadObjectData(gameObjectData, _gameObjectInfo);
 
-    TC_LOG_DEBUG("scripts", "InstanceScript::LoadObjectData: " SZFMTD " objects loaded.", _creatureInfo.size() + _gameObjectInfo.size());
+    LOG_DEBUG("scripts", "InstanceScript::LoadObjectData: " SZFMTD " objects loaded.", _creatureInfo.size() + _gameObjectInfo.size());
 }
 
 void InstanceScript::LoadObjectData(ObjectData const* data, ObjectInfoMap& objectInfo)
@@ -286,7 +286,7 @@ bool InstanceScript::SetBossState(uint32 id, EncounterState state)
         if (bossInfo->state == TO_BE_DECIDED) // loading
         {
             bossInfo->state = state;
-            //TC_LOG_ERROR("misc", "Inialize boss %u state as %u.", id, (uint32)state);
+            //LOG_ERROR("misc", "Inialize boss %u state as %u.", id, (uint32)state);
             return false;
         }
         else
@@ -409,7 +409,7 @@ void InstanceScript::HandleGameObject(uint64 guid, bool open, GameObject* go /*=
     if (go)
         go->SetGoState(open ? GO_STATE_ACTIVE : GO_STATE_READY);
     else
-        TC_LOG_DEBUG("scripts", "InstanceScript: HandleGameObject failed");
+        LOG_DEBUG("scripts", "InstanceScript: HandleGameObject failed");
 }
 
 void InstanceScript::DoUseDoorOrButton(uint64 guid, uint32 withRestoreTime /*= 0*/, bool useAlternativeState /*= false*/)
@@ -427,10 +427,10 @@ void InstanceScript::DoUseDoorOrButton(uint64 guid, uint32 withRestoreTime /*= 0
                 go->ResetDoorOrButton();
         }
         else
-            TC_LOG_ERROR("scripts", "InstanceScript: DoUseDoorOrButton can't use gameobject entry %u, because type is %u.", go->GetEntry(), go->GetGoType());
+            LOG_ERROR("scripts", "InstanceScript: DoUseDoorOrButton can't use gameobject entry %u, because type is %u.", go->GetEntry(), go->GetGoType());
     }
     else
-        TC_LOG_DEBUG("scripts", "InstanceScript: HandleGameObject failed");
+        LOG_DEBUG("scripts", "InstanceScript: HandleGameObject failed");
 }
 
 void InstanceScript::DoRespawnGameObject(uint64 guid, uint32 timeToDespawn /*= MINUTE*/)
@@ -445,7 +445,7 @@ void InstanceScript::DoRespawnGameObject(uint64 guid, uint32 timeToDespawn /*= M
             case GAMEOBJECT_TYPE_FISHINGNODE:
             case GAMEOBJECT_TYPE_TRAPDOOR:
                 // not expect any of these should ever be handled
-                TC_LOG_ERROR("scripts", "InstanceScript: DoRespawnGameObject can't respawn gameobject entry %u, because type is %u.", go->GetEntry(), go->GetGoType());
+                LOG_ERROR("scripts", "InstanceScript: DoRespawnGameObject can't respawn gameobject entry %u, because type is %u.", go->GetEntry(), go->GetGoType());
                 return;
             default:
                 break;
@@ -457,7 +457,7 @@ void InstanceScript::DoRespawnGameObject(uint64 guid, uint32 timeToDespawn /*= M
         go->SetRespawnTime(timeToDespawn);
     }
     else
-        TC_LOG_DEBUG("scripts", "InstanceScript: DoRespawnGameObject failed");
+        LOG_DEBUG("scripts", "InstanceScript: DoRespawnGameObject failed");
 }
 
 void InstanceScript::DoUpdateWorldState(uint32 uiStateId, uint32 uiStateData)
@@ -471,7 +471,7 @@ void InstanceScript::DoUpdateWorldState(uint32 uiStateId, uint32 uiStateData)
                 player->SendUpdateWorldState(uiStateId, uiStateData);
     }
     else
-        TC_LOG_DEBUG("scripts", "DoUpdateWorldState attempt send data but no players in map.");
+        LOG_DEBUG("scripts", "DoUpdateWorldState attempt send data but no players in map.");
 }
 
 // Send Notify to all players in instance
@@ -501,7 +501,7 @@ void InstanceScript::DoCompleteAchievement(uint32 achievement)
 
     if (!pAE)
     {
-        TC_LOG_ERROR("misc", "DoCompleteAchievement called for not existing achievement %u", achievement);
+        LOG_ERROR("misc", "DoCompleteAchievement called for not existing achievement %u", achievement);
         return;
     }
 
@@ -517,7 +517,7 @@ void InstanceScript::DoCompleteCriteria(uint32 criteria)
     AchievementCriteriaEntry const* achievement = sAchievementCriteriaStore.LookupEntry(criteria);
     if (!achievement)
     {
-        TC_LOG_ERROR("entities.unit", "TSCR: DoCompleteCriteria called for not existing criteria %u", criteria);
+        LOG_ERROR("entities.unit", "TSCR: DoCompleteCriteria called for not existing criteria %u", criteria);
         return;
     }
 
@@ -619,7 +619,7 @@ void InstanceScript::DoCastSpellOnPlayers(uint32 spell)
 
 bool InstanceScript::CheckAchievementCriteriaMeet(uint32 criteria_id, Player const* /*source*/, Unit const* /*target*/ /*= NULL*/, uint32 /*miscvalue1*/ /*= 0*/)
 {
-    TC_LOG_ERROR("misc", "Achievement system call InstanceScript::CheckAchievementCriteriaMeet but instance script for map %u not have implementation for achievement criteria %u",
+    LOG_ERROR("misc", "Achievement system call InstanceScript::CheckAchievementCriteriaMeet but instance script for map %u not have implementation for achievement criteria %u",
         instance->GetId(), criteria_id);
     return false;
 }
@@ -678,7 +678,7 @@ void InstanceScript::UpdateEncounterState(EncounterCreditType type, uint32 credi
             if (encounter->lastEncounterDungeon)
             {
                 dungeonId = sLFGMgr->GetLfgMapDungeonId(instance->GetId(), instance->GetDifficulty());
-                TC_LOG_DEBUG("lfg", "UpdateEncounterState: Instance %s (instanceId %u) completed encounter %s. Credit Dungeon: %u", instance->GetMapName(), instance->GetInstanceId(), encounter->dbcEntry->encounterName, dungeonId);
+                LOG_DEBUG("lfg", "UpdateEncounterState: Instance %s (instanceId %u) completed encounter %s. Credit Dungeon: %u", instance->GetMapName(), instance->GetInstanceId(), encounter->dbcEntry->encounterName, dungeonId);
                 break;
             }
         }

@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_CONTAINERS_H
-#define TRINITY_CONTAINERS_H
+#ifndef FIRELANDS_CONTAINERS_H
+#define FIRELANDS_CONTAINERS_H
 
 #include <list>
 
@@ -69,4 +69,4 @@ namespace Firelands
 }
 //! namespace Firelands
 
-#endif //! #ifdef TRINITY_CONTAINERS_H
+#endif //! #ifdef FIRELANDS_CONTAINERS_H

@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef TRINITYSERVER_MOVESPLINEFLAG_H
-#define TRINITYSERVER_MOVESPLINEFLAG_H
+#ifndef FIRELANDS_SERVER_MOVESPLINEFLAG_H
+#define FIRELANDS_SERVER_MOVESPLINEFLAG_H
 #include "MovementTypedefs.h"
 #include <limits>
 
@@ -151,4 +151,4 @@ namespace Movement
 #endif
 }
 
-#endif // TRINITYSERVER_MOVESPLINEFLAG_H
+#endif // FIRELANDS_SERVER_MOVESPLINEFLAG_H

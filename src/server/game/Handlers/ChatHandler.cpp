@@ -89,14 +89,14 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             type = CHAT_MSG_RAID_WARNING;
             break;
         default:
-            TC_LOG_ERROR("network.opcode", "HandleMessagechatOpcode : Unknown chat opcode (%u)", recvData.GetOpcode());
+            LOG_ERROR("network.opcode", "HandleMessagechatOpcode : Unknown chat opcode (%u)", recvData.GetOpcode());
             recvData.hexlike();
             return;
     }
 
     if (type >= MAX_CHAT_MSG_TYPE)
     {
-        TC_LOG_ERROR("network.opcode", "CHAT: Wrong message type received: %u", type);
+        LOG_ERROR("network.opcode", "CHAT: Wrong message type received: %u", type);
         recvData.rfinish();
         return;
     }
@@ -104,7 +104,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
     Player* sender = GetPlayer();
 
 
-    //TC_LOG_DEBUG("misc", "CHAT: packet received. type %u, lang %u", type, lang);
+    //LOG_DEBUG("misc", "CHAT: packet received. type %u, lang %u", type, lang);
 
     // no language sent with emote packet.
     if (type != CHAT_MSG_EMOTE && type != CHAT_MSG_AFK && type != CHAT_MSG_DND)
@@ -113,7 +113,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 
         if (lang == LANG_UNIVERSAL && !sender->isGameMaster())
         {
-            TC_LOG_ERROR("network.opcode", "CMSG_MESSAGECHAT: Possible hacking-attempt: %s tried to send a message in universal language", GetPlayerInfo().c_str());
+            LOG_ERROR("network.opcode", "CMSG_MESSAGECHAT: Possible hacking-attempt: %s tried to send a message in universal language", GetPlayerInfo().c_str());
             SendNotification(LANG_UNKNOWN_LANGUAGE);
             recvData.rfinish();
             return;
@@ -174,7 +174,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
                         return;
                     break;
                 default:
-                    TC_LOG_ERROR("network.opcode", "Player %s (GUID: %u) sent a chatmessage with an invalid language/message type combination",
+                    LOG_ERROR("network.opcode", "Player %s (GUID: %u) sent a chatmessage with an invalid language/message type combination",
                         GetPlayer()->GetName().c_str(), GetPlayer()->GetGUIDLow());
 
                     recvData.rfinish();
@@ -295,7 +295,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 
             if (sWorld->getIntConfig(CONFIG_CHAT_STRICT_LINK_CHECKING_SEVERITY) && !ChatHandler(this).isValidChatMessage(msg.c_str()))
             {
-                TC_LOG_ERROR("network.opcode", "Player %s (GUID: %u) sent a chatmessage with an invalid link: %s", GetPlayer()->GetName().c_str(),
+                LOG_ERROR("network.opcode", "Player %s (GUID: %u) sent a chatmessage with an invalid link: %s", GetPlayer()->GetName().c_str(),
                     GetPlayer()->GetGUIDLow(), msg.c_str());
 
                 if (sWorld->getIntConfig(CONFIG_CHAT_STRICT_LINK_CHECKING_KICK))
@@ -539,7 +539,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             break;
         }
         default:
-            TC_LOG_ERROR("network.opcode", "CHAT: unknown message type %u, lang: %u", type, lang);
+            LOG_ERROR("network.opcode", "CHAT: unknown message type %u, lang: %u", type, lang);
             break;
     }
 }
@@ -570,7 +570,7 @@ void WorldSession::HandleAddonMessagechatOpcode(WorldPacket& recvData)
             type = CHAT_MSG_WHISPER;
             break;
         default:
-            TC_LOG_ERROR("network.opcode", "HandleAddonMessagechatOpcode: Unknown addon chat opcode (%u)", recvData.GetOpcode());
+            LOG_ERROR("network.opcode", "HandleAddonMessagechatOpcode: Unknown addon chat opcode (%u)", recvData.GetOpcode());
             recvData.hexlike();
             return;
     }
@@ -683,7 +683,7 @@ void WorldSession::HandleAddonMessagechatOpcode(WorldPacket& recvData)
         }
         default:
         {
-            TC_LOG_ERROR("misc", "HandleAddonMessagechatOpcode: unknown addon message type %u", type);
+            LOG_ERROR("misc", "HandleAddonMessagechatOpcode: unknown addon message type %u", type);
             break;
         }
     }
@@ -805,7 +805,7 @@ void WorldSession::HandleChatIgnoredOpcode(WorldPacket& recvData)
 {
     ObjectGuid guid;
     uint8 unk;
-    //TC_LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: Received CMSG_CHAT_IGNORED");
+    //LOG_DEBUG(LOG_FILTER_PACKETIO, "WORLD: Received CMSG_CHAT_IGNORED");
 
     recvData >> unk;                                       // probably related to spam reporting
     guid[5] = recvData.ReadBit();
@@ -837,7 +837,7 @@ void WorldSession::HandleChatIgnoredOpcode(WorldPacket& recvData)
 
 void WorldSession::HandleChannelDeclineInvite(WorldPacket &recvPacket)
 {
-    TC_LOG_DEBUG("network.opcode", "Opcode %u", recvPacket.GetOpcode());
+    LOG_DEBUG("network.opcode", "Opcode %u", recvPacket.GetOpcode());
 }
 
 void WorldSession::SendPlayerNotFoundNotice(std::string const& name)

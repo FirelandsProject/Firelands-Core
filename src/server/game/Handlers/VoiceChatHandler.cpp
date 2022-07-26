@@ -25,7 +25,7 @@
 
 void WorldSession::HandleVoiceSessionEnableOpcode(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_VOICE_SESSION_ENABLE");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_VOICE_SESSION_ENABLE");
     // uint8 isVoiceEnabled, uint8 isMicrophoneEnabled
     recvData.read_skip<uint8>();
     recvData.read_skip<uint8>();
@@ -33,14 +33,14 @@ void WorldSession::HandleVoiceSessionEnableOpcode(WorldPacket& recvData)
 
 void WorldSession::HandleChannelVoiceOnOpcode(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_CHANNEL_VOICE_ON");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_CHANNEL_VOICE_ON");
     recvData.ReadString(recvData.ReadBits(8));
     //channel->EnableVoice(recvData.GetOpcode() == CMSG_CHANNEL_VOICE_ON);
 }
 
 void WorldSession::HandleSetActiveVoiceChannel(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_SET_ACTIVE_VOICE_CHANNEL");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_SET_ACTIVE_VOICE_CHANNEL");
     recvData.read_skip<uint32>();
     recvData.read_skip<char*>();
 }

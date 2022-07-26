@@ -58,7 +58,7 @@ class ScriptRegistry
             {
                 if (it->second == script)
                 {
-                    TC_LOG_ERROR("scripts", "Script '%s' has same memory pointer as '%s'.",
+                    LOG_ERROR("scripts", "Script '%s' has same memory pointer as '%s'.",
                         script->GetName().c_str(), it->second->GetName().c_str());
 
                     return;
@@ -94,7 +94,7 @@ class ScriptRegistry
                     else
                     {
                         // If the script is already assigned -> delete it!
-                        TC_LOG_ERROR("scripts", "Script '%s' already assigned with the same script name, so the script can't work.",
+                        LOG_ERROR("scripts", "Script '%s' already assigned with the same script name, so the script can't work.",
                             script->GetName().c_str());
                         ASSERT(false); // Error that should be fixed ASAP.
                     }
@@ -103,7 +103,7 @@ class ScriptRegistry
                 {
                     // The script uses a script name from database, but isn't assigned to anything.
                     if (script->GetName().find("example") == std::string::npos && script->GetName().find("Smart") == std::string::npos)
-                        TC_LOG_ERROR("sql.sql", "Script named '%s' does not have a script name assigned in database.",
+                        LOG_ERROR("sql.sql", "Script named '%s' does not have a script name assigned in database.",
                             script->GetName().c_str());
                 }
             }
@@ -178,12 +178,12 @@ void ScriptMgr::Initialize()
 
     LoadDatabase();
 
-    TC_LOG_INFO("server.loading", "Loading C++ scripts");
+    LOG_INFO("server.loading", "Loading C++ scripts");
 
     FillSpellSummary();
     AddScripts();
 
-    TC_LOG_INFO("server.loading", ">> Loaded %u C++ scripts in %u ms", GetScriptCount(), GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded %u C++ scripts in %u ms", GetScriptCount(), GetMSTimeDiffToNow(oldMSTime));
 }
 
 void ScriptMgr::Unload()
@@ -1432,7 +1432,7 @@ WorldMapScript::WorldMapScript(const char* name, uint32 mapId)
     : ScriptObject(name), MapScript<Map>(mapId)
 {
     if (GetEntry() && !GetEntry()->IsWorldMap())
-        TC_LOG_ERROR("scripts", "WorldMapScript for map %u is invalid.", mapId);
+        LOG_ERROR("scripts", "WorldMapScript for map %u is invalid.", mapId);
 
     ScriptRegistry<WorldMapScript>::AddScript(this);
 }
@@ -1441,7 +1441,7 @@ InstanceMapScript::InstanceMapScript(const char* name, uint32 mapId)
     : ScriptObject(name), MapScript<InstanceMap>(mapId)
 {
     if (GetEntry() && !GetEntry()->IsDungeon())
-        TC_LOG_ERROR("scripts", "InstanceMapScript for map %u is invalid.", mapId);
+        LOG_ERROR("scripts", "InstanceMapScript for map %u is invalid.", mapId);
 
     ScriptRegistry<InstanceMapScript>::AddScript(this);
 }
@@ -1450,7 +1450,7 @@ BattlegroundMapScript::BattlegroundMapScript(const char* name, uint32 mapId)
     : ScriptObject(name), MapScript<BattlegroundMap>(mapId)
 {
     if (GetEntry() && !GetEntry()->IsBattleground())
-        TC_LOG_ERROR("scripts", "BattlegroundMapScript for map %u is invalid.", mapId);
+        LOG_ERROR("scripts", "BattlegroundMapScript for map %u is invalid.", mapId);
 
     ScriptRegistry<BattlegroundMapScript>::AddScript(this);
 }

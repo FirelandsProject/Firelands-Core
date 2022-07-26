@@ -231,7 +231,7 @@ public:
 
         void PrepareEncounter()
         {
-            TC_LOG_DEBUG("scripts", "Barnes Opera Event - Introduction complete - preparing encounter %d", m_uiEventId);
+            LOG_DEBUG("scripts", "Barnes Opera Event - Introduction complete - preparing encounter %d", m_uiEventId);
             uint8 index = 0;
             uint8 count = 0;
 
@@ -345,17 +345,17 @@ public:
             case GOSSIP_ACTION_INFO_DEF+3:
                 player->CLOSE_GOSSIP_MENU();
                 pBarnesAI->m_uiEventId = EVENT_OZ;
-                TC_LOG_INFO("scripts", "player (GUID " UI64FMTD ") manually set Opera event to EVENT_OZ", player->GetGUID());
+                LOG_INFO("scripts", "player (GUID " UI64FMTD ") manually set Opera event to EVENT_OZ", player->GetGUID());
                 break;
             case GOSSIP_ACTION_INFO_DEF+4:
                 player->CLOSE_GOSSIP_MENU();
                 pBarnesAI->m_uiEventId = EVENT_HOOD;
-                TC_LOG_INFO("scripts", "player (GUID " UI64FMTD ") manually set Opera event to EVENT_HOOD", player->GetGUID());
+                LOG_INFO("scripts", "player (GUID " UI64FMTD ") manually set Opera event to EVENT_HOOD", player->GetGUID());
                 break;
             case GOSSIP_ACTION_INFO_DEF+5:
                 player->CLOSE_GOSSIP_MENU();
                 pBarnesAI->m_uiEventId = EVENT_RAJ;
-                TC_LOG_INFO("scripts", "player (GUID " UI64FMTD ") manually set Opera event to EVENT_RAJ", player->GetGUID());
+                LOG_INFO("scripts", "player (GUID " UI64FMTD ") manually set Opera event to EVENT_RAJ", player->GetGUID());
                 break;
         }
 

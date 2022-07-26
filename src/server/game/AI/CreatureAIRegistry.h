@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_CREATUREAIREGISTRY_H
-#define TRINITY_CREATUREAIREGISTRY_H
+#ifndef FIRELANDS_CREATUREAIREGISTRY_H
+#define FIRELANDS_CREATUREAIREGISTRY_H
 
 namespace AIRegistry
 {

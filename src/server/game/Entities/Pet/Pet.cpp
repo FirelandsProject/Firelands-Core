@@ -149,7 +149,7 @@ bool Pet::LoadPet(Player* owner, PetData* t_pet, bool current)
 
         if (!IsPositionValid())
         {
-            TC_LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
+            LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
                 GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
             return false;
         }
@@ -196,7 +196,7 @@ bool Pet::LoadPet(Player* owner, PetData* t_pet, bool current)
             break;
         default:
             if (!IsPetGhoul())
-                TC_LOG_ERROR("entities.pet", "Pet have incorrect type (%u) for pet loading.", getPetType());
+                LOG_ERROR("entities.pet", "Pet have incorrect type (%u) for pet loading.", getPetType());
             break;
     }
 
@@ -214,7 +214,7 @@ bool Pet::LoadPet(Player* owner, PetData* t_pet, bool current)
     Relocate(px, py, pz, owner->GetOrientation());
     if (!IsPositionValid())
     {
-        TC_LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
+        LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not loaded. Suggested coordinates isn't valid (X: %f Y: %f)",
             GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
         return false;
     }
@@ -288,7 +288,7 @@ bool Pet::LoadPet(Player* owner, PetData* t_pet, bool current)
 
     CleanupActionBar();                                     // remove unknown spells from action bar after load
 
-    TC_LOG_DEBUG("entities.pet", "New Pet has guid %u", GetGUIDLow());
+    LOG_DEBUG("entities.pet", "New Pet has guid %u", GetGUIDLow());
 
     owner->PetSpellInitialize();
 
@@ -381,7 +381,7 @@ void Pet::SavePet(PetSlot mode, bool logout)
     {
         mode = t_pet->_state == DATA_NEW ? PetSlot(owner->_currentPetSlot) : PetSlot(t_pet->slot);
         if (mode < 0 || mode  > PET_SLOT_HUNTER_LAST)
-            TC_LOG_ERROR("misc", "Pet is being saved to an invalid slot %i", owner->_currentPetSlot);
+            LOG_ERROR("misc", "Pet is being saved to an invalid slot %i", owner->_currentPetSlot);
     }
 
     // current/stable/not_in_slot
@@ -531,7 +531,7 @@ void Pet::Update(uint32 diff)
             {
                 if (owner->GetPetGUID() != GetGUID())
                 {
-                    TC_LOG_ERROR("entities.pet", "Pet %u is not pet of owner %s, removed", GetEntry(), m_owner->GetName().c_str());
+                    LOG_ERROR("entities.pet", "Pet %u is not pet of owner %s, removed", GetEntry(), m_owner->GetName().c_str());
                     Remove(PET_SLOT_ACTUAL_PET_SLOT);
                     return;
                 }
@@ -620,7 +620,7 @@ bool Pet::CreateBaseAtCreature(Creature* creature)
 
     if (!IsPositionValid())
     {
-        TC_LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not created base at creature. Suggested coordinates isn't valid (X: %f Y: %f)",
+        LOG_ERROR("entities.pet", "Pet (guidlow %d, entry %d) not created base at creature. Suggested coordinates isn't valid (X: %f Y: %f)",
             GetGUIDLow(), GetEntry(), GetPositionX(), GetPositionY());
         return false;
     }
@@ -628,7 +628,7 @@ bool Pet::CreateBaseAtCreature(Creature* creature)
     CreatureTemplate const* cinfo = GetCreatureTemplate();
     if (!cinfo)
     {
-        TC_LOG_ERROR("entities.pet", "CreateBaseAtCreature() failed, creatureInfo is missing!");
+        LOG_ERROR("entities.pet", "CreateBaseAtCreature() failed, creatureInfo is missing!");
         return false;
     }
 
@@ -657,7 +657,7 @@ bool Pet::CreateBaseAtCreatureInfo(CreatureTemplate const* cinfo, Unit* owner)
 
 bool Pet::CreateBaseAtTamed(CreatureTemplate const* cinfo, Map* map, uint32 phaseMask)
 {
-    TC_LOG_DEBUG("entities.pet", "Pet::CreateBaseForTamed");
+    LOG_DEBUG("entities.pet", "Pet::CreateBaseForTamed");
     uint32 guid=sObjectMgr->GenerateLowGuid(HIGHGUID_PET);
     uint32 pet_number = sObjectMgr->GeneratePetNumber();
     if (!Create(guid, map, phaseMask, cinfo->Entry, pet_number))
@@ -700,7 +700,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
             m_unitTypeMask |= UNIT_MASK_HUNTER_PET;
         }
         else
-            TC_LOG_ERROR("entities.pet", "Unknown type pet %u is summoned by player class %u", GetEntry(), m_owner->getClass());
+            LOG_ERROR("entities.pet", "Unknown type pet %u is summoned by player class %u", GetEntry(), m_owner->getClass());
     }
 
     uint32 creature_ID = (petType == HUNTER_PET) ? 1 : cinfo->Entry;
@@ -1082,7 +1082,7 @@ void Pet::_LoadSpellCooldowns(PetData* t_pet)
 
         if (!sSpellMgr->GetSpellInfo(spell_id))
         {
-            TC_LOG_ERROR("entities.pet", "Pet %u have unknown spell %u in `pet_spell_cooldown`, skipping.", m_charmInfo->GetPetNumber(), spell_id);
+            LOG_ERROR("entities.pet", "Pet %u have unknown spell %u in `pet_spell_cooldown`, skipping.", m_charmInfo->GetPetNumber(), spell_id);
             m_spellcooldown._state = DATA_REMOVED;
             continue;
         }
@@ -1098,7 +1098,7 @@ void Pet::_LoadSpellCooldowns(PetData* t_pet)
 
         AddSpellCooldown(spell_id, 0, db_time);
 
-        TC_LOG_DEBUG("entities.pet", "Pet (Number: %u) spell %u cooldown loaded (%u secs).", m_charmInfo->GetPetNumber(), spell_id, uint32(db_time-curTime));
+        LOG_DEBUG("entities.pet", "Pet (Number: %u) spell %u cooldown loaded (%u secs).", m_charmInfo->GetPetNumber(), spell_id, uint32(db_time-curTime));
     }
 
     if (!cooldowns.empty() && GetOwner())
@@ -1164,7 +1164,7 @@ void Pet::_SaveSpells(PetData* t_pet)
 void Pet::_LoadAuras(PetData* t_pet, uint32 timediff)
 {
     _isAurasLoading = true;
-    TC_LOG_DEBUG("entities.pet", "Loading auras for pet %u", GetGUIDLow());
+    LOG_DEBUG("entities.pet", "Loading auras for pet %u", GetGUIDLow());
     {
         ACE_Guard<ACE_Thread_Mutex> g(t_pet->m_auras.petAuraMapMutex);
         for (std::vector<PetAuraData>::iterator itr = t_pet->m_auras.auraList.begin(); itr != t_pet->m_auras.auraList.end(); ++itr)
@@ -1174,7 +1174,7 @@ void Pet::_LoadAuras(PetData* t_pet, uint32 timediff)
             SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(t_aura.spellid);
             if (!spellInfo)
             {
-                TC_LOG_ERROR("entities.pet", "Unknown aura (spellid %u), ignore.", t_aura.spellid);
+                LOG_ERROR("entities.pet", "Unknown aura (spellid %u), ignore.", t_aura.spellid);
                 t_aura._state = DATA_REMOVED;
                 continue;
             }
@@ -1229,7 +1229,7 @@ void Pet::_LoadAuras(PetData* t_pet, uint32 timediff)
                 }
                 aura->SetLoadedState(t_aura.maxduration, t_aura.remaintime, t_aura.remaincharges, t_aura.stackcount, t_aura.recalculatemask, &t_aura.damage[0]);
                 aura->ApplyForTargets();
-                TC_LOG_INFO("entities.pet", "Added aura spellid %u, effectmask %u", spellInfo->Id, t_aura.effmask);
+                LOG_INFO("entities.pet", "Added aura spellid %u, effectmask %u", spellInfo->Id, t_aura.effmask);
             }
         }
     }
@@ -1292,7 +1292,7 @@ bool Pet::addSpell(uint32 spellId,PetSpellData& m_spell)
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
     if (!spellInfo)
     {
-        TC_LOG_ERROR("entities.pet", "Pet::addSpell: Non-existed in SpellStore spell #%u request.", spellId);
+        LOG_ERROR("entities.pet", "Pet::addSpell: Non-existed in SpellStore spell #%u request.", spellId);
         m_spell._state = DATA_REMOVED;
         return false;
     }

@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_SMARTSCRIPT_H
-#define TRINITY_SMARTSCRIPT_H
+#ifndef FIRELANDS_SMARTSCRIPT_H
+#define FIRELANDS_SMARTSCRIPT_H
 
 #include "Common.h"
 #include "Creature.h"
@@ -118,7 +118,7 @@ class SmartScript
                 smart = false;
 
             if (!smart)
-                TC_LOG_ERROR("sql.sql", "SmartScript: Action target Creature(entry: %u) is not using SmartAI, action skipped to prevent crash.", c ? c->GetEntry() : (me ? me->GetEntry() : 0));
+                LOG_ERROR("sql.sql", "SmartScript: Action target Creature(entry: %u) is not using SmartAI, action skipped to prevent crash.", c ? c->GetEntry() : (me ? me->GetEntry() : 0));
 
             return smart;
         }
@@ -132,7 +132,7 @@ class SmartScript
             if (!go || go->GetAIName() != "SmartGameObjectAI")
                 smart = false;
             if (!smart)
-                TC_LOG_ERROR("sql.sql", "SmartScript: Action target GameObject(entry: %u) is not using SmartGameObjectAI, action skipped to prevent crash.", g ? g->GetEntry() : (go ? go->GetEntry() : 0));
+                LOG_ERROR("sql.sql", "SmartScript: Action target GameObject(entry: %u) is not using SmartGameObjectAI, action skipped to prevent crash.", g ? g->GetEntry() : (go ? go->GetEntry() : 0));
 
             return smart;
         }

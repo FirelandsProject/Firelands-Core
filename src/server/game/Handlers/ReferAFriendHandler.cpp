@@ -24,7 +24,7 @@
 
 void WorldSession::HandleGrantLevel(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_GRANT_LEVEL");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_GRANT_LEVEL");
 
     uint64 guid;
     recvData.readPackGUID(guid);
@@ -66,7 +66,7 @@ void WorldSession::HandleGrantLevel(WorldPacket& recvData)
 
 void WorldSession::HandleAcceptGrantLevel(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_ACCEPT_LEVEL_GRANT");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_ACCEPT_LEVEL_GRANT");
 
     uint64 guid;
     recvData.readPackGUID(guid);

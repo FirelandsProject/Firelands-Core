@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITYCORE_AREATRIGGER_H
-#define TRINITYCORE_AREATRIGGER_H
+#ifndef FIRELANDS_AREATRIGGER_H
+#define FIRELANDS_AREATRIGGER_H
 
 #include "Object.h"
 

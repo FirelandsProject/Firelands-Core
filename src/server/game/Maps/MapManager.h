@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_MAPMANAGER_H
-#define TRINITY_MAPMANAGER_H
+#ifndef FIRELANDS_MAPMANAGER_H
+#define FIRELANDS_MAPMANAGER_H
 
 #include "Define.h"
 #include <ace/Singleton.h>

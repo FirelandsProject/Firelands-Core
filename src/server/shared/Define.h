@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_DEFINE_H
-#define TRINITY_DEFINE_H
+#ifndef FIRELANDS_DEFINE_H
+#define FIRELANDS_DEFINE_H
 
 #include "CompilerDefs.h"
 
@@ -27,19 +27,19 @@
 
 #include <cstddef>
 
-#define TRINITY_LITTLEENDIAN 0
-#define TRINITY_BIGENDIAN    1
+#define FIRELANDS_LITTLEENDIAN 0
+#define FIRELANDS_BIGENDIAN    1
 
-#if !defined(TRINITY_ENDIAN)
+#if !defined(FIRELANDS_ENDIAN)
 #  if defined (ACE_BIG_ENDIAN)
-#    define TRINITY_ENDIAN TRINITY_BIGENDIAN
+#    define FIRELANDS_ENDIAN FIRELANDS_BIGENDIAN
 #  else //ACE_BYTE_ORDER != ACE_BIG_ENDIAN
-#    define TRINITY_ENDIAN TRINITY_LITTLEENDIAN
+#    define FIRELANDS_ENDIAN FIRELANDS_LITTLEENDIAN
 #  endif //ACE_BYTE_ORDER
-#endif //TRINITY_ENDIAN
+#endif //FIRELANDS_ENDIAN
 
 #if PLATFORM == PLATFORM_WINDOWS
-#  define TRINITY_PATH_MAX MAX_PATH
+#  define FIRELANDS_PATH_MAX MAX_PATH
 #  ifndef DECLSPEC_NORETURN
 #    define DECLSPEC_NORETURN __declspec(noreturn)
 #  endif //DECLSPEC_NORETURN
@@ -47,18 +47,18 @@
 #    define DECLSPEC_DEPRECATED __declspec(deprecated)
 #  endif //DECLSPEC_DEPRECATED
 #else //PLATFORM != PLATFORM_WINDOWS
-#  define TRINITY_PATH_MAX PATH_MAX
+#  define FIRELANDS_PATH_MAX PATH_MAX
 #  define DECLSPEC_NORETURN
 #  define DECLSPEC_DEPRECATED
 #endif //PLATFORM
 
 #if !defined(COREDEBUG)
-#  define TRINITY_INLINE inline
+#  define FIRELANDS_INLINE inline
 #else //COREDEBUG
-#  if !defined(TRINITY_DEBUG)
-#    define TRINITY_DEBUG
-#  endif //TRINITY_DEBUG
-#  define TRINITY_INLINE
+#  if !defined(FIRELANDS_DEBUG)
+#    define FIRELANDS_DEBUG
+#  endif //FIRELANDS_DEBUG
+#  define FIRELANDS_INLINE
 #endif //!COREDEBUG
 
 #if COMPILER == COMPILER_GNU
@@ -108,4 +108,4 @@ enum DBCFormer
     FT_SQL_PRESENT='p',                                     //Used in sql format to mark column present in sql dbc
     FT_SQL_ABSENT='a'                                       //Used in sql format to mark column absent in sql dbc
 };
-#endif //TRINITY_DEFINE_H
+#endif //FIRELANDS_DEFINE_H

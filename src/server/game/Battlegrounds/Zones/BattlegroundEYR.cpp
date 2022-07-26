@@ -450,7 +450,7 @@ void BattlegroundEYR::_NodeOccupied(uint8 node, Team team)
 {
     WorldSafeLocsEntry const* sg = sWorldSafeLocsStore.LookupEntry(BG_EYR_GraveyardIds[node]);
     if (!sg || !AddSpiritGuide(node, sg->x, sg->y, sg->z, 3.124139f, team))
-        TC_LOG_ERROR("bg.battleground", "BatteGroundEY: Failed to spawn spirit guide! point: %u, team: %u, graveyard_id: %u",
+        LOG_ERROR("bg.battleground", "BatteGroundEY: Failed to spawn spirit guide! point: %u, team: %u, graveyard_id: %u",
                        node, team, BG_EYR_GraveyardIds[node]);
 
     if (team == ALLIANCE)
@@ -766,7 +766,7 @@ bool BattlegroundEYR::SetupBattleground()
             || !AddObject(BG_EYR_OBJECT_AURA_CONTESTED + 8*i, BG_EYR_OBJECTID_AURA_C, BG_EYR_NodePositions[i][0], BG_EYR_NodePositions[i][1], BG_EYR_NodePositions[i][2], BG_EYR_NodePositions[i][3], 0, 0, std::sin(BG_EYR_NodePositions[i][3]/2), std::cos(BG_EYR_NodePositions[i][3]/2), RESPAWN_ONE_DAY)
 )
         {
-            TC_LOG_ERROR("sql.sql", "BatteGroundEYR: Failed to spawn some object Battleground not created!");
+            LOG_ERROR("sql.sql", "BatteGroundEYR: Failed to spawn some object Battleground not created!");
             return false;
         }
     }
@@ -775,7 +775,7 @@ bool BattlegroundEYR::SetupBattleground()
         || !AddObject(BG_EYR_OBJECT_GATE_H, BG_OBJECT_H_DOOR_EYR_ENTRY, 1803.21f, 1539.49f, 1261.09f, 3.14159f, 0.173648f, 0, 0.984808f, 0, RESPAWN_IMMEDIATELY)
         || !AddObject(BG_EYR_OBJECT_FLAG_NETHERSTORM, 184141, 2174.782227f, 1569.054688f, 1160.361938f, -1.448624f, 0, 0, 0.662620f, -0.748956f, RESPAWN_ONE_DAY))
     {
-        TC_LOG_ERROR("sql.sql", "BatteGroundEYR: Failed to spawn door object Battleground not created!");
+        LOG_ERROR("sql.sql", "BatteGroundEYR: Failed to spawn door object Battleground not created!");
         return false;
     }
     //buffs
@@ -784,27 +784,27 @@ bool BattlegroundEYR::SetupBattleground()
         AreaTriggerEntry const* at = sAreaTriggerStore.LookupEntry(m_Points_Trigger[i]);
         if (!at)
         {
-            TC_LOG_ERROR("bg.battleground", "BattlegroundEY: Unknown trigger: %u", m_Points_Trigger[i]);
+            LOG_ERROR("bg.battleground", "BattlegroundEY: Unknown trigger: %u", m_Points_Trigger[i]);
             continue;
         }
         if (!AddObject(BG_EYR_OBJECT_SPEEDBUFF_FEL_REAVER + i * 3, Buff_Entries[0], at->x, at->y, at->z, 0.907571f, 0, 0, 0.438371f, 0.898794f, RESPAWN_ONE_DAY)
             || !AddObject(BG_EYR_OBJECT_SPEEDBUFF_FEL_REAVER + i * 3 + 1, Buff_Entries[1], at->x, at->y, at->z, 0.907571f, 0, 0, 0.438371f, 0.898794f, RESPAWN_ONE_DAY)
             || !AddObject(BG_EYR_OBJECT_SPEEDBUFF_FEL_REAVER + i * 3 + 2, Buff_Entries[2], at->x, at->y, at->z, 0.907571f, 0, 0, 0.438371f, 0.898794f, RESPAWN_ONE_DAY))
-            TC_LOG_ERROR("bg.battleground", "BattlegroundEY: Cannot spawn buff");
+            LOG_ERROR("bg.battleground", "BattlegroundEY: Cannot spawn buff");
     }
 
     WorldSafeLocsEntry const* sg = NULL;
     sg = sWorldSafeLocsStore.LookupEntry(EYR_GRAVEYARD_MAIN_ALLIANCE);
     if (!sg || !AddSpiritGuide(EYR_SPIRIT_MAIN_ALLIANCE, sg->x, sg->y, sg->z, 3.124139f, ALLIANCE))
     {
-        TC_LOG_ERROR("sql.sql", "BatteGroundEY: Failed to spawn spirit guide! Battleground not created!");
+        LOG_ERROR("sql.sql", "BatteGroundEY: Failed to spawn spirit guide! Battleground not created!");
         return false;
     }
 
     sg = sWorldSafeLocsStore.LookupEntry(EYR_GRAVEYARD_MAIN_HORDE);
     if (!sg || !AddSpiritGuide(EYR_SPIRIT_MAIN_HORDE, sg->x, sg->y, sg->z, 3.193953f, HORDE))
     {
-        TC_LOG_ERROR("sql.sql", "BatteGroundEY: Failed to spawn spirit guide! Battleground not created!");
+        LOG_ERROR("sql.sql", "BatteGroundEY: Failed to spawn spirit guide! Battleground not created!");
         return false;
     }
 
@@ -876,7 +876,7 @@ void BattlegroundEYR::RespawnFlagAfterDrop()
     if (obj)
         obj->Delete();
     else
-        TC_LOG_ERROR("bg.battleground", "BattlegroundEY: Unknown dropped flag guid: %u", GUID_LOPART(GetDroppedFlagGUID()));
+        LOG_ERROR("bg.battleground", "BattlegroundEY: Unknown dropped flag guid: %u", GUID_LOPART(GetDroppedFlagGUID()));
 
     SetDroppedFlagGUID(0);
 }

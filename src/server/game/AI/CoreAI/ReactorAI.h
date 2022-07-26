@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_REACTORAI_H
-#define TRINITY_REACTORAI_H
+#ifndef FIRELANDS_REACTORAI_H
+#define FIRELANDS_REACTORAI_H
 
 #include "CreatureAI.h"
 

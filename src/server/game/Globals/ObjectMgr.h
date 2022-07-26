@@ -488,15 +488,15 @@ typedef UNORDERED_MAP<uint32/*cell_id*/, CellObjectGuids> CellObjectGuidsMap;
 typedef UNORDERED_MAP<uint32/*(mapid, spawnMode) pair*/, CellObjectGuidsMap> MapObjectGuids;
 
 // Firelands string ranges
-#define MIN_TRINITY_STRING_ID           1                    // 'firelands_string'
-#define MAX_TRINITY_STRING_ID           2000000000
-#define MIN_DB_SCRIPT_STRING_ID        MAX_TRINITY_STRING_ID // 'db_script_string'
+#define MIN_FIRELANDS_STRING_ID           1                    // 'firelands_string'
+#define MAX_FIRELANDS_STRING_ID           2000000000
+#define MIN_DB_SCRIPT_STRING_ID        MAX_FIRELANDS_STRING_ID // 'db_script_string'
 #define MAX_DB_SCRIPT_STRING_ID        2000010000
 #define MIN_CREATURE_AI_TEXT_STRING_ID (-1)                 // 'creature_ai_texts'
 #define MAX_CREATURE_AI_TEXT_STRING_ID (-1000000)
 
 // Firelands Trainer Reference start range
-#define TRINITY_TRAINER_START_REF      200000
+#define FIRELANDS_TRAINER_START_REF      200000
 
 struct TrinityStringLocale
 {
@@ -946,13 +946,13 @@ class ObjectMgr
         void LoadQuests();
         void LoadQuestRelations()
         {
-            TC_LOG_INFO("server.loading", "Loading GO Start Quest Data...");
+            LOG_INFO("server.loading", "Loading GO Start Quest Data...");
             LoadGameobjectQuestRelations();
-            TC_LOG_INFO("server.loading", "Loading GO End Quest Data...");
+            LOG_INFO("server.loading", "Loading GO End Quest Data...");
             LoadGameobjectInvolvedRelations();
-            TC_LOG_INFO("server.loading", "Loading Creature Start Quest Data...");
+            LOG_INFO("server.loading", "Loading Creature Start Quest Data...");
             LoadCreatureQuestRelations();
-            TC_LOG_INFO("server.loading", "Loading Creature End Quest Data...");
+            LOG_INFO("server.loading", "Loading Creature End Quest Data...");
             LoadCreatureInvolvedRelations();
         }
         void LoadGameobjectQuestRelations();
@@ -1020,7 +1020,7 @@ class ObjectMgr
         void LoadBroadcastTextHelpers();
         void LoadBroadcastGroups();
         bool LoadTrinityStrings(char const* table, int32 min_value, int32 max_value);
-        bool LoadTrinityStrings() { return LoadTrinityStrings("firelands_string", MIN_TRINITY_STRING_ID, MAX_TRINITY_STRING_ID); }
+        bool LoadTrinityStrings() { return LoadTrinityStrings("firelands_string", MIN_FIRELANDS_STRING_ID, MAX_FIRELANDS_STRING_ID); }
         void LoadDbScriptStrings();
         void LoadCreatureClassLevelStats();
         void LoadCreatureLocales();

@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TRINITY_CREATUREAIFACTORY_H
-#define TRINITY_CREATUREAIFACTORY_H
+#ifndef FIRELANDS_CREATUREAIFACTORY_H
+#define FIRELANDS_CREATUREAIFACTORY_H
 
 //#include "Policies/Singleton.h"
 #include "ObjectRegistry.h"

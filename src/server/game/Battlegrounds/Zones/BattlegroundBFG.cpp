@@ -357,7 +357,7 @@ void BattlegroundBFG::_SendNodeUpdate(uint8 node)
 void BattlegroundBFG::_NodeOccupied(uint8 node, Team team)
 {
     if (!AddSpiritGuide(node, BG_BFG_SpiritGuidePos[node][0], BG_BFG_SpiritGuidePos[node][1], BG_BFG_SpiritGuidePos[node][2], BG_BFG_SpiritGuidePos[node][3], team))
-        TC_LOG_ERROR("bg.battleground", "Failed to spawn spirit guide! point: %u, team: %u, ", node, team);
+        LOG_ERROR("bg.battleground", "Failed to spawn spirit guide! point: %u, team: %u, ", node, team);
 
     uint8 capturedNodes = 0;
     for (uint8 i = 0; i < BG_BFG_DYNAMIC_NODES_COUNT; ++i)
@@ -580,20 +580,20 @@ bool BattlegroundBFG::SetupBattleground()
             || !AddObject(BG_BFG_OBJECT_AURA_HORDE + 8 * i, BG_BFG_OBJECTID_AURA_H, BG_BFG_NodePositions[i][0], BG_BFG_NodePositions[i][1], BG_BFG_NodePositions[i][2], BG_BFG_NodePositions[i][3], 0, 0, sin(BG_BFG_NodePositions[i][3] / 2), cos(BG_BFG_NodePositions[i][3] / 2), RESPAWN_ONE_DAY)
             || !AddObject(BG_BFG_OBJECT_AURA_CONTESTED + 8 * i, BG_BFG_OBJECTID_AURA_C, BG_BFG_NodePositions[i][0], BG_BFG_NodePositions[i][1], BG_BFG_NodePositions[i][2], BG_BFG_NodePositions[i][3], 0, 0, sin(BG_BFG_NodePositions[i][3] / 2), cos(BG_BFG_NodePositions[i][3] / 2), RESPAWN_ONE_DAY))
         {
-            TC_LOG_ERROR("bg.battleground", "BatteGroundBG: Failed to spawn some objects, Battleground not created!");
+            LOG_ERROR("bg.battleground", "BatteGroundBG: Failed to spawn some objects, Battleground not created!");
             return false;
         }
     }
     if (!AddObject(BG_BFG_OBJECT_GATE_A, BG_BFG_OBJECTID_GATE_A, BG_BFG_DoorPositions[0][0], BG_BFG_DoorPositions[0][1], BG_BFG_DoorPositions[0][2], BG_BFG_DoorPositions[0][3], BG_BFG_DoorPositions[0][4], BG_BFG_DoorPositions[0][5], BG_BFG_DoorPositions[0][6], BG_BFG_DoorPositions[0][7], RESPAWN_IMMEDIATELY) || !AddObject(BG_BFG_OBJECT_GATE_H, BG_BFG_OBJECTID_GATE_H, BG_BFG_DoorPositions[1][0], BG_BFG_DoorPositions[1][1], BG_BFG_DoorPositions[1][2], BG_BFG_DoorPositions[1][3], BG_BFG_DoorPositions[1][4], BG_BFG_DoorPositions[1][5], BG_BFG_DoorPositions[1][6], BG_BFG_DoorPositions[1][7], RESPAWN_IMMEDIATELY))
     {
-        TC_LOG_ERROR("bg.battleground", "BatteGroundBG: Failed to spawn door object, Battleground not created!");
+        LOG_ERROR("bg.battleground", "BatteGroundBG: Failed to spawn door object, Battleground not created!");
         return false;
     }
     //buffs
     for (int i = 0; i < BG_BFG_DYNAMIC_NODES_COUNT; ++i)
     {
         if (!AddObject(BG_BFG_OBJECT_SPEEDBUFF_LIGHTHOUSE + 3 * i, Buff_Entries[0], BG_BFG_BuffPositions[i][0], BG_BFG_BuffPositions[i][1], BG_BFG_BuffPositions[i][2], BG_BFG_BuffPositions[i][3], 0, 0, sin(BG_BFG_BuffPositions[i][3] / 2), cos(BG_BFG_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY) || !AddObject(BG_BFG_OBJECT_SPEEDBUFF_LIGHTHOUSE + 3 * i + 1, Buff_Entries[1], BG_BFG_BuffPositions[i][0], BG_BFG_BuffPositions[i][1], BG_BFG_BuffPositions[i][2], BG_BFG_BuffPositions[i][3], 0, 0, sin(BG_BFG_BuffPositions[i][3] / 2), cos(BG_BFG_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY) || !AddObject(BG_BFG_OBJECT_SPEEDBUFF_LIGHTHOUSE + 3 * i + 2, Buff_Entries[2], BG_BFG_BuffPositions[i][0], BG_BFG_BuffPositions[i][1], BG_BFG_BuffPositions[i][2], BG_BFG_BuffPositions[i][3], 0, 0, sin(BG_BFG_BuffPositions[i][3] / 2), cos(BG_BFG_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY))
-            TC_LOG_ERROR("bg.battleground", "BatteGroundBG: Failed to spawn buff object!");
+            LOG_ERROR("bg.battleground", "BatteGroundBG: Failed to spawn buff object!");
     }
 
     return true;

@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TRINITY_GUILDFINDER_H
-#define __TRINITY_GUILDFINDER_H
+#ifndef __FIRELANDS_GUILDFINDER_H
+#define __FIRELANDS_GUILDFINDER_H
 
 #include <ace/Singleton.h>
 #include "Common.h"
@@ -296,4 +296,4 @@ class GuildFinderMgr
 
 #define sGuildFinderMgr ACE_Singleton<GuildFinderMgr, ACE_Null_Mutex>::instance()
 
-#endif // __TRINITY_GUILDFINDER_H
+#endif // __FIRELANDS_GUILDFINDER_H

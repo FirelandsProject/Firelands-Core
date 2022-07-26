@@ -68,11 +68,11 @@ void RARunnable::run()
 
     if (acceptor.open(listen_addr, m_Reactor) == -1)
     {
-        TC_LOG_ERROR("server.worldserver", "Firelands RA can not bind to port %d on %s", raport, stringip.c_str());
+        LOG_ERROR("server.worldserver", "Firelands RA can not bind to port %d on %s", raport, stringip.c_str());
         return;
     }
 
-    TC_LOG_INFO("server.worldserver", "Starting Firelands RA on port %d on %s", raport, stringip.c_str());
+    LOG_INFO("server.worldserver", "Starting Firelands RA on port %d on %s", raport, stringip.c_str());
 
     while (!World::IsStopped())
     {
@@ -83,5 +83,5 @@ void RARunnable::run()
             break;
     }
 
-    TC_LOG_DEBUG("server.worldserver", "Firelands RA thread exiting");
+    LOG_DEBUG("server.worldserver", "Firelands RA thread exiting");
 }

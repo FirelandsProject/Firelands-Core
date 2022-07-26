@@ -4,7 +4,7 @@ void InfoMgr::Initialize()
 {
     ASSERT(m_charInfos.size() == 0);
 
-    TC_LOG_INFO("server.loading", "\n\nInitializing InfoMgr...");
+    LOG_INFO("server.loading", "\n\nInitializing InfoMgr...");
     uint32 count;
     uint32 allStart = getMSTime();
 
@@ -21,7 +21,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (result->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded base for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded base for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
 
     // Guilds
     start = getMSTime();
@@ -35,7 +35,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (guildResult->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded guild for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded guild for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
 
     // Groups
     start = getMSTime();
@@ -49,7 +49,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (groupResult->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded group for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded group for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
 
     // Arena teams
     start = getMSTime();
@@ -63,7 +63,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (arenaResult->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded %u arena teams (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded %u arena teams (%ums)", count, GetMSTimeDiffToNow(start));
 
     // MMR
     start = getMSTime();
@@ -78,7 +78,7 @@ void InfoMgr::Initialize()
         } while (mmrResult->NextRow());
     }
 
-    TC_LOG_INFO("server.loading", ">> Loaded MMR for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded MMR for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
 
     // RBG stats
     start = getMSTime();
@@ -92,7 +92,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (RBGResult->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded RBG stats for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded RBG stats for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
 
     // Account char counts
     start = getMSTime();
@@ -106,7 +106,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (charCountResult->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded char count for %u accounts (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded char count for %u accounts (%ums)", count, GetMSTimeDiffToNow(start));
 
     // pets
     /*start = getMSTime();
@@ -122,7 +122,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (pets->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded base for %u pets (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded base for %u pets (%ums)", count, GetMSTimeDiffToNow(start));
 
     start = getMSTime();
     count = 0;
@@ -136,7 +136,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (petAuras->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded %u petauras (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded %u petauras (%ums)", count, GetMSTimeDiffToNow(start));
 
     start = getMSTime();
     count = 0;
@@ -149,7 +149,7 @@ void InfoMgr::Initialize()
             ++count;
         } while (petSpells->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded %u petSpells (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded %u petSpells (%ums)", count, GetMSTimeDiffToNow(start));
 
     start = getMSTime();
     count = 0;
@@ -162,12 +162,12 @@ void InfoMgr::Initialize()
             ++count;
         } while (petSpellCooldowns->NextRow());
     }
-    TC_LOG_INFO("server.loading", ">> Loaded %u petSpellCooldowns (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded %u petSpellCooldowns (%ums)", count, GetMSTimeDiffToNow(start));
 
     // remove this if you want to use petsMap, f.i. find SavedPet by Guid
     petsMap.clear();*/
 
-    TC_LOG_INFO("server.loading", "Done initializing InfoMgr. (%ums)", GetMSTimeDiffToNow(allStart));
+    LOG_INFO("server.loading", "Done initializing InfoMgr. (%ums)", GetMSTimeDiffToNow(allStart));
 
 }
 
@@ -610,11 +610,11 @@ void InfoMgr::DeletePet(SavedPet* pet, Player* owner)
             petsSet->erase(itr);
         }
         else
-            TC_LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet %u where pets owner %u has no pet with this id in petsset ", pet->id, ownerId);
+            LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet %u where pets owner %u has no pet with this id in petsset ", pet->id, ownerId);
     }
     else
     {
-       TC_LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet %u where pets owner %u has no petsset ", pet->id, ownerId);
+       LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet %u where pets owner %u has no petsset ", pet->id, ownerId);
     }
 
     // remove comments if you want to use petsMap, f.i. find SavedPet by Guid
@@ -626,7 +626,7 @@ void InfoMgr::DeletePet(SavedPet* pet, Player* owner)
     //}
     //else
     //{
-    //    TC_LOG_ERROR("InfoMgr::DeletePet %u pet is not in petsMap", pet->id);
+    //    LOG_ERROR("InfoMgr::DeletePet %u pet is not in petsMap", pet->id);
     //}
 }
 
@@ -652,7 +652,7 @@ void InfoMgr::DeleteAllPetsFromOwner(uint32 ownerGuid)
             //}
             //else
             //{
-            //    TC_LOG_ERROR("InfoMgr::DeletePet %u pet is not in petsMap", pet->id);
+            //    LOG_ERROR("InfoMgr::DeletePet %u pet is not in petsMap", pet->id);
             //}
             delete *it;
         }
@@ -663,13 +663,13 @@ void InfoMgr::DeleteAllPetsFromOwner(uint32 ownerGuid)
     }
     //else
     //{
-    //    TC_LOG_ERROR("entities.unit", "InfoMgr::DeleteAllPetFromOwner, Try to delete pets where owner %u has no pets ", ownerGuid);
+    //    LOG_ERROR("entities.unit", "InfoMgr::DeleteAllPetFromOwner, Try to delete pets where owner %u has no pets ", ownerGuid);
     //}
 }
 
 InfoMgr::~InfoMgr()
 {
-    //TC_LOG_INFO("server.loading", "InfoMgr::~InfoMgr()");
+    //LOG_INFO("server.loading", "InfoMgr::~InfoMgr()");
     for (PetsToOwnerMapItr itr = petsToOwner.begin(); itr != petsToOwner.end(); ++itr)
     {
         PetsSet* petsSet = itr->second;
@@ -692,7 +692,7 @@ InfoMgr::~InfoMgr()
 
 void InfoMgr::UnloadAll()
 {
-    TC_LOG_INFO("server.loading", "InfoMgr::UnloadAll()");
+    LOG_INFO("server.loading", "InfoMgr::UnloadAll()");
 
     for (CharInfoItr charItr = m_charInfos.begin(); charItr != m_charInfos.end(); ++charItr)
     {

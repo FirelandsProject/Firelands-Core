@@ -16,8 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_CALENDARMGR_H
-#define TRINITY_CALENDARMGR_H
+#ifndef FIRELANDS_CALENDARMGR_H
+#define FIRELANDS_CALENDARMGR_H
 
 #include <ace/Singleton.h>
 #include "Common.h"

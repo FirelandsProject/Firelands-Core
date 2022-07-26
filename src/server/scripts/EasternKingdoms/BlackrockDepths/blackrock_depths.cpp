@@ -212,7 +212,7 @@ public:
                     {
                         instance->UpdateEncounterState(ENCOUNTER_CREDIT_KILL_CREATURE, NPC_GRIMSTONE, me);
                         instance->SetData(TYPE_RING_OF_LAW, DONE);
-                        TC_LOG_DEBUG("scripts", "npc_grimstone: event reached end and set complete.");
+                        LOG_DEBUG("scripts", "npc_grimstone: event reached end and set complete.");
                     }
                     break;
             }

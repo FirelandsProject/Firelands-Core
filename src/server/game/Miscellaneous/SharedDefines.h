@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_SHAREDDEFINES_H
-#define TRINITY_SHAREDDEFINES_H
+#ifndef FIRELANDS_SHAREDDEFINES_H
+#define FIRELANDS_SHAREDDEFINES_H
 
 #include "DetourNavMesh.h"
 #include "Define.h"

@@ -140,7 +140,7 @@ public:
                 }
             }
 
-            TC_LOG_DEBUG("scripts", "Instance Black Temple: GetPlayerInMap, but PlayerList is empty!");
+            LOG_DEBUG("scripts", "Instance Black Temple: GetPlayerInMap, but PlayerList is empty!");
             return NULL;
         }
 

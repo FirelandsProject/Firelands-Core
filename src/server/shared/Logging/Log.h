@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITYCORE_LOG_H
-#define TRINITYCORE_LOG_H
+#ifndef FIRELANDS_LOG_H
+#define FIRELANDS_LOG_H
 
 #include "Define.h"
 #include "Appender.h"
@@ -131,13 +131,13 @@ inline void Log::outMessage(std::string const& filter, LogLevel level, const cha
 #define sLog ACE_Singleton<Log, ACE_Thread_Mutex>::instance()
 
 #if PLATFORM != PLATFORM_WINDOWS
-#define TC_LOG_MESSAGE_BODY(filterType__, level__, ...)                 \
+#define LOG_MESSAGE_BODY(filterType__, level__, ...)                 \
         do {                                                            \
             if (sLog->ShouldLog(filterType__, level__))                 \
                 sLog->outMessage(filterType__, level__, __VA_ARGS__);   \
         } while (0)
 #else
-#define TC_LOG_MESSAGE_BODY(filterType__, level__, ...)                 \
+#define LOG_MESSAGE_BODY(filterType__, level__, ...)                 \
         __pragma(warning(push))                                         \
         __pragma(warning(disable:4127))                                 \
         do {                                                            \
@@ -147,22 +147,22 @@ inline void Log::outMessage(std::string const& filter, LogLevel level, const cha
         __pragma(warning(pop))
 #endif
 
-#define TC_LOG_TRACE(filterType__, ...) \
-    TC_LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_TRACE, __VA_ARGS__)
+#define LOG_TRACE(filterType__, ...) \
+    LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_TRACE, __VA_ARGS__)
 
-#define TC_LOG_DEBUG(filterType__, ...) \
-    TC_LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_DEBUG, __VA_ARGS__)
+#define LOG_DEBUG(filterType__, ...) \
+    LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_DEBUG, __VA_ARGS__)
 
-#define TC_LOG_INFO(filterType__, ...)  \
-    TC_LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_INFO, __VA_ARGS__)
+#define LOG_INFO(filterType__, ...)  \
+    LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_INFO, __VA_ARGS__)
 
-#define TC_LOG_WARN(filterType__, ...)  \
-    TC_LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_WARN, __VA_ARGS__)
+#define LOG_WARN(filterType__, ...)  \
+    LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_WARN, __VA_ARGS__)
 
-#define TC_LOG_ERROR(filterType__, ...) \
-    TC_LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_ERROR, __VA_ARGS__)
+#define LOG_ERROR(filterType__, ...) \
+    LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_ERROR, __VA_ARGS__)
 
-#define TC_LOG_FATAL(filterType__, ...) \
-    TC_LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_FATAL, __VA_ARGS__)
+#define LOG_FATAL(filterType__, ...) \
+    LOG_MESSAGE_BODY(filterType__, LOG_LEVEL_FATAL, __VA_ARGS__)
 
 #endif

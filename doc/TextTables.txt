@@ -4,7 +4,7 @@ Texts Documentation
 
 =========================================================
 WARNING: THIS DOCUMENTATION IS NOT ALWAYS UP TO DATE.
-FOR MORE UP-TO-DATE INFORMATION, CHECK THE TRINITY WIKI.
+FOR MORE UP-TO-DATE INFORMATION, CHECK THE Firelands WIKI.
 =========================================================
 
 Scriptdev2 Revision 695 introduces a new format for using texts in EventAI and SD2 Scripts.

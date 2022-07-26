@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_UNORDERED_MAP_H
-#define TRINITY_UNORDERED_MAP_H
+#ifndef FIRELANDS_UNORDERED_MAP_H
+#define FIRELANDS_UNORDERED_MAP_H
 
 #include "HashNamespace.h"
 

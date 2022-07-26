@@ -111,7 +111,7 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
         pUser->SendEquipError(EQUIP_ERR_ITEM_NOT_FOUND, NULL, NULL);
         return;
     }
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_USE_ITEM packet, bagIndex: %u, slot: %u, castCount: %u, spellId: %u, Item: %u, glyphIndex: %u, data length = %i", bagIndex, slot, castCount, spellId, pItem->GetEntry(), glyphIndex, (uint32)recvPacket.size());
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_USE_ITEM packet, bagIndex: %u, slot: %u, castCount: %u, spellId: %u, Item: %u, glyphIndex: %u, data length = %i", bagIndex, slot, castCount, spellId, pItem->GetEntry(), glyphIndex, (uint32)recvPacket.size());
 
     ItemTemplate const* proto = pItem->GetTemplate();
     if (!proto)
@@ -178,12 +178,12 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
     }
 
     if (GetMSTimeDiffToNow(oldMSTime) >= 100)
-        TC_LOG_INFO("network.opcode", "OPCODE INFO: Item: %u, need time: %u", pItem->GetTemplate()->ItemId, GetMSTimeDiffToNow(oldMSTime));
+        LOG_INFO("network.opcode", "OPCODE INFO: Item: %u, need time: %u", pItem->GetTemplate()->ItemId, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_OPEN_ITEM packet, data length = %i", (uint32)recvPacket.size());
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_OPEN_ITEM packet, data length = %i", (uint32)recvPacket.size());
 
     Player* pUser = _player;
 
@@ -195,7 +195,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
 
     recvPacket >> bagIndex >> slot;
 
-    TC_LOG_INFO("network.opcode", "bagIndex: %u, slot: %u", bagIndex, slot);
+    LOG_INFO("network.opcode", "bagIndex: %u, slot: %u", bagIndex, slot);
 
     Item* item = pUser->GetItemByPos(bagIndex, slot);
     if (!item)
@@ -215,7 +215,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
     if (!(proto->Flags & ITEM_PROTO_FLAG_OPENABLE) && !item->HasFlag(ITEM_FIELD_FLAGS, ITEM_FLAG_WRAPPED))
     {
         pUser->SendEquipError(EQUIP_ERR_CLIENT_LOCKED_OUT, item, NULL);
-        TC_LOG_ERROR("network.opcode", "Possible hacking attempt: Player %s [guid: %u] tried to open item [guid: %u, entry: %u] which is not openable!",
+        LOG_ERROR("network.opcode", "Possible hacking attempt: Player %s [guid: %u] tried to open item [guid: %u, entry: %u] which is not openable!",
                 pUser->GetName().c_str(), pUser->GetGUIDLow(), item->GetGUIDLow(), proto->ItemId);
         return;
     }
@@ -229,7 +229,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
         if (!lockInfo)
         {
             pUser->SendEquipError(EQUIP_ERR_ITEM_LOCKED, item, NULL);
-            TC_LOG_ERROR("network.opcode", "WORLD::OpenItem: item [guid = %u] has an unknown lockId: %u!", item->GetGUIDLow(), lockId);
+            LOG_ERROR("network.opcode", "WORLD::OpenItem: item [guid = %u] has an unknown lockId: %u!", item->GetGUIDLow(), lockId);
             return;
         }
 
@@ -262,7 +262,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
         }
         else
         {
-            TC_LOG_ERROR("network.opcode", "Wrapped item %u don't have record in character_gifts table and will deleted", item->GetGUIDLow());
+            LOG_ERROR("network.opcode", "Wrapped item %u don't have record in character_gifts table and will deleted", item->GetGUIDLow());
             pUser->DestroyItem(item->GetBagSlot(), item->GetSlot(), true);
             return;
         }
@@ -283,7 +283,7 @@ void WorldSession::HandleGameObjectUseOpcode(WorldPacket& recvData)
 
     recvData >> guid;
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: Recvd CMSG_GAMEOBJ_USE Message [guid=%u]", GUID_LOPART(guid));
+    LOG_DEBUG("network.opcode", "WORLD: Recvd CMSG_GAMEOBJ_USE Message [guid=%u]", GUID_LOPART(guid));
 
     // ignore for remote control state
     if (_player->m_mover != _player)
@@ -298,7 +298,7 @@ void WorldSession::HandleGameobjectReportUse(WorldPacket& recvPacket)
     uint64 guid;
     recvPacket >> guid;
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: Recvd CMSG_GAMEOBJ_REPORT_USE Message [in game guid: %u]", GUID_LOPART(guid));
+    LOG_DEBUG("network.opcode", "WORLD: Recvd CMSG_GAMEOBJ_REPORT_USE Message [in game guid: %u]", GUID_LOPART(guid));
 
     // ignore for remote control state
     if (_player->m_mover != _player)
@@ -327,7 +327,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
     recvPacket >> glyphIndex;
     recvPacket >> castFlags;
 
-    TC_LOG_DEBUG("network.opcode", "WORLD: got cast spell packet, castCount: %u, spellId: %u, castFlags: %u, data length = %u", castCount, spellId, castFlags, (uint32)recvPacket.size());
+    LOG_DEBUG("network.opcode", "WORLD: got cast spell packet, castCount: %u, spellId: %u, castFlags: %u, data length = %u", castCount, spellId, castFlags, (uint32)recvPacket.size());
 
     // ignore for remote control state (for player case)
     Unit* mover = _player->m_mover;
@@ -340,7 +340,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
     if (!spellInfo)
     {
-        TC_LOG_ERROR("network.opcode", "WORLD: unknown spell id %u", spellId);
+        LOG_ERROR("network.opcode", "WORLD: unknown spell id %u", spellId);
         recvPacket.rfinish(); // prevent spam at ignore packet
         return;
     }
@@ -522,7 +522,7 @@ void WorldSession::HandlePetCancelAuraOpcode(WorldPacket& recvPacket)
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
     if (!spellInfo)
     {
-        TC_LOG_ERROR("network.opcode", "WORLD: unknown PET spell id %u", spellId);
+        LOG_ERROR("network.opcode", "WORLD: unknown PET spell id %u", spellId);
         return;
     }
 
@@ -530,13 +530,13 @@ void WorldSession::HandlePetCancelAuraOpcode(WorldPacket& recvPacket)
 
     if (!pet)
     {
-        TC_LOG_ERROR("network.opcode", "HandlePetCancelAura: Attempt to cancel an aura for non-existant pet %u by player '%s'", uint32(GUID_LOPART(guid)), GetPlayer()->GetName().c_str());
+        LOG_ERROR("network.opcode", "HandlePetCancelAura: Attempt to cancel an aura for non-existant pet %u by player '%s'", uint32(GUID_LOPART(guid)), GetPlayer()->GetName().c_str());
         return;
     }
 
     if (pet != GetPlayer()->GetGuardianPet() && pet != GetPlayer()->GetCharm())
     {
-        TC_LOG_ERROR("network.opcode", "HandlePetCancelAura: Pet %u is not a pet of player '%s'", uint32(GUID_LOPART(guid)), GetPlayer()->GetName().c_str());
+        LOG_ERROR("network.opcode", "HandlePetCancelAura: Pet %u is not a pet of player '%s'", uint32(GUID_LOPART(guid)), GetPlayer()->GetName().c_str());
         return;
     }
 
@@ -608,7 +608,7 @@ void WorldSession::HandleTotemDestroyed(WorldPacket& recvPacket)
 
 void WorldSession::HandleSelfResOpcode(WorldPacket& /*recvData*/)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_SELF_RES");                  // empty opcode
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_SELF_RES");                  // empty opcode
 
     if (_player->HasAuraType(SPELL_AURA_PREVENT_RESURRECTION))
         return; // silent return, client should display error by itself and not send this opcode
@@ -643,7 +643,7 @@ void WorldSession::HandleSpellClick(WorldPacket& recvData)
 
 void WorldSession::HandleMirrorImageDataRequest(WorldPacket& recvData)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_GET_MIRRORIMAGE_DATA");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_GET_MIRRORIMAGE_DATA");
     uint64 guid;
     recvData >> guid;
     recvData.read_skip<uint32>(); // DisplayId ?
@@ -739,7 +739,7 @@ void WorldSession::HandleMirrorImageDataRequest(WorldPacket& recvData)
 
 void WorldSession::HandleUpdateProjectilePosition(WorldPacket& recvPacket)
 {
-    TC_LOG_DEBUG("network.opcode", "WORLD: CMSG_UPDATE_PROJECTILE_POSITION");
+    LOG_DEBUG("network.opcode", "WORLD: CMSG_UPDATE_PROJECTILE_POSITION");
 
     uint64 casterGuid;
     uint32 spellId;

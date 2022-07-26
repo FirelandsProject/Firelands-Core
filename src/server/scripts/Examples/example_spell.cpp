@@ -83,19 +83,19 @@ class spell_ex_5581 : public SpellScriptLoader
             {
                 // this hook is executed before anything about casting the spell is done
                 // after this hook is executed all the machinery starts
-                TC_LOG_INFO("misc", "Caster just finished preparing the spell (cast bar has expired)");
+                LOG_INFO("misc", "Caster just finished preparing the spell (cast bar has expired)");
             }
 
             void HandleOnCast()
             {
                 // cast is validated and spell targets are selected at this moment
                 // this is a last place when the spell can be safely interrupted
-                TC_LOG_INFO("misc", "Spell is about to do take reagents, power, launch missile, do visuals and instant spell effects");
+                LOG_INFO("misc", "Spell is about to do take reagents, power, launch missile, do visuals and instant spell effects");
             }
 
             void HandleAfterCast()
             {
-                TC_LOG_INFO("misc", "All immediate Actions for the spell are finished now");
+                LOG_INFO("misc", "All immediate Actions for the spell are finished now");
                 // this is a safe for triggering additional effects for a spell without interfering
                 // with visuals or with other effects of the spell
                 //GetCaster()->CastSpell(target, SPELL_TRIGGERED, true);
@@ -113,7 +113,7 @@ class spell_ex_5581 : public SpellScriptLoader
 
             void HandleDummyLaunch(SpellEffIndex /*effIndex*/)
             {
-                TC_LOG_INFO("misc", "Spell %u with SPELL_EFFECT_DUMMY is just launched!", GetSpellInfo()->Id);
+                LOG_INFO("misc", "Spell %u with SPELL_EFFECT_DUMMY is just launched!", GetSpellInfo()->Id);
             }
 
             void HandleDummyLaunchTarget(SpellEffIndex /*effIndex*/)
@@ -122,17 +122,17 @@ class spell_ex_5581 : public SpellScriptLoader
                 if (Unit* unitTarget = GetHitUnit())
                     targetGUID = unitTarget->GetGUID();
                 // we're handling SPELL_EFFECT_DUMMY in effIndex 0 here
-                TC_LOG_INFO("misc", "Spell %u with SPELL_EFFECT_DUMMY is just launched at it's target: " UI64FMTD "!", GetSpellInfo()->Id, targetGUID);
+                LOG_INFO("misc", "Spell %u with SPELL_EFFECT_DUMMY is just launched at it's target: " UI64FMTD "!", GetSpellInfo()->Id, targetGUID);
             }
 
             void HandleDummyHit(SpellEffIndex /*effIndex*/)
             {
-                TC_LOG_INFO("misc", "Spell %u with SPELL_EFFECT_DUMMY has hit!", GetSpellInfo()->Id);
+                LOG_INFO("misc", "Spell %u with SPELL_EFFECT_DUMMY has hit!", GetSpellInfo()->Id);
             }
 
             void HandleDummyHitTarget(SpellEffIndex /*effIndex*/)
             {
-                TC_LOG_INFO("misc", "SPELL_EFFECT_DUMMY is hits it's target!");
+                LOG_INFO("misc", "SPELL_EFFECT_DUMMY is hits it's target!");
                 // make caster cast a spell on a unit target of effect
                 if (Unit* target = GetHitUnit())
                     GetCaster()->CastSpell(target, SPELL_TRIGGERED, true);
@@ -140,23 +140,23 @@ class spell_ex_5581 : public SpellScriptLoader
 
             void HandleBeforeHit()
             {
-                TC_LOG_INFO("misc", "Spell is about to hit target!");
+                LOG_INFO("misc", "Spell is about to hit target!");
             }
 
             void HandleOnHit()
             {
-                TC_LOG_INFO("misc", "Spell just hit target!");
+                LOG_INFO("misc", "Spell just hit target!");
             }
 
             void HandleAfterHit()
             {
-                TC_LOG_INFO("misc", "Spell just finished hitting target!");
+                LOG_INFO("misc", "Spell just finished hitting target!");
             }
 
             void FilterTargets(std::list<Unit*>& /*targetList*/)
             {
                 // usually you want this call for Area Target spells
-                TC_LOG_INFO("misc", "Spell is about to add targets from targetList to final targets!");
+                LOG_INFO("misc", "Spell is about to add targets from targetList to final targets!");
             }
 
             // register functions used in spell script - names of these functions do not matter
@@ -231,20 +231,20 @@ class spell_ex_66244 : public SpellScriptLoader
 
             void HandleOnEffectApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                TC_LOG_INFO("misc", "Aura Effect is about to be applied on target!");
+                LOG_INFO("misc", "Aura Effect is about to be applied on target!");
                 // this hook allows you to prevent execution of AuraEffect handler, or to replace it with your own handler
                 //PreventDefaultAction();
             }
             void HandleOnEffectRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                TC_LOG_INFO("misc", "Aura Effect is about to be removed from target!");
+                LOG_INFO("misc", "Aura Effect is about to be removed from target!");
                 // this hook allows you to prevent execution of AuraEffect handler, or to replace it with your own handler
                 //PreventDefaultAction();
             }
 
             void HandleAfterEffectApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                TC_LOG_INFO("misc", "Aura Effect has just been applied on target!");
+                LOG_INFO("misc", "Aura Effect has just been applied on target!");
                 Unit* target = GetTarget();
                 // cast spell on target on aura apply
                 target->CastSpell(target, SPELL_TRIGGERED, true);
@@ -252,7 +252,7 @@ class spell_ex_66244 : public SpellScriptLoader
 
             void HandleAfterEffectRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
             {
-                TC_LOG_INFO("misc", "Aura Effect has just been just removed from target!");
+                LOG_INFO("misc", "Aura Effect has just been just removed from target!");
                 Unit* target = GetTarget();
                 Unit* caster = GetCaster();
                 // caster may be not avalible (logged out for example)
@@ -264,7 +264,7 @@ class spell_ex_66244 : public SpellScriptLoader
 
             void HandleEffectPeriodic(AuraEffect const* /*aurEff*/)
             {
-                TC_LOG_INFO("misc", "Perioidic Aura Effect is does a tick on target!");
+                LOG_INFO("misc", "Perioidic Aura Effect is does a tick on target!");
                 Unit* target = GetTarget();
                 // aura targets damage self on tick
                 target->DealDamage(target, 100);
@@ -272,14 +272,14 @@ class spell_ex_66244 : public SpellScriptLoader
 
             void HandleEffectPeriodicUpdate(AuraEffect* aurEff)
             {
-                TC_LOG_INFO("misc", "Perioidic Aura Effect is now updated!");
+                LOG_INFO("misc", "Perioidic Aura Effect is now updated!");
                 // we're doubling aura amount every tick
                 aurEff->ChangeAmount(aurEff->GetAmount() * 2);
             }
 
             void HandleEffectCalcAmount(AuraEffect const* /*aurEff*/, int32& amount, bool& canBeRecalculated)
             {
-                TC_LOG_INFO("misc", "Amount of Aura Effect is being calculated now!");
+                LOG_INFO("misc", "Amount of Aura Effect is being calculated now!");
                 // we're setting amount to 100
                 amount = 100;
                 // amount will be never recalculated due to applying passive aura
@@ -288,7 +288,7 @@ class spell_ex_66244 : public SpellScriptLoader
 
             void HandleEffectCalcPeriodic(AuraEffect const* /*aurEff*/, bool& isPeriodic, int32& amplitude)
             {
-                TC_LOG_INFO("misc", "Periodic data of Aura Effect is being calculated now!");
+                LOG_INFO("misc", "Periodic data of Aura Effect is being calculated now!");
                 // we're setting aura to be periodic and tick every 10 seconds
                 isPeriodic = true;
                 amplitude = 2 * IN_MILLISECONDS;
@@ -296,7 +296,7 @@ class spell_ex_66244 : public SpellScriptLoader
 
             void HandleEffectCalcSpellMod(AuraEffect const* /*aurEff*/, SpellModifier*& spellMod)
             {
-                TC_LOG_INFO("misc", "SpellMod data of Aura Effect is being calculated now!");
+                LOG_INFO("misc", "SpellMod data of Aura Effect is being calculated now!");
                 // we don't want spellmod for example
                 if (spellMod)
                 {
@@ -369,14 +369,14 @@ class spell_ex_absorb_aura : public SpellScriptLoader
 
             void HandleOnEffectAbsorb(AuraEffect* /*aurEff*/, DamageInfo & dmgInfo, uint32 & absorbAmount)
             {
-                TC_LOG_INFO("misc", "Our aura is now absorbing damage done to us!");
+                LOG_INFO("misc", "Our aura is now absorbing damage done to us!");
                 // absorb whole damage done to us
                 absorbAmount = dmgInfo.GetDamage();
             }
 
             void HandleAfterEffectAbsorb(AuraEffect* /*aurEff*/, DamageInfo & /*dmgInfo*/, uint32 & absorbAmount)
             {
-                TC_LOG_INFO("misc", "Our aura has absorbed %u damage!", absorbAmount);
+                LOG_INFO("misc", "Our aura has absorbed %u damage!", absorbAmount);
             }
 
             // function registering
@@ -405,7 +405,7 @@ class spell_ex_463 : public SpellScriptLoader
 
             bool CheckAreaTarget(Unit* target)
             {
-                TC_LOG_INFO("misc", "Area aura checks if unit is a valid target for it!");
+                LOG_INFO("misc", "Area aura checks if unit is a valid target for it!");
                 // in our script we allow only players to be affected
                 return target->GetTypeId() == TYPEID_PLAYER;
             }

@@ -41,7 +41,7 @@ public:
         Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(BATTLEGROUND_AA);
         if (!bg)
         {
-            TC_LOG_ERROR("network.opcode", "Battleground: template bg (all arenas) not found");
+            LOG_ERROR("network.opcode", "Battleground: template bg (all arenas) not found");
             return false;
         }
 
@@ -570,7 +570,7 @@ public:
             ss << teamsMember[0] << " - " << mmr << " - " << teamsMember[1];
             std::string data = ss.str();
 
-            //TC_LOG_INFO("server.loading", "%s", data.c_str());
+            //LOG_INFO("server.loading", "%s", data.c_str());
             return data;
         }
         return "An error occured";

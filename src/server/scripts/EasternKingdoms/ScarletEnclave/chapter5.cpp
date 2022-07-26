@@ -954,7 +954,7 @@ public:
                                 temp->HandleEmoteCommand(EMOTE_ONESHOT_KICK);
                                 temp->AI()->Talk(SAY_LIGHT_OF_DAWN46);
                             }
-                            TC_LOG_ERROR("entities.unit", "charge counter");
+                            LOG_ERROR("entities.unit", "charge counter");
                             me->SetSpeed(MOVE_RUN, 6.0f);
                             me->SetStandState(UNIT_STAND_STATE_DEAD);
                             /*********/

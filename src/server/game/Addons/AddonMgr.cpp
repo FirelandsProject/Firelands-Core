@@ -44,7 +44,7 @@ void LoadFromDB()
     QueryResult result = CharacterDatabase.Query("SELECT name, crc FROM addons");
     if (!result)
     {
-        TC_LOG_INFO("server.loading", ">> Loaded 0 known addons. DB table `addons` is empty!");
+        LOG_INFO("server.loading", ">> Loaded 0 known addons. DB table `addons` is empty!");
         return;
     }
 
@@ -63,7 +63,7 @@ void LoadFromDB()
     }
     while (result->NextRow());
 
-    TC_LOG_INFO("server.loading", ">> Loaded %u known addons in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded %u known addons in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void SaveAddon(AddonInfo const& addon)

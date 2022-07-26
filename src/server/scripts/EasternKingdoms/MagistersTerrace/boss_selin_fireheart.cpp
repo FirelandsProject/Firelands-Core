@@ -85,7 +85,7 @@ public:
                 {
                     instance->SetData64(DATA_FEL_CRYSTAL, i);
                     uint64 guid = instance->GetData64(DATA_FEL_CRYSTAL);
-                    TC_LOG_DEBUG("scripts", "Selin: Adding Fel Crystal " UI64FMTD " to list", guid);
+                    LOG_DEBUG("scripts", "Selin: Adding Fel Crystal " UI64FMTD " to list", guid);
                     Crystals.push_back(guid);
                 }
             }
@@ -226,7 +226,7 @@ public:
                 else
                 {
                     // Make an error message in case something weird happened here
-                    TC_LOG_ERROR("scripts", "Selin Fireheart unable to drain crystal as the crystal is either dead or despawned");
+                    LOG_ERROR("scripts", "Selin Fireheart unable to drain crystal as the crystal is either dead or despawned");
                     DrainingCrystal = false;
                 }
             }

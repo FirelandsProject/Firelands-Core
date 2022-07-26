@@ -17,8 +17,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITYCORE_GUILD_H
-#define TRINITYCORE_GUILD_H
+#ifndef FIRELANDS_GUILD_H
+#define FIRELANDS_GUILD_H
 
 #include "AchievementMgr.h"
 #include "World.h"

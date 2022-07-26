@@ -458,7 +458,7 @@ int32 SpellEffectInfo::CalcValue(Unit const* caster, int32 const* bp, Unit const
                     if (delta > 0)
                         preciseBasePoints += frand(-delta, delta);
                     else
-                        TC_LOG_ERROR("spells", "SpellEffectInfo::CalcValue: wrong DeltaScalingMultiplier '%f' for spell %d", delta, _spellInfo->Id);
+                        LOG_ERROR("spells", "SpellEffectInfo::CalcValue: wrong DeltaScalingMultiplier '%f' for spell %d", delta, _spellInfo->Id);
                 }
 
                 basePoints = int32(floor(preciseBasePoints + 0.5));
@@ -1541,7 +1541,7 @@ SpellCastResult SpellInfo::CheckShapeshift(uint32 form) const
         shapeInfo = sSpellShapeshiftFormStore.LookupEntry(form);
         if (!shapeInfo)
         {
-            TC_LOG_ERROR("spells", "GetErrorAtShapeshiftedCast: unknown shapeshift %u", form);
+            LOG_ERROR("spells", "GetErrorAtShapeshiftedCast: unknown shapeshift %u", form);
             return SPELL_CAST_OK;
         }
         actAsShifted = !(shapeInfo->flags1 & 1);            // shapeshift acts as normal form for spells
@@ -2416,7 +2416,7 @@ int32 SpellInfo::CalcPowerCost(Unit const* caster, SpellSchoolMask schoolMask, S
         // Else drain all power
         if (PowerType < MAX_POWERS)
             return caster->GetPower(Powers(PowerType));
-        TC_LOG_ERROR("spells", "SpellInfo::CalcPowerCost: Unknown power type '%d' in spell %d", PowerType, Id);
+        LOG_ERROR("spells", "SpellInfo::CalcPowerCost: Unknown power type '%d' in spell %d", PowerType, Id);
         return 0;
     }
 
@@ -2441,10 +2441,10 @@ int32 SpellInfo::CalcPowerCost(Unit const* caster, SpellSchoolMask schoolMask, S
                 break;
             case POWER_RUNES:
             case POWER_RUNIC_POWER:
-                TC_LOG_DEBUG("spells", "CalculateManaCost: Not implemented yet!");
+                LOG_DEBUG("spells", "CalculateManaCost: Not implemented yet!");
                 break;
             default:
-                TC_LOG_ERROR("spells", "CalculateManaCost: Unknown power type '%d' in spell %d", PowerType, Id);
+                LOG_ERROR("spells", "CalculateManaCost: Unknown power type '%d' in spell %d", PowerType, Id);
                 return 0;
         }
     }

@@ -20,15 +20,15 @@
 
 // THIS FILE IS DEPRECATED
 
-#ifndef TRINITY_SYSTEMCONFIG_H
-#define TRINITY_SYSTEMCONFIG_H
+#ifndef FIRELANDS_SYSTEMCONFIG_H
+#define FIRELANDS_SYSTEMCONFIG_H
 
 #include "Define.h"
 #include "revision.h"
 
 #define _PACKAGENAME "Athenas-Core"
 
-#if TRINITY_ENDIAN == TRINITY_BIGENDIAN
+#if FIRELANDS_ENDIAN == FIRELANDS_BIGENDIAN
 # define _ENDIAN_STRING "big-endian"
 #else
 # define _ENDIAN_STRING "little-endian"

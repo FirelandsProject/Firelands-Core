@@ -154,7 +154,7 @@ void MoveSpline::init_spline(const MoveSplineInitArgs& args)
     // TODO: what to do in such cases? problem is in input data (all points are at same coords)
     if (spline.length() < minimal_duration)
     {
-        TC_LOG_ERROR("misc", "MoveSpline::init_spline: zero length spline, wrong input data?");
+        LOG_ERROR("misc", "MoveSpline::init_spline: zero length spline, wrong input data?");
         spline.set_length(spline.last(), spline.isCyclic() ? 1000 : 1);
     }
     point_Idx = spline.first();
@@ -208,7 +208,7 @@ bool MoveSplineInitArgs::Validate(Unit* unit) const
 #define CHECK(exp) \
     if (!(exp))\
     {\
-        TC_LOG_ERROR("misc", "MoveSplineInitArgs::Validate: expression '%s' failed for GUID: %u Entry: %u", #exp, unit->GetTypeId() == TYPEID_PLAYER ? unit->GetGUIDLow() : unit->ToCreature()->GetDBTableGUIDLow(), unit->GetEntry());\
+        LOG_ERROR("misc", "MoveSplineInitArgs::Validate: expression '%s' failed for GUID: %u Entry: %u", #exp, unit->GetTypeId() == TYPEID_PLAYER ? unit->GetGUIDLow() : unit->ToCreature()->GetDBTableGUIDLow(), unit->GetEntry());\
         return false;\
     }
     CHECK(path.size() > 1);
@@ -235,7 +235,7 @@ bool MoveSplineInitArgs::_checkPathBounds() const
             offset = path[i] - middle;
             if (fabs(offset.x) >= MAX_OFFSET || fabs(offset.y) >= MAX_OFFSET || fabs(offset.z) >= MAX_OFFSET)
             {
-                TC_LOG_ERROR("misc", "MoveSplineInitArgs::_checkPathBounds check failed");
+                LOG_ERROR("misc", "MoveSplineInitArgs::_checkPathBounds check failed");
                 return false;
             }
         }

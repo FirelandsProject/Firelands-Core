@@ -135,7 +135,7 @@ struct ObjectGuid
         {
             ASSERT(index < sizeof(uint64));
 
-#if TRINITY_ENDIAN == TRINITY_LITTLEENDIAN
+#if FIRELANDS_ENDIAN == FIRELANDS_LITTLEENDIAN
             return _data.byte[index];
 #else
             return _data.byte[7 - index];
@@ -146,7 +146,7 @@ struct ObjectGuid
         {
             ASSERT(index < sizeof(uint64));
 
-#if TRINITY_ENDIAN == TRINITY_LITTLEENDIAN
+#if FIRELANDS_ENDIAN == FIRELANDS_LITTLEENDIAN
             return _data.byte[index];
 #else
             return _data.byte[7 - index];

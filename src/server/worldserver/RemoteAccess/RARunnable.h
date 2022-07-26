@@ -20,8 +20,8 @@
 /// @{
 /// \file
 
-#ifndef _TRINITY_RARUNNABLE_H_
-#define _TRINITY_RARUNNABLE_H_
+#ifndef _FIRELANDS_RARUNNABLE_H_
+#define _FIRELANDS_RARUNNABLE_H_
 
 #include "Common.h"
 
@@ -39,5 +39,5 @@ private:
 
 };
 
-#endif /* _TRINITY_RARUNNABLE_H_ */
+#endif /* _FIRELANDS_RARUNNABLE_H_ */
 /// @}
