@@ -13,27 +13,21 @@
 # weren't doing some -O3 psychooptimizations etc.
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-  add_definitions(-fno-delete-null-pointer-checks)
+    add_definitions(-fno-delete-null-pointer-checks)
 endif()
 
-if( AUTHSERVER OR WORLDSERVER )
-  set(sources_Debugging
-    ${CMAKE_SOURCE_DIR}/src/server/common/Debugging/WheatyExceptionReport.cpp
-    ${CMAKE_SOURCE_DIR}/src/server/common/Debugging/WheatyExceptionReport.h
-  )
-  add_subdirectory(common)
-  if( AUTHSERVER )
-    add_subdirectory(authserver)
-  endif()
-  if( WORLDSERVER )
-    add_subdirectory(collision)
-    add_subdirectory(game)
-    add_subdirectory(scripts)
-    add_subdirectory(worldserver)
-  endif()
+if(AUTHSERVER OR WORLDSERVER)
+    add_subdirectory(database)
+    add_subdirectory(apps)
+
+    if(WORLDSERVER)
+        add_subdirectory(collision)
+        add_subdirectory(game)
+        add_subdirectory(scripts)
+    endif()
 else()
-  if( TOOLS )
-    add_subdirectory(collision)
-    add_subdirectory(shared)
-  endif()
+    if(TOOLS)
+        add_subdirectory(collision)
+        add_subdirectory(shared)
+    endif()
 endif()

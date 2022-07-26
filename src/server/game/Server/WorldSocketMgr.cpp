@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2008  MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -158,7 +158,7 @@ class ReactorRunnable : protected ACE_Task_Base
         {
             LOG_DEBUG("misc", "Network Thread Starting");
 
-            ACE_ASSERT (m_Reactor);
+            ASSERT (m_Reactor);
 
             SocketSet::iterator i, t;
 
@@ -353,7 +353,7 @@ WorldSocketMgr::OnSocketOpen (WorldSocket* sock)
     // we skip the Acceptor Thread
     size_t min = 1;
 
-    ACE_ASSERT (m_NetThreadsCount >= 1);
+    ASSERT (m_NetThreadsCount >= 1);
 
     for (size_t i = 1; i < m_NetThreadsCount; ++i)
         if (m_NetThreads[i].Connections() < m_NetThreads[min].Connections())

@@ -22,7 +22,7 @@ if( NOT MSVC )
 endif()
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/dep/StormLib/src
+  ${CMAKE_SOURCE_DIR}/deps/StormLib/src
 )
 
 add_executable(vmap4extractor ${sources})

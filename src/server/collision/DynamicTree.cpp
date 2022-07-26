@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -170,7 +170,7 @@ struct DynamicTreeIntersectionCallback_WithLogger
     }
     bool operator()(const G3D::Ray& r, const GameObjectModel& obj, float& distance)
     {
-        LOG_DEBUG("maps", "testing intersection with %s", obj.name.c_str());
+        LOG_DEBUG("maps", "testing intersection with {}", obj.name);
         bool hit = obj.intersectRay(r, distance, true, phase_mask);
         if (hit)
         {
