@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -150,10 +150,9 @@ void GroupMgr::LoadGroups()
                 NextGroupDbStoreId++;
 
             ++count;
-        }
-        while (result->NextRow());
+        } while (result->NextRow());
 
-        LOG_INFO("server.loading", ">> Loaded %u group definitions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+        LOG_INFO("server.loading", ">> Loaded {} group definitions in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
     }
 
     LOG_INFO("server.loading", "Loading Group members...");
@@ -179,18 +178,17 @@ void GroupMgr::LoadGroups()
         do
         {
             Field* fields = result->Fetch();
-            Group* group = GetGroupByDbStoreId(fields[0].GetUInt32());
+            Group* group = GetGroupByDbStoreId(fields[0].Get<uint32>());
 
             if (group)
-                group->LoadMemberFromDB(fields[1].GetUInt32(), fields[2].GetUInt8(), fields[3].GetUInt8(), fields[4].GetUInt8());
+                group->LoadMemberFromDB(fields[1].Get<uint32>(), fields[2].Get<uint8>(), fields[3].Get<uint8>(), fields[4].Get<uint8>());
             else
-                LOG_ERROR("misc", "GroupMgr::LoadGroups: Consistency failed, can't find group (storage id: %u)", fields[0].GetUInt32());
+                LOG_ERROR("misc", "GroupMgr::LoadGroups: Consistency failed, can't find group (storage id: {})", fields[0].Get<uint32>());
 
             ++count;
-        }
-        while (result->NextRow());
+        } while (result->NextRow());
 
-        LOG_INFO("server.loading", ">> Loaded %u group members in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+        LOG_INFO("server.loading", ">> Loaded {} group members in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
     }
 
     LOG_INFO("server.loading", "Loading Group instance saves...");
@@ -210,29 +208,28 @@ void GroupMgr::LoadGroups()
         do
         {
             Field* fields = result->Fetch();
-            Group* group = GetGroupByDbStoreId(fields[0].GetUInt32());
+            Group* group = GetGroupByDbStoreId(fields[0].Get<uint32>());
             // group will never be NULL (we have run consistency sql's before loading)
 
-            MapEntry const* mapEntry = sMapStore.LookupEntry(fields[1].GetUInt16());
+            MapEntry const* mapEntry = sMapStore.LookupEntry(fields[1].Get<uint16>());
             if (!mapEntry || !mapEntry->IsDungeon())
             {
-                LOG_ERROR("sql.sql", "Incorrect entry in group_instance table : no dungeon map %d", fields[1].GetUInt16());
+                LOG_ERROR("sql.sql", "Incorrect entry in group_instance table : no dungeon map {}", fields[1].Get<uint16>());
                 continue;
             }
 
-            uint32 diff = fields[4].GetUInt8();
+            uint32 diff = fields[4].Get<uint8>();
             if (diff >= uint32(mapEntry->IsRaid() ? MAX_RAID_DIFFICULTY : MAX_DUNGEON_DIFFICULTY))
             {
-                LOG_ERROR("sql.sql", "Wrong dungeon difficulty use in group_instance table: %d", diff + 1);
+                LOG_ERROR("sql.sql", "Wrong dungeon difficulty use in group_instance table: {}", diff + 1);
                 diff = 0;                                   // default for both difficaly types
             }
 
-            InstanceSave* save = sInstanceSaveMgr->AddInstanceSave(mapEntry->MapID, fields[2].GetUInt32(), Difficulty(diff), time_t(fields[5].GetUInt32()), (bool)fields[6].GetUInt64(), true, fields[7].GetBool());
-            group->BindToInstance(save, fields[3].GetBool(), true);
+            InstanceSave* save = sInstanceSaveMgr->AddInstanceSave(mapEntry->MapID, fields[2].Get<uint32>(), Difficulty(diff), time_t(fields[5].Get<uint32>()), (bool)fields[6].Get<uint64>(), true, fields[7].Get<bool>());
+            group->BindToInstance(save, fields[3].Get<bool>(), true);
             ++count;
-        }
-        while (result->NextRow());
+        } while (result->NextRow());
 
-        LOG_INFO("server.loading", ">> Loaded %u group-instance saves in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+        LOG_INFO("server.loading", ">> Loaded {} group-instance saves in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
     }
 }

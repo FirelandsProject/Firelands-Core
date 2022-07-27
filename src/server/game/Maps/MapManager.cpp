@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -57,7 +57,7 @@ void MapManager::Initialize()
     // debugging code, should be deleted some day
     {
         for (uint8 i = 0; i < MAX_GRID_STATE; ++i)
-             i_GridStates[i] = si_GridStates[i];
+            i_GridStates[i] = si_GridStates[i];
 
         i_GridStateErrorCount = 0;
     }
@@ -69,7 +69,7 @@ void MapManager::Initialize()
 
 void MapManager::InitializeVisibilityDistanceInfo()
 {
-    for (MapMapType::iterator iter=i_maps.begin(); iter != i_maps.end(); ++iter)
+    for (MapMapType::iterator iter = i_maps.begin(); iter != i_maps.end(); ++iter)
         (*iter).second->InitVisibilityDistance();
 }
 
@@ -77,7 +77,7 @@ void MapManager::InitializeVisibilityDistanceInfo()
 void MapManager::checkAndCorrectGridStatesArray()
 {
     bool ok = true;
-    for (int i=0; i<MAX_GRID_STATE; i++)
+    for (int i = 0; i < MAX_GRID_STATE; i++)
     {
         if (i_GridStates[i] != si_GridStates[i])
         {
@@ -85,14 +85,14 @@ void MapManager::checkAndCorrectGridStatesArray()
             ok = false;
             si_GridStates[i] = i_GridStates[i];
         }
-        #ifdef FIRELANDS_DEBUG
+#ifdef FIRELANDS_DEBUG
         // inner class checking only when compiled with debug
         if (!si_GridStates[i]->checkMagic())
         {
             ok = false;
             si_GridStates[i]->setMagic();
         }
-        #endif
+#endif
     }
     if (!ok)
         ++i_GridStateErrorCount;
@@ -157,7 +157,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
 {
     MapEntry const* entry = sMapStore.LookupEntry(mapid);
     if (!entry)
-       return false;
+        return false;
 
     if (!entry->IsDungeon())
         return true;
@@ -197,7 +197,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
             // probably there must be special opcode, because client has this string constant in GlobalStrings.lua
             // TODO: this is not a good place to send the message
             player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetFirelandsString(LANG_INSTANCE_RAID_GROUP_ONLY), mapName);
-            LOG_DEBUG("maps", "MAP: Player '%s' must be in a raid group to enter instance '%s'", player->GetName().c_str(), mapName);
+            LOG_DEBUG("maps", "MAP: Player '{}' must be in a raid group to enter instance '{}'", player->GetName(), mapName);
             return false;
         }
     }
@@ -221,15 +221,15 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
             {
                 WorldPacket data(SMSG_CORPSE_NOT_IN_INSTANCE);
                 player->GetSession()->SendPacket(&data);
-                LOG_DEBUG("maps", "MAP: Player '%s' does not have a corpse in instance '%s' and cannot enter.", player->GetName().c_str(), mapName);
+                LOG_DEBUG("maps", "MAP: Player '{}' does not have a corpse in instance '{}' and cannot enter.", player->GetName(), mapName);
                 return false;
             }
-            LOG_DEBUG("maps", "MAP: Player '%s' has corpse in instance '%s' and can enter.", player->GetName().c_str(), mapName);
+            LOG_DEBUG("maps", "MAP: Player '{}' has corpse in instance '{}' and can enter.", player->GetName(), mapName);
             player->ResurrectPlayer(0.5f, false);
             player->SpawnCorpseBones();
         }
         else
-            LOG_DEBUG("maps", "Map::CanPlayerEnter - player '%s' is dead but does not have a corpse!", player->GetName().c_str());
+            LOG_DEBUG("maps", "Map::CanPlayerEnter - player '{}' is dead but does not have a corpse!", player->GetName());
     }
 
     //Get instance where player's group is bound & its map
@@ -240,16 +240,16 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
             if (Map* boundMap = sMapMgr->FindMap(mapid, boundInstance->save->GetInstanceId()))
                 if (!loginCheck && !boundMap->CanEnter(player))
                     return false;
-            /*
-                This check has to be moved to InstanceMap::CanEnter()
-                // Player permanently bounded to different instance than groups one
-                InstancePlayerBind* playerBoundedInstance = player->GetBoundInstance(mapid, player->GetDifficulty(entry->IsRaid()));
-                if (playerBoundedInstance && playerBoundedInstance->perm && playerBoundedInstance->save &&
-                    boundedInstance->save->GetInstanceId() != playerBoundedInstance->save->GetInstanceId())
-                {
-                    //TODO: send some kind of error message to the player
-                    return false;
-                }*/
+        /*
+            This check has to be moved to InstanceMap::CanEnter()
+            // Player permanently bounded to different instance than groups one
+            InstancePlayerBind* playerBoundedInstance = player->GetBoundInstance(mapid, player->GetDifficulty(entry->IsRaid()));
+            if (playerBoundedInstance && playerBoundedInstance->perm && playerBoundedInstance->save &&
+                boundedInstance->save->GetInstanceId() != playerBoundedInstance->save->GetInstanceId())
+            {
+                //TODO: send some kind of error message to the player
+                return false;
+            }*/
     }
 
     // players are only allowed to enter 5 instances per hour
@@ -271,11 +271,11 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
     {
         for (uint8 i = 0; i < MAX_DIFFICULTY; ++i)
         {
-            Player::BoundInstancesMap &binds = player->GetBoundInstances(Difficulty(i));
+            Player::BoundInstancesMap& binds = player->GetBoundInstances(Difficulty(i));
             for (Player::BoundInstancesMap::const_iterator itr = binds.begin(); itr != binds.end(); ++itr)
             {
                 InstanceSave* save = itr->second.save;
-                Group *group = player->GetGroup();
+                Group* group = player->GetGroup();
                 if (save->GetMapId() == mapid && save->GetDifficulty() != targetDifficulty && (!group || !group->isLFRGroup()))
                 {
                     player->SendTransferAborted(mapid, TRANSFER_ABORT_LOCKED_TO_DIFFERENT_INSTANCE);
@@ -287,7 +287,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
         if (group)
             if (uint32 achievementId = GetMapDifficultySwitchAchievement(mapid, targetDifficulty))
             {
-                if (Player *leader =  ObjectAccessor::FindPlayer(group->GetLeaderGUID()))
+                if (Player* leader = ObjectAccessor::FindPlayer(group->GetLeaderGUID()))
                 {
                     if (!leader->HasAchieved(achievementId))
                     {
@@ -299,7 +299,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
                     uint32 plId = 0;
                     uint32 leId = 0;
 
-                    Player::BoundInstancesMap &binds = player->GetBoundInstances(targetDifficulty);
+                    Player::BoundInstancesMap& binds = player->GetBoundInstances(targetDifficulty);
                     for (Player::BoundInstancesMap::const_iterator itr = binds.begin(); itr != binds.end(); ++itr)
                     {
                         InstanceSave* plSave = itr->second.save;
@@ -310,7 +310,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
                         }
                     }
 
-                    Player::BoundInstancesMap &bind = leader->GetBoundInstances(targetDifficulty);
+                    Player::BoundInstancesMap& bind = leader->GetBoundInstances(targetDifficulty);
                     for (Player::BoundInstancesMap::const_iterator itr = bind.begin(); itr != bind.end(); ++itr)
                     {
                         InstanceSave* leaderSave = itr->second.save;
@@ -365,7 +365,7 @@ void MapManager::Update(uint32 diff)
     sObjectAccessor->Update(uint32(i_timer.GetCurrent()));
     for (TransportSet::iterator itr = m_Transports.begin(); itr != m_Transports.end(); )
     {
-        Transport *transport = *itr;
+        Transport* transport = *itr;
         ++itr;
         if (!transport->AsToBeDeleted())
             transport->Update(uint32(i_timer.GetCurrent()));
@@ -383,8 +383,8 @@ bool MapManager::ExistMapAndVMap(uint32 mapid, float x, float y)
 {
     GridCoord p = Firelands::ComputeGridCoord(x, y);
 
-    int gx=63-p.x_coord;
-    int gy=63-p.y_coord;
+    int gx = 63 - p.x_coord;
+    int gy = 63 - p.y_coord;
 
     return Map::ExistMap(mapid, gx, gy) && Map::ExistVMap(mapid, gx, gy);
 }
@@ -406,7 +406,7 @@ void MapManager::UnloadAll()
     for (TransportSet::iterator i = m_Transports.begin(); i != m_Transports.end(); ++i)
     {
         (*i)->RemoveFromWorld();
-        delete *i;
+        delete* i;
     }
 
     for (MapMapType::iterator iter = i_maps.begin(); iter != i_maps.end();)
@@ -432,7 +432,7 @@ uint32 MapManager::GetNumInstances()
         Map* map = itr->second;
         if (!map->Instanceable())
             continue;
-        MapInstanced::InstancedMaps &maps = ((MapInstanced*)map)->GetInstancedMaps();
+        MapInstanced::InstancedMaps& maps = ((MapInstanced*)map)->GetInstancedMaps();
         for (MapInstanced::InstancedMaps::iterator mitr = maps.begin(); mitr != maps.end(); ++mitr)
             if (mitr->second->IsDungeon()) ret++;
     }
@@ -449,7 +449,7 @@ uint32 MapManager::GetNumPlayersInInstances()
         Map* map = itr->second;
         if (!map->Instanceable())
             continue;
-        MapInstanced::InstancedMaps &maps = ((MapInstanced*)map)->GetInstancedMaps();
+        MapInstanced::InstancedMaps& maps = ((MapInstanced*)map)->GetInstancedMaps();
         for (MapInstanced::InstancedMaps::iterator mitr = maps.begin(); mitr != maps.end(); ++mitr)
             if (mitr->second->IsDungeon())
                 ret += ((InstanceMap*)mitr->second)->GetPlayers().getSize();
@@ -464,7 +464,7 @@ void MapManager::InitInstanceIds()
     QueryResult result = CharacterDatabase.Query("SELECT MAX(id) FROM instance");
     if (result)
     {
-        uint32 maxId = (*result)[0].GetUInt32();
+        uint32 maxId = (*result)[0].Get<uint32>();
 
         // Resize to multiples of 32 (vector<bool> allocates memory the same way)
         _instanceIds.resize((maxId / 32) * 32 + (maxId % 32 > 0 ? 32 : 0));

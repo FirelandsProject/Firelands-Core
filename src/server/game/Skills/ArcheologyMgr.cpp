@@ -103,7 +103,7 @@ void ArcheologyMgr::SetActualDigSitePosition(bool force)
                             return;
                         }
 
-        LOG_ERROR("misc", "ARCHAEOLOGY : digsite broken zone : %u", m_player->GetZoneId());
+        LOG_ERROR("misc", "ARCHAEOLOGY : digsite broken zone : {}", m_player->GetZoneId());
     }
 }
 
@@ -641,8 +641,8 @@ void ArcheologyMgr::LoadArcheologyDigSites(PreparedQueryResult digsiteResult, Pr
        do
        {
            Field* digFields = digsiteResult->Fetch();
-           uint32 digId = digFields[0].GetUInt32();
-           uint32 digCount = digFields[1].GetUInt32();
+           uint32 digId = digFields[0].Get<uint32>();
+           uint32 digCount = digFields[1].Get<uint32>();
            m_digSites[count] = digId;
            m_digSitesCount[count] = digCount;
            count++;
@@ -659,8 +659,8 @@ void ArcheologyMgr::LoadArcheologyDigSites(PreparedQueryResult digsiteResult, Pr
         do
         {
             Field* artFields = currentArtifactsResult->Fetch();
-            uint32 artId = artFields[0].GetUInt32();
-            uint32 branchId = artFields[1].GetUInt32();
+            uint32 artId = artFields[0].Get<uint32>();
+            uint32 branchId = artFields[1].Get<uint32>();
             m_researchProject[branchId] = artId;
         } while (currentArtifactsResult->NextRow());
     }
@@ -672,8 +672,8 @@ void ArcheologyMgr::LoadArcheologyDigSites(PreparedQueryResult digsiteResult, Pr
         do
         {
             Field* researchFields = researchResult->Fetch();
-            ResearchHistoryEntry rhe(researchFields[0].GetUInt32(), researchFields[1].GetUInt32(), researchFields[2].GetUInt32(), researchFields[3].GetUInt32());
-            m_researchHistory[researchFields[1].GetUInt32()] = rhe;
+            ResearchHistoryEntry rhe(researchFields[0].Get<uint32>(), researchFields[1].Get<uint32>(), researchFields[2].Get<uint32>(), researchFields[3].Get<uint32>());
+            m_researchHistory[researchFields[1].Get<uint32>()] = rhe;
         } while (researchResult->NextRow());
     }
 

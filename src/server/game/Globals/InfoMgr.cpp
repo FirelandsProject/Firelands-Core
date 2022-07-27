@@ -16,12 +16,12 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = result->Fetch();
-            UpdateCharBase(fields[0].GetUInt32() /* guid */, fields[1].GetString() /* name */, fields[3].GetUInt8() /*gender*/,
-                fields[2].GetUInt8() /*race*/, fields[4].GetUInt8() /*class*/, fields[5].GetUInt32() /* account */, fields[6].GetUInt8() /* level */, fields[7].GetUInt16() /* zone */);
+            UpdateCharBase(fields[0].Get<uint32>() /* guid */, fields[1].Get<std::string>() /* name */, fields[3].Get<uint8>() /*gender*/,
+                fields[2].Get<uint8>() /*race*/, fields[4].Get<uint8>() /*class*/, fields[5].Get<uint32>() /* account */, fields[6].Get<uint8>() /* level */, fields[7].Get<uint16>() /* zone */);
             ++count;
         } while (result->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded base for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded base for {} characters ({})", count, GetMSTimeDiffToNow(start));
 
     // Guilds
     start = getMSTime();
@@ -31,11 +31,11 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = guildResult->Fetch();
-            UpdateCharGuild(fields[1].GetUInt32(), fields[0].GetUInt32());
+            UpdateCharGuild(fields[1].Get<uint32>(), fields[0].Get<uint32>());
             ++count;
         } while (guildResult->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded guild for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded guild for {} characters ({})", count, GetMSTimeDiffToNow(start));
 
     // Groups
     start = getMSTime();
@@ -45,11 +45,11 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = groupResult->Fetch();
-            UpdateCharGroup(fields[1].GetUInt32(), fields[0].GetUInt32());
+            UpdateCharGroup(fields[1].Get<uint32>(), fields[0].Get<uint32>());
             ++count;
         } while (groupResult->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded group for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded group for {} characters ({})", count, GetMSTimeDiffToNow(start));
 
     // Arena teams
     start = getMSTime();
@@ -59,11 +59,11 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = arenaResult->Fetch();
-            UpdateCharArenaTeam(fields[2].GetUInt32(), fields[0].GetUInt32(), ArenaTeam::GetSlotByType(fields[1].GetUInt8()));
+            UpdateCharArenaTeam(fields[2].Get<uint32>(), fields[0].Get<uint32>(), ArenaTeam::GetSlotByType(fields[1].Get<uint8>()));
             ++count;
         } while (arenaResult->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded %u arena teams (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded {} arena teams ({})", count, GetMSTimeDiffToNow(start));
 
     // MMR
     start = getMSTime();
@@ -73,12 +73,12 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = mmrResult->Fetch();
-            UpdateCharMMR(fields[0].GetUInt32() /* guid */, fields[2].GetUInt8() /* slot */, fields[1].GetUInt16() /* MMR */);
+            UpdateCharMMR(fields[0].Get<uint32>() /* guid */, fields[2].Get<uint8>() /* slot */, fields[1].Get<uint16>() /* MMR */);
             ++count;
         } while (mmrResult->NextRow());
     }
 
-    LOG_INFO("server.loading", ">> Loaded MMR for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded MMR for {} characters ({})", count, GetMSTimeDiffToNow(start));
 
     // RBG stats
     start = getMSTime();
@@ -88,11 +88,11 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = RBGResult->Fetch();
-            UpdateCharRBGstats(fields[0].GetUInt32(), fields[1].GetUInt16(), fields[2].GetUInt16(), fields[3].GetUInt16());
+            UpdateCharRBGstats(fields[0].Get<uint32>(), fields[1].Get<uint16>(), fields[2].Get<uint16>(), fields[3].Get<uint16>());
             ++count;
         } while (RBGResult->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded RBG stats for %u characters (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded RBG stats for {} characters ({})", count, GetMSTimeDiffToNow(start));
 
     // Account char counts
     start = getMSTime();
@@ -102,11 +102,11 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = charCountResult->Fetch();
-            SetAccountCharCount(fields[0].GetUInt32(), fields[1].GetUInt64());
+            SetAccountCharCount(fields[0].Get<uint32>(), fields[1].Get<uint64>());
             ++count;
         } while (charCountResult->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded char count for %u accounts (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded char count for {} accounts ({})", count, GetMSTimeDiffToNow(start));
 
     // pets
     /*start = getMSTime();
@@ -116,13 +116,13 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = pets->Fetch();
-            UpdatePet(fields[0].GetUInt32(), fields[1].GetUInt32(), fields[2].GetUInt32(), fields[3].GetUInt32(), fields[4].GetUInt32(), fields[5].GetUInt32(), fields[6].GetUInt8(), fields[7].GetString(),
-                fields[8].GetUInt8(), fields[9].GetUInt8(), fields[10].GetUInt32(), fields[11].GetUInt32(), fields[12].GetUInt32(), fields[13].GetUInt32(), fields[14].GetString(), fields[15].GetUInt8(),
-                fields[16].GetUInt32());
+            UpdatePet(fields[0].Get<uint32>(), fields[1].Get<uint32>(), fields[2].Get<uint32>(), fields[3].Get<uint32>(), fields[4].Get<uint32>(), fields[5].Get<uint32>(), fields[6].Get<uint8>(), fields[7].Get<std::string>(),
+                fields[8].Get<uint8>(), fields[9].Get<uint8>(), fields[10].Get<uint32>(), fields[11].Get<uint32>(), fields[12].Get<uint32>(), fields[13].Get<uint32>(), fields[14].Get<std::string>(), fields[15].Get<uint8>(),
+                fields[16].Get<uint32>());
             ++count;
         } while (pets->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded base for %u pets (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded base for {} pets ({})", count, GetMSTimeDiffToNow(start));
 
     start = getMSTime();
     count = 0;
@@ -131,12 +131,12 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = petAuras->Fetch();
-            UpdatePetAuras(fields[0].GetUInt32(), fields[1].GetUInt64(), fields[2].GetUInt32(), fields[3].GetUInt8(), fields[4].GetUInt8(), fields[5].GetUInt8(), fields[6].GetInt32(), fields[7].GetInt32(),
-                fields[8].GetInt32(), fields[9].GetInt32(), fields[10].GetInt32(), fields[11].GetInt32(), fields[12].GetInt32(), fields[13].GetInt32(), fields[14].GetUInt8());
+            UpdatePetAuras(fields[0].Get<uint32>(), fields[1].Get<uint64>(), fields[2].Get<uint32>(), fields[3].Get<uint8>(), fields[4].Get<uint8>(), fields[5].Get<uint8>(), fields[6].Get<int32>(), fields[7].Get<int32>(),
+                fields[8].Get<int32>(), fields[9].Get<int32>(), fields[10].Get<int32>(), fields[11].Get<int32>(), fields[12].Get<int32>(), fields[13].Get<int32>(), fields[14].Get<uint8>());
             ++count;
         } while (petAuras->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded %u petauras (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded {} petauras ({})", count, GetMSTimeDiffToNow(start));
 
     start = getMSTime();
     count = 0;
@@ -145,11 +145,11 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = petSpells->Fetch();
-            UpdatePetSpells(fields[0].GetUInt32(), fields[1].GetUInt32(), fields[2].GetUInt8());
+            UpdatePetSpells(fields[0].Get<uint32>(), fields[1].Get<uint32>(), fields[2].Get<uint8>());
             ++count;
         } while (petSpells->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded %u petSpells (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded {} petSpells ({})", count, GetMSTimeDiffToNow(start));
 
     start = getMSTime();
     count = 0;
@@ -158,16 +158,16 @@ void InfoMgr::Initialize()
         do
         {
             Field *fields = petSpellCooldowns->Fetch();
-            UpdatePetSpellCooldowns(fields[0].GetUInt32(), fields[1].GetUInt32(), fields[2].GetUInt32());
+            UpdatePetSpellCooldowns(fields[0].Get<uint32>(), fields[1].Get<uint32>(), fields[2].Get<uint32>());
             ++count;
         } while (petSpellCooldowns->NextRow());
     }
-    LOG_INFO("server.loading", ">> Loaded %u petSpellCooldowns (%ums)", count, GetMSTimeDiffToNow(start));
+    LOG_INFO("server.loading", ">> Loaded {} petSpellCooldowns ({})", count, GetMSTimeDiffToNow(start));
 
     // remove this if you want to use petsMap, f.i. find SavedPet by Guid
     petsMap.clear();*/
 
-    LOG_INFO("server.loading", "Done initializing InfoMgr. (%ums)", GetMSTimeDiffToNow(allStart));
+    LOG_INFO("server.loading", "Done initializing InfoMgr. ({})", GetMSTimeDiffToNow(allStart));
 
 }
 
@@ -610,11 +610,11 @@ void InfoMgr::DeletePet(SavedPet* pet, Player* owner)
             petsSet->erase(itr);
         }
         else
-            LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet %u where pets owner %u has no pet with this id in petsset ", pet->id, ownerId);
+            LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet {} where pets owner {} has no pet with this id in petsset ", pet->id, ownerId);
     }
     else
     {
-       LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet %u where pets owner %u has no petsset ", pet->id, ownerId);
+       LOG_ERROR("entities.unit", "InfoMgr::DeletePet, Try to delete pet {} where pets owner {} has no petsset ", pet->id, ownerId);
     }
 
     // remove comments if you want to use petsMap, f.i. find SavedPet by Guid
@@ -626,7 +626,7 @@ void InfoMgr::DeletePet(SavedPet* pet, Player* owner)
     //}
     //else
     //{
-    //    LOG_ERROR("InfoMgr::DeletePet %u pet is not in petsMap", pet->id);
+    //    LOG_ERROR("InfoMgr::DeletePet {} pet is not in petsMap", pet->id);
     //}
 }
 
@@ -652,7 +652,7 @@ void InfoMgr::DeleteAllPetsFromOwner(uint32 ownerGuid)
             //}
             //else
             //{
-            //    LOG_ERROR("InfoMgr::DeletePet %u pet is not in petsMap", pet->id);
+            //    LOG_ERROR("InfoMgr::DeletePet {} pet is not in petsMap", pet->id);
             //}
             delete *it;
         }
@@ -663,7 +663,7 @@ void InfoMgr::DeleteAllPetsFromOwner(uint32 ownerGuid)
     }
     //else
     //{
-    //    LOG_ERROR("entities.unit", "InfoMgr::DeleteAllPetFromOwner, Try to delete pets where owner %u has no pets ", ownerGuid);
+    //    LOG_ERROR("entities.unit", "InfoMgr::DeleteAllPetFromOwner, Try to delete pets where owner {} has no pets ", ownerGuid);
     //}
 }
 

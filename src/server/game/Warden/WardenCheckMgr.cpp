@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -58,7 +58,7 @@ void WardenCheckMgr::LoadWardenChecks()
 
     Field* fields = result->Fetch();
 
-    uint16 maxCheckId = fields[0].GetUInt16();
+    uint16 maxCheckId = fields[0].Get<uint16>();
 
     CheckStore.resize(maxCheckId + 1);
 
@@ -70,14 +70,14 @@ void WardenCheckMgr::LoadWardenChecks()
     {
         fields = result->Fetch();
 
-        uint16 id               = fields[0].GetUInt16();
-        uint8 checkType         = fields[1].GetUInt8();
-        std::string data        = fields[2].GetString();
-        std::string checkResult = fields[3].GetString();
-        uint32 address          = fields[4].GetUInt32();
-        uint8 length            = fields[5].GetUInt8();
-        std::string str         = fields[6].GetString();
-        std::string comment     = fields[7].GetString();
+        uint16 id               = fields[0].Get<uint16>();
+        uint8 checkType         = fields[1].Get<uint8>();
+        std::string data        = fields[2].Get<std::string>();
+        std::string checkResult = fields[3].Get<std::string>();
+        uint32 address          = fields[4].Get<uint32>();
+        uint8 length            = fields[5].Get<uint8>();
+        std::string str         = fields[6].Get<std::string>();
+        std::string comment     = fields[7].Get<std::string>();
 
         WardenCheck* wardenCheck = new WardenCheck();
         wardenCheck->Type = checkType;
@@ -144,7 +144,7 @@ void WardenCheckMgr::LoadWardenChecks()
     }
     while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u warden checks.", count);
+    LOG_INFO("server.loading", ">> Loaded {} warden checks.", count);
 }
 
 void WardenCheckMgr::LoadWardenOverrides()
@@ -173,15 +173,15 @@ void WardenCheckMgr::LoadWardenOverrides()
     {
         Field* fields = result->Fetch();
 
-        uint16 checkId = fields[0].GetUInt16();
-        uint8  action  = fields[1].GetUInt8();
+        uint16 checkId = fields[0].Get<uint16>();
+        uint8  action  = fields[1].Get<uint8>();
 
         // Check if action value is in range (0-2, see WardenActions enum)
         if (action > WARDEN_ACTION_BAN)
-            LOG_ERROR("warden", "Warden check override action out of range (ID: %u, action: %u)", checkId, action);
+            LOG_ERROR("warden", "Warden check override action out of range (ID: {}, action: {})", checkId, action);
         // Check if check actually exists before accessing the CheckStore vector
         else if (checkId > CheckStore.size())
-            LOG_ERROR("warden", "Warden check action override for non-existing check (ID: %u, action: %u), skipped", checkId, action);
+            LOG_ERROR("warden", "Warden check action override for non-existing check (ID: {}, action: {}), skipped", checkId, action);
         else
         {
             CheckStore[checkId]->Action = WardenActions(action);
@@ -190,7 +190,7 @@ void WardenCheckMgr::LoadWardenOverrides()
     }
     while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u warden action overrides.", count);
+    LOG_INFO("server.loading", ">> Loaded {} warden action overrides.", count);
 }
 
 WardenCheck* WardenCheckMgr::GetWardenDataById(uint16 Id)

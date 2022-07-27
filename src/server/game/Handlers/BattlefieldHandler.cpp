@@ -241,7 +241,7 @@ void WorldSession::HandleBfQueueInviteResponse(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[0]);
     recvData.ReadByteSeq(guid[5]);
 
-    LOG_ERROR("misc", "HandleQueueInviteResponse: GUID:" UI64FMTD " Accepted:%u", (uint64)guid, accepted);
+    LOG_ERROR("misc", "HandleQueueInviteResponse: GUID:{} Accepted:%u", (uint64)guid, accepted);
 
     Battlefield* bf = sBattlefieldMgr->GetBattlefieldByGUID(guid);
     if (!bf)
@@ -276,7 +276,7 @@ void WorldSession::HandleBfEntryInviteResponse(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[7]);
     recvData.ReadByteSeq(guid[5]);
 
-    LOG_ERROR("misc", "HandleBattlefieldInviteResponse: GUID:" UI64FMTD " Accepted:%i", (uint64)guid, accepted);
+    LOG_ERROR("misc", "HandleBattlefieldInviteResponse: GUID:{} Accepted:%i", (uint64)guid, accepted);
 
     Battlefield* bf = sBattlefieldMgr->GetBattlefieldByGUID(guid);
     if (!bf)
@@ -318,7 +318,7 @@ void WorldSession::HandleBfExitRequest(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[7]);
     recvData.ReadByteSeq(guid[6]);
 
-    LOG_ERROR("misc", "HandleBfExitRequest: GUID:" UI64FMTD " ", (uint64)guid);
+    LOG_ERROR("misc", "HandleBfExitRequest: GUID:{} ", (uint64)guid);
     if (Battlefield* bf = sBattlefieldMgr->GetBattlefieldByGUID(guid))
         bf->AskToLeaveQueue(_player);
 }
@@ -345,7 +345,7 @@ void WorldSession::HandleBfQueueRequest(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[5]);
     recvData.ReadByteSeq(guid[0]);
 
-    LOG_ERROR("misc", "HandleBfJoinRequest: GUID:" UI64FMTD " ", (uint64)guid);
+    LOG_ERROR("misc", "HandleBfJoinRequest: GUID:{} ", (uint64)guid);
     if (Battlefield* bf = sBattlefieldMgr->GetBattlefieldByGUID(guid))
         if (bf->CanQueue() || bf->IsWarTime()) // if not possible cheater ?
             bf->InvitePlayerToQueue(_player);
@@ -374,7 +374,7 @@ void WorldSession::HandleBattleFieldLeaveBattle(WorldPacket& recvData)
     recvData.ReadByteSeq(guid[]);
     recvData.ReadByteSeq(guid[]);
 
-    LOG_ERROR("misc", "HandleBfJoinRequest: GUID:" UI64FMTD " ", (uint64)guid);
+    LOG_ERROR("misc", "HandleBfJoinRequest: GUID:{} ", (uint64)guid);
     if (Battlefield* bf = sBattlefieldMgr->GetBattlefieldByGUID(guid))
         if (bf->IsPlayerInWar(_player))
             bf->AskToLeaveBattle(_player);

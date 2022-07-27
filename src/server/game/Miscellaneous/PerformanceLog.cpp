@@ -44,7 +44,7 @@ void PerformanceLog::Add(PerformanceEntry *pe)
         }
     }
     else
-        LOG_ERROR("entities.unit", "PERFORMANCELOG: Invalid ID for class (%s)", pe->GetType());
+        LOG_ERROR("entities.unit", "PERFORMANCELOG: Invalid ID for class ({})", pe->GetType());
 }
 
 void PerformanceLog::LoadConfig()
@@ -56,9 +56,9 @@ void PerformanceLog::LoadConfig()
         do
         {
             Field *fields = result->Fetch();
-            uint32 id = fields[0].GetUInt32();
+            uint32 id = fields[0].Get<uint32>();
             if (id < MAX_PERFORMANCELOG_TYPEID)
-                m_config[id] = fields[1].GetUInt32();
+                m_config[id] = fields[1].Get<uint32>();
         } while (result->NextRow());
     }
 }

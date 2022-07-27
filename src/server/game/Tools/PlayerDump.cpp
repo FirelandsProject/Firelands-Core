@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -210,7 +210,7 @@ std::string CreateDumpString(char const* tableName, QueryResult result)
         if (i == 0) ss << '\'';
         else ss << ", '";
 
-        std::string s = fields[i].GetString();
+        std::string s = fields[i].Get<std::string>();
         CharacterDatabase.EscapeString(s);
         ss << s;
 
@@ -252,7 +252,7 @@ std::string PlayerDumpWriter::GenerateWhereStr(char const* field, GUIDs const& g
 void StoreGUID(QueryResult result, uint32 field, std::set<uint32>& guids)
 {
     Field* fields = result->Fetch();
-    uint32 guid = fields[field].GetUInt32();
+    uint32 guid = fields[field].Get<uint32>();
     if (guid)
         guids.insert(guid);
 }
@@ -260,7 +260,7 @@ void StoreGUID(QueryResult result, uint32 field, std::set<uint32>& guids)
 void StoreGUID(QueryResult result, uint32 data, uint32 field, std::set<uint32>& guids)
 {
     Field* fields = result->Fetch();
-    std::string dataStr = fields[data].GetString();
+    std::string dataStr = fields[data].Get<std::string>();
     uint32 guid = atoi(gettoknth(dataStr, field).c_str());
     if (guid)
         guids.insert(guid);
@@ -330,7 +330,7 @@ bool PlayerDumpWriter::DumpTable(std::string& dump, uint32 guid, char const*tabl
                         return false;
                     }
 
-                    if (result->Fetch()[64].GetUInt32())        // characters.deleteInfos_Account - if filled error
+                    if (result->Fetch()[64].Get<uint32>())        // characters.deleteInfos_Account - if filled error
                         return false;
                     break;
                 }
@@ -505,7 +505,7 @@ DumpReturn PlayerDumpReader::LoadDump(std::string const& file, uint32 account, s
         std::string tn = gettablename(line);
         if (tn.empty())
         {
-            LOG_ERROR("misc", "LoadPlayerDump: Can't extract table name from line: '%s'!", line.c_str());
+            LOG_ERROR("misc", "LoadPlayerDump: Can't extract table name from line: '{}'!", line);
             ROLLBACK(DUMP_FILE_BROKEN);
         }
 
@@ -522,7 +522,7 @@ DumpReturn PlayerDumpReader::LoadDump(std::string const& file, uint32 account, s
 
         if (i == DUMP_TABLE_COUNT)
         {
-            LOG_ERROR("misc", "LoadPlayerDump: Unknown table: '%s'!", tn.c_str());
+            LOG_ERROR("misc", "LoadPlayerDump: Unknown table: '{}'!", tn);
             ROLLBACK(DUMP_FILE_BROKEN);
         }
 
@@ -679,7 +679,7 @@ DumpReturn PlayerDumpReader::LoadDump(std::string const& file, uint32 account, s
                 break;
             }
             default:
-                LOG_ERROR("misc", "Unknown dump table type: %u", type);
+                LOG_ERROR("misc", "Unknown dump table type: {}", type);
                 break;
         }
 

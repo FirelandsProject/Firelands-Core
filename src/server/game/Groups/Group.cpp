@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -174,32 +174,32 @@ bool Group::Create(Player* leader)
 
 void Group::LoadGroupFromDB(Field* fields)
 {
-    m_dbStoreId = fields[15].GetUInt32();
+    m_dbStoreId = fields[15].Get<uint32>();
     m_guid = MAKE_NEW_GUID(sGroupMgr->GenerateGroupId(), 0, HIGHGUID_GROUP);
-    m_leaderGuid = MAKE_NEW_GUID(fields[0].GetUInt32(), 0, HIGHGUID_PLAYER);
+    m_leaderGuid = MAKE_NEW_GUID(fields[0].Get<uint32>(), 0, HIGHGUID_PLAYER);
 
     // group leader not exist
-    if (!sObjectMgr->GetPlayerNameByGUID(fields[0].GetUInt32(), m_leaderName))
+    if (!sObjectMgr->GetPlayerNameByGUID(fields[0].Get<uint32>(), m_leaderName))
         return;
 
-    m_lootMethod = LootMethod(fields[1].GetUInt8());
-    m_looterGuid = MAKE_NEW_GUID(fields[2].GetUInt32(), 0, HIGHGUID_PLAYER);
-    m_lootThreshold = ItemQualities(fields[3].GetUInt8());
+    m_lootMethod = LootMethod(fields[1].Get<uint8>());
+    m_looterGuid = MAKE_NEW_GUID(fields[2].Get<uint32>(), 0, HIGHGUID_PLAYER);
+    m_lootThreshold = ItemQualities(fields[3].Get<uint8>());
 
     for (uint8 i = 0; i < TARGETICONCOUNT; ++i)
-        m_targetIcons[i] = fields[4+i].GetUInt32();
+        m_targetIcons[i] = fields[4+i].Get<uint32>();
 
-    m_groupType  = GroupType(fields[12].GetUInt8());
+    m_groupType  = GroupType(fields[12].Get<uint8>());
     if (m_groupType & GROUPTYPE_RAID)
         _initRaidSubGroupsCounter();
 
-    uint32 diff = fields[13].GetUInt8();
+    uint32 diff = fields[13].Get<uint8>();
     if (diff >= MAX_DUNGEON_DIFFICULTY)
         m_dungeonDifficulty = DUNGEON_DIFFICULTY_NORMAL;
     else
         m_dungeonDifficulty = Difficulty(diff);
 
-    uint32 r_diff = fields[14].GetUInt8();
+    uint32 r_diff = fields[14].Get<uint8>();
     if (r_diff >= MAX_RAID_DIFFICULTY)
        m_raidDifficulty = RAID_DIFFICULTY_10MAN_NORMAL;
     else
@@ -2333,7 +2333,7 @@ InstanceGroupBind* Group::BindToInstance(InstanceSave* save, bool permanent, boo
     bind.save = save;
     bind.perm = permanent;
     if (!load)
-        LOG_DEBUG("maps", "Group::BindToInstance: Group (guid: %u, storage id: %u) is now bound to map %d, instance %d, difficulty %d, isLfg %u",
+        LOG_DEBUG("maps", "Group::BindToInstance: Group (guid: {}, storage id: {}) is now bound to map {}, instance {}, difficulty {}, isLfg {}",
             GUID_LOPART(GetGUID()), m_dbStoreId, save->GetMapId(), save->GetInstanceId(), save->GetDifficulty(), isLFGGroup());
     return &bind;
 }
@@ -2376,7 +2376,7 @@ void Group::BroadcastGroupUpdate(void)
         {
             pp->ForceValuesUpdateAtIndex(UNIT_FIELD_BYTES_2);
             pp->ForceValuesUpdateAtIndex(UNIT_FIELD_FACTIONTEMPLATE);
-            LOG_DEBUG("misc", "-- Forced group value update for '%s'", pp->GetName().c_str());
+            LOG_DEBUG("misc", "-- Forced group value update for '{}'", pp->GetName());
         }
     }
 }

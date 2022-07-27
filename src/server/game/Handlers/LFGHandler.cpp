@@ -175,7 +175,7 @@ void WorldSession::HandleLfgLeaveOpcode(WorldPacket& recvData)
     recvData.ReadByteSeq(leaveGuid[1]);
     recvData.ReadByteSeq(leaveGuid[5]);
 
-    LOG_DEBUG("lfg", "CMSG_LFG_LEAVE %s in group: %u sent guid " UI64FMTD ".",
+    LOG_DEBUG("lfg", "CMSG_LFG_LEAVE %s in group: %u sent guid {}.",
         GetPlayerInfo().c_str(), group ? 1 : 0, uint64(leaveGuid));
 
     // Check cheating - only leader can leave the queue

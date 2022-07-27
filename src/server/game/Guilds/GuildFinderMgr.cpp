@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -40,9 +40,9 @@ void GuildFinderMgr::LoadGuildSettings()
     LOG_INFO("server.loading", "Loading guild finder guild-related settings...");
     //                                                           0                1             2                  3             4           5             6         7
     QueryResult result = CharacterDatabase.Query("SELECT gfgs.guildId, gfgs.availability, gfgs.classRoles, gfgs.interests, gfgs.level, gfgs.listed, gfgs.comment, c.race "
-                                                 "FROM guild_finder_guild_settings gfgs "
-                                                 "LEFT JOIN guild_member gm ON gm.guildid=gfgs.guildId "
-                                                 "LEFT JOIN characters c ON c.guid = gm.guid");
+        "FROM guild_finder_guild_settings gfgs "
+        "LEFT JOIN guild_member gm ON gm.guildid=gfgs.guildId "
+        "LEFT JOIN characters c ON c.guid = gm.guid");
 
     if (!result)
     {
@@ -55,16 +55,16 @@ void GuildFinderMgr::LoadGuildSettings()
     do
     {
         Field* fields = result->Fetch();
-        uint32 guildId      = fields[0].GetUInt32();
-        uint8  availability = fields[1].GetUInt8();
-        uint8  classRoles   = fields[2].GetUInt8();
-        uint8  interests    = fields[3].GetUInt8();
-        uint8  level        = fields[4].GetUInt8();
-        bool   listed       = (fields[5].GetUInt8() != 0);
-        std::string comment = fields[6].GetString();
+        uint32 guildId = fields[0].Get<uint32>();
+        uint8  availability = fields[1].Get<uint8>();
+        uint8  classRoles = fields[2].Get<uint8>();
+        uint8  interests = fields[3].Get<uint8>();
+        uint8  level = fields[4].Get<uint8>();
+        bool   listed = (fields[5].Get<uint8>() != 0);
+        std::string comment = fields[6].Get<std::string>();
 
         TeamId guildTeam = TEAM_ALLIANCE;
-        if (ChrRacesEntry const* raceEntry = sChrRacesStore.LookupEntry(fields[7].GetUInt8()))
+        if (ChrRacesEntry const* raceEntry = sChrRacesStore.LookupEntry(fields[7].Get<uint8>()))
             if (raceEntry->TeamID == 1)
                 guildTeam = TEAM_HORDE;
 
@@ -74,7 +74,7 @@ void GuildFinderMgr::LoadGuildSettings()
         ++count;
     } while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u guild finder guild-related settings in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} guild finder guild-related settings in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void GuildFinderMgr::LoadMembershipRequests()
@@ -82,7 +82,7 @@ void GuildFinderMgr::LoadMembershipRequests()
     LOG_INFO("server.loading", "Loading guild finder membership requests...");
     //                                                      0         1           2            3           4         5         6
     QueryResult result = CharacterDatabase.Query("SELECT guildId, playerGuid, availability, classRole, interests, comment, submitTime "
-                                                 "FROM guild_finder_applicant");
+        "FROM guild_finder_applicant");
 
     if (!result)
     {
@@ -95,13 +95,13 @@ void GuildFinderMgr::LoadMembershipRequests()
     do
     {
         Field* fields = result->Fetch();
-        uint32 guildId      = fields[0].GetUInt32();
-        uint32 playerId     = fields[1].GetUInt32();
-        uint8  availability = fields[2].GetUInt8();
-        uint8  classRoles   = fields[3].GetUInt8();
-        uint8  interests    = fields[4].GetUInt8();
-        std::string comment = fields[5].GetString();
-        uint32 submitTime   = fields[6].GetUInt32();
+        uint32 guildId = fields[0].Get<uint32>();
+        uint32 playerId = fields[1].Get<uint32>();
+        uint8  availability = fields[2].Get<uint8>();
+        uint8  classRoles = fields[3].Get<uint8>();
+        uint8  interests = fields[4].Get<uint8>();
+        std::string comment = fields[5].Get<std::string>();
+        uint32 submitTime = fields[6].Get<uint32>();
 
         MembershipRequest request(playerId, guildId, availability, classRoles, interests, comment, time_t(submitTime));
 
@@ -110,7 +110,7 @@ void GuildFinderMgr::LoadMembershipRequests()
         ++count;
     } while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u guild finder membership requests in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} guild finder membership requests in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void GuildFinderMgr::AddMembershipRequest(uint32 guildGuid, MembershipRequest const& request)

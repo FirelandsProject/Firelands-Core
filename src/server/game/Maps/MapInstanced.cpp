@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -181,8 +181,8 @@ Map* MapInstanced::CreateInstanceForPlayer(const uint32 mapId, Player* player)
                 if (result)
                 {
                     Field* fields = result->Fetch();
-                    playerCompletedEncounterMask = fields[1].GetUInt32();
-                    playerHardMode = fields[2].GetUInt8();
+                    playerCompletedEncounterMask = fields[1].Get<uint32>();
+                    playerHardMode = fields[2].Get<uint8>();
                 }
             }
         }
@@ -215,8 +215,8 @@ Map* MapInstanced::CreateInstanceForPlayer(const uint32 mapId, Player* player)
                 if (result)
                 {
                     Field* fields = result->Fetch();
-                    groupCompletedEncounterMask = fields[1].GetUInt32();
-                    groupHardMode = fields[2].GetUInt8();
+                    groupCompletedEncounterMask = fields[1].Get<uint32>();
+                    groupHardMode = fields[2].Get<uint8>();
                 }
             }
         }
@@ -269,20 +269,20 @@ InstanceMap* MapInstanced::CreateInstance(uint32 InstanceId, InstanceSave* save,
     const MapEntry* entry = sMapStore.LookupEntry(GetId());
     if (!entry)
     {
-        LOG_ERROR("maps", "CreateInstance: no entry for map %d", GetId());
+        LOG_ERROR("maps", "CreateInstance: no entry for map {}", GetId());
         ASSERT(false);
     }
     const InstanceTemplate* iTemplate = sObjectMgr->GetInstanceTemplate(GetId());
     if (!iTemplate)
     {
-        LOG_ERROR("maps", "CreateInstance: no instance template for map %d", GetId());
+        LOG_ERROR("maps", "CreateInstance: no instance template for map {}", GetId());
         ASSERT(false);
     }
 
     // some instances only have one difficulty
     GetDownscaledMapDifficultyData(GetId(), difficulty);
 
-    LOG_DEBUG("maps", "MapInstanced::CreateInstance: %s map instance %d for %d created with difficulty %s", save?"":"new ", InstanceId, GetId(), difficulty?"heroic":"normal");
+    LOG_DEBUG("maps", "MapInstanced::CreateInstance: {} map instance {} for {} created with difficulty {}", save?"":"new ", InstanceId, GetId(), difficulty?"heroic":"normal");
 
     InstanceMap* map = new InstanceMap(GetId(), GetGridExpiry(), InstanceId, difficulty, this);
     ASSERT(map->IsDungeon());
@@ -301,7 +301,7 @@ BattlegroundMap* MapInstanced::CreateBattleground(uint32 InstanceId, Battlegroun
     // load/create a map
     FIRELANDS_GUARD(ACE_Thread_Mutex, Lock);
 
-    LOG_DEBUG("maps", "MapInstanced::CreateBattleground: map bg %d for %d created.", InstanceId, GetId());
+    LOG_DEBUG("maps", "MapInstanced::CreateBattleground: map bg {} for {} created.", InstanceId, GetId());
 
     PvPDifficultyEntry const* bracketEntry = GetBattlegroundBracketByLevel(bg->GetMapId(), bg->GetMinLevel());
 

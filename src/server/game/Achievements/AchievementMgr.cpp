@@ -463,7 +463,7 @@ void AchievementMgr<Guild>::RemoveCriteriaProgress(const AchievementCriteriaEntr
 template<class T>
 void AchievementMgr<T>::ResetAchievementCriteria(AchievementCriteriaTypes type, uint64 miscValue1, uint64 miscValue2, bool evenIfCriteriaComplete)
 {
-    LOG_DEBUG("achievement", "ResetAchievementCriteria({}, " UI64FMTD ", " UI64FMTD ")", type, miscValue1, miscValue2);
+    LOG_DEBUG("achievement", "ResetAchievementCriteria({}, {}, {})", type, miscValue1, miscValue2);
 
     // disable for gamemasters with GM-mode enabled
     if (GetOwner()->isGameMaster())
@@ -1227,12 +1227,12 @@ void AchievementMgr<T>::UpdateAchievementCriteria(AchievementCriteriaTypes type,
     // disable for gamemasters with GM-mode enabled
     if (referencePlayer->isGameMaster())
     {
-        LOG_DEBUG("achievement", "UpdateAchievementCriteria: [Player %s GM mode on] %s, %s ({}), " UI64FMTD ", " UI64FMTD ", " UI64FMTD
+        LOG_DEBUG("achievement", "UpdateAchievementCriteria: [Player %s GM mode on] %s, %s ({}), {}, {}, {} "
             , referencePlayer->GetName().c_str(), GetLogNameForGuid(GetOwner()->GetGUID()), AchievementGlobalMgr::GetCriteriaTypeString(type), type, miscValue1, miscValue2, miscValue3);
         return;
     }
 
-    LOG_DEBUG("achievement", "UpdateAchievementCriteria: %s, %s ({}), " UI64FMTD ", " UI64FMTD ", " UI64FMTD
+    LOG_DEBUG("achievement", "UpdateAchievementCriteria: %s, %s ({}), {}, {}, {} "
         , GetLogNameForGuid(GetOwner()->GetGUID()), AchievementGlobalMgr::GetCriteriaTypeString(type), type, miscValue1, miscValue2, miscValue3);
 
     // Lua_GetGuildLevelEnabled() is checked in achievement UI to display guild tab
@@ -1893,7 +1893,7 @@ void AchievementMgr<T>::SetCriteriaProgress(AchievementCriteriaEntry const* entr
     if (entry->timeLimit && timedIter == m_timedAchievements.end())
         return;
 
-    LOG_DEBUG("achievement", "SetCriteriaProgress({}, " UI64FMTD ") for (%s GUID: {})",
+    LOG_DEBUG("achievement", "SetCriteriaProgress({}, {}) for (%s GUID: {})",
         entry->ID, changeValue, GetLogNameForGuid(GetOwner()->GetGUID()), GUID_LOPART(GetOwner()->GetGUID()));
 
     CriteriaProgress* progress = GetCriteriaProgress(entry);

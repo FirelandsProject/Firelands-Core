@@ -118,7 +118,7 @@ void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& recvData)
     }
     BattlegroundTypeId bgTypeId = BattlegroundTypeId(bgTypeId_);
 
-    //LOG_DEBUG("network.opcode", "WORLD: Recvd CMSG_BATTLEMASTER_JOIN Message from (GUID:" UI64FMTD " TypeId:%u)", guid, bgTypeId_);
+    //LOG_DEBUG("network.opcode", "WORLD: Recvd CMSG_BATTLEMASTER_JOIN Message from (GUID:{} TypeId:%u)", guid, bgTypeId_);
 
     // can do this, since it's battleground, not arena
     BattlegroundQueueTypeId bgQueueTypeId = BattlegroundMgr::BGQueueTypeId(bgTypeId, 0);
@@ -1003,7 +1003,7 @@ void WorldSession::HandleRequestInspectRatedBgStats(WorldPacket& recvData)
 
     if (!player)
     {
-        LOG_DEBUG("network.opcode", "CMSG_REQUEST_INSPECT_RATED_BG_STATS: No player found from GUID: " UI64FMTD, (uint64)guid);
+        LOG_DEBUG("network.opcode", "CMSG_REQUEST_INSPECT_RATED_BG_STATS: No player found from GUID: {} ", (uint64)guid);
         return;
     }
 

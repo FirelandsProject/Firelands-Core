@@ -84,7 +84,7 @@ Channel::Channel(std::string const& name, uint32 channelId, uint32 team):
                         uint64 banned_guid = atol(*i);
                         if (banned_guid)
                         {
-                            LOG_DEBUG("chat.system", "Channel({}) loaded bannedStore guid:" UI64FMTD "", name, banned_guid);
+                            LOG_DEBUG("chat.system", "Channel({}) loaded bannedStore guid:{}", name, banned_guid);
                             bannedStore.insert(banned_guid);
                         }
                     }

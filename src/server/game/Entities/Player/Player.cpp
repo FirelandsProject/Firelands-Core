@@ -5354,7 +5354,7 @@ void Player::DeleteOldCharacters(uint32 keepDays)
 
     if (result)
     {
-         LOG_DEBUG("entities.player", "Player::DeleteOldChars: Found " UI64FMTD " character(s) to delete", result->GetRowCount());
+         LOG_DEBUG("entities.player", "Player::DeleteOldChars: Found {} character(s) to delete", result->GetRowCount());
          do
          {
             Field* fields = result->Fetch();
@@ -19116,26 +19116,26 @@ void Player::_LoadVoidStorage(PreparedQueryResult result)
 
         if (!itemId)
         {
-            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid id (item id: " UI64FMTD ", entry: {}).", GetGUIDLow(), GetName(), itemId, itemEntry);
+            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid id (item id: {}, entry: {}).", GetGUIDLow(), GetName(), itemId, itemEntry);
             continue;
         }
 
         if (!sObjectMgr->GetItemTemplate(itemEntry))
         {
-            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid entry (item id: " UI64FMTD ", entry: {}).", GetGUIDLow(), GetName(), itemId, itemEntry);
+            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid entry (item id: {}, entry: {}).", GetGUIDLow(), GetName(), itemId, itemEntry);
             continue;
         }
 
         if (slot >= VOID_STORAGE_MAX_SLOT)
         {
-            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid slot (item id: " UI64FMTD ", entry: {}, slot: {}).", GetGUIDLow(), GetName(), itemId, itemEntry, slot);
+            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid slot (item id: {}, entry: {}, slot: {}).", GetGUIDLow(), GetName(), itemId, itemEntry, slot);
             continue;
         }
 
         std::string name;
         if (creatorGuid && !sObjectMgr->GetPlayerNameByGUID(creatorGuid, name))
         {
-            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid creator guid, set to 0 (item id: " UI64FMTD ", entry: {}, creatorGuid: {}).", GetGUIDLow(), GetName(), itemId, itemEntry, creatorGuid);
+            LOG_ERROR("entities.player", "Player::_LoadVoidStorage - Player (GUID: {}, name: {}) has an item with an invalid creator guid, set to 0 (item id: {}, entry: {}, creatorGuid: {}).", GetGUIDLow(), GetName(), itemId, itemEntry, creatorGuid);
             creatorGuid = 0;
         }
 
@@ -19331,7 +19331,7 @@ void Player::_LoadMailedItems(Mail* mail)
 void Player::_LoadMailInit(PreparedQueryResult resultUnread, PreparedQueryResult resultDelivery)
 {
     //set a count of unread mails
-    //QueryResult* resultMails = CharacterDatabase.PQuery("SELECT COUNT(id) FROM mail WHERE receiver = '{}' AND (checked & 1)=0 AND deliver_time <= '" UI64FMTD "'", GUID_LOPART(playerGuid), (uint64)cTime);
+    //QueryResult* resultMails = CharacterDatabase.PQuery("SELECT COUNT(id) FROM mail WHERE receiver = '{}' AND (checked & 1)=0 AND deliver_time <= '{}'", GUID_LOPART(playerGuid), (uint64)cTime);
     if (resultUnread)
         unReadMails = uint8((*resultUnread)[0].Get<uint64>());
 
@@ -21661,10 +21661,10 @@ void Player::StopCastingCharm()
 
     if (GetCharmGUID())
     {
-        LOG_FATAL("entities.player", "Player {} (GUID: " UI64FMTD " is not able to uncharm unit (GUID: " UI64FMTD " Entry: {}, Type: {})", GetName(), GetGUID(), GetCharmGUID(), charm->GetEntry(), charm->GetTypeId());
+        LOG_FATAL("entities.player", "Player {} (GUID: {} is not able to uncharm unit (GUID: {} Entry: {}, Type: {})", GetName(), GetGUID(), GetCharmGUID(), charm->GetEntry(), charm->GetTypeId());
         if (charm->GetCharmerGUID())
         {
-            LOG_FATAL("entities.player", "Charmed unit has charmer guid " UI64FMTD, charm->GetCharmerGUID());
+            LOG_FATAL("entities.player", "Charmed unit has charmer guid {} ", charm->GetCharmerGUID());
             //            ASSERT(false); why is there an ASSERT here ????
         }
         else
@@ -21849,7 +21849,7 @@ void Player::PossessSpellInitialize()
 
     if (!charmInfo)
     {
-        LOG_ERROR("entities.player", "Player::PossessSpellInitialize(): charm (" UI64FMTD ") has no charminfo!", charm->GetGUID());
+        LOG_ERROR("entities.player", "Player::PossessSpellInitialize(): charm ({}) has no charminfo!", charm->GetGUID());
         return;
     }
 
@@ -21949,7 +21949,7 @@ void Player::CharmSpellInitialize()
     CharmInfo* charmInfo = charm->GetCharmInfo();
     if (!charmInfo)
     {
-        LOG_ERROR("entities.player", "Player::CharmSpellInitialize(): the player's charm (" UI64FMTD ") has no charminfo!", charm->GetGUID());
+        LOG_ERROR("entities.player", "Player::CharmSpellInitialize(): the player's charm ({}) has no charminfo!", charm->GetGUID());
         return;
     }
 
@@ -27105,7 +27105,7 @@ void Player::SetEquipmentSet(uint32 index, EquipmentSet eqset)
 
         if (!found)                                          // something wrong...
         {
-            LOG_ERROR("entities.player", "Player {} tried to save equipment set " UI64FMTD " (index {}), but that equipment set not found!", GetName(), eqset.Guid, index);
+            LOG_ERROR("entities.player", "Player {} tried to save equipment set {} (index {}), but that equipment set not found!", GetName(), eqset.Guid, index);
             return;
         }
     }
@@ -28255,7 +28255,7 @@ void Player::AddVoidStorageItemAtSlot(uint8 slot, const VoidStorageItem& item)
 
     if (_voidStorageItems[slot])
     {
-        LOG_ERROR("misc", "Player::AddVoidStorageItemAtSlot - Player (GUID: {}, name: {}) tried to add an item to an used slot (item id: " UI64FMTD ", entry: {}, slot: {}).", GetGUIDLow(), GetName(), _voidStorageItems[slot]->ItemId, _voidStorageItems[slot]->ItemEntry, slot);
+        LOG_ERROR("misc", "Player::AddVoidStorageItemAtSlot - Player (GUID: {}, name: {}) tried to add an item to an used slot (item id: {}, entry: {}, slot: {}).", GetGUIDLow(), GetName(), _voidStorageItems[slot]->ItemId, _voidStorageItems[slot]->ItemEntry, slot);
         GetSession()->SendVoidStorageTransferResult(VOID_TRANSFER_ERROR_INTERNAL_ERROR_1);
         return;
     }

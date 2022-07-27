@@ -106,7 +106,7 @@ void LFGQueue::AddToQueue(uint64 guid)
     LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(guid);
     if (itQueue == QueueDataStore.end())
     {
-        LOG_ERROR("lfg", "LFGQueue::AddToQueue: Queue data not found for [" UI64FMTD "]", guid);
+        LOG_ERROR("lfg", "LFGQueue::AddToQueue: Queue data not found for [{}]", guid);
         return;
     }
 
@@ -212,7 +212,7 @@ void LFGQueue::RemoveFromCompatibles(uint64 guid)
     out << guid;
     std::string strGuid = out.str();
 
-    LOG_DEBUG("lfg", "LFGQueue::RemoveFromCompatibles: Removing [" UI64FMTD "]", guid);
+    LOG_DEBUG("lfg", "LFGQueue::RemoveFromCompatibles: Removing [{}]", guid);
     for (LfgCompatibleContainer::iterator itNext = CompatibleMapStore.begin(); itNext != CompatibleMapStore.end();)
     {
         LfgCompatibleContainer::iterator it = itNext++;
@@ -269,7 +269,7 @@ uint8 LFGQueue::FindGroups()
     while (!newToQueueStore.empty())
     {
         uint64 frontguid = newToQueueStore.front();
-        LOG_DEBUG("lfg", "LFGQueue::FindGroups: checking [" UI64FMTD "] newToQueue(%u), currentQueue(%u)", frontguid, uint32(newToQueueStore.size()), uint32(currentQueueStore.size()));
+        LOG_DEBUG("lfg", "LFGQueue::FindGroups: checking [{}] newToQueue(%u), currentQueue(%u)", frontguid, uint32(newToQueueStore.size()), uint32(currentQueueStore.size()));
         firstNew.clear();
         firstNew.push_back(frontguid);
         RemoveFromNewQueue(frontguid);
@@ -422,7 +422,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
         LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(guid);
         if (itQueue == QueueDataStore.end())
         {
-            LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: [" UI64FMTD "] is not queued but listed as queued!", guid);
+            LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: [{}] is not queued but listed as queued!", guid);
             RemoveFromQueue(guid);
             return LFG_COMPATIBILITY_PENDING;
         }
@@ -468,7 +468,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
                 for (itPlayer = proposalRoles.begin(); itPlayer != proposalRoles.end(); ++itPlayer)
                 {
                     if (itRoles->first == itPlayer->first)
-                        LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: ERROR! Player multiple times in queue! [" UI64FMTD "]", itRoles->first);
+                        LOG_ERROR("lfg", "LFGQueue::CheckCompatibility: ERROR! Player multiple times in queue! [{}]", itRoles->first);
                     else if (sLFGMgr->HasIgnore(itRoles->first, itPlayer->first))
                         break;
                 }
@@ -692,7 +692,7 @@ std::string LFGQueue::DumpCompatibleInfo(bool full /* = false */) const
 
 void LFGQueue::FindBestCompatibleInQueue(LfgQueueDataContainer::iterator itrQueue)
 {
-    LOG_DEBUG("lfg", "LFGQueue::FindBestCompatibleInQueue: " UI64FMTD, itrQueue->first);
+    LOG_DEBUG("lfg", "LFGQueue::FindBestCompatibleInQueue: {} ", itrQueue->first);
     std::ostringstream o;
     o << itrQueue->first;
     std::string sguid = o.str();
@@ -717,7 +717,7 @@ void LFGQueue::UpdateBestCompatibleInQueue(LfgQueueDataContainer::iterator itrQu
     if (size <= storedSize)
         return;
 
-    LOG_DEBUG("lfg", "LFGQueue::UpdateBestCompatibleInQueue: Changed (%s) to (%s) as best compatible group for " UI64FMTD,
+    LOG_DEBUG("lfg", "LFGQueue::UpdateBestCompatibleInQueue: Changed (%s) to (%s) as best compatible group for {} ",
         queueData.bestCompatible.c_str(), key.c_str(), itrQueue->first);
 
     queueData.bestCompatible = key;

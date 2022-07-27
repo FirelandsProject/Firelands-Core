@@ -388,7 +388,7 @@ void BattlegroundMgr::BuildPvpLogDataPacket(WorldPacket* data, Battleground* bg)
     {
         if (!isArena && !bg->IsPlayerInBattleground(itr->first))
         {
-            LOG_ERROR("bg.battleground", "Player " UI64FMTD " has scoreboard entry for battleground {} but is not in battleground!", itr->first, bg->GetTypeID(true));
+            LOG_ERROR("bg.battleground", "Player {} has scoreboard entry for battleground {} but is not in battleground!", itr->first, bg->GetTypeID(true));
             continue;
         }
 

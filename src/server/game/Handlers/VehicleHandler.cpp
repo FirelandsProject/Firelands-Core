@@ -203,7 +203,7 @@ void WorldSession::HandleEjectPassenger(WorldPacket& data)
             LOG_ERROR("network.opcode", "Player %u attempted to eject creature GUID %u from non-ejectable seat.", GetPlayer()->GetGUIDLow(), GUID_LOPART(guid));
     }
     else
-        LOG_ERROR("network.opcode", "HandleEjectPassenger: Player %u tried to eject invalid GUID " UI64FMTD, GetPlayer()->GetGUIDLow(), guid);
+        LOG_ERROR("network.opcode", "HandleEjectPassenger: Player %u tried to eject invalid GUID {} ", GetPlayer()->GetGUIDLow(), guid);
 }
 
 void WorldSession::HandleRequestVehicleExit(WorldPacket& /*recvData*/)

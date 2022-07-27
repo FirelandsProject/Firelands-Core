@@ -333,7 +333,7 @@ void Map::ScriptsProcess()
                     }
                     break;
                 default:
-                    LOG_ERROR("scripts", "%s source with unsupported high guid (GUID: " UI64FMTD ", high guid: %u).",
+                    LOG_ERROR("scripts", "%s source with unsupported high guid (GUID: {}, high guid: %u).",
                         step.script->GetDebugInfo().c_str(), step.sourceGUID, GUID_HIPART(step.sourceGUID));
                     break;
             }
@@ -361,7 +361,7 @@ void Map::ScriptsProcess()
                     target = HashMapHolder<Corpse>::Find(step.targetGUID);
                     break;
                 default:
-                    LOG_ERROR("scripts", "%s target with unsupported high guid (GUID: " UI64FMTD ", high guid: %u).",
+                    LOG_ERROR("scripts", "%s target with unsupported high guid (GUID: {}, high guid: %u).",
                         step.script->GetDebugInfo().c_str(), step.targetGUID, GUID_HIPART(step.targetGUID));
                     break;
             }

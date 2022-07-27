@@ -30,9 +30,9 @@
 using boost::asio::ip::tcp;
 
 #if BOOST_VERSION >= 106600
-#define ACORE_MAX_LISTEN_CONNECTIONS boost::asio::socket_base::max_listen_connections
+#define FIRELANDS_MAX_LISTEN_CONNECTIONS boost::asio::socket_base::max_listen_connections
 #else
-#define ACORE_MAX_LISTEN_CONNECTIONS boost::asio::socket_base::max_connections
+#define FIRELANDS_MAX_LISTEN_CONNECTIONS boost::asio::socket_base::max_connections
 #endif
 
 class AsyncAcceptor
@@ -40,8 +40,8 @@ class AsyncAcceptor
 public:
     typedef void(*AcceptCallback)(tcp::socket&& newSocket, uint32 threadIndex);
 
-    AsyncAcceptor(Acore::Asio::IoContext& ioContext, std::string const& bindIp, uint16 port) :
-        _acceptor(ioContext), _endpoint(Acore::Net::make_address(bindIp), port),
+    AsyncAcceptor(Firelands::Asio::IoContext& ioContext, std::string const& bindIp, uint16 port) :
+        _acceptor(ioContext), _endpoint(Firelands::Net::make_address(bindIp), port),
         _socket(ioContext), _closed(false), _socketFactory(std::bind(&AsyncAcceptor::DefeaultSocketFactory, this))
     {
     }

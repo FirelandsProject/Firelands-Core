@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -62,24 +62,24 @@ bool GmTicket::LoadFromDB(Field* fields)
     //     0       1     2      3          4        5      6     7     8           9            10         11         12       13        14         15        16        17
     // ticketId, guid, name, message, createTime, mapId, posX, posY, posZ, lastModifiedTime, closedBy, assignedTo, comment, response, completed, escalated, viewed, haveTicket
     uint8 index = 0;
-    _id                 = fields[  index].GetUInt32();
-    _playerGuid         = MAKE_NEW_GUID(fields[++index].GetUInt32(), 0, HIGHGUID_PLAYER);
-    _playerName         = fields[++index].GetString();
-    _message            = fields[++index].GetString();
-    _createTime         = fields[++index].GetUInt32();
-    _mapId              = fields[++index].GetUInt16();
-    _posX               = fields[++index].GetFloat();
-    _posY               = fields[++index].GetFloat();
-    _posZ               = fields[++index].GetFloat();
-    _lastModifiedTime   = fields[++index].GetUInt32();
-    _closedBy           = fields[++index].GetInt32();
-    _assignedTo         = MAKE_NEW_GUID(fields[++index].GetUInt32(), 0, HIGHGUID_PLAYER);
-    _comment            = fields[++index].GetString();
-    _response           = fields[++index].GetString();
-    _completed          = fields[++index].GetBool();
-    _escalatedStatus    = GMTicketEscalationStatus(fields[++index].GetUInt8());
-    _viewed             = fields[++index].GetBool();
-    _haveTicket         = fields[++index].GetBool();
+    _id                 = fields[  index].Get<uint32>();
+    _playerGuid         = MAKE_NEW_GUID(fields[++index].Get<uint32>(), 0, HIGHGUID_PLAYER);
+    _playerName         = fields[++index].Get<std::string>();
+    _message            = fields[++index].Get<std::string>();
+    _createTime         = fields[++index].Get<uint32>();
+    _mapId              = fields[++index].Get<uint16>();
+    _posX               = fields[++index].Get<float>();
+    _posY               = fields[++index].Get<float>();
+    _posZ               = fields[++index].Get<float>();
+    _lastModifiedTime   = fields[++index].Get<uint32>();
+    _closedBy           = fields[++index].Get<int32>();
+    _assignedTo         = MAKE_NEW_GUID(fields[++index].Get<uint32>(), 0, HIGHGUID_PLAYER);
+    _comment            = fields[++index].Get<std::string>();
+    _response           = fields[++index].Get<std::string>();
+    _completed          = fields[++index].Get<bool>();
+    _escalatedStatus    = GMTicketEscalationStatus(fields[++index].Get<uint8>());
+    _viewed             = fields[++index].Get<bool>();
+    _haveTicket         = fields[++index].Get<bool>();
     return true;
 }
 
@@ -310,7 +310,7 @@ void TicketMgr::LoadTickets()
         ++count;
     } while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u GM tickets in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} GM tickets in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 
 }
 
@@ -321,9 +321,9 @@ void TicketMgr::LoadSurveys()
 
     uint32 oldMSTime = getMSTime();
     if (QueryResult result = CharacterDatabase.Query("SELECT MAX(surveyId) FROM gm_surveys"))
-        _lastSurveyId = (*result)[0].GetUInt32();
+        _lastSurveyId = (*result)[0].Get<uint32>();
 
-    LOG_INFO("server.loading", ">> Loaded GM Survey count from database in %u ms", GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded GM Survey count from database in {} ms", GetMSTimeDiffToNow(oldMSTime));
 
 }
 

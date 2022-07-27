@@ -293,7 +293,7 @@ CalendarEvent* CalendarMgr::GetEvent(uint64 eventId) const
         if ((*itr)->GetEventId() == eventId)
             return *itr;
 
-    LOG_DEBUG("calendar", "CalendarMgr::GetEvent: [" UI64FMTD "] not found!", eventId);
+    LOG_DEBUG("calendar", "CalendarMgr::GetEvent: [{}] not found!", eventId);
     return NULL;
 }
 
@@ -304,7 +304,7 @@ CalendarInvite* CalendarMgr::GetInvite(uint64 inviteId) const
             if ((*itr2)->GetInviteId() == inviteId)
                 return *itr2;
 
-    LOG_DEBUG("calendar", "CalendarMgr::GetInvite: [" UI64FMTD "] not found!", inviteId);
+    LOG_DEBUG("calendar", "CalendarMgr::GetInvite: [{}] not found!", inviteId);
     return NULL;
 }
 

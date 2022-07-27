@@ -395,10 +395,10 @@ void Guild::NewsLogEntry::WritePacket(WorldPacket& data, ByteBuffer& /*content*/
 // RankInfo
 void Guild::RankInfo::LoadFromDB(Field* fields)
 {
-    m_rankId = fields[1].GetUInt8();
-    m_name = fields[2].GetString();
-    m_rights = fields[3].GetUInt32();
-    m_bankMoneyPerDay = fields[4].GetUInt32();
+    m_rankId = fields[1].Get<uint8>();
+    m_name = fields[2].Get<std::string>();
+    m_rights = fields[3].Get<uint32>();
+    m_bankMoneyPerDay = fields[4].Get<uint32>();
     if (m_rankId == GR_GUILDMASTER)                     // Prevent loss of leader rights
         m_rights |= GR_RIGHT_ALL;
 }
@@ -426,7 +426,7 @@ void Guild::RankInfo::CreateMissingTabsIfNeeded(uint8 tabs, SQLTransaction& tran
             rightsAndSlots.SetGuildMasterValues();
 
         if (logOnCreate)
-            LOG_ERROR("guild", "Guild %u has broken Tab %u for rank %u. Created default tab.", m_guildId, i, m_rankId);
+            LOG_ERROR("guild", "Guild {} has broken Tab {} for rank {}. Created default tab.", m_guildId, i, m_rankId);
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GUILD_BANK_RIGHT);
         stmt->SetData(0, m_guildId);
@@ -1499,7 +1499,7 @@ void Guild::UpdateMemberData(Player* player, uint8 dataid, uint32 value)
             break;
         }
         default:
-            LOG_ERROR("guild", "Guild::UpdateMemberData: Called with incorrect DATAID %u (value %u)", dataid, value);
+            LOG_ERROR("guild", "Guild::UpdateMemberData: Called with incorrect DATAID {} (value {})", dataid, value);
             return;
         }
         //HandleRoster();
@@ -4003,8 +4003,8 @@ void Guild::SendGuildReputationWeeklyCap(WorldSession* session, uint32 reputatio
     WorldPacket data(SMSG_GUILD_REPUTATION_WEEKLY_CAP, 4);
     data << uint32(cap);
     session->SendPacket(&data);
-    LOG_DEBUG("guild", "SMSG_GUILD_REPUTATION_WEEKLY_CAP [%s]: Left: %u",
-        session->GetPlayerInfo().c_str(), cap);
+    LOG_DEBUG("guild", "SMSG_GUILD_REPUTATION_WEEKLY_CAP [{}]: Left: {}",
+        session->GetPlayerInfo(), cap);
 }
 
 void Guild::ResetTimes(bool weekly)

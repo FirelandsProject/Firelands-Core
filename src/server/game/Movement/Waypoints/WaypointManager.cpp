@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -60,33 +60,33 @@ void WaypointMgr::Load()
         Field* fields = result->Fetch();
         WaypointData* wp = new WaypointData();
 
-        uint32 pathId = fields[0].GetUInt32();
+        uint32 pathId = fields[0].Get<uint32>();
         WaypointPath& path = _waypointStore[pathId];
 
-        float x = fields[2].GetFloat();
-        float y = fields[3].GetFloat();
-        float z = fields[4].GetFloat();
-        float o = fields[5].GetFloat();
+        float x = fields[2].Get<float>();
+        float y = fields[3].Get<float>();
+        float z = fields[4].Get<float>();
+        float o = fields[5].Get<float>();
 
         Firelands::NormalizeMapCoord(x);
         Firelands::NormalizeMapCoord(y);
 
-        wp->id = fields[1].GetUInt32();
+        wp->id = fields[1].Get<uint32>();
         wp->x = x;
         wp->y = y;
         wp->z = z;
         wp->orientation = o;
-        wp->run = fields[6].GetBool();
-        wp->delay = fields[7].GetUInt32();
-        wp->event_id = fields[8].GetUInt32();
-        wp->event_chance = fields[9].GetInt16();
-        wp->inverse_formation_angle = fields[10].GetBool();
+        wp->run = fields[6].Get<bool>();
+        wp->delay = fields[7].Get<uint32>();
+        wp->event_id = fields[8].Get<uint32>();
+        wp->event_chance = fields[9].Get<int16>();
+        wp->inverse_formation_angle = fields[10].Get<bool>();
         path.push_back(wp);
         ++count;
     }
     while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u waypoints in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} waypoints in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void WaypointMgr::ReloadPath(uint32 id)
@@ -116,24 +116,24 @@ void WaypointMgr::ReloadPath(uint32 id)
         Field* fields = result->Fetch();
         WaypointData* wp = new WaypointData();
 
-        float x = fields[1].GetFloat();
-        float y = fields[2].GetFloat();
-        float z = fields[3].GetFloat();
-        float o = fields[4].GetFloat();
+        float x = fields[1].Get<float>();
+        float y = fields[2].Get<float>();
+        float z = fields[3].Get<float>();
+        float o = fields[4].Get<float>();
 
         Firelands::NormalizeMapCoord(x);
         Firelands::NormalizeMapCoord(y);
 
-        wp->id = fields[0].GetUInt32();
+        wp->id = fields[0].Get<uint32>();
         wp->x = x;
         wp->y = y;
         wp->z = z;
         wp->orientation = o;
-        wp->run = fields[5].GetBool();
-        wp->delay = fields[6].GetUInt32();
-        wp->event_id = fields[7].GetUInt32();
-        wp->event_chance = fields[8].GetUInt8();
-        wp->inverse_formation_angle = fields[9].GetBool();
+        wp->run = fields[5].Get<bool>();
+        wp->delay = fields[6].Get<uint32>();
+        wp->event_id = fields[7].Get<uint32>();
+        wp->event_chance = fields[8].Get<uint8>();
+        wp->inverse_formation_angle = fields[9].Get<bool>();
 
         path.push_back(wp);
 
