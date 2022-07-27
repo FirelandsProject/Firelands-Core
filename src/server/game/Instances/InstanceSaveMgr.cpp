@@ -132,15 +132,15 @@ void InstanceSaveManager::DeleteInstanceFromDB(uint32 instanceid)
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_INSTANCE_BY_INSTANCE);
-    stmt->setUInt32(0, instanceid);
+    stmt->SetData(0, instanceid);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_INSTANCE_BY_INSTANCE);
-    stmt->setUInt32(0, instanceid);
+    stmt->SetData(0, instanceid);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_INSTANCE_BY_INSTANCE);
-    stmt->setUInt32(0, instanceid);
+    stmt->SetData(0, instanceid);
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -157,8 +157,8 @@ void InstanceSaveManager::RemoveInstanceSave(uint32 InstanceId)
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_INSTANCE_RESETTIME);
 
-            stmt->setUInt32(0, uint32(resettime));
-            stmt->setUInt32(1, InstanceId);
+            stmt->SetData(0, uint32(resettime));
+            stmt->SetData(1, InstanceId);
 
             CharacterDatabase.Execute(stmt);
         }
@@ -190,9 +190,9 @@ void InstanceSave::UpdateDifficulty(uint8 diff)
 {
     m_difficulty = (Difficulty)diff;
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_INSTANCE_DIFFICULTY);
-    stmt->setUInt8(0, diff);
-    stmt->setUInt32(1, m_instanceid);
-    //    stmt->setBool(2, false);
+    stmt->SetData(0, diff);
+    stmt->SetData(1, m_instanceid);
+    //    stmt->SetData(2, false);
     CharacterDatabase.Execute(stmt);
 }
 
@@ -220,14 +220,14 @@ void InstanceSave::SaveToDB()
     }
     uint8 difficulty = GetDifficulty();
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_INSTANCE_SAVE);
-    stmt->setUInt32(0, m_instanceid);
-    stmt->setUInt16(1, GetMapId());
-    stmt->setUInt32(2, uint32(GetResetTimeForDB()));
-    stmt->setUInt8(3, difficulty);
-    stmt->setUInt32(4, completedEncounters);
-    stmt->setUInt8(5, hardMode);
-    stmt->setString(6, data);
-    stmt->setBool(7, IsLfg());
+    stmt->SetData(0, m_instanceid);
+    stmt->SetData(1, GetMapId());
+    stmt->SetData(2, uint32(GetResetTimeForDB()));
+    stmt->SetData(3, difficulty);
+    stmt->SetData(4, completedEncounters);
+    stmt->SetData(5, hardMode);
+    stmt->SetData(6, data);
+    stmt->SetData(7, IsLfg());
     CharacterDatabase.Execute(stmt);
 }
 
@@ -640,9 +640,9 @@ void InstanceSaveManager::_ResetOrWarnAll(uint32 mapid, Difficulty difficulty, b
         // Update it in the DB
         PreparedStatement *stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GLOBAL_INSTANCE_RESETTIME);
 
-        stmt->setUInt32(0, next_reset);
-        stmt->setUInt16(1, uint16(mapid));
-        stmt->setUInt8(2, uint8(difficulty));
+        stmt->SetData(0, next_reset);
+        stmt->SetData(1, uint16(mapid));
+        stmt->SetData(2, uint8(difficulty));
 
         CharacterDatabase.Execute(stmt);
     }

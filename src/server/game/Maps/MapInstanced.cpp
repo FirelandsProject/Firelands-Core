@@ -174,8 +174,8 @@ Map* MapInstanced::CreateInstanceForPlayer(const uint32 mapId, Player* player)
             else
             {
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_INSTANCE);
-                stmt->setUInt16(0, uint16(GetId()));
-                stmt->setUInt32(1, pSave->GetInstanceId());
+                stmt->SetData(0, uint16(GetId()));
+                stmt->SetData(1, pSave->GetInstanceId());
                 PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
                 if (result)
@@ -208,8 +208,8 @@ Map* MapInstanced::CreateInstanceForPlayer(const uint32 mapId, Player* player)
             else
             {
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_INSTANCE);
-                stmt->setUInt16(0, uint16(GetId()));
-                stmt->setUInt32(1, groupBind->save->GetInstanceId());
+                stmt->SetData(0, uint16(GetId()));
+                stmt->SetData(1, groupBind->save->GetInstanceId());
                 PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
                 if (result)

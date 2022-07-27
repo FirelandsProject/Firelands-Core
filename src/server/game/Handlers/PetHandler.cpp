@@ -665,14 +665,14 @@ void WorldSession::HandlePetRename(WorldPacket& recvData)
     if (isdeclined)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_PET_DECLINEDNAME);
-        stmt->setUInt32(0, pet->GetCharmInfo()->GetPetNumber());
+        stmt->SetData(0, pet->GetCharmInfo()->GetPetNumber());
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_ADD_CHAR_PET_DECLINEDNAME);
-        stmt->setUInt32(0, _player->GetGUIDLow());
+        stmt->SetData(0, _player->GetGUIDLow());
 
         for (uint8 i = 0; i < 5; i++)
-            stmt->setString(i+1, declinedname.name[i]);
+            stmt->SetData(i+1, declinedname.name[i]);
 
         trans->Append(stmt);
     }

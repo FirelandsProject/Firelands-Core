@@ -57,9 +57,9 @@ std::vector<ChatCommand> const& ChatHandler::getCommandTable()
             do
             {
                 Field* fields = result->Fetch();
-                std::string name = fields[0].GetString();
+                std::string name = fields[0].Get<std::string>();
 
-                SetDataForCommandInTable(commandTableCache, name.c_str(), fields[1].GetUInt8(), fields[2].GetString(), name);
+                SetDataForCommandInTable(commandTableCache, name.c_str(), fields[1].Get<uint8>(), fields[2].Get<std::string>(), name);
             }
             while (result->NextRow());
         }
@@ -312,9 +312,9 @@ bool ChatHandler::ExecuteCommandInTable(std::vector<ChatCommand> const& table, c
                 {
                     Player* p = m_session->GetPlayer();
                     uint64 sel_guid = p->GetSelection();
-                    sLog->outCommand(m_session->GetAccountId(), "Command: %s [Player: %s (Account: %u) X: %f Y: %f Z: %f Map: %u Selected %s: %s (GUID: %u)]",
-                        fullcmd.c_str(), p->GetName().c_str(), m_session->GetAccountId(), p->GetPositionX(), p->GetPositionY(), p->GetPositionZ(), p->GetMapId(),
-                        GetLogNameForGuid(sel_guid), (p->GetSelectedUnit()) ? p->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
+                    LOG_GM(m_session->GetAccountId(), "Command: {} [Player: {} (Account: {}) X: {} Y: {} Z: {} Map: {} Selected {}: {} (GUID: {})]",
+                        fullcmd, p->GetName(), m_session->GetAccountId(), p->GetPositionX(), p->GetPositionY(), p->GetPositionZ(), p->GetMapId(),
+                        GetLogNameForGuid(sel_guid), (p->GetSelectedUnit()) ? p->GetSelectedUnit()->GetName() : "", GUID_LOPART(sel_guid));
                 }
             }
         }
@@ -364,12 +364,12 @@ bool ChatHandler::SetDataForCommandInTable(std::vector<ChatCommand>& table, char
         // expected subcommand by full name DB content
         else if (*text)
         {
-            LOG_ERROR("sql.sql", "Table `command` have unexpected subcommand '%s' in command '%s', skip.", text, fullcommand.c_str());
+            LOG_ERROR("sql.sql", "Table `command` have unexpected subcommand '{}' in command '{}', skip.", text, fullcommand);
             return false;
         }
 
         if (table[i].SecurityLevel != security)
-            LOG_INFO("misc", "Table `command` overwrite for command '%s' default security (%u) by %u", fullcommand.c_str(), table[i].SecurityLevel, security);
+            LOG_INFO("misc", "Table `command` overwrite for command '{}' default security ({}) by {}", fullcommand, table[i].SecurityLevel, security);
 
         table[i].SecurityLevel = security;
         table[i].Help          = help;
@@ -380,9 +380,9 @@ bool ChatHandler::SetDataForCommandInTable(std::vector<ChatCommand>& table, char
     if (!cmd.empty())
     {
         if (&table == &getCommandTable())
-            LOG_ERROR("sql.sql", "Table `command` have not existed command '%s', skip.", cmd.c_str());
+            LOG_ERROR("sql.sql", "Table `command` have not existed command '{}', skip.", cmd);
         else
-            LOG_ERROR("sql.sql", "Table `command` have not existed subcommand '%s' in command '%s', skip.", cmd.c_str(), fullcommand.c_str());
+            LOG_ERROR("sql.sql", "Table `command` have not existed subcommand '{}' in command '{}', skip.", cmd, fullcommand);
     }
 
     return false;
@@ -898,7 +898,7 @@ static char const* const spellKeys[] =
 uint32 ChatHandler::extractSpellIdFromLink(char* text)
 {
     // number or [name] Shift-click form |color|Henchant:recipe_spell_id|h[prof_name: recipe_name]|h|r
-    // number or [name] Shift-click form |color|Hglyph:glyph_slot_id:glyph_prop_id|h[%s]|h|r
+    // number or [name] Shift-click form |color|Hglyph:glyph_slot_id:glyph_prop_id|h[{}]|h|r
     // number or [name] Shift-click form |color|Hspell:spell_id|h[name]|h|r
     // number or [name] Shift-click form |color|Htalent:talent_id, rank|h[name]|h|r
     // number or [name] Shift-click form |color|Htrade:spell_id, skill_id, max_value, cur_value|h[name]|h|r

@@ -112,8 +112,8 @@ void ArcheologyMgr::UpdateWrongSkillDBValues(uint32 skillReq)
     SQLTransaction trans = WorldDatabase.BeginTransaction();
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_UPD_ARCHAEOLOGY_REASEARCHSITE_SKILL_REQ);
     // "UPDATE research_sites SET minSkill = %u where entry = %u"
-    stmt->setUInt32(0, skillReq);
-    stmt->setUInt32(1, m_digSites[m_currentDigSite]);
+    stmt->SetData(0, skillReq);
+    stmt->SetData(1, m_digSites[m_currentDigSite]);
     trans->Append(stmt);
     WorldDatabase.CommitTransaction(trans);
 }
@@ -696,9 +696,9 @@ void ArcheologyMgr::SaveArcheologyDigSites()
         if (m_digSites[i] != 0)
         {
             PreparedStatement * stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_DIGSITES);
-            stmt->setUInt32(0, m_player->GetGUIDLow());
-            stmt->setUInt32(1, m_digSites[i]);
-            stmt->setUInt32(2, m_digSitesCount[i]);
+            stmt->SetData(0, m_player->GetGUIDLow());
+            stmt->SetData(1, m_digSites[i]);
+            stmt->SetData(2, m_digSitesCount[i]);
             CharacterDatabase.Execute(stmt);
         }
     }
@@ -715,9 +715,9 @@ void ArcheologyMgr::SaveArcheologyArtifacts()
         if (m_researchProject[i] != 0)
         {
             PreparedStatement * stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_CURRENT_ARTEFACTS);
-            stmt->setUInt32(0, m_player->GetGUIDLow());
-            stmt->setUInt32(1, i);
-            stmt->setUInt32(2, m_researchProject[i]);
+            stmt->SetData(0, m_player->GetGUIDLow());
+            stmt->SetData(1, i);
+            stmt->SetData(2, m_researchProject[i]);
             CharacterDatabase.Execute(stmt);
         }
     }
@@ -834,9 +834,9 @@ void ArcheologyMgr::CreateTreasureItem(const uint32 & spellId, int32 &quantity)
                 m_researchHistory[rp->id] = rhe;
                 SQLTransaction trans = CharacterDatabase.BeginTransaction();
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHAR_RESEARCH_HISTORY);
-                stmt->setUInt32(0, rhe.count);
-                stmt->setUInt32(1, rhe.guid);
-                stmt->setUInt32(2, rhe.projectId);
+                stmt->SetData(0, rhe.count);
+                stmt->SetData(1, rhe.guid);
+                stmt->SetData(2, rhe.projectId);
                 trans->Append(stmt);
                 CharacterDatabase.CommitTransaction(trans);
 
@@ -850,10 +850,10 @@ void ArcheologyMgr::CreateTreasureItem(const uint32 & spellId, int32 &quantity)
                 m_researchHistory[rp->id] = rhe;
                 SQLTransaction trans = CharacterDatabase.BeginTransaction();
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_RESEARCH_HISTORY);
-                stmt->setUInt32(0, rhe.guid);
-                stmt->setUInt32(1, rhe.projectId);
-                stmt->setUInt32(2, rhe.count);
-                stmt->setUInt32(3, rhe.time);
+                stmt->SetData(0, rhe.guid);
+                stmt->SetData(1, rhe.projectId);
+                stmt->SetData(2, rhe.count);
+                stmt->SetData(3, rhe.time);
                 trans->Append(stmt);
                 CharacterDatabase.CommitTransaction(trans);
 

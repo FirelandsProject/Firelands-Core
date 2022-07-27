@@ -94,23 +94,23 @@ public:
             uint32 capRBG = Firelands::Currency::BgConquestRatingCalculator(player->GetRbgOrSoloQueueRatingForCapCalculation()) * CURRENCY_PRECISION;
             uint32 cap = std::max(capArena, capRBG);
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_PLAYER_CURRENCY_NEW_CAP_OVERALL);
-            stmt->setUInt32(0, cap);
-            stmt->setUInt64(1, player->GetGUIDLow());
+            stmt->SetData(0, cap);
+            stmt->SetData(1, player->GetGUIDLow());
             CharacterDatabase.Execute(stmt);
 
             if (player->GetCurrency(CURRENCY_TYPE_CONQUEST_META_ARENA, true))
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_PLAYER_CURRENCY_NEW_CAP_ARENA);
-                stmt->setUInt32(0, capArena);
-                stmt->setUInt64(1, player->GetGUIDLow());
+                stmt->SetData(0, capArena);
+                stmt->SetData(1, player->GetGUIDLow());
                 CharacterDatabase.Execute(stmt);
             }
 
             if (player->GetCurrency(CURRENCY_TYPE_CONQUEST_META_RBG, true))
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_PLAYER_CURRENCY_NEW_CAP_RBG);
-                stmt->setUInt32(0, capRBG);
-                stmt->setUInt64(1, player->GetGUIDLow());
+                stmt->SetData(0, capRBG);
+                stmt->SetData(1, player->GetGUIDLow());
                 CharacterDatabase.Execute(stmt);
             }
         }

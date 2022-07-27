@@ -15,14 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ACORE_TOKENIZE_H_
-#define _ACORE_TOKENIZE_H_
+#ifndef _FIRELANDS_TOKENIZE_H_
+#define _FIRELANDS_TOKENIZE_H_
 
 #include "Common.h"
 #include <string_view>
 #include <vector>
 
-namespace Acore
+namespace Firelands
 {
     std::vector<std::string_view> Tokenize(std::string_view str, char sep, bool keepEmpty);
 
@@ -34,4 +34,4 @@ namespace Acore
     inline std::vector<std::string_view> Tokenize(char const* str, char sep, bool keepEmpty) { return Tokenize(std::string_view(str ? str : ""), sep, keepEmpty); }
 }
 
-#endif // _ACORE_TOKENIZE_H_
+#endif // _FIRELANDS_TOKENIZE_H_

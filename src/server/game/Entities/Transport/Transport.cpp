@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -49,27 +49,27 @@ void MapManager::LoadTransports()
     {
 
         Field* fields = result->Fetch();
-        uint32 lowguid = fields[0].GetUInt32();
-        uint32 entry = fields[1].GetUInt32();
-        std::string name = fields[2].GetString();
-        uint32 period = fields[3].GetUInt32();
-        uint32 scriptId = sObjectMgr->GetScriptId(fields[4].GetCString());
+        uint32 lowguid = fields[0].Get<uint32>();
+        uint32 entry = fields[1].Get<uint32>();
+        std::string name = fields[2].Get<std::string>();
+        uint32 period = fields[3].Get<uint32>();
+        uint32 scriptId = sObjectMgr->GetScriptId(fields[4].Get<std::string>().c_str());
 
         GameObjectTemplate const* goinfo = sObjectMgr->GetGameObjectTemplate(entry);
 
         if (!goinfo)
         {
-            LOG_ERROR("sql.sql", "Transport ID:%u, Name: %s, will not be loaded, gameobject_template missing", entry, name.c_str());
+            LOG_ERROR("sql.sql", "Transport ID:{}, Name: {}, will not be loaded, gameobject_template missing", entry, name);
             continue;
         }
 
         if (goinfo->type != GAMEOBJECT_TYPE_MO_TRANSPORT)
         {
-            LOG_ERROR("sql.sql", "Transport ID:%u, Name: %s, will not be loaded, gameobject_template type wrong", entry, name.c_str());
+            LOG_ERROR("sql.sql", "Transport ID:{}, Name: {}, will not be loaded, gameobject_template type wrong", entry, name.);
             continue;
         }
 
-        // LOG_INFO("server.loading", "Loading transport %d between %s, %s", entry, name.c_str(), goinfo->name);
+        // LOG_INFO("server.loading", "Loading transport {} between {}, {}", entry, name, goinfo->name);
 
         std::set<uint32> mapsUsed;
 
@@ -77,7 +77,7 @@ void MapManager::LoadTransports()
         if (!t->GenerateWaypoints(goinfo, mapsUsed))
             // skip transports with empty waypoints list
         {
-            LOG_ERROR("sql.sql", "Transport (path id %u) path size = 0. Transport ignored, check DBC files or transport GO data0 field.", goinfo->moTransport.taxiPathId);
+            LOG_ERROR("sql.sql", "Transport (path id {}) path size = 0. Transport ignored, check DBC files or transport GO data0 field.", goinfo->moTransport.taxiPathId);
             delete t;
             continue;
         }
@@ -118,16 +118,16 @@ void MapManager::LoadTransports()
         {
             Field* fields = result->Fetch();
 
-            uint32 guid  = fields[0].GetUInt32();
-            uint32 entry = fields[1].GetUInt32();
-            std::string name = fields[2].GetString();
-            LOG_ERROR("sql.sql", "Transport %u '%s' have record (GUID: %u) in `gameobject`. Transports must not have any records in `gameobject` or its behavior will be unpredictable/bugged.", entry, name.c_str(), guid);
+            uint32 guid  = fields[0].Get<uint32>();
+            uint32 entry = fields[1].Get<uint32>();
+            std::string name = fields[2].Get<std::string>();
+            LOG_ERROR("sql.sql", "Transport {} '{}' have record (GUID: {}) in `gameobject`. Transports must not have any records in `gameobject` or its behavior will be unpredictable/bugged.", entry, name, guid);
         }
         while (result->NextRow());
     }
 
 
-    LOG_INFO("server.loading", ">> Loaded %u transports in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} transports in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void MapManager::LoadTransportNPCs()
@@ -148,14 +148,14 @@ void MapManager::LoadTransportNPCs()
     do
     {
         Field* fields = result->Fetch();
-        uint32 guid = fields[0].GetInt32();
-        uint32 entry = fields[1].GetInt32();
-        uint32 transportEntry = fields[2].GetInt32();
-        float tX = fields[3].GetFloat();
-        float tY = fields[4].GetFloat();
-        float tZ = fields[5].GetFloat();
-        float tO = fields[6].GetFloat();
-        uint32 anim = fields[7].GetInt32();
+        uint32 guid = fields[0].Get<int32>();
+        uint32 entry = fields[1].Get<int32>();
+        uint32 transportEntry = fields[2].Get<int32>();
+        float tX = fields[3].Get<float>();
+        float tY = fields[4].Get<float>();
+        float tZ = fields[5].Get<float>();
+        float tO = fields[6].Get<float>();
+        uint32 anim = fields[7].Get<int32>();
 
         for (MapManager::TransportSet::iterator itr = m_Transports.begin(); itr != m_Transports.end(); ++itr)
         {
@@ -170,7 +170,7 @@ void MapManager::LoadTransportNPCs()
     }
     while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u transport npcs in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} transport npcs in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void MapManager::LoadTransportGOs()
@@ -191,13 +191,13 @@ void MapManager::LoadTransportGOs()
     do
     {
         Field* fields = result->Fetch();
-        uint32 guid = fields[0].GetInt32();
-        uint32 entry = fields[1].GetInt32();
-        uint32 transportEntry = fields[2].GetInt32();
-        float tX = fields[3].GetFloat();
-        float tY = fields[4].GetFloat();
-        float tZ = fields[5].GetFloat();
-        float tO = fields[6].GetFloat();
+        uint32 guid = fields[0].Get<int32>();
+        uint32 entry = fields[1].Get<int32>();
+        uint32 transportEntry = fields[2].Get<int32>();
+        float tX = fields[3].Get<float>();
+        float tY = fields[4].Get<float>();
+        float tZ = fields[5].Get<float>();
+        float tO = fields[6].Get<float>();
 
         for (MapManager::TransportSet::iterator itr = m_Transports.begin(); itr != m_Transports.end(); ++itr)
         {
@@ -212,7 +212,7 @@ void MapManager::LoadTransportGOs()
     }
     while (result->NextRow());
 
-    LOG_INFO("server.loading", ">> Loaded %u transport gos in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("server.loading", ">> Loaded {} transport gos in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 Transport::Transport(uint32 period, uint32 script) : GameObject(), m_pathTime(0),
@@ -252,7 +252,7 @@ bool Transport::Create(uint32 guidlow, uint32 entry, uint32 mapid, float x, floa
 
     if (!IsPositionValid())
     {
-        LOG_ERROR("entities.transport", "Transport (GUID: %u) not created. Suggested coordinates isn't valid (X: %f Y: %f)",
+        LOG_ERROR("entities.transport", "Transport (GUID: {}) not created. Suggested coordinates isn't valid (X: {} Y: {})",
             guidlow, x, y);
         return false;
     }
@@ -263,7 +263,7 @@ bool Transport::Create(uint32 guidlow, uint32 entry, uint32 mapid, float x, floa
 
     if (!goinfo)
     {
-        LOG_ERROR("sql.sql", "Transport not created: entry in `gameobject_template` not found, guidlow: %u map: %u  (X: %f Y: %f Z: %f) ang: %f", guidlow, mapid, x, y, z, ang);
+        LOG_ERROR("sql.sql", "Transport not created: entry in `gameobject_template` not found, guidlow: {} map: {}  (X: {} Y: {} Z: {}) ang: {}", guidlow, mapid, x, y, z, ang);
         return false;
     }
 
@@ -654,7 +654,7 @@ bool Transport::AddPassenger(WorldObject* passenger)
     if (passenger->GetTypeId() == TYPEID_PLAYER && !IsInWorld())
         return false;
 
-    LOG_INFO("entities.transport", "Player %s boarded transport %s.", passenger->GetName().c_str(), GetName().c_str());
+    LOG_INFO("entities.transport", "Player {} boarded transport {}.", passenger->GetName(), GetName());
     {
         FIRELANDS_GUARD(ACE_Thread_Mutex, Lock);
 
@@ -717,7 +717,7 @@ bool Transport::RemovePassenger(WorldObject* passenger)
         }
     }
 
-    LOG_INFO("entities.transport", "Player %s removed from transport %s.", passenger->GetName().c_str(), GetName().c_str());
+    LOG_INFO("entities.transport", "Player {} removed from transport {}.", passenger->GetName(), GetName());
     return success;
 }
 
@@ -903,7 +903,7 @@ void Transport::DoEventIfAny(KeyFrame const& node, bool departure)
     // 22663 22663 22861 22861 22664 22664 22860 22860 22665 22665 22663 22663 22861
     if (uint32 eventid = departure ? node.Node->departureEventID : node.Node->arrivalEventID)
     {
-        LOG_DEBUG("maps.script", "Taxi %s event %u of node %u of %s path", departure ? "departure" : "arrival", eventid, node.Node->index, GetName().c_str());
+        LOG_DEBUG("maps.script", "Taxi {} event {} of node {} of {} path", departure ? "departure" : "arrival", eventid, node.Node->index, GetName());
         GetMap()->ScriptsStart(sEventScripts, eventid, this, this);
         EventInform(eventid);
     }
@@ -961,7 +961,7 @@ uint32 Transport::AddNPCPassenger(uint32 tguid, uint32 entry, float x, float y, 
 
     if (!creature->IsPositionValid())
     {
-        LOG_ERROR("entities.transport", "Creature (guidlow %d, entry %d) not created. Suggested coordinates isn't valid (X: %f Y: %f)", creature->GetGUIDLow(), creature->GetEntry(), creature->GetPositionX(), creature->GetPositionY());
+        LOG_ERROR("entities.transport", "Creature (guidlow {}, entry {}) not created. Suggested coordinates isn't valid (X: {} Y: {})", creature->GetGUIDLow(), creature->GetEntry(), creature->GetPositionX(), creature->GetPositionY());
         delete creature;
         return 0;
     }
@@ -1002,7 +1002,7 @@ uint32 Transport::AddGOPassenger(uint32 tguid, uint32 entry, float x, float y, f
 
     if (!go->IsPositionValid())
     {
-        LOG_ERROR("entities.transport", "GameObject (guidlow %d, entry %d) not created. Suggested coordinates isn't valid (X: %f Y: %f)", go->GetGUIDLow(),
+        LOG_ERROR("entities.transport", "GameObject (guidlow {}, entry {}) not created. Suggested coordinates isn't valid (X: {} Y: {})", go->GetGUIDLow(),
                        go->GetEntry(), go->GetPositionX(), go->GetPositionY());
         delete go;
         return 0;
@@ -1142,13 +1142,13 @@ Transport* MapManager::LoadTransportInMap(Map* instance, uint32 goEntry, uint32 
 
     if (!goInfo)
     {
-        LOG_ERROR("sql.sql", "Transport ID: %u will not be loaded, gameobject_template missing", goEntry);
+        LOG_ERROR("sql.sql", "Transport ID: {} will not be loaded, gameobject_template missing", goEntry);
         return NULL;
     }
 
     if (goInfo->type != GAMEOBJECT_TYPE_MO_TRANSPORT)
     {
-        LOG_ERROR("sql.sql", "Transport ID: %u will not be loaded, gameobject_template as wrong type", goEntry);
+        LOG_ERROR("sql.sql", "Transport ID: {} will not be loaded, gameobject_template as wrong type", goEntry);
         return NULL;
     }
 
@@ -1311,7 +1311,7 @@ Creature* Transport::AddNPCPassengerInInstance(uint32 entry, float x, float y, f
 
     if (!creature->IsPositionValid())
     {
-        LOG_ERROR("misc", "Creature (guidlow %d, entry %d) not created. Suggested coordinates isn't valid (X: %f Y: %f)", creature->GetGUIDLow(), creature->GetEntry(), creature->GetPositionX(), creature->GetPositionY());
+        LOG_ERROR("misc", "Creature (guidlow {}, entry {}) not created. Suggested coordinates isn't valid (X: {} Y: {})", creature->GetGUIDLow(), creature->GetEntry(), creature->GetPositionX(), creature->GetPositionY());
         delete creature;
         return 0;
     }
@@ -1529,7 +1529,7 @@ Creature* Transport::CreateNPCPassenger(uint32 guid, CreatureData const* data)
 
     if (!creature->IsPositionValid())
     {
-        LOG_ERROR("entities.transport", "Creature (guidlow %d, entry %d) not created. Suggested coordinates aren't valid (X: %f Y: %f)",creature->GetGUIDLow(),creature->GetEntry(),creature->GetPositionX(),creature->GetPositionY());
+        LOG_ERROR("entities.transport", "Creature (guidlow {}, entry {}) not created. Suggested coordinates aren't valid (X: {} Y: {})",creature->GetGUIDLow(),creature->GetEntry(),creature->GetPositionX(),creature->GetPositionY());
         delete creature;
         return NULL;
     }
@@ -1572,7 +1572,7 @@ GameObject* Transport::CreateGOPassenger(uint32 guid, GameObjectData const* data
 
     if (!go->IsPositionValid())
     {
-        LOG_ERROR("entities.transport", "GameObject (guidlow %d, entry %d) not created. Suggested coordinates aren't valid (X: %f Y: %f)", go->GetGUIDLow(), go->GetEntry(), go->GetPositionX(), go->GetPositionY());
+        LOG_ERROR("entities.transport", "GameObject (guidlow {}, entry {}) not created. Suggested coordinates aren't valid (X: {} Y: {})", go->GetGUIDLow(), go->GetEntry(), go->GetPositionX(), go->GetPositionY());
         delete go;
         return NULL;
     }

@@ -1332,7 +1332,7 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GUILD_MEMBERS);
-    stmt->setUInt32(0, m_id);
+    stmt->SetData(0, m_id);
     trans->Append(stmt);
 
     uint8 index = 0;
@@ -2902,7 +2902,7 @@ bool Guild::AddMember(uint64 guid, uint8 rankId)
     /* Check if player can keep his guild reputation */
     bool keepGuildReputation = false;
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_OLD_GUILD_DATA);
-    stmt->setUInt32(0, lowguid);
+    stmt->SetData(0, lowguid);
     if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
     {
         Field* fields = result->Fetch();

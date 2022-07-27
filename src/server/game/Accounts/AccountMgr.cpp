@@ -44,7 +44,7 @@ namespace AccountMgr {
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT);
 
-        stmt->setString(0, username);
+        stmt->SetData(0, username);
         auto [salt, verifier] = Firelands::Crypto::SRP6::MakeRegistrationData(username, password);
         stmt->SetData(1, salt);
         stmt->SetData(2, verifier);
@@ -80,7 +80,7 @@ namespace AccountMgr {
         {
             do
             {
-                uint32 guidLow = (*result)[0].GetUInt32();
+                uint32 guidLow = (*result)[0].Get<uint32>();
                 uint64 guid = MAKE_NEW_GUID(guidLow, 0, HIGHGUID_PLAYER);
 
                 // Kick if player is online

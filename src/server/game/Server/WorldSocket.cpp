@@ -862,7 +862,7 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     // Get the account information from the realmd database
     PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_INFO_BY_NAME);
 
-    stmt->setString(0, account);
+    stmt->SetData(0, account);
 
     PreparedQueryResult result = LoginDatabase.Query(stmt);
 
@@ -908,8 +908,8 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_MUTE_TIME);
 
-        stmt->setInt64(0, mutetime);
-        stmt->setUInt32(1, id);
+        stmt->SetData(0, mutetime);
+        stmt->SetData(1, id);
 
         LoginDatabase.Execute(stmt);
     }
@@ -932,8 +932,8 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     // Checks gmlevel per Realm
     stmt = LoginDatabase.GetPreparedStatement(LOGIN_GET_GMLEVEL_BY_REALMID);
 
-    stmt->setUInt32(0, id);
-    stmt->setInt32(1, int32(realmID));
+    stmt->SetData(0, id);
+    stmt->SetData(1, int32(realmID));
 
     result = LoginDatabase.Query(stmt);
 
@@ -948,8 +948,8 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     // Re-check account ban (same check as in realmd)
     stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_BANS);
 
-    stmt->setUInt32(0, id);
-    stmt->setString(1, GetRemoteAddress());
+    stmt->SetData(0, id);
+    stmt->SetData(1, GetRemoteAddress());
 
     PreparedQueryResult banresult = LoginDatabase.Query(stmt);
 
@@ -997,7 +997,7 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     // Check if this user is by any chance a recruiter
     stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_RECRUITER);
 
-    stmt->setUInt32(0, id);
+    stmt->SetData(0, id);
 
     result = LoginDatabase.Query(stmt);
 
@@ -1009,17 +1009,17 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
 
     stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_LAST_IP);
 
-    stmt->setString(0, address);
-    stmt->setString(1, account);
+    stmt->SetData(0, address);
+    stmt->SetData(1, account);
 
     LoginDatabase.Execute(stmt);
 
     if (sWorld->getBoolConfig(CONFIG_ENABLE_IP_HISTORY))
     {
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_IP_HISTORY);
-        stmt->setUInt32(0, id);
-        stmt->setUInt32(1, realmID);
-        stmt->setString(2, GetRemoteAddress());
+        stmt->SetData(0, id);
+        stmt->SetData(1, realmID);
+        stmt->SetData(2, GetRemoteAddress());
         LoginDatabase.Execute(stmt);
     }
 

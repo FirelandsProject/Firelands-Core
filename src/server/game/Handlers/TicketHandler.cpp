@@ -126,15 +126,15 @@ void WorldSession::HandleSubmitBugOpcode(WorldPacket & recvData)
     // realm, guid, message, createTime, pool, mapId, posX, posY, posZ
     uint8 index = 0;
     PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_BUG_TICKET);
-    stmt->setUInt32(index, realmID);
-    stmt->setUInt32(++index, GUID_LOPART(GetPlayer()->GetGUID()));
-    stmt->setString(++index, bug);
-    stmt->setUInt32(++index, uint32(time(NULL)));
-    stmt->setString(++index, "change Line" /*GetNode()->GetName()*/);
-    stmt->setUInt16(++index, uint16(mapID));
-    stmt->setFloat (++index, (float)posX);
-    stmt->setFloat (++index, (float)posY);
-    stmt->setFloat (++index, (float)posZ);
+    stmt->SetData(index, realmID);
+    stmt->SetData(++index, GUID_LOPART(GetPlayer()->GetGUID()));
+    stmt->SetData(++index, bug);
+    stmt->SetData(++index, uint32(time(NULL)));
+    stmt->SetData(++index, "change Line" /*GetNode()->GetName()*/);
+    stmt->SetData(++index, uint16(mapID));
+    stmt->SetData(++index, (float)posX);
+    stmt->SetData(++index, (float)posY);
+    stmt->SetData(++index, (float)posZ);
 
     LoginDatabase.ExecuteOrAppend(trans, stmt);
 }
@@ -294,10 +294,10 @@ void WorldSession::HandleGMSurveySubmit(WorldPacket& recvData)
         recvData >> comment;
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GM_SUBSURVEY);
-        stmt->setUInt32(0, nextSurveyID);
-        stmt->setUInt32(1, subSurveyId);
-        stmt->setUInt32(2, rank);
-        stmt->setString(3, comment);
+        stmt->SetData(0, nextSurveyID);
+        stmt->SetData(1, subSurveyId);
+        stmt->SetData(2, rank);
+        stmt->SetData(3, comment);
         CharacterDatabase.Execute(stmt);
     }
 
@@ -305,10 +305,10 @@ void WorldSession::HandleGMSurveySubmit(WorldPacket& recvData)
     recvData >> comment;
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GM_SURVEY);
-    stmt->setUInt32(0, GUID_LOPART(GetPlayer()->GetGUID()));
-    stmt->setUInt32(1, nextSurveyID);
-    stmt->setUInt32(2, mainSurvey);
-    stmt->setString(3, comment);
+    stmt->SetData(0, GUID_LOPART(GetPlayer()->GetGUID()));
+    stmt->SetData(1, nextSurveyID);
+    stmt->SetData(2, mainSurvey);
+    stmt->SetData(3, comment);
 
     CharacterDatabase.Execute(stmt);
 }
@@ -326,14 +326,14 @@ void WorldSession::HandleReportLag(WorldPacket& recvData)
     recvData >> z;
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_LAG_REPORT);
-    stmt->setUInt32(0, GUID_LOPART(GetPlayer()->GetGUID()));
-    stmt->setUInt8 (1, lagType);
-    stmt->setUInt16(2, mapId);
-    stmt->setFloat (3, x);
-    stmt->setFloat (4, y);
-    stmt->setFloat (5, z);
-    stmt->setUInt32(6, GetLatency());
-    stmt->setUInt32(7, time(NULL));
+    stmt->SetData(0, GUID_LOPART(GetPlayer()->GetGUID()));
+    stmt->SetData(1, lagType);
+    stmt->SetData(2, mapId);
+    stmt->SetData(3, x);
+    stmt->SetData(4, y);
+    stmt->SetData(5, z);
+    stmt->SetData(6, GetLatency());
+    stmt->SetData(7, time(NULL));
     CharacterDatabase.Execute(stmt);
 }
 

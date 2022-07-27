@@ -42,10 +42,10 @@ void InstanceScript::SaveToDB()
         return;
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_INSTANCE_DATA);
-    stmt->setUInt32(0, GetCompletedEncounterMask());
-    stmt->setString(1, data);
-    stmt->setUInt8(2, GetHardModeDifficulty());
-    stmt->setUInt32(3, instance->GetInstanceId());
+    stmt->SetData(0, GetCompletedEncounterMask());
+    stmt->SetData(1, data);
+    stmt->SetData(2, GetHardModeDifficulty());
+    stmt->SetData(3, instance->GetInstanceId());
     CharacterDatabase.Execute(stmt);
 }
 

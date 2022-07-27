@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -54,8 +54,8 @@ void LoadFromDB()
     {
         Field* fields = result->Fetch();
 
-        std::string name = fields[0].GetString();
-        uint32 crc = fields[1].GetUInt32();
+        std::string name = fields[0].Get<std::string>();
+        uint32 crc = fields[1].Get<uint32>();
 
         m_knownAddons.push_back(SavedAddon(name, crc));
 
@@ -72,8 +72,8 @@ void SaveAddon(AddonInfo const& addon)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ADDON);
 
-    stmt->setString(0, name);
-    stmt->setUInt32(1, addon.CRC);
+    stmt->SetData(0, name);
+    stmt->SetData(1, addon.CRC);
 
     CharacterDatabase.Execute(stmt);
 

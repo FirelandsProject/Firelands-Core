@@ -40,7 +40,7 @@ void AddItemsSetItem(Player* player, Item* item)
 
     if (!set)
     {
-        LOG_ERROR("sql.sql", "Item set %u for item (id %u) not found, mods not applied.", setid, proto->ItemId);
+        LOG_ERROR("sql.sql", "Item set {} for item (id {}) not found, mods not applied.", setid, proto->ItemId);
         return;
     }
 
@@ -100,7 +100,7 @@ void AddItemsSetItem(Player* player, Item* item)
                 SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(set->spells[x]);
                 if (!spellInfo)
                 {
-                    LOG_ERROR("entities.player.items", "WORLD: unknown spell id %u in items set %u effects", set->spells[x], setid);
+                    LOG_ERROR("entities.player.items", "WORLD: unknown spell id {} in items set {} effects", set->spells[x], setid);
                     break;
                 }
 
@@ -121,7 +121,7 @@ void RemoveItemsSetItem(Player*player, ItemTemplate const* proto)
 
     if (!set)
     {
-        LOG_ERROR("sql.sql", "Item set #%u for item #%u not found, mods not removed.", setid, proto->ItemId);
+        LOG_ERROR("sql.sql", "Item set #{} for item #{} not found, mods not removed.", setid, proto->ItemId);
         return;
     }
 
@@ -302,7 +302,7 @@ void Item::UpdateDuration(Player* owner, uint32 diff)
     if (!GetUInt32Value(ITEM_FIELD_DURATION))
         return;
 
-    LOG_DEBUG("entities.player.items", "Item::UpdateDuration Item (Entry: %u Duration %u Diff %u)", GetEntry(), GetUInt32Value(ITEM_FIELD_DURATION), diff);
+    LOG_DEBUG("entities.player.items", "Item::UpdateDuration Item (Entry: {} Duration {} Diff {})", GetEntry(), GetUInt32Value(ITEM_FIELD_DURATION), diff);
 
     if (GetUInt32Value(ITEM_FIELD_DURATION) <= diff)
     {
@@ -329,19 +329,19 @@ void Item::SaveToDB(SQLTransaction& trans)
         {
             uint8 index = 0;
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(uState == ITEM_NEW ? CHAR_REP_ITEM_INSTANCE : CHAR_UPD_ITEM_INSTANCE);
-            stmt->setUInt32(  index, GetEntry());
-            stmt->setUInt32(++index, GUID_LOPART(GetOwnerGUID()));
-            stmt->setUInt32(++index, GUID_LOPART(GetUInt64Value(ITEM_FIELD_CREATOR)));
-            stmt->setUInt32(++index, GUID_LOPART(GetUInt64Value(ITEM_FIELD_GIFTCREATOR)));
-            stmt->setUInt32(++index, GetCount());
-            stmt->setUInt32(++index, GetUInt32Value(ITEM_FIELD_DURATION));
+            stmt->SetData(  index, GetEntry());
+            stmt->SetData(++index, GUID_LOPART(GetOwnerGUID()));
+            stmt->SetData(++index, GUID_LOPART(GetUInt64Value(ITEM_FIELD_CREATOR)));
+            stmt->SetData(++index, GUID_LOPART(GetUInt64Value(ITEM_FIELD_GIFTCREATOR)));
+            stmt->SetData(++index, GetCount());
+            stmt->SetData(++index, GetUInt32Value(ITEM_FIELD_DURATION));
 
             std::ostringstream ssSpells;
             for (uint8 i = 0; i < MAX_ITEM_PROTO_SPELLS; ++i)
                 ssSpells << GetSpellCharges(i) << ' ';
-            stmt->setString(++index, ssSpells.str());
+            stmt->SetData(++index, ssSpells.str());
 
-            stmt->setUInt32(++index, GetUInt32Value(ITEM_FIELD_FLAGS));
+            stmt->SetData(++index, GetUInt32Value(ITEM_FIELD_FLAGS));
 
             std::ostringstream ssEnchants;
             for (uint8 i = 0; i < MAX_ENCHANTMENT_SLOT; ++i)
@@ -350,21 +350,21 @@ void Item::SaveToDB(SQLTransaction& trans)
                 ssEnchants << GetEnchantmentDuration(EnchantmentSlot(i)) << ' ';
                 ssEnchants << GetEnchantmentCharges(EnchantmentSlot(i)) << ' ';
             }
-            stmt->setString(++index, ssEnchants.str());
+            stmt->SetData(++index, ssEnchants.str());
 
-            stmt->setInt16 (++index, GetItemRandomPropertyId());
-            stmt->setUInt16(++index, GetUInt32Value(ITEM_FIELD_DURABILITY));
-            stmt->setUInt32(++index, GetUInt32Value(ITEM_FIELD_CREATE_PLAYED_TIME));
-            stmt->setString(++index, m_text);
-            stmt->setUInt32(++index, guid);
+            stmt->SetData(++index, GetItemRandomPropertyId());
+            stmt->SetData(++index, GetUInt32Value(ITEM_FIELD_DURABILITY));
+            stmt->SetData(++index, GetUInt32Value(ITEM_FIELD_CREATE_PLAYED_TIME));
+            stmt->SetData(++index, m_text);
+            stmt->SetData(++index, guid);
 
             trans->Append(stmt);
 
             if ((uState == ITEM_CHANGED) && HasFlag(ITEM_FIELD_FLAGS, ITEM_FLAG_WRAPPED))
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GIFT_OWNER);
-                stmt->setUInt32(0, GUID_LOPART(GetOwnerGUID()));
-                stmt->setUInt32(1, guid);
+                stmt->SetData(0, GUID_LOPART(GetOwnerGUID()));
+                stmt->SetData(1, guid);
                 trans->Append(stmt);
             }
             break;
@@ -372,14 +372,14 @@ void Item::SaveToDB(SQLTransaction& trans)
         case ITEM_REMOVED:
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_INSTANCE);
-            stmt->setUInt32(0, guid);
+            stmt->SetData(0, guid);
             trans->Append(stmt);
 
             sObjectMgr->AddFreeItemGuid(guid);
             if (HasFlag(ITEM_FIELD_FLAGS, ITEM_FLAG_WRAPPED))
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GIFT);
-                stmt->setUInt32(0, guid);
+                stmt->SetData(0, guid);
                 trans->Append(stmt);
             }
 
@@ -408,7 +408,7 @@ void Item::SaveToDB(SQLTransaction& trans)
 bool Item::LoadFromDB(uint32 guid, uint64 owner_guid, Field* fields, uint32 entry)
 {
     //                                                    0                1      2         3        4      5             6                 7           8           9    10
-    //result = CharacterDatabase.PQuery("SELECT creatorGuid, giftCreatorGuid, count, duration, charges, flags, enchantments, randomPropertyId, durability, playedTime, text FROM item_instance WHERE guid = '%u'", guid);
+    //result = CharacterDatabase.PQuery("SELECT creatorGuid, giftCreatorGuid, count, duration, charges, flags, enchantments, randomPropertyId, durability, playedTime, text FROM item_instance WHERE guid = '{}'", guid);
 
     // create item before any checks for store correct guid
     // and allow use "FSetState(ITEM_REMOVED); SaveToDB();" for deleting item from DB
@@ -427,11 +427,11 @@ bool Item::LoadFromDB(uint32 guid, uint64 owner_guid, Field* fields, uint32 entr
         SetOwnerGUID(owner_guid);
 
     bool need_save = false;                                 // need explicit save data at load fixes
-    SetUInt64Value(ITEM_FIELD_CREATOR, MAKE_NEW_GUID(fields[0].GetUInt32(), 0, HIGHGUID_PLAYER));
-    SetUInt64Value(ITEM_FIELD_GIFTCREATOR, MAKE_NEW_GUID(fields[1].GetUInt32(), 0, HIGHGUID_PLAYER));
-    SetCount(fields[2].GetUInt32());
+    SetUInt64Value(ITEM_FIELD_CREATOR, MAKE_NEW_GUID(fields[0].Get<uint32>(), 0, HIGHGUID_PLAYER));
+    SetUInt64Value(ITEM_FIELD_GIFTCREATOR, MAKE_NEW_GUID(fields[1].Get<uint32>(), 0, HIGHGUID_PLAYER));
+    SetCount(fields[2].Get<uint32>());
 
-    uint32 duration = fields[3].GetUInt32();
+    uint32 duration = fields[3].Get<uint32>();
     SetUInt32Value(ITEM_FIELD_DURATION, duration);
     // update duration if need, and remove if not need
     if ((proto->Duration == 0) != (duration == 0))
@@ -440,12 +440,12 @@ bool Item::LoadFromDB(uint32 guid, uint64 owner_guid, Field* fields, uint32 entr
         need_save = true;
     }
 
-    Tokenizer tokens(fields[4].GetString(), ' ', MAX_ITEM_PROTO_SPELLS);
+    Tokenizer tokens(fields[4].Get<std::string>(), ' ', MAX_ITEM_PROTO_SPELLS);
     if (tokens.size() == MAX_ITEM_PROTO_SPELLS)
         for (uint8 i = 0; i < MAX_ITEM_PROTO_SPELLS; ++i)
             SetSpellCharges(i, atoi(tokens[i]));
 
-    SetUInt32Value(ITEM_FIELD_FLAGS, fields[5].GetUInt32());
+    SetUInt32Value(ITEM_FIELD_FLAGS, fields[5].Get<uint32>());
     // Remove bind flag for items vs NO_BIND set
     if (IsSoulBound() && proto->Bonding == NO_BIND)
     {
@@ -453,14 +453,14 @@ bool Item::LoadFromDB(uint32 guid, uint64 owner_guid, Field* fields, uint32 entr
         need_save = true;
     }
 
-    std::string enchants = fields[6].GetString();
+    std::string enchants = fields[6].Get<std::string>();
     _LoadIntoDataField(enchants.c_str(), ITEM_FIELD_ENCHANTMENT_1_1, MAX_ENCHANTMENT_SLOT * MAX_ENCHANTMENT_OFFSET);
-    SetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID, fields[7].GetInt16());
+    SetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID, fields[7].Get<int16>());
     // recalculate suffix factor
     if (GetItemRandomPropertyId() < 0)
         UpdateItemSuffixFactor();
 
-    uint32 durability = fields[8].GetUInt16();
+    uint32 durability = fields[8].Get<uint16>();
     SetUInt32Value(ITEM_FIELD_DURABILITY, durability);
     // update max durability (and durability) if need
     SetUInt32Value(ITEM_FIELD_MAXDURABILITY, proto->MaxDurability);
@@ -470,16 +470,16 @@ bool Item::LoadFromDB(uint32 guid, uint64 owner_guid, Field* fields, uint32 entr
         need_save = true;
     }
 
-    SetUInt32Value(ITEM_FIELD_CREATE_PLAYED_TIME, fields[9].GetUInt32());
-    SetText(fields[10].GetString());
+    SetUInt32Value(ITEM_FIELD_CREATE_PLAYED_TIME, fields[9].Get<uint32>());
+    SetText(fields[10].Get<std::string>());
 
     if (need_save)                                           // normal item changed state set not work at loading
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ITEM_INSTANCE_ON_LOAD);
-        stmt->setUInt32(0, GetUInt32Value(ITEM_FIELD_DURATION));
-        stmt->setUInt32(1, GetUInt32Value(ITEM_FIELD_FLAGS));
-        stmt->setUInt32(2, GetUInt32Value(ITEM_FIELD_DURABILITY));
-        stmt->setUInt32(3, guid);
+        stmt->SetData(0, GetUInt32Value(ITEM_FIELD_DURATION));
+        stmt->SetData(1, GetUInt32Value(ITEM_FIELD_FLAGS));
+        stmt->SetData(2, GetUInt32Value(ITEM_FIELD_DURABILITY));
+        stmt->SetData(3, guid);
         CharacterDatabase.Execute(stmt);
     }
 
@@ -490,7 +490,7 @@ bool Item::LoadFromDB(uint32 guid, uint64 owner_guid, Field* fields, uint32 entr
 void Item::DeleteFromDB(SQLTransaction& trans, uint32 itemGuid)
 {
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_INSTANCE);
-    stmt->setUInt32(0, itemGuid);
+    stmt->SetData(0, itemGuid);
     trans->Append(stmt);
     sObjectMgr->AddFreeItemGuid(itemGuid);
 }
@@ -508,7 +508,7 @@ void Item::DeleteFromDB(SQLTransaction& trans)
 void Item::DeleteFromInventoryDB(SQLTransaction& trans, uint32 itemGuid)
 {
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_INVENTORY_BY_ITEM);
-    stmt->setUInt32(0, itemGuid);
+    stmt->SetData(0, itemGuid);
     trans->Append(stmt);
 }
 
@@ -578,7 +578,7 @@ int32 Item::GenerateItemRandomPropertyId(uint32 item_id)
     // item can have not null only one from field values
     if ((itemProto->RandomProperty) && (itemProto->RandomSuffix))
     {
-        LOG_ERROR("sql.sql", "Item template %u have RandomProperty == %u and RandomSuffix == %u, but must have one from field =0", itemProto->ItemId, itemProto->RandomProperty, itemProto->RandomSuffix);
+        LOG_ERROR("sql.sql", "Item template {} have RandomProperty == {} and RandomSuffix == {}, but must have one from field =0", itemProto->ItemId, itemProto->RandomProperty, itemProto->RandomSuffix);
         return 0;
     }
 
@@ -589,7 +589,7 @@ int32 Item::GenerateItemRandomPropertyId(uint32 item_id)
         ItemRandomPropertiesEntry const* random_id = sItemRandomPropertiesStore.LookupEntry(randomPropId);
         if (!random_id)
         {
-            LOG_ERROR("sql.sql", "Enchantment id #%u used but it doesn't have records in 'ItemRandomProperties.dbc'", randomPropId);
+            LOG_ERROR("sql.sql", "Enchantment id #{} used but it doesn't have records in 'ItemRandomProperties.dbc'", randomPropId);
             return 0;
         }
 
@@ -602,7 +602,7 @@ int32 Item::GenerateItemRandomPropertyId(uint32 item_id)
         ItemRandomSuffixEntry const* random_id = sItemRandomSuffixStore.LookupEntry(randomPropId);
         if (!random_id)
         {
-            LOG_ERROR("sql.sql", "Enchantment id #%u used but it doesn't have records in sItemRandomSuffixStore.", randomPropId);
+            LOG_ERROR("sql.sql", "Enchantment id #{} used but it doesn't have records in sItemRandomSuffixStore.", randomPropId);
             return 0;
         }
 
@@ -692,7 +692,7 @@ void Item::AddToUpdateQueueOf(Player* player)
 
     if (player->GetGUID() != GetOwnerGUID())
     {
-        LOG_DEBUG("entities.player.items", "Item::AddToUpdateQueueOf - Owner's guid (%u) and player's guid (%u) don't match!", GUID_LOPART(GetOwnerGUID()), player->GetGUIDLow());
+        LOG_DEBUG("entities.player.items", "Item::AddToUpdateQueueOf - Owner's guid ({}) and player's guid ({}) don't match!", GUID_LOPART(GetOwnerGUID()), player->GetGUIDLow());
         return;
     }
 
@@ -712,7 +712,7 @@ void Item::RemoveFromUpdateQueueOf(Player* player)
 
     if (player->GetGUID() != GetOwnerGUID())
     {
-        LOG_DEBUG("entities.player.items", "Item::RemoveFromUpdateQueueOf - Owner's guid (%u) and player's guid (%u) don't match!", GUID_LOPART(GetOwnerGUID()), player->GetGUIDLow());
+        LOG_DEBUG("entities.player.items", "Item::RemoveFromUpdateQueueOf - Owner's guid ({}) and player's guid ({}) don't match!", GUID_LOPART(GetOwnerGUID()), player->GetGUIDLow());
         return;
     }
 
@@ -1102,14 +1102,14 @@ void Item::SaveRefundDataToDB()
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_REFUND_INSTANCE);
-    stmt->setUInt32(0, GetGUIDLow());
+    stmt->SetData(0, GetGUIDLow());
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_ITEM_REFUND_INSTANCE);
-    stmt->setUInt32(0, GetGUIDLow());
-    stmt->setUInt32(1, GetRefundRecipient());
-    stmt->setUInt32(2, GetPaidMoney());
-    stmt->setUInt16(3, uint16(GetPaidExtendedCost()));
+    stmt->SetData(0, GetGUIDLow());
+    stmt->SetData(1, GetRefundRecipient());
+    stmt->SetData(2, GetPaidMoney());
+    stmt->SetData(3, uint16(GetPaidExtendedCost()));
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -1120,7 +1120,7 @@ void Item::DeleteRefundDataFromDB(SQLTransaction* trans)
     if (trans && !trans->null())
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_REFUND_INSTANCE);
-        stmt->setUInt32(0, GetGUIDLow());
+        stmt->SetData(0, GetGUIDLow());
         (*trans)->Append(stmt);
 
     }
@@ -1199,7 +1199,7 @@ void Item::ClearSoulboundTradeable(Player* currentOwner)
     allowedGUIDs.clear();
     SetState(ITEM_CHANGED, currentOwner);
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_BOP_TRADE);
-    stmt->setUInt32(0, GetGUIDLow());
+    stmt->SetData(0, GetGUIDLow());
     CharacterDatabase.Execute(stmt);
 }
 
@@ -1588,18 +1588,18 @@ bool Item::ItemContainerLoadLootFromDB()
 
     // First, see if there was any money loot. This gets added directly to the container.
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, container_id);
+    stmt->SetData(0, container_id);
     PreparedQueryResult money_result = CharacterDatabase.Query(stmt);
 
     if (money_result)
     {
         Field* fields = money_result->Fetch();
-        loot.gold = fields[0].GetUInt32();
+        loot.gold = fields[0].Get<uint32>();
     }
 
     // Next, load any items that were saved
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ITEMCONTAINER_ITEMS);
-    stmt->setUInt32(0, container_id);
+    stmt->SetData(0, container_id);
     PreparedQueryResult item_result = CharacterDatabase.Query(stmt);
 
     if (item_result)
@@ -1618,17 +1618,17 @@ bool Item::ItemContainerLoadLootFromDB()
                 Field* fields = item_result->Fetch();
 
                 // item_id, itm_count, follow_rules, ffa, blocked, counted, under_threshold, needs_quest, rnd_prop, rnd_suffix
-                loot_item.itemid = fields[0].GetUInt32();
-                loot_item.count = fields[1].GetUInt32();
-                loot_item.follow_loot_rules = fields[2].GetBool();
-                loot_item.freeforall = fields[3].GetBool();
-                loot_item.is_blocked = fields[4].GetBool();
-                loot_item.is_counted = fields[5].GetBool();
+                loot_item.itemid = fields[0].Get<uint32>();
+                loot_item.count = fields[1].Get<uint32>();
+                loot_item.follow_loot_rules = fields[2].Get<bool>();
+                loot_item.freeforall = fields[3].Get<bool>();
+                loot_item.is_blocked = fields[4].Get<bool>();
+                loot_item.is_counted = fields[5].Get<bool>();
                 loot_item.canSave = true;
-                loot_item.is_underthreshold = fields[6].GetBool();
-                loot_item.needs_quest = fields[7].GetBool();
-                loot_item.randomPropertyId = fields[8].GetUInt32();
-                loot_item.randomSuffix = fields[9].GetUInt32();
+                loot_item.is_underthreshold = fields[6].Get<bool>();
+                loot_item.needs_quest = fields[7].Get<bool>();
+                loot_item.randomPropertyId = fields[8].Get<uint32>();
+                loot_item.randomSuffix = fields[9].Get<uint32>();
 
                 // Copy the extra loot conditions from the item in the loot template
                 lt->CopyConditions(&loot_item);
@@ -1659,7 +1659,7 @@ void Item::ItemContainerDeleteLootItemsFromDB()
     // Deletes items associated with an openable item from the DB
     uint32 containerId = GetGUIDLow();
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_ITEMS);
-    stmt->setUInt32(0, containerId);
+    stmt->SetData(0, containerId);
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
     trans->Append(stmt);
     CharacterDatabase.CommitTransaction(trans);
@@ -1670,8 +1670,8 @@ void Item::ItemContainerDeleteLootItemFromDB(uint32 itemID)
     // Deletes a single item associated with an openable item from the DB
     uint32 containerId = GetGUIDLow();
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_ITEM);
-    stmt->setUInt32(0, containerId);
-    stmt->setUInt32(1, itemID);
+    stmt->SetData(0, containerId);
+    stmt->SetData(1, itemID);
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
     trans->Append(stmt);
     CharacterDatabase.CommitTransaction(trans);
@@ -1682,7 +1682,7 @@ void Item::ItemContainerDeleteLootMoneyFromDB()
     // Deletes the money loot associated with an openable item from the DB
     uint32 containerId = GetGUIDLow();
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, containerId);
+    stmt->SetData(0, containerId);
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
     trans->Append(stmt);
     CharacterDatabase.CommitTransaction(trans);

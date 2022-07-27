@@ -448,10 +448,10 @@ void GuildMgr::LoadGuilds()
         for (GuildContainer::const_iterator itr = GuildStore.begin(); itr != GuildStore.end(); ++itr)
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_ACHIEVEMENT);
-            stmt->setUInt32(0, itr->first);
+            stmt->SetData(0, itr->first);
             achievementResult = CharacterDatabase.Query(stmt);
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_ACHIEVEMENT_CRITERIA);
-            stmt->setUInt32(0, itr->first);
+            stmt->SetData(0, itr->first);
             criteriaResult = CharacterDatabase.Query(stmt);
 
             itr->second->GetAchievementMgr().LoadFromDB(achievementResult, criteriaResult);
@@ -582,7 +582,7 @@ void GuildMgr::ResetTimes(bool week)
 
     // Delete too old old guild member
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_OLD_OLD_GUILD_MEMBER);
-    stmt->setUInt32(0, uint32(time(NULL) - time_t(30 * DAY)));
+    stmt->SetData(0, uint32(time(NULL) - time_t(30 * DAY)));
     CharacterDatabase.Execute(stmt);
 
     // Reset week reputation for old guild member

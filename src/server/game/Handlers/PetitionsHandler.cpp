@@ -212,8 +212,8 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket& recvData)
     // we checked above, if this player is in an arenateam, so this must be
     // datacorruption
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_BY_OWNER);
-    stmt->setUInt32(0, _player->GetGUIDLow());
-    stmt->setUInt8(1, type);
+    stmt->SetData(0, _player->GetGUIDLow());
+    stmt->SetData(1, type);
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
     std::ostringstream ssInvalidPetitionGUIDs;
@@ -237,10 +237,10 @@ void WorldSession::HandlePetitionBuyOpcode(WorldPacket& recvData)
     trans->PAppend("DELETE FROM petition_sign WHERE petitionguid IN (%s)", ssInvalidPetitionGUIDs.str().c_str());
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_PETITION);
-    stmt->setUInt32(0, _player->GetGUIDLow());
-    stmt->setUInt32(1, charter->GetGUIDLow());
-    stmt->setString(2, name);
-    stmt->setUInt8(3, uint8(type));
+    stmt->SetData(0, _player->GetGUIDLow());
+    stmt->SetData(1, charter->GetGUIDLow());
+    stmt->SetData(2, name);
+    stmt->SetData(3, uint8(type));
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
@@ -259,7 +259,7 @@ void WorldSession::HandlePetitionShowSignOpcode(WorldPacket& recvData)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_TYPE);
 
-    stmt->setUInt32(0, petitionGuidLow);
+    stmt->SetData(0, petitionGuidLow);
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -277,7 +277,7 @@ void WorldSession::HandlePetitionShowSignOpcode(WorldPacket& recvData)
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_SIGNATURE);
 
-    stmt->setUInt32(0, petitionGuidLow);
+    stmt->SetData(0, petitionGuidLow);
 
     result = CharacterDatabase.Query(stmt);
 
@@ -327,7 +327,7 @@ void WorldSession::SendPetitionQueryOpcode(uint64 petitionguid)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION);
 
-    stmt->setUInt32(0, GUID_LOPART(petitionguid));
+    stmt->SetData(0, GUID_LOPART(petitionguid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -398,7 +398,7 @@ void WorldSession::HandlePetitionRenameOpcode(WorldPacket& recvData)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_TYPE);
 
-    stmt->setUInt32(0, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GUID_LOPART(petitionGuid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -442,8 +442,8 @@ void WorldSession::HandlePetitionRenameOpcode(WorldPacket& recvData)
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_PETITION_NAME);
 
-    stmt->setString(0, newName);
-    stmt->setUInt32(1, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, newName);
+    stmt->SetData(1, GUID_LOPART(petitionGuid));
 
     CharacterDatabase.Execute(stmt);
 
@@ -466,8 +466,8 @@ void WorldSession::HandlePetitionSignOpcode(WorldPacket& recvData)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_SIGNATURES);
 
-    stmt->setUInt32(0, GUID_LOPART(petitionGuid));
-    stmt->setUInt32(1, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GUID_LOPART(petitionGuid));
+    stmt->SetData(1, GUID_LOPART(petitionGuid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -541,8 +541,8 @@ void WorldSession::HandlePetitionSignOpcode(WorldPacket& recvData)
     // not allow sign another player from already sign player account
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_SIG_BY_ACCOUNT);
 
-    stmt->setUInt32(0, GetAccountId());
-    stmt->setUInt32(1, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GetAccountId());
+    stmt->SetData(1, GUID_LOPART(petitionGuid));
 
     result = CharacterDatabase.Query(stmt);
 
@@ -560,10 +560,10 @@ void WorldSession::HandlePetitionSignOpcode(WorldPacket& recvData)
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_PETITION_SIGNATURE);
 
-    stmt->setUInt32(0, GUID_LOPART(ownerGuid));
-    stmt->setUInt32(1, GUID_LOPART(petitionGuid));
-    stmt->setUInt32(2, playerGuid);
-    stmt->setUInt32(3, GetAccountId());
+    stmt->SetData(0, GUID_LOPART(ownerGuid));
+    stmt->SetData(1, GUID_LOPART(petitionGuid));
+    stmt->SetData(2, playerGuid);
+    stmt->SetData(3, GetAccountId());
 
     CharacterDatabase.Execute(stmt);
 
@@ -598,7 +598,7 @@ void WorldSession::HandlePetitionDeclineOpcode(WorldPacket& recvData)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_OWNER_BY_GUID);
 
-    stmt->setUInt32(0, GUID_LOPART(petitionguid));
+    stmt->SetData(0, GUID_LOPART(petitionguid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -635,7 +635,7 @@ void WorldSession::HandleOfferPetitionOpcode(WorldPacket& recvData)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_TYPE);
 
-    stmt->setUInt32(0, GUID_LOPART(petitionguid));
+    stmt->SetData(0, GUID_LOPART(petitionguid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -700,7 +700,7 @@ void WorldSession::HandleOfferPetitionOpcode(WorldPacket& recvData)
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_SIGNATURE);
 
-    stmt->setUInt32(0, GUID_LOPART(petitionguid));
+    stmt->SetData(0, GUID_LOPART(petitionguid));
 
     result = CharacterDatabase.Query(stmt);
 
@@ -749,7 +749,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket& recvData)
     std::string name;
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION);
-    stmt->setUInt32(0, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GUID_LOPART(petitionGuid));
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
     if (result)
@@ -814,7 +814,7 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket& recvData)
     uint8 signatures;
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PETITION_SIGNATURE);
-    stmt->setUInt32(0, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GUID_LOPART(petitionGuid));
     result = CharacterDatabase.Query(stmt);
 
     if (result)
@@ -899,11 +899,11 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket& recvData)
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_BY_GUID);
-    stmt->setUInt32(0, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GUID_LOPART(petitionGuid));
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_PETITION_SIGNATURE_BY_GUID);
-    stmt->setUInt32(0, GUID_LOPART(petitionGuid));
+    stmt->SetData(0, GUID_LOPART(petitionGuid));
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);

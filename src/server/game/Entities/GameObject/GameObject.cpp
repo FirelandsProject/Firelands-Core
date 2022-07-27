@@ -839,32 +839,32 @@ void GameObject::SaveToDB(uint32 mapid, uint8 spawnMask, uint32 phaseMask)
     uint8 index = 0;
 
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_GAMEOBJECT);
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
     trans->Append(stmt);
 
     stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_GAMEOBJECT);
-    stmt->setUInt32(index++, m_DBTableGuid);
-    stmt->setUInt32(index++, GetEntry());
-    stmt->setUInt16(index++, uint16(mapid));
+    stmt->SetData(index++, m_DBTableGuid);
+    stmt->SetData(index++, GetEntry());
+    stmt->SetData(index++, uint16(mapid));
 
     uint32 zoneId, areaId;
     GetZoneAndAreaId(zoneId, areaId);
 
-    stmt->setUInt16(index++, uint16(zoneId));
-    stmt->setUInt16(index++, uint16(areaId));
-    stmt->setUInt8(index++, spawnMask);
-    stmt->setUInt16(index++, uint16(GetPhaseMask()));
-    stmt->setFloat(index++, GetPositionX());
-    stmt->setFloat(index++, GetPositionY());
-    stmt->setFloat(index++, GetPositionZ());
-    stmt->setFloat(index++, GetOrientation());
-    stmt->setFloat(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION));
-    stmt->setFloat(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION+1));
-    stmt->setFloat(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION+2));
-    stmt->setFloat(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION+3));
-    stmt->setInt32(index++, int32(m_respawnDelayTime));
-    stmt->setUInt8(index++, GetGoAnimProgress());
-    stmt->setUInt8(index++, uint8(GetGoState()));
+    stmt->SetData(index++, uint16(zoneId));
+    stmt->SetData(index++, uint16(areaId));
+    stmt->SetData(index++, spawnMask);
+    stmt->SetData(index++, uint16(GetPhaseMask()));
+    stmt->SetData(index++, GetPositionX());
+    stmt->SetData(index++, GetPositionY());
+    stmt->SetData(index++, GetPositionZ());
+    stmt->SetData(index++, GetOrientation());
+    stmt->SetData(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION));
+    stmt->SetData(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION+1));
+    stmt->SetData(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION+2));
+    stmt->SetData(index++, GetFloatValue(GAMEOBJECT_PARENTROTATION+3));
+    stmt->SetData(index++, int32(m_respawnDelayTime));
+    stmt->SetData(index++, GetGoAnimProgress());
+    stmt->SetData(index++, uint8(GetGoState()));
     trans->Append(stmt);
 
     WorldDatabase.CommitTransaction(trans);
@@ -948,13 +948,13 @@ void GameObject::DeleteFromDB()
 
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_GAMEOBJECT);
 
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
 
     WorldDatabase.Execute(stmt);
 
     stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_EVENT_GAMEOBJECT);
 
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
 
     WorldDatabase.Execute(stmt);
 }

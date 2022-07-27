@@ -420,7 +420,7 @@ DumpReturn PlayerDumpReader::LoadDump(std::string const& file, uint32 account, s
     if (guid != 0 && guid < sObjectMgr->_hiCharGuid)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHECK_GUID);
-        stmt->setUInt32(0, guid);
+        stmt->SetData(0, guid);
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -437,7 +437,7 @@ DumpReturn PlayerDumpReader::LoadDump(std::string const& file, uint32 account, s
     if (ObjectMgr::CheckPlayerName(name, true) == CHAR_NAME_SUCCESS)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHECK_NAME);
-        stmt->setString(0, name);
+        stmt->SetData(0, name);
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
         if (result)
@@ -547,7 +547,7 @@ DumpReturn PlayerDumpReader::LoadDump(std::string const& file, uint32 account, s
                     name = getnth(line, 3);
 
                     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHECK_NAME);
-                    stmt->setString(0, name);
+                    stmt->SetData(0, name);
                     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
                     if (result)

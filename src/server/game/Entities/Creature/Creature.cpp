@@ -1100,38 +1100,38 @@ void Creature::SaveToDB(uint32 mapid, uint8 spawnMask, uint32 phaseMask)
     SQLTransaction trans = WorldDatabase.BeginTransaction();
 
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_CREATURE);
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
     trans->Append(stmt);
 
     uint8 index = 0;
 
     stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_CREATURE);
-    stmt->setUInt32(index++, m_DBTableGuid);
-    stmt->setUInt32(index++, GetEntry());
-    stmt->setUInt16(index++, uint16(mapid));
+    stmt->SetData(index++, m_DBTableGuid);
+    stmt->SetData(index++, GetEntry());
+    stmt->SetData(index++, uint16(mapid));
 
     uint32 zoneId, areaId;
     GetZoneAndAreaId(zoneId, areaId);
 
-    stmt->setUInt16(index++, uint16(zoneId));
-    stmt->setUInt16(index++, uint16(areaId));
-    stmt->setUInt8(index++, spawnMask);
-    stmt->setUInt16(index++, uint16(GetPhaseMask()));
-    stmt->setUInt32(index++, displayId);
-    stmt->setInt32(index++, int32(GetEquipmentId()));
-    stmt->setFloat(index++, GetPositionX());
-    stmt->setFloat(index++, GetPositionY());
-    stmt->setFloat(index++, GetPositionZ());
-    stmt->setFloat(index++, GetOrientation());
-    stmt->setUInt32(index++, m_respawnDelay);
-    stmt->setFloat(index++, m_respawnradius);
-    stmt->setUInt32(index++, 0);
-    stmt->setUInt32(index++, GetHealth());
-    stmt->setUInt32(index++, GetPower(POWER_MANA));
-    stmt->setUInt8(index++, uint8(GetDefaultMovementType()));
-    stmt->setUInt32(index++, npcflag);
-    stmt->setUInt32(index++, unit_flags);
-    stmt->setUInt32(index++, dynamicflags);
+    stmt->SetData(index++, uint16(zoneId));
+    stmt->SetData(index++, uint16(areaId));
+    stmt->SetData(index++, spawnMask);
+    stmt->SetData(index++, uint16(GetPhaseMask()));
+    stmt->SetData(index++, displayId);
+    stmt->SetData(index++, int32(GetEquipmentId()));
+    stmt->SetData(index++, GetPositionX());
+    stmt->SetData(index++, GetPositionY());
+    stmt->SetData(index++, GetPositionZ());
+    stmt->SetData(index++, GetOrientation());
+    stmt->SetData(index++, m_respawnDelay);
+    stmt->SetData(index++, m_respawnradius);
+    stmt->SetData(index++, 0);
+    stmt->SetData(index++, GetHealth());
+    stmt->SetData(index++, GetPower(POWER_MANA));
+    stmt->SetData(index++, uint8(GetDefaultMovementType()));
+    stmt->SetData(index++, npcflag);
+    stmt->SetData(index++, unit_flags);
+    stmt->SetData(index++, dynamicflags);
     trans->Append(stmt);
 
     WorldDatabase.CommitTransaction(trans);
@@ -1424,19 +1424,19 @@ void Creature::DeleteFromDB()
     SQLTransaction trans = WorldDatabase.BeginTransaction();
 
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_CREATURE);
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
     trans->Append(stmt);
 
     stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_CREATURE_ADDON);
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
     trans->Append(stmt);
 
     stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_GAME_EVENT_CREATURE);
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
     trans->Append(stmt);
 
     stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_GAME_EVENT_MODEL_EQUIP);
-    stmt->setUInt32(0, m_DBTableGuid);
+    stmt->SetData(0, m_DBTableGuid);
     trans->Append(stmt);
 
     WorldDatabase.CommitTransaction(trans);

@@ -698,8 +698,8 @@ void Loot::DeleteLootItemFromContainerItemDB(uint32 itemID)
 {
     // Deletes a single item associated with an openable item from the DB
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_ITEM);
-    stmt->setUInt32(0, containerID);
-    stmt->setUInt32(1, itemID);
+    stmt->SetData(0, containerID);
+    stmt->SetData(1, itemID);
     CharacterDatabase.Execute(stmt);
 
     // Mark the item looted to prevent resaving
@@ -717,7 +717,7 @@ void Loot::DeleteLootMoneyFromContainerItemDB()
 {
     // Deletes money loot associated with an openable item from the DB
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEMCONTAINER_MONEY);
-    stmt->setUInt32(0, containerID);
+    stmt->SetData(0, containerID);
     CharacterDatabase.Execute(stmt);
 }
 

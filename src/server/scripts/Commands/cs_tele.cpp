@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -135,14 +135,14 @@ public:
             else
             {
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_HOMEBIND);
-                stmt->setUInt32(0, target_guid);
+                stmt->SetData(0, target_guid);
                 PreparedQueryResult resultDB = CharacterDatabase.Query(stmt);
 
                 if (resultDB)
                 {
                     Field* fieldsDB = resultDB->Fetch();
-                    WorldLocation loc(fieldsDB[0].GetUInt16(), fieldsDB[2].GetFloat(), fieldsDB[3].GetFloat(), fieldsDB[4].GetFloat(), 0.0f);
-                    uint32 zoneId = fieldsDB[1].GetUInt16();
+                    WorldLocation loc(fieldsDB[0].Get<uint16>(), fieldsDB[2].Get<float>(), fieldsDB[3].Get<float>(), fieldsDB[4].Get<float>(), 0.0f);
+                    uint32 zoneId = fieldsDB[1].Get<uint16>();
 
                     SQLTransaction dummy;
                     Player::SavePositionInDB(loc, zoneId, target_guid, dummy);

@@ -142,22 +142,22 @@ bool Group::Create(Player* leader)
 
         uint8 index = 0;
 
-        stmt->setUInt32(index++, m_dbStoreId);
-        stmt->setUInt32(index++, GUID_LOPART(m_leaderGuid));
-        stmt->setUInt8(index++, uint8(m_lootMethod));
-        stmt->setUInt32(index++, GUID_LOPART(m_looterGuid));
-        stmt->setUInt8(index++, uint8(m_lootThreshold));
-        stmt->setUInt32(index++, uint32(m_targetIcons[0]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[1]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[2]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[3]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[4]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[5]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[6]));
-        stmt->setUInt32(index++, uint32(m_targetIcons[7]));
-        stmt->setUInt8(index++, uint8(m_groupType));
-        stmt->setUInt32(index++, uint8(m_dungeonDifficulty));
-        stmt->setUInt32(index++, uint8(m_raidDifficulty));
+        stmt->SetData(index++, m_dbStoreId);
+        stmt->SetData(index++, GUID_LOPART(m_leaderGuid));
+        stmt->SetData(index++, uint8(m_lootMethod));
+        stmt->SetData(index++, GUID_LOPART(m_looterGuid));
+        stmt->SetData(index++, uint8(m_lootThreshold));
+        stmt->SetData(index++, uint32(m_targetIcons[0]));
+        stmt->SetData(index++, uint32(m_targetIcons[1]));
+        stmt->SetData(index++, uint32(m_targetIcons[2]));
+        stmt->SetData(index++, uint32(m_targetIcons[3]));
+        stmt->SetData(index++, uint32(m_targetIcons[4]));
+        stmt->SetData(index++, uint32(m_targetIcons[5]));
+        stmt->SetData(index++, uint32(m_targetIcons[6]));
+        stmt->SetData(index++, uint32(m_targetIcons[7]));
+        stmt->SetData(index++, uint8(m_groupType));
+        stmt->SetData(index++, uint8(m_dungeonDifficulty));
+        stmt->SetData(index++, uint8(m_raidDifficulty));
 
         CharacterDatabase.Execute(stmt);
 
@@ -218,7 +218,7 @@ void Group::LoadMemberFromDB(uint32 guidLow, uint8 memberFlags, uint8 subgroup, 
     if (!sObjectMgr->GetPlayerNameByGUID(member.guid, member.name))
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_MEMBER);
-        stmt->setUInt32(0, guidLow);
+        stmt->SetData(0, guidLow);
         CharacterDatabase.Execute(stmt);
         return;
     }
@@ -242,8 +242,8 @@ void Group::ConvertToLFG()
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_TYPE);
 
-        stmt->setUInt8(0, uint8(m_groupType));
-        stmt->setUInt32(1, m_dbStoreId);
+        stmt->SetData(0, uint8(m_groupType));
+        stmt->SetData(1, m_dbStoreId);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -262,8 +262,8 @@ void Group::ConvertToLFR()
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_TYPE);
 
-        stmt->setUInt8(0, uint8(m_groupType));
-        stmt->setUInt32(1, m_dbStoreId);
+        stmt->SetData(0, uint8(m_groupType));
+        stmt->SetData(1, m_dbStoreId);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -281,8 +281,8 @@ void Group::ConvertToRaid()
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_TYPE);
 
-        stmt->setUInt8(0, uint8(m_groupType));
-        stmt->setUInt32(1, m_dbStoreId);
+        stmt->SetData(0, uint8(m_groupType));
+        stmt->SetData(1, m_dbStoreId);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -312,8 +312,8 @@ void Group::ConvertToGroup()
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_TYPE);
 
-        stmt->setUInt8(0, uint8(m_groupType));
-        stmt->setUInt32(1, m_dbStoreId);
+        stmt->SetData(0, uint8(m_groupType));
+        stmt->SetData(1, m_dbStoreId);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -461,11 +461,11 @@ bool Group::AddMember(Player* player)
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_GROUP_MEMBER);
 
-        stmt->setUInt32(0, m_dbStoreId);
-        stmt->setUInt32(1, GUID_LOPART(member.guid));
-        stmt->setUInt8(2, member.flags);
-        stmt->setUInt8(3, member.group);
-        stmt->setUInt8(4, member.roles);
+        stmt->SetData(0, m_dbStoreId);
+        stmt->SetData(1, GUID_LOPART(member.guid));
+        stmt->SetData(2, member.flags);
+        stmt->SetData(3, member.group);
+        stmt->SetData(4, member.roles);
 
         CharacterDatabase.Execute(stmt);
 
@@ -616,7 +616,7 @@ bool Group::RemoveMember(uint64 guid, const RemoveMethod &method /*= GROUP_REMOV
             sInfoMgr->UpdateCharGroup(GUID_LOPART(guid), 0);
 
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_MEMBER);
-            stmt->setUInt32(0, GUID_LOPART(guid));
+            stmt->SetData(0, GUID_LOPART(guid));
             CharacterDatabase.Execute(stmt);
             DelinkMember(guid);
         }
@@ -728,8 +728,8 @@ void Group::ChangeLeader(uint64 newLeaderGuid)
                 if (itr->second.perm && !sMapMgr->FindMap(itr->second.save->GetMapId(), itr->second.save->GetInstanceId()))
                 {
                     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_INSTANCE_PERM_BINDING);
-                    stmt->setUInt32(0, m_dbStoreId);
-                    stmt->setUInt32(1, itr->second.save->GetInstanceId());
+                    stmt->SetData(0, m_dbStoreId);
+                    stmt->SetData(1, itr->second.save->GetInstanceId());
                     trans->Append(stmt);
 
                     itr->second.save->RemoveGroup(this);
@@ -748,8 +748,8 @@ void Group::ChangeLeader(uint64 newLeaderGuid)
         // Update the group leader
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_LEADER);
 
-        stmt->setUInt32(0, newLeader->GetGUIDLow());
-        stmt->setUInt32(1, m_dbStoreId);
+        stmt->SetData(0, newLeader->GetGUIDLow());
+        stmt->SetData(1, m_dbStoreId);
 
         trans->Append(stmt);
 
@@ -833,11 +833,11 @@ void Group::Disband(bool hideDestroy /* = false */)
         SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP);
-        stmt->setUInt32(0, m_dbStoreId);
+        stmt->SetData(0, m_dbStoreId);
         trans->Append(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_MEMBER_ALL);
-        stmt->setUInt32(0, m_dbStoreId);
+        stmt->SetData(0, m_dbStoreId);
         trans->Append(stmt);
 
         CharacterDatabase.CommitTransaction(trans);
@@ -846,7 +846,7 @@ void Group::Disband(bool hideDestroy /* = false */)
         ResetInstances(INSTANCE_RESET_GROUP_DISBAND, true, NULL);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_LFG_DATA);
-        stmt->setUInt32(0, m_dbStoreId);
+        stmt->SetData(0, m_dbStoreId);
         CharacterDatabase.Execute(stmt);
 
         sGroupMgr->FreeGroupDbStoreId(this);
@@ -1761,8 +1761,8 @@ bool Group::_setMembersGroup(uint64 guid, uint8 group)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_MEMBER_SUBGROUP);
 
-        stmt->setUInt8(0, group);
-        stmt->setUInt32(1, GUID_LOPART(guid));
+        stmt->SetData(0, group);
+        stmt->SetData(1, GUID_LOPART(guid));
 
         CharacterDatabase.Execute(stmt);
     }
@@ -1812,8 +1812,8 @@ void Group::ChangeMembersGroup(uint64 guid, uint8 group)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_MEMBER_SUBGROUP);
 
-        stmt->setUInt8(0, group);
-        stmt->setUInt32(1, GUID_LOPART(guid));
+        stmt->SetData(0, group);
+        stmt->SetData(1, GUID_LOPART(guid));
 
         CharacterDatabase.Execute(stmt);
     }
@@ -2013,8 +2013,8 @@ void Group::SetDungeonDifficulty(Difficulty difficulty)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_DIFFICULTY);
 
-        stmt->setUInt8(0, uint8(m_dungeonDifficulty));
-        stmt->setUInt32(1, m_dbStoreId);
+        stmt->SetData(0, uint8(m_dungeonDifficulty));
+        stmt->SetData(1, m_dbStoreId);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -2038,8 +2038,8 @@ void Group::SetRaidDifficulty(Difficulty difficulty, uint32 raidId /*= 0*/)
         if (raidId)
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_RAID_DIFFICULTY);
-            stmt->setUInt8(0, uint8(m_raidDifficulty));
-            stmt->setUInt32(1, m_dbStoreId);
+            stmt->SetData(0, uint8(m_raidDifficulty));
+            stmt->SetData(1, m_dbStoreId);
             CharacterDatabase.Execute(stmt);
 
             PreparedStatement* stmt1 = CharacterDatabase.GetPreparedStatement(CHAR_UPD_RAID_DIFFICULTY);
@@ -2050,13 +2050,13 @@ void Group::SetRaidDifficulty(Difficulty difficulty, uint32 raidId /*= 0*/)
         else
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_RAID_DIFFICULTY);
-            stmt->setUInt8(0, uint8(m_raidDifficulty));
-            stmt->setUInt32(1, m_dbStoreId);
+            stmt->SetData(0, uint8(m_raidDifficulty));
+            stmt->SetData(1, m_dbStoreId);
             CharacterDatabase.Execute(stmt);
 
             PreparedStatement* stmt1 = CharacterDatabase.GetPreparedStatement(CHAR_UPD_RAID_DIFFICULTY_BY_GROUP);
             stmt1->setUInt8(0, uint8(m_raidDifficulty));
-            stmt->setUInt32(1, m_dbStoreId);
+            stmt->SetData(1, m_dbStoreId);
             CharacterDatabase.Execute(stmt1);
         }
     }
@@ -2162,7 +2162,7 @@ void Group::ResetInstances(uint8 method, bool isRaid, Player* SendMsgTo)
             {
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_INSTANCE_BY_INSTANCE);
 
-                stmt->setUInt32(0, instanceSave->GetInstanceId());
+                stmt->SetData(0, instanceSave->GetInstanceId());
 
                 CharacterDatabase.Execute(stmt);
             }
@@ -2316,9 +2316,9 @@ InstanceGroupBind* Group::BindToInstance(InstanceSave* save, bool permanent, boo
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_REP_GROUP_INSTANCE);
 
-        stmt->setUInt32(0, m_dbStoreId);
-        stmt->setUInt32(1, save->GetInstanceId());
-        stmt->setBool(2, permanent);
+        stmt->SetData(0, m_dbStoreId);
+        stmt->SetData(1, save->GetInstanceId());
+        stmt->SetData(2, permanent);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -2348,8 +2348,8 @@ void Group::UnbindInstance(uint32 mapId, uint8 difficulty, bool unload, bool isL
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GROUP_INSTANCE_BY_GUID);
 
-            stmt->setUInt32(0, m_dbStoreId);
-            stmt->setUInt32(1, itr->second.save->GetInstanceId());
+            stmt->SetData(0, m_dbStoreId);
+            stmt->SetData(1, itr->second.save->GetInstanceId());
 
             CharacterDatabase.Execute(stmt);
         }
@@ -2704,8 +2704,8 @@ void Group::SetGroupMemberFlag(uint64 guid, bool apply, GroupMemberFlags flag)
     // Preserve the new setting in the db
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_GROUP_MEMBER_FLAG);
 
-    stmt->setUInt8(0, slot->flags);
-    stmt->setUInt32(1, GUID_LOPART(guid));
+    stmt->SetData(0, slot->flags);
+    stmt->SetData(1, GUID_LOPART(guid));
 
     CharacterDatabase.Execute(stmt);
 

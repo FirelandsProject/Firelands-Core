@@ -64,9 +64,9 @@ void LoadRandomEnchantmentsTable()
         {
             Field* fields = result->Fetch();
 
-            int32 entry = fields[0].GetInt32();
-            uint32 ench = fields[1].GetUInt32();
-            float chance = fields[2].GetFloat();
+            int32 entry = fields[0].Get<int32>();
+            uint32 ench = fields[1].Get<uint32>();
+            float chance = fields[2].Get<float>();
 
             if (chance > 0.000001f && chance <= 100.0f)
             {
@@ -77,13 +77,13 @@ void LoadRandomEnchantmentsTable()
             }
             else
             {
-                LOG_ERROR("sql.sql", "Item Enchantment %u for entry %i has too high or too low chance %f, skipped.", ench, entry, chance);
+                LOG_ERROR("sql.sql", "Item Enchantment {} for entry {} has too high or too low chance {}, skipped.", ench, entry, chance);
                 continue;
             }
             ++count;
         } while (result->NextRow());
 
-        LOG_INFO("server.loading", ">> Loaded %u Item Enchantment definitions in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
+        LOG_INFO("server.loading", ">> Loaded {} Item Enchantment definitions in {} ms", count, GetMSTimeDiffToNow(oldMSTime));
     }
     else
         LOG_ERROR("server.loading", ">> Loaded 0 Item Enchantment definitions. DB table `item_enchantment_template` is empty.");
@@ -103,7 +103,7 @@ uint32 GetItemEnchantMod(int32 entry)
         tab = RandomItemPropEnch.find(entry);
         if (tab == RandomItemPropEnch.end())
         {
-            LOG_ERROR("server.loading", "Item RandomProperty id #%u used in `item_template` but it doesn't have records in `item_enchantment_template` table.", entry);
+            LOG_ERROR("server.loading", "Item RandomProperty id #{} used in `item_template` but it doesn't have records in `item_enchantment_template` table.", entry);
             return 0;
         }
     }
@@ -112,7 +112,7 @@ uint32 GetItemEnchantMod(int32 entry)
         tab = RandomItemSuffixEnch.find(-entry);
         if (tab == RandomItemSuffixEnch.end())
         {
-            LOG_ERROR("server.loading", "Item RandomSuffix id #%u used in `item_template` but it doesn't have records in `item_enchantment_template` table.", -entry);
+            LOG_ERROR("server.loading", "Item RandomSuffix id #{} used in `item_template` but it doesn't have records in `item_enchantment_template` table.", -entry);
             return 0;
         }
     }

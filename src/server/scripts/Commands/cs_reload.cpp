@@ -150,7 +150,7 @@ public:
             { "spell_threats",                SEC_ADMINISTRATOR, true,  &HandleReloadSpellThreatsCommand,               "" },
             { "spell_group_stack_rules",      SEC_ADMINISTRATOR, true,  &HandleReloadSpellGroupStackRulesCommand,       "" },
             { "instance_teleporter_dest",     SEC_ADMINISTRATOR, true,  &HandleReloadInstanceTeleporterDestCommand,     "" },
-            { "firelands_string",               SEC_ADMINISTRATOR, true,  &HandleReloadTrinityStringCommand,              "" },
+            { "firelands_string",               SEC_ADMINISTRATOR, true,  &HandleReloadFirelandsStringCommand,              "" },
             { "warden_action",                SEC_ADMINISTRATOR, true,  &HandleReloadWardenactionCommand,               "" },
             { "waypoint_scripts",             SEC_ADMINISTRATOR, true,  &HandleReloadWpScriptsCommand,                  "" },
             { "waypoint_data",                SEC_ADMINISTRATOR, true,  &HandleReloadWpCommand,                         "" },
@@ -190,7 +190,7 @@ public:
         HandleReloadMailLevelRewardCommand(handler, "");
         HandleReloadCommandCommand(handler, "");
         HandleReloadReservedNameCommand(handler, "");
-        HandleReloadTrinityStringCommand(handler, "");
+        HandleReloadFirelandsStringCommand(handler, "");
         HandleReloadGameTeleCommand(handler, "");
 
         HandleReloadCreatureSummonGroupsCommand(handler, "");
@@ -424,7 +424,7 @@ public:
             uint32 entry = uint32(atoi(*itr));
 
             PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_CREATURE_TEMPLATE);
-            stmt->setUInt32(0, entry);
+            stmt->SetData(0, entry);
             PreparedQueryResult result = WorldDatabase.Query(stmt);
 
             if (!result)
@@ -444,91 +444,91 @@ public:
 
             Field* fields = result->Fetch();
 
-            cInfo->DifficultyEntry[0] = fields[0].GetUInt32();
-            cInfo->DifficultyEntry[1] = fields[1].GetUInt32();
-            cInfo->DifficultyEntry[2] = fields[2].GetUInt32();
-            cInfo->KillCredit[0]      = fields[3].GetUInt32();
-            cInfo->KillCredit[1]      = fields[4].GetUInt32();
-            cInfo->Modelid1           = fields[5].GetUInt32();
-            cInfo->Modelid2           = fields[6].GetUInt32();
-            cInfo->Modelid3           = fields[7].GetUInt32();
-            cInfo->Modelid4           = fields[8].GetUInt32();
-            cInfo->Name               = fields[9].GetString();
-            cInfo->SubName            = fields[10].GetString();
-            cInfo->IconName           = fields[11].GetString();
-            cInfo->GossipMenuId       = fields[12].GetUInt32();
-            cInfo->minlevel           = fields[13].GetUInt8();
-            cInfo->maxlevel           = fields[14].GetUInt8();
-            cInfo->expansion          = fields[15].GetUInt16();
-            cInfo->faction_A          = fields[16].GetUInt16();
-            cInfo->faction_H          = fields[17].GetUInt16();
-            cInfo->npcflag            = fields[18].GetUInt32();
-            cInfo->speed_walk         = fields[19].GetFloat();
-            cInfo->speed_run          = fields[20].GetFloat();
-            cInfo->speed_swim         = fields[21].GetFloat();
-            cInfo->speed_fly          = fields[22].GetFloat();
-            cInfo->scale              = fields[23].GetFloat();
-            cInfo->rank               = fields[24].GetUInt8();
-            cInfo->mindmg             = fields[25].GetFloat();
-            cInfo->maxdmg             = fields[26].GetFloat();
-            cInfo->dmgschool          = fields[27].GetUInt8();
-            cInfo->attackpower        = fields[28].GetUInt32();
-            cInfo->dmg_multiplier     = fields[29].GetFloat();
-            cInfo->baseattacktime     = fields[30].GetUInt32();
-            cInfo->rangeattacktime    = fields[31].GetUInt32();
-            cInfo->unit_class         = fields[32].GetUInt8();
-            cInfo->unit_flags         = fields[33].GetUInt32();
-            cInfo->unit_flags2        = fields[34].GetUInt32();
-            cInfo->dynamicflags       = fields[35].GetUInt32();
-            cInfo->family             = fields[36].GetUInt8();
-            cInfo->trainer_type       = fields[37].GetUInt8();
-            cInfo->trainer_class      = fields[38].GetUInt8();
-            cInfo->trainer_race       = fields[39].GetUInt8();
-            cInfo->minrangedmg        = fields[40].GetFloat();
-            cInfo->maxrangedmg        = fields[41].GetFloat();
-            cInfo->rangedattackpower  = fields[42].GetUInt16();
-            cInfo->type               = fields[43].GetUInt8();
-            cInfo->type_flags         = fields[44].GetUInt32();
-            cInfo->lootid             = fields[45].GetUInt32();
-            cInfo->pickpocketLootId   = fields[46].GetUInt32();
-            cInfo->SkinLootId         = fields[47].GetUInt32();
+            cInfo->DifficultyEntry[0] = fields[0].Get<uint32>();
+            cInfo->DifficultyEntry[1] = fields[1].Get<uint32>();
+            cInfo->DifficultyEntry[2] = fields[2].Get<uint32>();
+            cInfo->KillCredit[0]      = fields[3].Get<uint32>();
+            cInfo->KillCredit[1]      = fields[4].Get<uint32>();
+            cInfo->Modelid1           = fields[5].Get<uint32>();
+            cInfo->Modelid2           = fields[6].Get<uint32>();
+            cInfo->Modelid3           = fields[7].Get<uint32>();
+            cInfo->Modelid4           = fields[8].Get<uint32>();
+            cInfo->Name               = fields[9].Get<std::string>();
+            cInfo->SubName            = fields[10].Get<std::string>();
+            cInfo->IconName           = fields[11].Get<std::string>();
+            cInfo->GossipMenuId       = fields[12].Get<uint32>();
+            cInfo->minlevel           = fields[13].Get<uint8>();
+            cInfo->maxlevel           = fields[14].Get<uint8>();
+            cInfo->expansion          = fields[15].Get<uint16>();
+            cInfo->faction_A          = fields[16].Get<uint16>();
+            cInfo->faction_H          = fields[17].Get<uint16>();
+            cInfo->npcflag            = fields[18].Get<uint32>();
+            cInfo->speed_walk         = fields[19].Get<float>();
+            cInfo->speed_run          = fields[20].Get<float>();
+            cInfo->speed_swim         = fields[21].Get<float>();
+            cInfo->speed_fly          = fields[22].Get<float>();
+            cInfo->scale              = fields[23].Get<float>();
+            cInfo->rank               = fields[24].Get<uint8>();
+            cInfo->mindmg             = fields[25].Get<float>();
+            cInfo->maxdmg             = fields[26].Get<float>();
+            cInfo->dmgschool          = fields[27].Get<uint8>();
+            cInfo->attackpower        = fields[28].Get<uint32>();
+            cInfo->dmg_multiplier     = fields[29].Get<float>();
+            cInfo->baseattacktime     = fields[30].Get<uint32>();
+            cInfo->rangeattacktime    = fields[31].Get<uint32>();
+            cInfo->unit_class         = fields[32].Get<uint8>();
+            cInfo->unit_flags         = fields[33].Get<uint32>();
+            cInfo->unit_flags2        = fields[34].Get<uint32>();
+            cInfo->dynamicflags       = fields[35].Get<uint32>();
+            cInfo->family             = fields[36].Get<uint8>();
+            cInfo->trainer_type       = fields[37].Get<uint8>();
+            cInfo->trainer_class      = fields[38].Get<uint8>();
+            cInfo->trainer_race       = fields[39].Get<uint8>();
+            cInfo->minrangedmg        = fields[40].Get<float>();
+            cInfo->maxrangedmg        = fields[41].Get<float>();
+            cInfo->rangedattackpower  = fields[42].Get<uint16>();
+            cInfo->type               = fields[43].Get<uint8>();
+            cInfo->type_flags         = fields[44].Get<uint32>();
+            cInfo->lootid             = fields[45].Get<uint32>();
+            cInfo->pickpocketLootId   = fields[46].Get<uint32>();
+            cInfo->SkinLootId         = fields[47].Get<uint32>();
 
             for (uint8 i = SPELL_SCHOOL_HOLY; i < MAX_SPELL_SCHOOL; ++i)
-                cInfo->resistance[i] = fields[48 + i -1].GetUInt16();
+                cInfo->resistance[i] = fields[48 + i -1].Get<uint16>();
 
-            cInfo->spells[0]          = fields[54].GetUInt32();
-            cInfo->spells[1]          = fields[55].GetUInt32();
-            cInfo->spells[2]          = fields[56].GetUInt32();
-            cInfo->spells[3]          = fields[57].GetUInt32();
-            cInfo->spells[4]          = fields[58].GetUInt32();
-            cInfo->spells[5]          = fields[59].GetUInt32();
-            cInfo->spells[6]          = fields[60].GetUInt32();
-            cInfo->spells[7]          = fields[61].GetUInt32();
-            cInfo->PetSpellDataId     = fields[62].GetUInt32();
-            cInfo->VehicleId          = fields[63].GetUInt32();
-            cInfo->mingold            = fields[64].GetUInt32();
-            cInfo->maxgold            = fields[65].GetUInt32();
-            cInfo->AIName             = fields[66].GetString();
-            cInfo->MovementType       = fields[67].GetUInt8();
-            cInfo->InhabitType        = fields[68].GetUInt8();
-            cInfo->HoverHeight        = fields[69].GetFloat();
-            cInfo->ModHealth          = fields[70].GetFloat();
-            cInfo->ModMana            = fields[71].GetFloat();
-            cInfo->ModManaExtra       = fields[72].GetFloat();
-            cInfo->ModArmor           = fields[73].GetFloat();
-            cInfo->RacialLeader       = fields[74].GetBool();
-            cInfo->questItems[0]      = fields[75].GetUInt32();
-            cInfo->questItems[1]      = fields[76].GetUInt32();
-            cInfo->questItems[2]      = fields[77].GetUInt32();
-            cInfo->questItems[3]      = fields[78].GetUInt32();
-            cInfo->questItems[4]      = fields[79].GetUInt32();
-            cInfo->questItems[5]      = fields[80].GetUInt32();
-            cInfo->movementId         = fields[81].GetUInt32();
-            cInfo->RegenHealth        = fields[82].GetBool();
-            cInfo->equipmentId        = fields[83].GetUInt32();
-            cInfo->MechanicImmuneMask = fields[84].GetUInt32();
-            cInfo->flags_extra        = fields[85].GetUInt32();
-            cInfo->ScriptID           = sObjectMgr->GetScriptId(fields[86].GetCString());
+            cInfo->spells[0]          = fields[54].Get<uint32>();
+            cInfo->spells[1]          = fields[55].Get<uint32>();
+            cInfo->spells[2]          = fields[56].Get<uint32>();
+            cInfo->spells[3]          = fields[57].Get<uint32>();
+            cInfo->spells[4]          = fields[58].Get<uint32>();
+            cInfo->spells[5]          = fields[59].Get<uint32>();
+            cInfo->spells[6]          = fields[60].Get<uint32>();
+            cInfo->spells[7]          = fields[61].Get<uint32>();
+            cInfo->PetSpellDataId     = fields[62].Get<uint32>();
+            cInfo->VehicleId          = fields[63].Get<uint32>();
+            cInfo->mingold            = fields[64].Get<uint32>();
+            cInfo->maxgold            = fields[65].Get<uint32>();
+            cInfo->AIName             = fields[66].Get<std::string>();
+            cInfo->MovementType       = fields[67].Get<uint8>();
+            cInfo->InhabitType        = fields[68].Get<uint8>();
+            cInfo->HoverHeight        = fields[69].Get<float>();
+            cInfo->ModHealth          = fields[70].Get<float>();
+            cInfo->ModMana            = fields[71].Get<float>();
+            cInfo->ModManaExtra       = fields[72].Get<float>();
+            cInfo->ModArmor           = fields[73].Get<float>();
+            cInfo->RacialLeader       = fields[74].Get<bool>();
+            cInfo->questItems[0]      = fields[75].Get<uint32>();
+            cInfo->questItems[1]      = fields[76].Get<uint32>();
+            cInfo->questItems[2]      = fields[77].Get<uint32>();
+            cInfo->questItems[3]      = fields[78].Get<uint32>();
+            cInfo->questItems[4]      = fields[79].Get<uint32>();
+            cInfo->questItems[5]      = fields[80].Get<uint32>();
+            cInfo->movementId         = fields[81].Get<uint32>();
+            cInfo->RegenHealth        = fields[82].Get<bool>();
+            cInfo->equipmentId        = fields[83].Get<uint32>();
+            cInfo->MechanicImmuneMask = fields[84].Get<uint32>();
+            cInfo->flags_extra        = fields[85].Get<uint32>();
+            cInfo->ScriptID           = sObjectMgr->GetScriptId(fields[86].Get<std::string>().c_str());
 
             sObjectMgr->CheckCreatureTemplate(cInfo);
         }
@@ -735,7 +735,7 @@ public:
         return true;
     }
 
-    static bool HandleReloadTrinityStringCommand(ChatHandler* handler, const char* /*args*/)
+    static bool HandleReloadFirelandsStringCommand(ChatHandler* handler, const char* /*args*/)
     {
         LOG_INFO("misc", "Re-Loading firelands_string Table!");
         sObjectMgr->LoadFirelandsStrings();

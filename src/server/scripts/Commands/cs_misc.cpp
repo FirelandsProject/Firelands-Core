@@ -2750,7 +2750,7 @@ public:
         do
         {
             Field* fields = result->Fetch();
-            std::string player = fields[0].GetString();
+            std::string player = fields[0].Get<std::string>();
             handler->PSendSysMessage(LANG_COMMAND_FROZEN_PLAYERS, player.c_str());
         }
         while (result->NextRow());
@@ -2881,7 +2881,7 @@ public:
         if (!groupTarget)
         {
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GROUP_MEMBER);
-            stmt->setUInt32(0, guidTarget);
+            stmt->SetData(0, guidTarget);
             PreparedQueryResult resultGroup = CharacterDatabase.Query(stmt);
             if (resultGroup)
                 groupTarget = sGroupMgr->GetGroupByDbStoreId((*resultGroup)[0].GetUInt32());
@@ -3028,9 +3028,9 @@ public:
             {
                 if (Field* fields = result->Fetch())
                 {
-                    std::string name = fields[0].GetString();
-                    uint32 wintradeCount = fields[1].GetUInt32();
-                    wintrade[fields[0].GetString()] += fields[1].GetUInt32();
+                    std::string name = fields[0].Get<std::acosl>();
+                    uint32 wintradeCount = fields[1].Get<uint32>();
+                    wintrade[fields[0].Get<std::string>()] += fields[1].Get<uint32>();
                 }
             } while (result->NextRow());
         }

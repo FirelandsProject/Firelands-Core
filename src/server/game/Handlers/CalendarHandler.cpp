@@ -451,7 +451,7 @@ void WorldSession::HandleCalendarEventInvite(WorldPacket& recvData)
     {
         // Invitee offline, get data from database
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUID_RACE_ACC_BY_NAME);
-        stmt->setString(0, name);
+        stmt->SetData(0, name);
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
         {
             Field* fields = result->Fetch();

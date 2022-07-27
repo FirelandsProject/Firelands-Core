@@ -430,8 +430,8 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
         if (opcodeProcessTime >= opcodeMinTime)
         {
             PreparedStatement *stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_SLOW_OPCODE);
-            stmt->setUInt32(0, packet->GetOpcode());
-            stmt->setUInt32(1, opcodeProcessTime);
+            stmt->SetData(0, packet->GetOpcode());
+            stmt->SetData(1, opcodeProcessTime);
             WorldDatabase.Execute(stmt);
         }
 
@@ -603,7 +603,7 @@ void WorldSession::LogoutPlayer(bool Save)
 
         //! Since each account can only have one online character at any given time, ensure all characters for active account are marked as offline
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ACCOUNT_ONLINE);
-        stmt->setUInt32(0, GetAccountId());
+        stmt->SetData(0, GetAccountId());
         CharacterDatabase.Execute(stmt);
     }
 
@@ -768,10 +768,10 @@ void WorldSession::SetAccountData(AccountDataType type, time_t tm, std::string c
     }
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(index);
-    stmt->setUInt32(0, id);
-    stmt->setUInt8 (1, type);
-    stmt->setUInt32(2, uint32(tm));
-    stmt->setString(3, data);
+    stmt->SetData(0, id);
+    stmt->SetData(1, type);
+    stmt->SetData(2, uint32(tm));
+    stmt->SetData(3, data);
     CharacterDatabase.Execute(stmt);
 
     m_accountData[type].Time = tm;
@@ -815,13 +815,13 @@ void WorldSession::SaveTutorialsData(SQLTransaction &trans)
         return;
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_HAS_TUTORIALS);
-    stmt->setUInt32(0, GetAccountId());
+    stmt->SetData(0, GetAccountId());
     bool hasTutorials = !CharacterDatabase.Query(stmt).null();
     // Modify data in DB
     stmt = CharacterDatabase.GetPreparedStatement(hasTutorials ? CHAR_UPD_TUTORIALS : CHAR_INS_TUTORIALS);
     for (uint8 i = 0; i < MAX_ACCOUNT_TUTORIAL_VALUES; ++i)
-        stmt->setUInt32(i, m_Tutorials[i]);
-    stmt->setUInt32(MAX_ACCOUNT_TUTORIAL_VALUES, GetAccountId());
+        stmt->SetData(i, m_Tutorials[i]);
+    stmt->SetData(MAX_ACCOUNT_TUTORIAL_VALUES, GetAccountId());
     trans->Append(stmt);
 
     m_TutorialsChanged = false;
@@ -1159,11 +1159,11 @@ public:
         bool ok = true;
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ACCOUNT_DATA);
-        stmt->setUInt32(0, accountId);
+        stmt->SetData(0, accountId);
         ok = SetPreparedQuery(GLOBAL_ACCOUNT_DATA, stmt) && ok;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_TUTORIALS);
-        stmt->setUInt32(0, accountId);
+        stmt->SetData(0, accountId);
         ok = SetPreparedQuery(TUTORIALS, stmt) && ok;
 
         return ok;

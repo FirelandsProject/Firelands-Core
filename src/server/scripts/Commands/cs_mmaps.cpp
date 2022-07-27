@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -36,7 +36,7 @@
 #include "GridNotifiers.h"
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
-
+#include "StringFormat.h"
 class mmaps_commandscript : public CommandScript
 {
 public:
@@ -272,7 +272,7 @@ public:
 
         if (!creatureList.empty())
         {
-            handler->PSendSysMessage("Found " SIZEFMTD " Creatures.", creatureList.size());
+            handler->PSendSysMessage(Firelands::StringFormatFmt("Found {} Creatures.", creatureList.size()));
 
             uint32 paths = 0;
             uint32 uStartTime = getMSTime();

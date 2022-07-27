@@ -245,7 +245,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARACTER_GIFT_BY_ITEM);
 
-        stmt->setUInt32(0, item->GetGUIDLow());
+        stmt->SetData(0, item->GetGUIDLow());
 
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -269,7 +269,7 @@ void WorldSession::HandleOpenItemOpcode(WorldPacket& recvPacket)
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GIFT);
 
-        stmt->setUInt32(0, item->GetGUIDLow());
+        stmt->SetData(0, item->GetGUIDLow());
 
         CharacterDatabase.Execute(stmt);
     }

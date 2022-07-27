@@ -182,7 +182,7 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_MAIL_COUNT);
 
-        stmt->setUInt32(0, GUID_LOPART(rc));
+        stmt->SetData(0, GUID_LOPART(rc));
 
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -199,7 +199,7 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
         {
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_LEVEL);
 
-            stmt->setUInt32(0, GUID_LOPART(rc));
+            stmt->SetData(0, GUID_LOPART(rc));
 
             result = CharacterDatabase.Query(stmt);
 
@@ -460,11 +460,11 @@ void WorldSession::HandleMailReturnToSender(WorldPacket& recvData)
     SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_BY_ID);
-    stmt->setUInt32(0, mailId);
+    stmt->SetData(0, mailId);
     trans->Append(stmt);
 
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_ITEM_BY_ID);
-    stmt->setUInt32(0, mailId);
+    stmt->SetData(0, mailId);
     trans->Append(stmt);
 
     player->RemoveMail(mailId);

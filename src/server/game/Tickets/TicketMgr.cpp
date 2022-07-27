@@ -89,24 +89,24 @@ void GmTicket::SaveToDB(SQLTransaction& trans) const
     // ticketId, guid, name, message, createTime, mapId, posX, posY, posZ, lastModifiedTime, closedBy, assignedTo, comment, completed, escalated, viewed
     uint8 index = 0;
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_REP_GM_TICKET);
-    stmt->setUInt32(  index, _id);
-    stmt->setUInt32(++index, GUID_LOPART(_playerGuid));
-    stmt->setString(++index, _playerName);
-    stmt->setString(++index, _message);
-    stmt->setUInt32(++index, uint32(_createTime));
-    stmt->setUInt16(++index, _mapId);
-    stmt->setFloat (++index, _posX);
-    stmt->setFloat (++index, _posY);
-    stmt->setFloat (++index, _posZ);
-    stmt->setUInt32(++index, uint32(_lastModifiedTime));
-    stmt->setInt32 (++index, GUID_LOPART(_closedBy));
-    stmt->setUInt32(++index, GUID_LOPART(_assignedTo));
-    stmt->setString(++index, _comment);
-    stmt->setString(++index, _response);
-    stmt->setBool  (++index, _completed);
-    stmt->setUInt8 (++index, uint8(_escalatedStatus));
-    stmt->setBool  (++index, _viewed);
-    stmt->setBool  (++index, _haveTicket);
+    stmt->SetData(  index, _id);
+    stmt->SetData(++index, GUID_LOPART(_playerGuid));
+    stmt->SetData(++index, _playerName);
+    stmt->SetData(++index, _message);
+    stmt->SetData(++index, uint32(_createTime));
+    stmt->SetData(++index, _mapId);
+    stmt->SetData(++index, _posX);
+    stmt->SetData(++index, _posY);
+    stmt->SetData(++index, _posZ);
+    stmt->SetData(++index, uint32(_lastModifiedTime));
+    stmt->SetData(++index, GUID_LOPART(_closedBy));
+    stmt->SetData(++index, GUID_LOPART(_assignedTo));
+    stmt->SetData(++index, _comment);
+    stmt->SetData(++index, _response);
+    stmt->SetData(++index, _completed);
+    stmt->SetData(++index, uint8(_escalatedStatus));
+    stmt->SetData(++index, _viewed);
+    stmt->SetData(++index, _haveTicket);
 
     CharacterDatabase.ExecuteOrAppend(trans, stmt);
 }
@@ -114,7 +114,7 @@ void GmTicket::SaveToDB(SQLTransaction& trans) const
 void GmTicket::DeleteFromDB()
 {
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_GM_TICKET);
-    stmt->setUInt32(0, _id);
+    stmt->SetData(0, _id);
     CharacterDatabase.Execute(stmt);
 }
 

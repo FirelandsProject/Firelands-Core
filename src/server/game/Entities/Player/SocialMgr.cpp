@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -72,9 +72,9 @@ bool PlayerSocial::AddToSocialList(uint32 friendGuid, bool ignore)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_CHARACTER_SOCIAL_FLAGS);
 
-        stmt->setUInt8(0, flag);
-        stmt->setUInt32(1, GetPlayerGUID());
-        stmt->setUInt32(2, friendGuid);
+        stmt->SetData(0, flag);
+        stmt->SetData(1, GetPlayerGUID());
+        stmt->SetData(2, friendGuid);
 
         CharacterDatabase.Execute(stmt);
 
@@ -84,9 +84,9 @@ bool PlayerSocial::AddToSocialList(uint32 friendGuid, bool ignore)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHARACTER_SOCIAL);
 
-        stmt->setUInt32(0, GetPlayerGUID());
-        stmt->setUInt32(1, friendGuid);
-        stmt->setUInt8(2, flag);
+        stmt->SetData(0, GetPlayerGUID());
+        stmt->SetData(1, friendGuid);
+        stmt->SetData(2, flag);
 
         CharacterDatabase.Execute(stmt);
 
@@ -112,8 +112,8 @@ void PlayerSocial::RemoveFromSocialList(uint32 friendGuid, bool ignore)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHARACTER_SOCIAL);
 
-        stmt->setUInt32(0, GetPlayerGUID());
-        stmt->setUInt32(1, friendGuid);
+        stmt->SetData(0, GetPlayerGUID());
+        stmt->SetData(1, friendGuid);
 
         CharacterDatabase.Execute(stmt);
 
@@ -123,9 +123,9 @@ void PlayerSocial::RemoveFromSocialList(uint32 friendGuid, bool ignore)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_REM_CHARACTER_SOCIAL_FLAGS);
 
-        stmt->setUInt8(0, flag);
-        stmt->setUInt32(1, GetPlayerGUID());
-        stmt->setUInt32(2, friendGuid);
+        stmt->SetData(0, flag);
+        stmt->SetData(1, GetPlayerGUID());
+        stmt->SetData(2, friendGuid);
 
         CharacterDatabase.Execute(stmt);
     }
@@ -141,9 +141,9 @@ void PlayerSocial::SetFriendNote(uint32 friendGuid, std::string note)
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHARACTER_SOCIAL_NOTE);
 
-    stmt->setString(0, note);
-    stmt->setUInt32(1, GetPlayerGUID());
-    stmt->setUInt32(2, friendGuid);
+    stmt->SetData(0, note);
+    stmt->SetData(1, GetPlayerGUID());
+    stmt->SetData(2, friendGuid);
 
     CharacterDatabase.Execute(stmt);
 
@@ -339,9 +339,9 @@ PlayerSocial* SocialMgr::LoadFromDB(PreparedQueryResult result, uint32 guid)
     {
         Field* fields = result->Fetch();
 
-        friendGuid = fields[0].GetUInt32();
-        flags = fields[1].GetUInt8();
-        note = fields[2].GetString();
+        friendGuid = fields[0].Get<uint32>();
+        flags = fields[1].Get<uint8>();
+        note = fields[2].Get<std::string>();
 
         social->m_playerSocialMap[friendGuid] = FriendInfo(flags, note);
 

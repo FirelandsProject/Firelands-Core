@@ -1394,7 +1394,7 @@ bool ObjectMgr::SetCreatureLinkedRespawn(uint32 guidLow, uint32 linkedGuidLow)
     {
         _linkedRespawnStore.erase(guid);
         PreparedStatement *stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_CRELINKED_RESPAWN);
-        stmt->setUInt32(0, guidLow);
+        stmt->SetData(0, guidLow);
         WorldDatabase.Execute(stmt);
         return true;
     }
@@ -1418,8 +1418,8 @@ bool ObjectMgr::SetCreatureLinkedRespawn(uint32 guidLow, uint32 linkedGuidLow)
 
     _linkedRespawnStore[guid] = linkedGuid;
     PreparedStatement *stmt = WorldDatabase.GetPreparedStatement(WORLD_REP_CREATURE_LINKED_RESPAWN);
-    stmt->setUInt32(0, guidLow);
-    stmt->setUInt32(1, linkedGuidLow);
+    stmt->SetData(0, guidLow);
+    stmt->SetData(1, linkedGuidLow);
     WorldDatabase.Execute(stmt);
     return true;
 }
@@ -2122,7 +2122,7 @@ uint64 ObjectMgr::GetPlayerGUIDByName(std::string const& name) const
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUID_BY_NAME);
 
-        stmt->setString(0, name);
+        stmt->SetData(0, name);
 
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -2151,7 +2151,7 @@ bool ObjectMgr::GetPlayerNameByGUID(uint64 guid, std::string &name) const
     else
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARACTER_NAME);
-        stmt->setUInt32(0, GUID_LOPART(guid));
+        stmt->SetData(0, GUID_LOPART(guid));
         PreparedQueryResult result = CharacterDatabase.Query(stmt);
         if (result)
         {
@@ -2174,7 +2174,7 @@ bool ObjectMgr::GetPlayerGuildIdByGUID(uint64 guid, uint32 &guildId) const
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_MEMBER);
 
-    stmt->setUInt32(0, GUID_LOPART(guid));
+    stmt->SetData(0, GUID_LOPART(guid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -2198,7 +2198,7 @@ uint32 ObjectMgr::GetPlayerTeamByGUID(uint64 guid) const
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_RACE);
 
-    stmt->setUInt32(0, GUID_LOPART(guid));
+    stmt->SetData(0, GUID_LOPART(guid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -2222,7 +2222,7 @@ uint32 ObjectMgr::GetPlayerAccountIdByGUID(uint64 guid) const
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ACCOUNT_BY_GUID);
 
-    stmt->setUInt32(0, GUID_LOPART(guid));
+    stmt->SetData(0, GUID_LOPART(guid));
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -2243,7 +2243,7 @@ uint32 ObjectMgr::GetPlayerAccountIdByPlayerName(const std::string& name) const
 
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_ACCOUNT_BY_NAME);
 
-    stmt->setString(0, name);
+    stmt->SetData(0, name);
 
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
@@ -5479,11 +5479,11 @@ void ObjectMgr::ReturnOrDeleteOldMails(bool serverUp)
     if (!serverUp)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_EMPTY_EXPIRED_MAIL);
-        stmt->setUInt64(0, basetime);
+        stmt->SetData(0, basetime);
         CharacterDatabase.Execute(stmt);
     }
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_EXPIRED_MAIL);
-    stmt->setUInt64(0, basetime);
+    stmt->SetData(0, basetime);
     PreparedQueryResult result = CharacterDatabase.Query(stmt);
     if (!result)
     {
@@ -5493,7 +5493,7 @@ void ObjectMgr::ReturnOrDeleteOldMails(bool serverUp)
 
     std::map<uint32 /*messageId*/, MailItemInfoVec> itemsCache;
     stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_EXPIRED_MAIL_ITEMS);
-    stmt->setUInt32(0, (uint32)basetime);
+    stmt->SetData(0, (uint32)basetime);
     if (PreparedQueryResult items = CharacterDatabase.Query(stmt))
     {
         MailItemInfo item;
@@ -5548,7 +5548,7 @@ void ObjectMgr::ReturnOrDeleteOldMails(bool serverUp)
                 for (MailItemInfoVec::iterator itr2 = m->items.begin(); itr2 != m->items.end(); ++itr2)
                 {
                     stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_ITEM_INSTANCE);
-                    stmt->setUInt32(0, itr2->item_guid);
+                    stmt->SetData(0, itr2->item_guid);
                     CharacterDatabase.Execute(stmt);
                 }
             }
@@ -5556,24 +5556,24 @@ void ObjectMgr::ReturnOrDeleteOldMails(bool serverUp)
             {
                 // Mail will be returned
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_MAIL_RETURNED);
-                stmt->setUInt32(0, m->receiver);
-                stmt->setUInt32(1, m->sender);
-                stmt->setUInt32(2, basetime + 30 * DAY);
-                stmt->setUInt32(3, basetime);
-                stmt->setUInt8 (4, uint8(MAIL_CHECK_MASK_RETURNED));
-                stmt->setUInt32(5, m->messageID);
+                stmt->SetData(0, m->receiver);
+                stmt->SetData(1, m->sender);
+                stmt->SetData(2, basetime + 30 * DAY);
+                stmt->SetData(3, basetime);
+                stmt->SetData(4, uint8(MAIL_CHECK_MASK_RETURNED));
+                stmt->SetData(5, m->messageID);
                 CharacterDatabase.Execute(stmt);
                 for (MailItemInfoVec::iterator itr2 = m->items.begin(); itr2 != m->items.end(); ++itr2)
                 {
                     // Update receiver in mail items for its proper delivery, and in instance_item for avoid lost item at sender delete
                     stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_MAIL_ITEM_RECEIVER);
-                    stmt->setUInt32(0, m->sender);
-                    stmt->setUInt32(1, itr2->item_guid);
+                    stmt->SetData(0, m->sender);
+                    stmt->SetData(1, itr2->item_guid);
                     CharacterDatabase.Execute(stmt);
 
                     stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ITEM_OWNER);
-                    stmt->setUInt32(0, m->sender);
-                    stmt->setUInt32(1, itr2->item_guid);
+                    stmt->SetData(0, m->sender);
+                    stmt->SetData(1, itr2->item_guid);
                     CharacterDatabase.Execute(stmt);
                 }
                 delete m;
@@ -5583,7 +5583,7 @@ void ObjectMgr::ReturnOrDeleteOldMails(bool serverUp)
         }
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_MAIL_BY_ID);
-        stmt->setUInt32(0, m->messageID);
+        stmt->SetData(0, m->messageID);
         CharacterDatabase.Execute(stmt);
         delete m;
         ++deletedCount;
@@ -6055,9 +6055,9 @@ bool ObjectMgr::AddGraveYardLink(uint32 id, uint32 zoneId, uint32 team, bool per
     {
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_GRAVEYARD_ZONE);
 
-        stmt->setUInt32(0, id);
-        stmt->setUInt32(1, zoneId);
-        stmt->setUInt16(2, uint16(team));
+        stmt->SetData(0, id);
+        stmt->SetData(1, zoneId);
+        stmt->SetData(2, uint16(team));
 
         WorldDatabase.Execute(stmt);
     }
@@ -6106,9 +6106,9 @@ void ObjectMgr::RemoveGraveYardLink(uint32 id, uint32 zoneId, uint32 team, bool 
     {
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_GRAVEYARD_ZONE);
 
-        stmt->setUInt32(0, id);
-        stmt->setUInt32(1, zoneId);
-        stmt->setUInt16(2, uint16(team));
+        stmt->SetData(0, id);
+        stmt->SetData(1, zoneId);
+        stmt->SetData(2, uint16(team));
 
         WorldDatabase.Execute(stmt);
     }
@@ -8310,13 +8310,13 @@ bool ObjectMgr::AddGameTele(GameTele& tele)
 
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_GAME_TELE);
 
-    stmt->setUInt32(0, new_id);
-    stmt->setFloat(1, tele.position_x);
-    stmt->setFloat(2, tele.position_y);
-    stmt->setFloat(3, tele.position_z);
-    stmt->setFloat(4, tele.orientation);
-    stmt->setUInt16(5, uint16(tele.mapId));
-    stmt->setString(6, tele.name);
+    stmt->SetData(0, new_id);
+    stmt->SetData(1, tele.position_x);
+    stmt->SetData(2, tele.position_y);
+    stmt->SetData(3, tele.position_z);
+    stmt->SetData(4, tele.orientation);
+    stmt->SetData(5, uint16(tele.mapId));
+    stmt->SetData(6, tele.name);
 
     WorldDatabase.Execute(stmt);
 
@@ -8339,7 +8339,7 @@ bool ObjectMgr::DeleteGameTele(const std::string& name)
         {
             PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_GAME_TELE);
 
-            stmt->setString(0, itr->second.name);
+            stmt->SetData(0, itr->second.name);
 
             WorldDatabase.Execute(stmt);
 
@@ -8532,8 +8532,8 @@ int ObjectMgr::LoadReferenceVendor(int32 vendor, int32 item, uint8 type, std::se
 {
     // find all items from the reference vendor
     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_NPC_VENDOR_REF);
-    stmt->setUInt32(0, uint32(item));
-    stmt->setUInt8(1, type);
+    stmt->SetData(0, uint32(item));
+    stmt->SetData(1, type);
     PreparedQueryResult result = WorldDatabase.Query(stmt);
 
     if (!result)
@@ -9081,12 +9081,12 @@ void ObjectMgr::AddVendorItem(uint32 entry, uint32 item, int32 maxcount, uint32 
     {
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_INS_NPC_VENDOR);
 
-        stmt->setUInt32(0, entry);
-        stmt->setUInt32(1, item);
-        stmt->setUInt8(2, maxcount);
-        stmt->setUInt32(3, incrtime);
-        stmt->setUInt32(4, extendedCost);
-        stmt->setUInt8(5, type);
+        stmt->SetData(0, entry);
+        stmt->SetData(1, item);
+        stmt->SetData(2, maxcount);
+        stmt->SetData(3, incrtime);
+        stmt->SetData(4, extendedCost);
+        stmt->SetData(5, type);
 
         WorldDatabase.Execute(stmt);
     }
@@ -9105,9 +9105,9 @@ bool ObjectMgr::RemoveVendorItem(uint32 entry, uint32 item, uint8 type, bool per
     {
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_DEL_NPC_VENDOR);
 
-        stmt->setUInt32(0, entry);
-        stmt->setUInt32(1, item);
-        stmt->setUInt8(2, type);
+        stmt->SetData(0, entry);
+        stmt->SetData(1, item);
+        stmt->SetData(2, type);
 
         WorldDatabase.Execute(stmt);
     }
@@ -9652,9 +9652,9 @@ void ObjectMgr::UpdateReportQuestData(uint32 diff)
                     _ReportQuestData[i]->needSave = false;
                     uint8 index = 0;
                     PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_UPD_REPORT_QUESTS);
-                    stmt->setUInt32(index, _ReportQuestData[i]->questId);
-                    stmt->setUInt32(++index, _ReportQuestData[i]->status);
-                    stmt->setUInt32(++index, _ReportQuestData[i]->count);
+                    stmt->SetData(index, _ReportQuestData[i]->questId);
+                    stmt->SetData(++index, _ReportQuestData[i]->status);
+                    stmt->SetData(++index, _ReportQuestData[i]->count);
                     trans->Append(stmt);
                 }
             }

@@ -324,9 +324,9 @@ void WorldSession::HandleBattlemasterJoinRatedOpcode(WorldPacket& /*recvData*/)
                     matchmakerRating += 1500;
                     sInfoMgr->UpdateCharMMR(info.Guid, 3, 1500);
                     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_REP_CHARACTER_PVP_STATS);
-                    stmt->setUInt32(0, GUID_LOPART(info.Guid));
-                    stmt->setUInt8(1, 3);
-                    stmt->setUInt16(2, 1500);
+                    stmt->SetData(0, GUID_LOPART(info.Guid));
+                    stmt->SetData(1, 3);
+                    stmt->SetData(2, 1500);
                     CharacterDatabase.Execute(stmt);
                 }
                 else

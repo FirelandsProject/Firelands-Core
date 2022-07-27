@@ -64,17 +64,17 @@ Channel::Channel(std::string const& name, uint32 channelId, uint32 team):
         if (sWorld->getBoolConfig(CONFIG_PRESERVE_CUSTOM_CHANNELS))
         {
             PreparedStatement *stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHANNEL);
-            stmt->setString(0, name);
-            stmt->setUInt32(1, _Team);
+            stmt->SetData(0, name);
+            stmt->SetData(1, _Team);
             PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
             if (result) //load
             {
                 Field* fields = result->Fetch();
-                _announce = fields[0].GetBool();
-                _ownership = fields[1].GetBool();
-                _password  = fields[2].GetString();
-                const char* db_BannedList = fields[3].GetCString();
+                _announce = fields[0].Get<bool>();
+                _ownership = fields[1].Get<bool>();
+                _password  = fields[2].Get<std::string>();
+                const char* db_BannedList = fields[3].Get<std::string>().c_str();
 
                 if (db_BannedList)
                 {
@@ -84,7 +84,7 @@ Channel::Channel(std::string const& name, uint32 channelId, uint32 team):
                         uint64 banned_guid = atol(*i);
                         if (banned_guid)
                         {
-                            LOG_DEBUG("chat.system", "Channel(%s) loaded bannedStore guid:" UI64FMTD "", name.c_str(), banned_guid);
+                            LOG_DEBUG("chat.system", "Channel({}) loaded bannedStore guid:" UI64FMTD "", name, banned_guid);
                             bannedStore.insert(banned_guid);
                         }
                     }
@@ -93,10 +93,10 @@ Channel::Channel(std::string const& name, uint32 channelId, uint32 team):
             else // save
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHANNEL);
-                stmt->setString(0, name);
-                stmt->setUInt32(1, _Team);
+                stmt->SetData(0, name);
+                stmt->SetData(1, _Team);
                 CharacterDatabase.Execute(stmt);
-                LOG_DEBUG("chat.system", "Channel(%s) saved in database", name.c_str());
+                LOG_DEBUG("chat.system", "Channel({}) saved in database", name);
             }
 
             _IsSaved = true;
@@ -116,23 +116,23 @@ void Channel::UpdateChannelInDB() const
         std::string banListStr = banlist.str();
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL);
-        stmt->setBool(0, _announce);
-        stmt->setBool(1, _ownership);
-        stmt->setString(2, _password);
-        stmt->setString(3, banListStr);
-        stmt->setString(4, _name);
-        stmt->setUInt32(5, _Team);
+        stmt->SetData(0, _announce);
+        stmt->SetData(1, _ownership);
+        stmt->SetData(2, _password);
+        stmt->SetData(3, banListStr);
+        stmt->SetData(4, _name);
+        stmt->SetData(5, _Team);
         CharacterDatabase.Execute(stmt);
 
-        LOG_DEBUG("chat.system", "Channel(%s) updated in database", _name.c_str());
+        LOG_DEBUG("chat.system", "Channel({}) updated in database", _name);
     }
 }
 
 void Channel::UpdateChannelUseageInDB() const
 {
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL_USAGE);
-    stmt->setString(0, _name);
-    stmt->setUInt32(1, _Team);
+    stmt->SetData(0, _name);
+    stmt->SetData(1, _Team);
     CharacterDatabase.Execute(stmt);
 }
 
@@ -141,7 +141,7 @@ void Channel::CleanOldChannelsInDB()
     if (sWorld->getIntConfig(CONFIG_PRESERVE_CUSTOM_CHANNEL_DURATION) > 0)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_OLD_CHANNELS);
-        stmt->setUInt32(0, sWorld->getIntConfig(CONFIG_PRESERVE_CUSTOM_CHANNEL_DURATION) * DAY);
+        stmt->SetData(0, sWorld->getIntConfig(CONFIG_PRESERVE_CUSTOM_CHANNEL_DURATION) * DAY);
         CharacterDatabase.Execute(stmt);
 
         LOG_DEBUG("chat.system", "Cleaned out unused custom chat channels.");
@@ -534,8 +534,8 @@ void Channel::List(Player const* player)
         return;
     }
 
-    LOG_DEBUG("chat.system", "SMSG_CHANNEL_LIST %s Channel: %s",
-        player->GetSession()->GetPlayerInfo().c_str(), GetName().c_str());
+    LOG_DEBUG("chat.system", "SMSG_CHANNEL_LIST {} Channel: {}",
+        player->GetSession()->GetPlayerInfo(), GetName());
 
     WorldPacket data(SMSG_CHANNEL_LIST, 1+(GetName().size()+1)+1+4+playersStore.size()*(8+1));
     data << uint8(1);                                   // channel type?
