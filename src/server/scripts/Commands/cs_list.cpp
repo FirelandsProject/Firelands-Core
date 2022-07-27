@@ -89,7 +89,7 @@ public:
         uint32 creatureCount = 0;
         result = WorldDatabase.PQuery("SELECT COUNT(guid) FROM creature WHERE id='%u'", creatureId);
         if (result)
-            creatureCount = (*result)[0].GetUInt64();
+            creatureCount = (*result)[0].Get<uint64>();
 
         if (handler->GetSession())
         {
@@ -166,7 +166,7 @@ public:
         result = CharacterDatabase.Query(stmt);
 
         if (result)
-            inventoryCount = (*result)[0].GetUInt64();
+            inventoryCount = (*result)[0].Get<uint64>();
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_INVENTORY_ITEM_BY_ENTRY);
         stmt->SetData(0, itemId);
@@ -262,7 +262,7 @@ public:
         result = CharacterDatabase.Query(stmt);
 
         if (result)
-            auctionCount = (*result)[0].GetUInt64();
+            auctionCount = (*result)[0].Get<uint64>();
 
         if (count > 0)
         {
@@ -295,15 +295,15 @@ public:
         uint32 guildCount = 0;
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_BANK_COUNT_ITEM);
-        stmt->setUInt32(0, itemId);
+        stmt->SetData(0, itemId);
         result = CharacterDatabase.Query(stmt);
 
         if (result)
             guildCount = (*result)[0].Get<uint64>();
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_BANK_ITEM_BY_ENTRY);
-        stmt->setUInt32(0, itemId);
-        stmt->setUInt32(1, count);
+        stmt->SetData(0, itemId);
+        stmt->SetData(1, count);
         result = CharacterDatabase.Query(stmt);
 
         if (result)

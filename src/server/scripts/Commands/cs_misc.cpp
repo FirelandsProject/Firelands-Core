@@ -1788,7 +1788,7 @@ public:
            handler->PSendSysMessage(LANG_PINFO_MAP_OFFLINE, map->name, areaName.c_str());
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_GUILD_MEMBER_EXTENDED);
-        stmt->setUInt32(0, GUID_LOPART(targetGuid));
+        stmt->SetData(0, GUID_LOPART(targetGuid));
 
         result = CharacterDatabase.Query(stmt);
         if (result)
@@ -2702,7 +2702,7 @@ public:
             {
                 // Check for offline players
                 PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_GUID_BY_NAME);
-                stmt->setString(0, name);
+                stmt->SetData(0, name);
                 PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
                 if (!result)
@@ -2713,10 +2713,10 @@ public:
 
                 // If player found: delete his freeze aura
                 Field* fields = result->Fetch();
-                uint32 lowGuid = fields[0].GetUInt32();
+                uint32 lowGuid = fields[0].Get<uint32>();
 
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_AURA_FROZEN);
-                stmt->setUInt32(0, lowGuid);
+                stmt->SetData(0, lowGuid);
                 CharacterDatabase.Execute(stmt);
 
                 handler->PSendSysMessage(LANG_COMMAND_UNFREEZE, name.c_str());

@@ -309,8 +309,8 @@ public:
         // Update movement type
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_UPD_CREATURE_MOVEMENT_TYPE);
 
-        stmt->setUInt8(0, uint8(WAYPOINT_MOTION_TYPE));
-        stmt->setUInt32(1, lowGuid);
+        stmt->SetData(0, uint8(WAYPOINT_MOTION_TYPE));
+        stmt->SetData(1, lowGuid);
 
         WorldDatabase.Execute(stmt);
 

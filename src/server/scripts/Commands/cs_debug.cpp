@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -849,9 +849,9 @@ public:
                         matchmakerRating += 1500;
                         sInfoMgr->UpdateCharMMR(info.Guid, 3, 1500);
                         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_REP_CHARACTER_PVP_STATS);
-                        stmt->setUInt32(0, GUID_LOPART(info.Guid));
-                        stmt->setUInt8(1, 3);
-                        stmt->setUInt16(2, 1500);
+                        stmt->SetData(0, GUID_LOPART(info.Guid));
+                        stmt->SetData(1, 3);
+                        stmt->SetData(2, 1500);
                         CharacterDatabase.Execute(stmt);
                     }
                     else
