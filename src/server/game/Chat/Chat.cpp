@@ -70,7 +70,7 @@ std::vector<ChatCommand> const& ChatHandler::getCommandTable()
 
 std::string ChatHandler::PGetParseString(int32 entry, ...) const
 {
-    const char *format = GetTrinityString(entry);
+    const char *format = GetFirelandsString(entry);
     char str[1024];
     va_list ap;
     va_start(ap, entry);
@@ -79,9 +79,9 @@ std::string ChatHandler::PGetParseString(int32 entry, ...) const
     return std::string(str);
 }
 
-const char *ChatHandler::GetTrinityString(int32 entry) const
+const char *ChatHandler::GetFirelandsString(int32 entry) const
 {
-    return m_session->GetTrinityString(entry);
+    return m_session->GetFirelandsString(entry);
 }
 
 bool ChatHandler::isAvailable(ChatCommand const& cmd) const
@@ -219,12 +219,12 @@ void ChatHandler::SendGlobalGMSysMessage(const char *str)
 
 void ChatHandler::SendSysMessage(int32 entry)
 {
-    SendSysMessage(GetTrinityString(entry));
+    SendSysMessage(GetFirelandsString(entry));
 }
 
 void ChatHandler::PSendSysMessage(int32 entry, ...)
 {
-    const char *format = GetTrinityString(entry);
+    const char *format = GetFirelandsString(entry);
     va_list ap;
     char str [2048];
     va_start(ap, entry);
@@ -1152,9 +1152,9 @@ std::string ChatHandler::GetNameLink(Player* chr) const
     return playerLink(chr->GetName());
 }
 
-const char *CliHandler::GetTrinityString(int32 entry) const
+const char *CliHandler::GetFirelandsString(int32 entry) const
 {
-    return sObjectMgr->GetTrinityStringForDBCLocale(entry);
+    return sObjectMgr->GetFirelandsStringForDBCLocale(entry);
 }
 
 bool CliHandler::isAvailable(ChatCommand const& cmd) const
@@ -1171,7 +1171,7 @@ void CliHandler::SendSysMessage(const char *str)
 
 std::string CliHandler::GetNameLink() const
 {
-    return GetTrinityString(LANG_CONSOLE_COMMAND);
+    return GetFirelandsString(LANG_CONSOLE_COMMAND);
 }
 
 bool CliHandler::needReportToTarget(Player* /*chr*/) const

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -103,7 +103,7 @@ public:
             if (isNumeric(searchString.c_str()))
             {
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_DEL_INFO_BY_GUID);
-                stmt->setUInt32(0, uint32(atoi(searchString.c_str())));
+                stmt->SetData(0, uint32(atoi(searchString.c_str())));
                 result = CharacterDatabase.Query(stmt);
             }
             // search by name
@@ -113,7 +113,7 @@ public:
                     return false;
 
                 stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_DEL_INFO_BY_NAME);
-                stmt->setString(0, searchString);
+                stmt->SetData(0, searchString);
                 result = CharacterDatabase.Query(stmt);
             }
         }
@@ -131,13 +131,13 @@ public:
 
                 DeletedInfo info;
 
-                info.lowGuid    = fields[0].GetUInt32();
-                info.name       = fields[1].GetString();
-                info.accountId  = fields[2].GetUInt32();
+                info.lowGuid    = fields[0].Get<uint32>();
+                info.name       = fields[1].Get<std::string>();
+                info.accountId  = fields[2].Get<uint32>();
 
                 // account name will be empty for not existed account
                 AccountMgr::GetName(info.accountId, info.accountName);
-                info.deleteDate = time_t(fields[3].GetUInt32());
+                info.deleteDate = time_t(fields[3].Get<uint32>());
                 foundList.push_back(info);
             }
             while (result->NextRow());
@@ -216,13 +216,13 @@ public:
         }
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UDP_RESTORE_DELETE_INFO);
-        stmt->setString(0, delInfo.name);
-        stmt->setUInt32(1, delInfo.accountId);
-        stmt->setUInt32(2, delInfo.lowGuid);
+        stmt->SetData(0, delInfo.name);
+        stmt->SetData(1, delInfo.accountId);
+        stmt->SetData(2, delInfo.lowGuid);
         CharacterDatabase.Execute(stmt);
 
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHARACTER_NAME_DATA);
-        stmt->setUInt32(0, delInfo.lowGuid);
+        stmt->SetData(0, delInfo.lowGuid);
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
             sInfoMgr->UpdateCharBase(delInfo.lowGuid, delInfo.name);
     }
@@ -249,8 +249,8 @@ public:
         {
             // Update level and reset XP, everything else will be updated at login
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_LEVEL);
-            stmt->setUInt8(0, uint8(newLevel));
-            stmt->setUInt32(1, GUID_LOPART(playerGuid));
+            stmt->SetData(0, uint8(newLevel));
+            stmt->SetData(1, GUID_LOPART(playerGuid));
             CharacterDatabase.Execute(stmt);
         }
     }
@@ -266,7 +266,7 @@ public:
 
         LocaleConstant loc = handler->GetSessionDbcLocale();
         char const* targetName = target->GetName().c_str();
-        char const* knownStr = handler->GetTrinityString(LANG_KNOWN);
+        char const* knownStr = handler->GetFirelandsString(LANG_KNOWN);
 
         // Search in CharTitles.dbc
         for (uint32 id = 0; id < sCharTitlesStore.GetNumRows(); id++)
@@ -280,7 +280,7 @@ public:
                     continue;
 
                 char const* activeStr = target && target->GetUInt32Value(PLAYER_CHOSEN_TITLE) == titleInfo->bit_index
-                ? handler->GetTrinityString(LANG_ACTIVE)
+                ? handler->GetFirelandsString(LANG_ACTIVE)
                 : "";
 
                 char titleNameStr[80];
@@ -325,8 +325,8 @@ public:
             handler->PSendSysMessage(LANG_RENAME_PLAYER_GUID, oldNameLink.c_str(), GUID_LOPART(targetGuid));
 
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-            stmt->setUInt16(0, uint16(AT_LOGIN_RENAME));
-            stmt->setUInt32(1, GUID_LOPART(targetGuid));
+            stmt->SetData(0, uint16(AT_LOGIN_RENAME));
+            stmt->SetData(1, GUID_LOPART(targetGuid));
             CharacterDatabase.Execute(stmt);
         }
 
@@ -383,17 +383,17 @@ public:
             return false;
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CUSTOMIZE));
+        stmt->SetData(0, uint16(AT_LOGIN_CUSTOMIZE));
         if (target)
         {
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-            stmt->setUInt32(1, target->GetGUIDLow());
+            stmt->SetData(1, target->GetGUIDLow());
         }
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
-            stmt->setUInt32(1, GUID_LOPART(targetGuid));
+            stmt->SetData(1, GUID_LOPART(targetGuid));
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), GUID_LOPART(targetGuid));
         }
         CharacterDatabase.Execute(stmt);
@@ -411,18 +411,18 @@ public:
             return false;
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_FACTION));
+        stmt->SetData(0, uint16(AT_LOGIN_CHANGE_FACTION));
         if (target)
         {
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-            stmt->setUInt32(1, target->GetGUIDLow());
+            stmt->SetData(1, target->GetGUIDLow());
         }
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), GUID_LOPART(targetGuid));
-            stmt->setUInt32(1, GUID_LOPART(targetGuid));
+            stmt->SetData(1, GUID_LOPART(targetGuid));
         }
         CharacterDatabase.Execute(stmt);
 
@@ -438,20 +438,20 @@ public:
             return false;
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_RACE));
+        stmt->SetData(0, uint16(AT_LOGIN_CHANGE_RACE));
         if (target)
         {
             // TODO : add text into database
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER, handler->GetNameLink(target).c_str());
             target->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
-            stmt->setUInt32(1, target->GetGUIDLow());
+            stmt->SetData(1, target->GetGUIDLow());
         }
         else
         {
             std::string oldNameLink = handler->playerLink(targetName);
             // TODO : add text into database
             handler->PSendSysMessage(LANG_CUSTOMIZE_PLAYER_GUID, oldNameLink.c_str(), GUID_LOPART(targetGuid));
-            stmt->setUInt32(1, GUID_LOPART(targetGuid));
+            stmt->SetData(1, GUID_LOPART(targetGuid));
         }
         CharacterDatabase.Execute(stmt);
 
@@ -473,7 +473,7 @@ public:
             FactionEntry const* factionEntry = sFactionStore.LookupEntry(faction.ID);
             char const* factionName = factionEntry ? factionEntry->name : "#Not found#";
             ReputationRank rank = target->GetReputationMgr().GetRank(factionEntry);
-            std::string rankName = handler->GetTrinityString(ReputationRankStrIndex[rank]);
+            std::string rankName = handler->GetFirelandsString(ReputationRankStrIndex[rank]);
             std::ostringstream ss;
             if (handler->GetSession())
                 ss << faction.ID << " - |cffffffff|Hfaction:" << faction.ID << "|h[" << factionName << ' ' << localeNames[loc] << "]|h|r";
@@ -483,17 +483,17 @@ public:
             ss << ' ' << rankName << " (" << target->GetReputationMgr().GetReputation(factionEntry) << ')';
 
             if (faction.Flags & FACTION_FLAG_VISIBLE)
-                ss << handler->GetTrinityString(LANG_FACTION_VISIBLE);
+                ss << handler->GetFirelandsString(LANG_FACTION_VISIBLE);
             if (faction.Flags & FACTION_FLAG_AT_WAR)
-                ss << handler->GetTrinityString(LANG_FACTION_ATWAR);
+                ss << handler->GetFirelandsString(LANG_FACTION_ATWAR);
             if (faction.Flags & FACTION_FLAG_PEACE_FORCED)
-                ss << handler->GetTrinityString(LANG_FACTION_PEACE_FORCED);
+                ss << handler->GetFirelandsString(LANG_FACTION_PEACE_FORCED);
             if (faction.Flags & FACTION_FLAG_HIDDEN)
-                ss << handler->GetTrinityString(LANG_FACTION_HIDDEN);
+                ss << handler->GetFirelandsString(LANG_FACTION_HIDDEN);
             if (faction.Flags & FACTION_FLAG_INVISIBLE_FORCED)
-                ss << handler->GetTrinityString(LANG_FACTION_INVISIBLE_FORCED);
+                ss << handler->GetFirelandsString(LANG_FACTION_INVISIBLE_FORCED);
             if (faction.Flags & FACTION_FLAG_INACTIVE)
-                ss << handler->GetTrinityString(LANG_FACTION_INACTIVE);
+                ss << handler->GetFirelandsString(LANG_FACTION_INACTIVE);
 
             handler->SendSysMessage(ss.str().c_str());
         }

@@ -43,31 +43,31 @@ std::string GetRolesString(uint8 roles)
     std::string rolesstr = "";
 
     if (roles & PLAYER_ROLE_TANK)
-        rolesstr.append(sObjectMgr->GetTrinityStringForDBCLocale(LANG_LFG_ROLE_TANK));
+        rolesstr.append(sObjectMgr->GetFirelandsStringForDBCLocale(LANG_LFG_ROLE_TANK));
 
     if (roles & PLAYER_ROLE_HEALER)
     {
         if (!rolesstr.empty())
             rolesstr.append(", ");
-        rolesstr.append(sObjectMgr->GetTrinityStringForDBCLocale(LANG_LFG_ROLE_HEALER));
+        rolesstr.append(sObjectMgr->GetFirelandsStringForDBCLocale(LANG_LFG_ROLE_HEALER));
     }
 
     if (roles & PLAYER_ROLE_DAMAGE)
     {
         if (!rolesstr.empty())
             rolesstr.append(", ");
-        rolesstr.append(sObjectMgr->GetTrinityStringForDBCLocale(LANG_LFG_ROLE_DAMAGE));
+        rolesstr.append(sObjectMgr->GetFirelandsStringForDBCLocale(LANG_LFG_ROLE_DAMAGE));
     }
 
     if (roles & PLAYER_ROLE_LEADER)
     {
         if (!rolesstr.empty())
             rolesstr.append(", ");
-        rolesstr.append(sObjectMgr->GetTrinityStringForDBCLocale(LANG_LFG_ROLE_LEADER));
+        rolesstr.append(sObjectMgr->GetFirelandsStringForDBCLocale(LANG_LFG_ROLE_LEADER));
     }
 
     if (rolesstr.empty())
-        rolesstr.append(sObjectMgr->GetTrinityStringForDBCLocale(LANG_LFG_ROLE_NONE));
+        rolesstr.append(sObjectMgr->GetFirelandsStringForDBCLocale(LANG_LFG_ROLE_NONE));
 
     return rolesstr;
 }
@@ -100,7 +100,7 @@ std::string GetStateString(LfgState state)
             break;
     }
 
-    return std::string(sObjectMgr->GetTrinityStringForDBCLocale(entry));
+    return std::string(sObjectMgr->GetFirelandsStringForDBCLocale(entry));
 }
 
 } // namespace lfg

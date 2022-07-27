@@ -52,7 +52,7 @@ namespace Firelands
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
             {
-                char const* text = sObjectMgr->GetTrinityString(_textId, loc_idx);
+                char const* text = sObjectMgr->GetFirelandsString(_textId, loc_idx);
                 if (_args)
                 {
                     // we need copy va_list before use or original va_list will corrupted
@@ -98,9 +98,9 @@ namespace Firelands
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
             {
-                char const* text = sObjectMgr->GetTrinityString(_textId, loc_idx);
-                char const* arg1str = _arg1 ? sObjectMgr->GetTrinityString(_arg1, loc_idx) : "";
-                char const* arg2str = _arg2 ? sObjectMgr->GetTrinityString(_arg2, loc_idx) : "";
+                char const* text = sObjectMgr->GetFirelandsString(_textId, loc_idx);
+                char const* arg1str = _arg1 ? sObjectMgr->GetFirelandsString(_arg1, loc_idx) : "";
+                char const* arg2str = _arg2 ? sObjectMgr->GetFirelandsString(_arg2, loc_idx) : "";
 
                 char str[2048];
                 snprintf(str, 2048, text, arg1str, arg2str);
@@ -2272,7 +2272,7 @@ void Battleground::SendWarningToAll(int32 entry, ...)
     if (!entry)
         return;
 
-    char const* format = sObjectMgr->GetTrinityStringForDBCLocale(entry);
+    char const* format = sObjectMgr->GetFirelandsStringForDBCLocale(entry);
 
     char str[1024];
     va_list ap;
@@ -2316,10 +2316,10 @@ void Battleground::EndNow()
 }
 
 // To be removed
-char const* Battleground::GetTrinityString(int32 entry)
+char const* Battleground::GetFirelandsString(int32 entry)
 {
     // FIXME: now we have different DBC locales and need localized message for each target client
-    return sObjectMgr->GetTrinityStringForDBCLocale(entry);
+    return sObjectMgr->GetFirelandsStringForDBCLocale(entry);
 }
 
 // IMPORTANT NOTICE:

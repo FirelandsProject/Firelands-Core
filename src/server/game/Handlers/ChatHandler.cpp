@@ -229,14 +229,14 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
     if (type != CHAT_MSG_AFK && type != CHAT_MSG_DND && !sender->CanSpeak())
     {
         std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
-        SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+        SendNotification(GetFirelandsString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
         recvData.rfinish(); // Prevent warnings
         return;
     }
 
     if (sender->HasAura(1852) && type != CHAT_MSG_WHISPER)
     {
-        SendNotification(GetTrinityString(LANG_GM_SILENCE), sender->GetName().c_str());
+        SendNotification(GetFirelandsString(LANG_GM_SILENCE), sender->GetName().c_str());
         recvData.rfinish();
         return;
     }
@@ -314,7 +314,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
         {
             if (sender->getLevel() < sWorld->getIntConfig(CONFIG_CHAT_SAY_LEVEL_REQ))
             {
-                SendNotification(GetTrinityString(LANG_SAY_REQ), sWorld->getIntConfig(CONFIG_CHAT_SAY_LEVEL_REQ));
+                SendNotification(GetFirelandsString(LANG_SAY_REQ), sWorld->getIntConfig(CONFIG_CHAT_SAY_LEVEL_REQ));
                 return;
             }
 
@@ -333,7 +333,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
         {
             if (sender->getLevel() < sWorld->getIntConfig(CONFIG_CHAT_WHISPER_LEVEL_REQ))
             {
-                SendNotification(GetTrinityString(LANG_WHISPER_REQ), sWorld->getIntConfig(CONFIG_CHAT_WHISPER_LEVEL_REQ));
+                SendNotification(GetFirelandsString(LANG_WHISPER_REQ), sWorld->getIntConfig(CONFIG_CHAT_WHISPER_LEVEL_REQ));
                 return;
             }
 
@@ -361,7 +361,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 
             if (GetPlayer()->HasAura(1852) && !receiver->isGameMaster())
             {
-                SendNotification(GetTrinityString(LANG_GM_SILENCE), GetPlayer()->GetName().c_str());
+                SendNotification(GetFirelandsString(LANG_GM_SILENCE), GetPlayer()->GetName().c_str());
                 return;
             }
 
@@ -477,7 +477,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             {
                 if (_player->getLevel() < sWorld->getIntConfig(CONFIG_CHAT_CHANNEL_LEVEL_REQ))
                 {
-                    SendNotification(GetTrinityString(LANG_CHANNEL_REQ), sWorld->getIntConfig(CONFIG_CHAT_CHANNEL_LEVEL_REQ));
+                    SendNotification(GetFirelandsString(LANG_CHANNEL_REQ), sWorld->getIntConfig(CONFIG_CHAT_CHANNEL_LEVEL_REQ));
                     return;
                 }
             }
@@ -504,7 +504,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
                 }
                 else                                        // New AFK mode
                 {
-                    _player->autoReplyMsg = msg.empty() ? GetTrinityString(LANG_PLAYER_AFK_DEFAULT) : msg;
+                    _player->autoReplyMsg = msg.empty() ? GetFirelandsString(LANG_PLAYER_AFK_DEFAULT) : msg;
 
                     if (_player->isDND())
                         _player->ToggleDND();
@@ -527,7 +527,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             }
             else                                            // New DND mode
             {
-                _player->autoReplyMsg = msg.empty() ? GetTrinityString(LANG_PLAYER_DND_DEFAULT) : msg;
+                _player->autoReplyMsg = msg.empty() ? GetFirelandsString(LANG_PLAYER_DND_DEFAULT) : msg;
 
                 if (_player->isAFK())
                     _player->ToggleAFK();
@@ -697,7 +697,7 @@ void WorldSession::HandleEmoteOpcode(WorldPacket& recvData)
     if (!GetPlayer()->CanSpeak())
     {
         std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
-        SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+        SendNotification(GetFirelandsString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
         return;
     }
 
@@ -747,7 +747,7 @@ void WorldSession::HandleTextEmoteOpcode(WorldPacket& recvData)
     if (!GetPlayer()->CanSpeak())
     {
         std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
-        SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+        SendNotification(GetFirelandsString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
         return;
     }
 

@@ -7932,9 +7932,9 @@ bool ObjectMgr::LoadFirelandsStrings(const char* table, int32 min_value, int32 m
     return true;
 }
 
-const char *ObjectMgr::GetTrinityString(int32 entry, LocaleConstant locale_idx) const
+const char *ObjectMgr::GetFirelandsString(int32 entry, LocaleConstant locale_idx) const
 {
-    if (TrinityStringLocale const* msl = GetTrinityStringLocale(entry))
+    if (TrinityStringLocale const* msl = GetFirelandsStringLocale(entry))
     {
         if (msl->Content.size() > size_t(locale_idx) && !msl->Content[locale_idx].empty())
             return msl->Content[locale_idx].c_str();
@@ -9274,7 +9274,7 @@ void ObjectMgr::CheckScripts(ScriptsType type, std::set<int32>& ids)
             {
                 case SCRIPT_COMMAND_TALK:
                 {
-                    if (!GetTrinityStringLocale (itrM->second.Talk.TextID))
+                    if (!GetFirelandsStringLocale (itrM->second.Talk.TextID))
                         LOG_ERROR("sql.sql", "Table `%s` references invalid text id %u from `db_script_string`, script id: %u.", GetScriptsTableNameByType(type).c_str(), itrM->second.Talk.TextID, itrMM->first);
 
                     if (ids.find(itrM->second.Talk.TextID) != ids.end())
@@ -9294,7 +9294,7 @@ void ObjectMgr::LoadDbScriptStrings()
     std::set<int32> ids;
 
     for (int32 i = MIN_DB_SCRIPT_STRING_ID; i < MAX_DB_SCRIPT_STRING_ID; ++i)
-        if (GetTrinityStringLocale(i))
+        if (GetFirelandsStringLocale(i))
             ids.insert(i);
 
     for (int type = SCRIPTS_FIRST; type < SCRIPTS_LAST; ++type)

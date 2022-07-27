@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,12 +16,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-Name: gm_commandscript
-%Complete: 100
-Comment: All gm related commands
-Category: commandscripts
-EndScriptData */
+ /* ScriptData
+ Name: gm_commandscript
+ %Complete: 100
+ Comment: All gm related commands
+ Category: commandscripts
+ EndScriptData */
 
 #include "ScriptMgr.h"
 #include "ObjectMgr.h"
@@ -96,7 +96,7 @@ public:
         if (!*args)
             return false;
 
-        Player* target =  handler->getSelectedPlayer();
+        Player* target = handler->getSelectedPlayer();
         if (!target)
             target = handler->GetSession()->GetPlayer();
 
@@ -167,8 +167,8 @@ public:
     {
         ///- Get the accounts with GM Level >0
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_GM_ACCOUNTS);
-        stmt->setUInt8(0, uint8(SEC_MODERATOR));
-        stmt->setInt32(1, int32(realmID));
+        stmt->SetData(0, uint8(SEC_MODERATOR));
+        stmt->SetData(1, int32(realmID));
         PreparedQueryResult result = LoginDatabase.Query(stmt);
 
         if (result)
@@ -179,22 +179,22 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                char const* name = fields[0].GetCString();
-                uint8 security = fields[1].GetUInt8();
-                uint8 max = (16 - strlen(name)) / 2;
+                std::string name = fields[0].Get<std::string>();
+                uint8 security = fields[1].Get<uint8>();
+                uint8 max = (16 - name.length()) / 2;
                 uint8 max2 = max;
-                if ((max + max2 + strlen(name)) == 16)
+                if ((max + max2 + name.length() == 16)
                     max2 = max - 1;
-                if (handler->GetSession())
-                    handler->PSendSysMessage("|    %s GMLevel %u", name, security);
-                else
-                    handler->PSendSysMessage("|%*s%s%*s|   %u  |", max, " ", name, max2, " ", security);
+                    if (handler->GetSession())
+                        handler->PSendSysMessage("|    %s GMLevel %u", name.c_str(), security);
+                    else
+                        handler->PSendSysMessage("|%*s%s%*s|   %u  |", max, " ", name.c_str(), max2, " ", security);
             } while (result->NextRow());
-            handler->SendSysMessage("========================");
+                    handler->SendSysMessage("========================");
         }
         else
-            handler->PSendSysMessage(LANG_GMLIST_EMPTY);
-        return true;
+                    handler->PSendSysMessage(LANG_GMLIST_EMPTY);
+                    return true;
     }
 
     //Enable\Disable Invisible mode
@@ -202,7 +202,7 @@ public:
     {
         if (!*args)
         {
-            handler->PSendSysMessage(LANG_YOU_ARE, handler->GetSession()->GetPlayer()->isGMVisible() ? handler->GetTrinityString(LANG_VISIBLE) : handler->GetTrinityString(LANG_INVISIBLE));
+            handler->PSendSysMessage(LANG_YOU_ARE, handler->GetSession()->GetPlayer()->isGMVisible() ? handler->GetFirelandsString(LANG_VISIBLE) : handler->GetFirelandsString(LANG_INVISIBLE));
             return true;
         }
 
@@ -281,7 +281,7 @@ public:
     //Enable\Disable MovieMaker Mode
     static bool HandleMovieMakerCommand(ChatHandler* handler, char const* args)
     {
-        Player *player = handler->GetSession()->GetPlayer();
+        Player* player = handler->GetSession()->GetPlayer();
         if (!player)
             return false;
         if (!*args)

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -251,7 +251,7 @@ public:
                     return true;
                 }
 
-                char const* active = activeEvents.find(id) != activeEvents.end() ? handler->GetTrinityString(LANG_ACTIVE) : "";
+                char const* active = activeEvents.find(id) != activeEvents.end() ? handler->GetFirelandsString(LANG_ACTIVE) : "";
 
                 if (handler->GetSession())
                     handler->PSendSysMessage(LANG_EVENT_ENTRY_LIST_CHAT, id, id, eventData.description.c_str(), active);
@@ -320,25 +320,25 @@ public:
                 if (factionState) // and then target != NULL also
                 {
                     uint32 index = target->GetReputationMgr().GetReputationRankStrIndex(factionEntry);
-                    std::string rankName = handler->GetTrinityString(index);
+                    std::string rankName = handler->GetFirelandsString(index);
 
                     ss << ' ' << rankName << "|h|r (" << target->GetReputationMgr().GetReputation(factionEntry) << ')';
 
                     if (factionState->Flags & FACTION_FLAG_VISIBLE)
-                        ss << handler->GetTrinityString(LANG_FACTION_VISIBLE);
+                        ss << handler->GetFirelandsString(LANG_FACTION_VISIBLE);
                     if (factionState->Flags & FACTION_FLAG_AT_WAR)
-                        ss << handler->GetTrinityString(LANG_FACTION_ATWAR);
+                        ss << handler->GetFirelandsString(LANG_FACTION_ATWAR);
                     if (factionState->Flags & FACTION_FLAG_PEACE_FORCED)
-                        ss << handler->GetTrinityString(LANG_FACTION_PEACE_FORCED);
+                        ss << handler->GetFirelandsString(LANG_FACTION_PEACE_FORCED);
                     if (factionState->Flags & FACTION_FLAG_HIDDEN)
-                        ss << handler->GetTrinityString(LANG_FACTION_HIDDEN);
+                        ss << handler->GetFirelandsString(LANG_FACTION_HIDDEN);
                     if (factionState->Flags & FACTION_FLAG_INVISIBLE_FORCED)
-                        ss << handler->GetTrinityString(LANG_FACTION_INVISIBLE_FORCED);
+                        ss << handler->GetFirelandsString(LANG_FACTION_INVISIBLE_FORCED);
                     if (factionState->Flags & FACTION_FLAG_INACTIVE)
-                        ss << handler->GetTrinityString(LANG_FACTION_INACTIVE);
+                        ss << handler->GetFirelandsString(LANG_FACTION_INACTIVE);
                 }
                 else
-                    ss << handler->GetTrinityString(LANG_FACTION_NOREPUTATION);
+                    ss << handler->GetFirelandsString(LANG_FACTION_NOREPUTATION);
 
                 handler->SendSysMessage(ss.str().c_str());
 
@@ -617,13 +617,13 @@ public:
                                 switch (status)
                                 {
                                     case QUEST_STATUS_COMPLETE:
-                                        statusStr = handler->GetTrinityString(LANG_COMMAND_QUEST_COMPLETE);
+                                        statusStr = handler->GetFirelandsString(LANG_COMMAND_QUEST_COMPLETE);
                                         break;
                                     case QUEST_STATUS_INCOMPLETE:
-                                        statusStr = handler->GetTrinityString(LANG_COMMAND_QUEST_ACTIVE);
+                                        statusStr = handler->GetFirelandsString(LANG_COMMAND_QUEST_ACTIVE);
                                         break;
                                     case QUEST_STATUS_REWARDED:
-                                        statusStr = handler->GetTrinityString(LANG_COMMAND_QUEST_REWARDED);
+                                        statusStr = handler->GetFirelandsString(LANG_COMMAND_QUEST_REWARDED);
                                         break;
                                     default:
                                         break;
@@ -665,13 +665,13 @@ public:
                     switch (status)
                     {
                         case QUEST_STATUS_COMPLETE:
-                            statusStr = handler->GetTrinityString(LANG_COMMAND_QUEST_COMPLETE);
+                            statusStr = handler->GetFirelandsString(LANG_COMMAND_QUEST_COMPLETE);
                             break;
                         case QUEST_STATUS_INCOMPLETE:
-                            statusStr = handler->GetTrinityString(LANG_COMMAND_QUEST_ACTIVE);
+                            statusStr = handler->GetFirelandsString(LANG_COMMAND_QUEST_ACTIVE);
                             break;
                         case QUEST_STATUS_REWARDED:
-                            statusStr = handler->GetTrinityString(LANG_COMMAND_QUEST_REWARDED);
+                            statusStr = handler->GetFirelandsString(LANG_COMMAND_QUEST_REWARDED);
                             break;
                         default:
                             break;
@@ -738,13 +738,13 @@ public:
                 char const* knownStr = "";
                 if (target && target->HasSkill(id))
                 {
-                    knownStr = handler->GetTrinityString(LANG_KNOWN);
+                    knownStr = handler->GetFirelandsString(LANG_KNOWN);
                     uint32 curValue = target->GetPureSkillValue(id);
                     uint32 maxValue  = target->GetPureMaxSkillValue(id);
                     uint32 permValue = target->GetSkillPermBonusValue(id);
                     uint32 tempValue = target->GetSkillTempBonusValue(id);
 
-                    char const* valFormat = handler->GetTrinityString(LANG_SKILL_VALUES);
+                    char const* valFormat = handler->GetFirelandsString(LANG_SKILL_VALUES);
                     snprintf(valStr, 50, valFormat, curValue, maxValue, permValue, tempValue);
                 }
 
@@ -828,21 +828,21 @@ public:
 
                 // include rank in link name
                 if (rank)
-                    ss << handler->GetTrinityString(LANG_SPELL_RANK) << rank;
+                    ss << handler->GetFirelandsString(LANG_SPELL_RANK) << rank;
 
                 if (handler->GetSession())
                     ss << "]|h|r";
 
                 if (talent)
-                    ss << handler->GetTrinityString(LANG_TALENT);
+                    ss << handler->GetFirelandsString(LANG_TALENT);
                 if (passive)
-                    ss << handler->GetTrinityString(LANG_PASSIVE);
+                    ss << handler->GetFirelandsString(LANG_PASSIVE);
                 if (learn)
-                    ss << handler->GetTrinityString(LANG_LEARN);
+                    ss << handler->GetFirelandsString(LANG_LEARN);
                 if (known)
-                    ss << handler->GetTrinityString(LANG_KNOWN);
+                    ss << handler->GetFirelandsString(LANG_KNOWN);
                 if (active)
-                    ss << handler->GetTrinityString(LANG_ACTIVE);
+                    ss << handler->GetFirelandsString(LANG_ACTIVE);
 
                 handler->SendSysMessage(ss.str().c_str());
 
@@ -913,7 +913,7 @@ public:
 
                 // include rank in link name
                 if (rank)
-                    ss << handler->GetTrinityString(LANG_SPELL_RANK) << rank;
+                    ss << handler->GetFirelandsString(LANG_SPELL_RANK) << rank;
 
                 if (handler->GetSession())
                     ss << ' ' << localeNames[locale] << "]|h|r";
@@ -921,15 +921,15 @@ public:
                     ss << ' ' << localeNames[locale];
 
                 if (talent)
-                    ss << handler->GetTrinityString(LANG_TALENT);
+                    ss << handler->GetFirelandsString(LANG_TALENT);
                 if (passive)
-                    ss << handler->GetTrinityString(LANG_PASSIVE);
+                    ss << handler->GetFirelandsString(LANG_PASSIVE);
                 if (learn)
-                    ss << handler->GetTrinityString(LANG_LEARN);
+                    ss << handler->GetFirelandsString(LANG_LEARN);
                 if (known)
-                    ss << handler->GetTrinityString(LANG_KNOWN);
+                    ss << handler->GetFirelandsString(LANG_KNOWN);
                 if (active)
-                    ss << handler->GetTrinityString(LANG_ACTIVE);
+                    ss << handler->GetFirelandsString(LANG_ACTIVE);
 
                 handler->SendSysMessage(ss.str().c_str());
 
@@ -1100,10 +1100,10 @@ public:
                     return true;
                 }
 
-                char const* knownStr = target && target->HasTitle(titleInfo) ? handler->GetTrinityString(LANG_KNOWN) : "";
+                char const* knownStr = target && target->HasTitle(titleInfo) ? handler->GetFirelandsString(LANG_KNOWN) : "";
 
                 char const* activeStr = target && target->GetUInt32Value(PLAYER_CHOSEN_TITLE) == titleInfo->bit_index
-                    ? handler->GetTrinityString(LANG_ACTIVE)
+                    ? handler->GetFirelandsString(LANG_ACTIVE)
                     : "";
 
                 char titleNameStr[80];
@@ -1162,21 +1162,21 @@ public:
                     ss << id << " - [" << name << ']';
 
                     if (mapInfo->IsContinent())
-                        ss << handler->GetTrinityString(LANG_CONTINENT);
+                        ss << handler->GetFirelandsString(LANG_CONTINENT);
 
                     switch (mapInfo->map_type)
                     {
                         case MAP_INSTANCE:
-                            ss << handler->GetTrinityString(LANG_INSTANCE);
+                            ss << handler->GetFirelandsString(LANG_INSTANCE);
                             break;
                         case MAP_RAID:
-                            ss << handler->GetTrinityString(LANG_RAID);
+                            ss << handler->GetFirelandsString(LANG_RAID);
                             break;
                         case MAP_BATTLEGROUND:
-                            ss << handler->GetTrinityString(LANG_BATTLEGROUND);
+                            ss << handler->GetFirelandsString(LANG_BATTLEGROUND);
                             break;
                         case MAP_ARENA:
-                            ss << handler->GetTrinityString(LANG_ARENA);
+                            ss << handler->GetFirelandsString(LANG_ARENA);
                             break;
                     }
 
@@ -1217,7 +1217,7 @@ public:
         }
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_BY_IP);
-        stmt->setString(0, ip);
+        stmt->SetData(0, ip);
         PreparedQueryResult result = LoginDatabase.Query(stmt);
 
         return LookupPlayerSearchCommand(result, limit, handler);
@@ -1237,7 +1237,7 @@ public:
             return false;
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_LIST_BY_NAME);
-        stmt->setString(0, account);
+        stmt->SetData(0, account);
         PreparedQueryResult result = LoginDatabase.Query(stmt);
 
         return LookupPlayerSearchCommand(result, limit, handler);
@@ -1253,7 +1253,7 @@ public:
         int32 limit = limitStr ? atoi(limitStr) : -1;
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_LIST_BY_EMAIL);
-        stmt->setString(0, email);
+        stmt->SetData(0, email);
         PreparedQueryResult result = LoginDatabase.Query(stmt);
 
         return LookupPlayerSearchCommand(result, limit, handler);
@@ -1281,11 +1281,11 @@ public:
             }
 
             Field* fields           = result->Fetch();
-            uint32 accountId        = fields[0].GetUInt32();
-            std::string accountName = fields[1].GetString();
+            uint32 accountId        = fields[0].Get<uint32>();
+            std::string accountName = fields[1].Get<std::string>();
 
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_GUID_NAME_BY_ACC);
-            stmt->setUInt32(0, accountId);
+            stmt->SetData(0, accountId);
             PreparedQueryResult result2 = CharacterDatabase.Query(stmt);
 
             if (result2)
@@ -1295,8 +1295,8 @@ public:
                 do
                 {
                     Field* characterFields  = result2->Fetch();
-                    uint32 guid             = characterFields[0].GetUInt32();
-                    std::string name        = characterFields[1].GetString();
+                    uint32 guid             = characterFields[0].Get<uint32>();
+                    std::string name        = characterFields[1].Get<std::string>();
 
                     handler->PSendSysMessage(LANG_LOOKUP_PLAYER_CHARACTER, name.c_str(), guid, sObjectMgr->GetPlayerByLowGUID(guid) ? "[Online]" : "");
                     ++counter;

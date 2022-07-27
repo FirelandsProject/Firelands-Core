@@ -1275,14 +1275,14 @@ class ObjectMgr
         GameObjectData& NewGOData(uint32 guid) { return _gameObjectDataStore[guid]; }
         void DeleteGOData(uint32 guid);
 
-        TrinityStringLocale const* GetTrinityStringLocale(int32 entry) const
+        TrinityStringLocale const* GetFirelandsStringLocale(int32 entry) const
         {
             TrinityStringLocaleContainer::const_iterator itr = _trinityStringLocaleStore.find(entry);
             if (itr == _trinityStringLocaleStore.end()) return NULL;
             return &itr->second;
         }
-        const char *GetTrinityString(int32 entry, LocaleConstant locale_idx) const;
-        const char *GetTrinityStringForDBCLocale(int32 entry) const { return GetTrinityString(entry, DBCLocaleIndex); }
+        const char *GetFirelandsString(int32 entry, LocaleConstant locale_idx) const;
+        const char *GetFirelandsStringForDBCLocale(int32 entry) const { return GetFirelandsString(entry, DBCLocaleIndex); }
         LocaleConstant GetDBCLocaleIndex() const { return DBCLocaleIndex; }
         void SetDBCLocaleIndex(LocaleConstant locale) { DBCLocaleIndex = locale; }
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -128,13 +128,13 @@ public:
             handler->SendSysMessage(LANG_COMMAND_GOCREATMULTIPLE);
 
         Field* fields = result->Fetch();
-        float x = fields[0].GetFloat();
-        float y = fields[1].GetFloat();
-        float z = fields[2].GetFloat();
-        float ort = fields[3].GetFloat();
-        int mapId = fields[4].GetUInt16();
-        uint32 guid = fields[5].GetUInt32();
-        uint32 id = fields[6].GetUInt32();
+        float x = fields[0].Get<float>();
+        float y = fields[1].Get<float>();
+        float z = fields[2].Get<float>();
+        float ort = fields[3].Get<float>();
+        int mapId = fields[4].Get<uint16>();
+        uint32 guid = fields[5].Get<uint32>();
+        uint32 id = fields[6].Get<uint32>();
 
         // if creature is in same map with caster go at its current location
         if (Creature* creature = sObjectAccessor->GetCreature(*player, MAKE_NEW_GUID(guid, id, HIGHGUID_UNIT)))

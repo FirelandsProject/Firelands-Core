@@ -565,7 +565,7 @@ void Battlefield::SendWarningToAllInZone(uint32 entry, ...)
         sCreatureTextMgr->SendChat(stalker, (uint8) entry, 0, CHAT_MSG_BG_SYSTEM_NEUTRAL, LANG_ADDON, TEXT_RANGE_ZONE);
     else
     {
-        const char *format = sObjectMgr->GetTrinityStringForDBCLocale(entry);
+        const char *format = sObjectMgr->GetFirelandsStringForDBCLocale(entry);
         va_list ap;
         char str [1024];
         va_start(ap, entry);
@@ -580,7 +580,7 @@ void Battlefield::SendWarningToAllInZone(uint32 entry, ...)
 
 void Battlefield::SendWarningToAllInWar(int32 entry, ...)
 {
-    const char *format = sObjectMgr->GetTrinityStringForDBCLocale(entry);
+    const char *format = sObjectMgr->GetFirelandsStringForDBCLocale(entry);
     va_list ap;
     char str [1024];
     va_start(ap, entry);

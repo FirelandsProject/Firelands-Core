@@ -541,7 +541,7 @@ void WorldSession::HandleAddFriendOpcode(WorldPacket& recvData)
 {
     LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ADD_FRIEND");
 
-    std::string friendName = GetTrinityString(LANG_FRIEND_IGNORE_UNKNOWN);
+    std::string friendName = GetFirelandsString(LANG_FRIEND_IGNORE_UNKNOWN);
     std::string friendNote;
 
     recvData >> friendName;
@@ -637,7 +637,7 @@ void WorldSession::HandleAddIgnoreOpcode(WorldPacket& recvData)
 {
     LOG_DEBUG("network.opcode", "WORLD: Received CMSG_ADD_IGNORE");
 
-    std::string ignoreName = GetTrinityString(LANG_FRIEND_IGNORE_UNKNOWN);
+    std::string ignoreName = GetFirelandsString(LANG_FRIEND_IGNORE_UNKNOWN);
 
     recvData >> ignoreName;
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -79,8 +79,8 @@ public:
             if (channcel)
                 channcel->SetOwnership(true);
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL_OWNERSHIP);
-            stmt->setUInt8 (0, 1);
-            stmt->setString(1, channelStr);
+            stmt->SetData (0, 1);
+            stmt->SetData(1, channelStr);
             CharacterDatabase.Execute(stmt);
             handler->PSendSysMessage(LANG_CHANNEL_ENABLE_OWNERSHIP, channelStr);
         }
@@ -89,8 +89,8 @@ public:
             if (channcel)
                 channcel->SetOwnership(false);
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHANNEL_OWNERSHIP);
-            stmt->setUInt8 (0, 0);
-            stmt->setString(1, channelStr);
+            stmt->SetData (0, 0);
+            stmt->SetData(1, channelStr);
             CharacterDatabase.Execute(stmt);
             handler->PSendSysMessage(LANG_CHANNEL_DISABLE_OWNERSHIP, channelStr);
         }
@@ -132,7 +132,7 @@ public:
             return false;
 
         char buff[2048];
-        sprintf(buff, handler->GetTrinityString(LANG_SYSTEMMESSAGE), args);
+        sprintf(buff, handler->GetFirelandsString(LANG_SYSTEMMESSAGE), args);
         sWorld->SendServerMessage(SERVER_MSG_STRING, buff);
         return true;
     }
@@ -151,7 +151,7 @@ public:
         if (!*args)
             return false;
 
-        std::string str = handler->GetTrinityString(LANG_GLOBAL_NOTIFY);
+        std::string str = handler->GetFirelandsString(LANG_GLOBAL_NOTIFY);
         str += args;
 
         WorldPacket data(SMSG_NOTIFICATION, (str.size()+1));
@@ -166,7 +166,7 @@ public:
         if (!*args)
             return false;
 
-        std::string str = handler->GetTrinityString(LANG_GM_NOTIFY);
+        std::string str = handler->GetFirelandsString(LANG_GM_NOTIFY);
         str += args;
 
         WorldPacket data(SMSG_NOTIFICATION, (str.size()+1));
@@ -180,7 +180,7 @@ public:
     {
         if (!*args)
         {
-            handler->PSendSysMessage(LANG_COMMAND_WHISPERACCEPTING, handler->GetSession()->GetPlayer()->isAcceptWhispers() ?  handler->GetTrinityString(LANG_ON) : handler->GetTrinityString(LANG_OFF));
+            handler->PSendSysMessage(LANG_COMMAND_WHISPERACCEPTING, handler->GetSession()->GetPlayer()->isAcceptWhispers() ?  handler->GetFirelandsString(LANG_ON) : handler->GetFirelandsString(LANG_OFF));
             return true;
         }
 

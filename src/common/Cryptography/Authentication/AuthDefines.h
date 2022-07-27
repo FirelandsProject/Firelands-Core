@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
  * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,27 +17,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _AUTHCRYPT_H
-#define _AUTHCRYPT_H
+#ifndef FIRELANDS_AUTHDEFINES_H
+#define FIRELANDS_AUTHDEFINES_H
 
-#include "ARC4.h"
-#include "AuthDefines.h"
+#include "Define.h"
 #include <array>
 
-class AuthCrypt
-{
-public:
-    AuthCrypt();
+constexpr size_t SESSION_KEY_LENGTH = 40;
+using SessionKey = std::array<uint8, SESSION_KEY_LENGTH>;
 
-    void Init(SessionKey const& K);
-    void DecryptRecv(uint8* data, size_t len);
-    void EncryptSend(uint8* data, size_t len);
-
-    bool IsInitialized() const { return _initialized; }
-
-private:
-    Firelands::Crypto::ARC4 _clientDecrypt;
-    Firelands::Crypto::ARC4 _serverEncrypt;
-    bool _initialized;
-};
 #endif

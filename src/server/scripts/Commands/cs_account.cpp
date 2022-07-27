@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,18 +16,29 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* ScriptData
-Name: account_commandscript
-%Complete: 100
-Comment: All account related commands
-Category: commandscripts
-EndScriptData */
+ /* ScriptData
+ Name: account_commandscript
+ %Complete: 100
+ Comment: All account related commands
+ Category: commandscripts
+ EndScriptData */
 
+#include "AES.h"
 #include "AccountMgr.h"
+#include "Base32.h"
 #include "Chat.h"
+#include "CryptoGenerics.h"
+#include "IPLocation.h"
 #include "Language.h"
 #include "Player.h"
 #include "ScriptMgr.h"
+#include "Realm.h"
+#include "SecretMgr.h"
+#include "StringConvert.h"
+#include "TOTP.h"
+#include <openssl/rand.h>
+#include <unordered_map>
+
 
 class account_commandscript : public CommandScript
 {
@@ -83,8 +94,8 @@ public:
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_EXPANSION);
 
-        stmt->setUInt8(0, uint8(expansion));
-        stmt->setUInt32(1, accountId);
+        stmt->SetData(0, uint8(expansion));
+        stmt->SetData(1, accountId);
 
         LoginDatabase.Execute(stmt);
 
@@ -107,31 +118,31 @@ public:
         AccountOpResult result = AccountMgr::CreateAccount(std::string(accountName), std::string(password));
         switch (result)
         {
-            case AOR_OK:
-                handler->PSendSysMessage(LANG_ACCOUNT_CREATED, accountName);
-                if (handler->GetSession())
-                {
-                    LOG_INFO("entities.player.character", "Account: %d (IP: %s) Character:[%s] (GUID: %u) Change Password.",
-                        handler->GetSession()->GetAccountId(), handler->GetSession()->GetRemoteAddress().c_str(),
-                        handler->GetSession()->GetPlayer()->GetName().c_str(), handler->GetSession()->GetPlayer()->GetGUIDLow());
-                }
-                break;
-            case AOR_NAME_TOO_LONG:
-                handler->SendSysMessage(LANG_ACCOUNT_TOO_LONG);
-                handler->SetSentErrorMessage(true);
-                return false;
-            case AOR_NAME_ALREDY_EXIST:
-                handler->SendSysMessage(LANG_ACCOUNT_ALREADY_EXIST);
-                handler->SetSentErrorMessage(true);
-                return false;
-            case AOR_DB_INTERNAL_ERROR:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_CREATED_SQL_ERROR, accountName);
-                handler->SetSentErrorMessage(true);
-                return false;
-            default:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_CREATED, accountName);
-                handler->SetSentErrorMessage(true);
-                return false;
+        case AOR_OK:
+            handler->PSendSysMessage(LANG_ACCOUNT_CREATED, accountName);
+            if (handler->GetSession())
+            {
+                LOG_INFO("entities.player.character", "Account: {} (IP: {}) Character:[{}] (GUID: {}) Change Password.",
+                    handler->GetSession()->GetAccountId(), handler->GetSession()->GetRemoteAddress(),
+                    handler->GetSession()->GetPlayer()->GetName(), handler->GetSession()->GetPlayer()->GetGUIDLow());
+            }
+            break;
+        case AOR_NAME_TOO_LONG:
+            handler->SendSysMessage(LANG_ACCOUNT_TOO_LONG);
+            handler->SetSentErrorMessage(true);
+            return false;
+        case AOR_NAME_ALREDY_EXIST:
+            handler->SendSysMessage(LANG_ACCOUNT_ALREADY_EXIST);
+            handler->SetSentErrorMessage(true);
+            return false;
+        case AOR_DB_INTERNAL_ERROR:
+            handler->PSendSysMessage(LANG_ACCOUNT_NOT_CREATED_SQL_ERROR, accountName);
+            handler->SetSentErrorMessage(true);
+            return false;
+        default:
+            handler->PSendSysMessage(LANG_ACCOUNT_NOT_CREATED, accountName);
+            handler->SetSentErrorMessage(true);
+            return false;
         }
 
         return true;
@@ -174,21 +185,21 @@ public:
         AccountOpResult result = AccountMgr::DeleteAccount(accountId);
         switch (result)
         {
-            case AOR_OK:
-                handler->PSendSysMessage(LANG_ACCOUNT_DELETED, accountName.c_str());
-                break;
-            case AOR_NAME_NOT_EXIST:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
-                handler->SetSentErrorMessage(true);
-                return false;
-            case AOR_DB_INTERNAL_ERROR:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_DELETED_SQL_ERROR, accountName.c_str());
-                handler->SetSentErrorMessage(true);
-                return false;
-            default:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_DELETED, accountName.c_str());
-                handler->SetSentErrorMessage(true);
-                return false;
+        case AOR_OK:
+            handler->PSendSysMessage(LANG_ACCOUNT_DELETED, accountName.c_str());
+            break;
+        case AOR_NAME_NOT_EXIST:
+            handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
+            handler->SetSentErrorMessage(true);
+            return false;
+        case AOR_DB_INTERNAL_ERROR:
+            handler->PSendSysMessage(LANG_ACCOUNT_NOT_DELETED_SQL_ERROR, accountName.c_str());
+            handler->SetSentErrorMessage(true);
+            return false;
+        default:
+            handler->PSendSysMessage(LANG_ACCOUNT_NOT_DELETED, accountName.c_str());
+            handler->SetSentErrorMessage(true);
+            return false;
         }
 
         return true;
@@ -217,27 +228,26 @@ public:
         do
         {
             Field* fieldsDB = result->Fetch();
-            std::string name = fieldsDB[0].GetString();
-            uint32 account = fieldsDB[1].GetUInt32();
+            std::string name = fieldsDB[0].Get<std::string>();
+            uint32 account = fieldsDB[1].Get<uint32>();
 
             ///- Get the username, last IP and GM level of each account
             // No SQL injection. account is uint32.
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_INFO);
-            stmt->setUInt32(0, account);
+            stmt->SetData(0, account);
             PreparedQueryResult resultLogin = LoginDatabase.Query(stmt);
 
             if (resultLogin)
             {
                 Field* fieldsLogin = resultLogin->Fetch();
                 handler->PSendSysMessage(LANG_ACCOUNT_LIST_LINE,
-                    fieldsLogin[0].GetCString(), name.c_str(), fieldsLogin[1].GetCString(),
-                    fieldsDB[2].GetUInt16(), fieldsDB[3].GetUInt16(), fieldsLogin[3].GetUInt8(),
-                    fieldsLogin[2].GetUInt8());
+                    fieldsLogin[0].Get<std::string>().c_str(), name.c_str(), fieldsLogin[1].Get<std::string>().c_str(),
+                    fieldsDB[2].Get<uint16>(), fieldsDB[3].Get<uint16>(), fieldsLogin[3].Get<uint8>(),
+                    fieldsLogin[2].Get<uint8>());
             }
             else
                 handler->PSendSysMessage(LANG_ACCOUNT_LIST_ERROR, name.c_str());
-        }
-        while (result->NextRow());
+        } while (result->NextRow());
 
         handler->SendSysMessage(LANG_ACCOUNT_LIST_BAR);
         return true;
@@ -260,16 +270,16 @@ public:
 
             if (param == "on")
             {
-                stmt->setBool(0, true);                                     // locked
+                stmt->SetData(0, true);                                     // locked
                 handler->PSendSysMessage(LANG_COMMAND_ACCLOCKLOCKED);
             }
             else if (param == "off")
             {
-                stmt->setBool(0, false);                                    // unlocked
+                stmt->SetData(0, false);                                    // unlocked
                 handler->PSendSysMessage(LANG_COMMAND_ACCLOCKUNLOCKED);
             }
 
-            stmt->setUInt32(1, handler->GetSession()->GetAccountId());
+            stmt->SetData(1, handler->GetSession()->GetAccountId());
 
             LoginDatabase.Execute(stmt);
             return true;
@@ -304,9 +314,9 @@ public:
         {
             handler->SendSysMessage(LANG_COMMAND_WRONGOLDPASSWORD);
             handler->SetSentErrorMessage(true);
-            LOG_INFO("entities.player.character", "Account: %u (IP: %s) Character:[%s] (GUID: %u) Tried to change password.",
-                handler->GetSession()->GetAccountId(), handler->GetSession()->GetRemoteAddress().c_str(),
-                handler->GetSession()->GetPlayer()->GetName().c_str(), handler->GetSession()->GetPlayer()->GetGUIDLow());
+            LOG_INFO("entities.player.character", "Account: {} (IP: {}) Character:[{}] (GUID: {}) Tried to change password.",
+                handler->GetSession()->GetAccountId(), handler->GetSession()->GetRemoteAddress(),
+                handler->GetSession()->GetPlayer()->GetName(), handler->GetSession()->GetPlayer()->GetGUIDLow());
             return false;
         }
 
@@ -320,20 +330,20 @@ public:
         AccountOpResult result = AccountMgr::ChangePassword(handler->GetSession()->GetAccountId(), std::string(newPassword));
         switch (result)
         {
-            case AOR_OK:
-                handler->SendSysMessage(LANG_COMMAND_PASSWORD);
-                LOG_INFO("entities.player.character", "Account: %u (IP: %s) Character:[%s] (GUID: %u) Changed Password.",
-                    handler->GetSession()->GetAccountId(), handler->GetSession()->GetRemoteAddress().c_str(),
-                    handler->GetSession()->GetPlayer()->GetName().c_str(), handler->GetSession()->GetPlayer()->GetGUIDLow());
-                break;
-            case AOR_PASS_TOO_LONG:
-                handler->SendSysMessage(LANG_PASSWORD_TOO_LONG);
-                handler->SetSentErrorMessage(true);
-                return false;
-            default:
-                handler->SendSysMessage(LANG_COMMAND_NOTCHANGEPASSWORD);
-                handler->SetSentErrorMessage(true);
-                return false;
+        case AOR_OK:
+            handler->SendSysMessage(LANG_COMMAND_PASSWORD);
+            LOG_INFO("entities.player.character", "Account: {} (IP: {}) Character:[{}] (GUID: {}) Changed Password.",
+                handler->GetSession()->GetAccountId(), handler->GetSession()->GetRemoteAddress(),
+                handler->GetSession()->GetPlayer()->GetName(), handler->GetSession()->GetPlayer()->GetGUIDLow());
+            break;
+        case AOR_PASS_TOO_LONG:
+            handler->SendSysMessage(LANG_PASSWORD_TOO_LONG);
+            handler->SetSentErrorMessage(true);
+            return false;
+        default:
+            handler->SendSysMessage(LANG_COMMAND_NOTCHANGEPASSWORD);
+            handler->SetSentErrorMessage(true);
+            return false;
         }
 
         return true;
@@ -401,8 +411,8 @@ public:
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_EXPANSION);
 
-        stmt->setUInt8(0, expansion);
-        stmt->setUInt32(1, accountId);
+        stmt->SetData(0, expansion);
+        stmt->SetData(1, accountId);
 
         LoginDatabase.Execute(stmt);
 
@@ -480,8 +490,8 @@ public:
         {
             PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_ACCOUNT_ACCESS_GMLEVEL_TEST);
 
-            stmt->setUInt32(0, targetAccountId);
-            stmt->setUInt8(1, uint8(gm));
+            stmt->SetData(0, targetAccountId);
+            stmt->SetData(1, uint8(gm));
 
             PreparedQueryResult result = LoginDatabase.Query(stmt);
 
@@ -508,14 +518,14 @@ public:
         {
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_ACCESS);
 
-            stmt->setUInt32(0, targetAccountId);
+            stmt->SetData(0, targetAccountId);
         }
         else
         {
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_ACCOUNT_ACCESS_BY_REALM);
 
-            stmt->setUInt32(0, targetAccountId);
-            stmt->setUInt32(1, realmID);
+            stmt->SetData(0, targetAccountId);
+            stmt->SetData(1, realmID);
         }
 
         LoginDatabase.Execute(stmt);
@@ -524,9 +534,9 @@ public:
         {
             stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_ACCOUNT_ACCESS);
 
-            stmt->setUInt32(0, targetAccountId);
-            stmt->setUInt8(1, uint8(gm));
-            stmt->setInt32(2, gmRealmID);
+            stmt->SetData(0, targetAccountId);
+            stmt->SetData(1, uint8(gm));
+            stmt->SetData(2, gmRealmID);
 
             LoginDatabase.Execute(stmt);
         }
@@ -582,21 +592,21 @@ public:
 
         switch (result)
         {
-            case AOR_OK:
-                handler->SendSysMessage(LANG_COMMAND_PASSWORD);
-                break;
-            case AOR_NAME_NOT_EXIST:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
-                handler->SetSentErrorMessage(true);
-                return false;
-            case AOR_PASS_TOO_LONG:
-                handler->SendSysMessage(LANG_PASSWORD_TOO_LONG);
-                handler->SetSentErrorMessage(true);
-                return false;
-            default:
-                handler->SendSysMessage(LANG_COMMAND_NOTCHANGEPASSWORD);
-                handler->SetSentErrorMessage(true);
-                return false;
+        case AOR_OK:
+            handler->SendSysMessage(LANG_COMMAND_PASSWORD);
+            break;
+        case AOR_NAME_NOT_EXIST:
+            handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
+            handler->SetSentErrorMessage(true);
+            return false;
+        case AOR_PASS_TOO_LONG:
+            handler->SendSysMessage(LANG_PASSWORD_TOO_LONG);
+            handler->SetSentErrorMessage(true);
+            return false;
+        default:
+            handler->SendSysMessage(LANG_COMMAND_NOTCHANGEPASSWORD);
+            handler->SetSentErrorMessage(true);
+            return false;
         }
         return true;
     }

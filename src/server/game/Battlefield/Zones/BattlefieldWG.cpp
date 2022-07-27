@@ -424,9 +424,9 @@ void BattlefieldWG::OnBattleEnd(bool endByTimer)
     }
 
     if (!endByTimer) // win alli/horde
-        SendWarningToAllInZone(BATTLEFIELD_WG_TEXT_WIN_KEEP, sObjectMgr->GetTrinityStringForDBCLocale((GetDefenderTeam() == TEAM_ALLIANCE) ? BATTLEFIELD_WG_TEXT_ALLIANCE : BATTLEFIELD_WG_TEXT_HORDE));
+        SendWarningToAllInZone(BATTLEFIELD_WG_TEXT_WIN_KEEP, sObjectMgr->GetFirelandsStringForDBCLocale((GetDefenderTeam() == TEAM_ALLIANCE) ? BATTLEFIELD_WG_TEXT_ALLIANCE : BATTLEFIELD_WG_TEXT_HORDE));
     else // defend alli/horde
-        SendWarningToAllInZone(BATTLEFIELD_WG_TEXT_DEFEND_KEEP, sObjectMgr->GetTrinityStringForDBCLocale((GetDefenderTeam() == TEAM_ALLIANCE) ? BATTLEFIELD_WG_TEXT_ALLIANCE : BATTLEFIELD_WG_TEXT_HORDE));
+        SendWarningToAllInZone(BATTLEFIELD_WG_TEXT_DEFEND_KEEP, sObjectMgr->GetFirelandsStringForDBCLocale((GetDefenderTeam() == TEAM_ALLIANCE) ? BATTLEFIELD_WG_TEXT_ALLIANCE : BATTLEFIELD_WG_TEXT_HORDE));
 }
 
 // *******************************************************

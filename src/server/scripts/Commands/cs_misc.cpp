@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -136,10 +136,10 @@ public:
     static bool HandleUtilityCustomizeCommand(ChatHandler* handler, char const* /*args*/)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CUSTOMIZE));
+        stmt->SetData(0, uint16(AT_LOGIN_CUSTOMIZE));
         handler->PSendSysMessage("Relog to customize your character.");
         handler->GetSession()->GetPlayer()->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-        stmt->setUInt32(1, handler->GetSession()->GetPlayer()->GetGUID());
+        stmt->SetData(1, handler->GetSession()->GetPlayer()->GetGUID());
         CharacterDatabase.Execute(stmt);
         return true;
     }
@@ -147,10 +147,10 @@ public:
     static bool HandleUtilityChangeFactionCommand(ChatHandler* handler, char const* /*args*/)
     {
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_FACTION));
+        stmt->SetData(0, uint16(AT_LOGIN_CHANGE_FACTION));
         handler->PSendSysMessage("Relog to change your faction.");
         handler->GetSession()->GetPlayer()->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-        stmt->setUInt32(1, handler->GetSession()->GetPlayer()->GetGUID());
+        stmt->SetData(1, handler->GetSession()->GetPlayer()->GetGUID());
         CharacterDatabase.Execute(stmt);
         return true;
     }
@@ -159,10 +159,10 @@ public:
     {
         Player* session = handler->GetSession()->GetPlayer();
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_ADD_AT_LOGIN_FLAG);
-        stmt->setUInt16(0, uint16(AT_LOGIN_CHANGE_RACE));
+        stmt->SetData(0, uint16(AT_LOGIN_CHANGE_RACE));
         handler->PSendSysMessage("Relog to change your race.");
         session->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
-        stmt->setUInt32(1, session->GetGUIDLow());
+        stmt->SetData(1, session->GetGUIDLow());
         CharacterDatabase.Execute(stmt);
         return true;
     }
@@ -576,7 +576,7 @@ public:
 
             std::string nameLink = handler->playerLink(targetName);
 
-            handler->PSendSysMessage(LANG_SUMMONING, nameLink.c_str(), handler->GetTrinityString(LANG_OFFLINE));
+            handler->PSendSysMessage(LANG_SUMMONING, nameLink.c_str(), handler->GetFirelandsString(LANG_OFFLINE));
 
             // in point where GM stay
             SQLTransaction dummy;
@@ -852,13 +852,13 @@ public:
 
             if (!sSpellMgr->GetSpellInfo(spellIid))
             {
-                handler->PSendSysMessage(LANG_UNKNOWN_SPELL, target == handler->GetSession()->GetPlayer() ? handler->GetTrinityString(LANG_YOU) : nameLink.c_str());
+                handler->PSendSysMessage(LANG_UNKNOWN_SPELL, target == handler->GetSession()->GetPlayer() ? handler->GetFirelandsString(LANG_YOU) : nameLink.c_str());
                 handler->SetSentErrorMessage(true);
                 return false;
             }
 
             target->RemoveSpellCooldown(spellIid, true);
-            handler->PSendSysMessage(LANG_REMOVE_COOLDOWN, spellIid, target == handler->GetSession()->GetPlayer() ? handler->GetTrinityString(LANG_YOU) : nameLink.c_str());
+            handler->PSendSysMessage(LANG_REMOVE_COOLDOWN, spellIid, target == handler->GetSession()->GetPlayer() ? handler->GetFirelandsString(LANG_YOU) : nameLink.c_str());
         }
         return true;
     }
@@ -1133,14 +1133,14 @@ public:
 
             team = data->team;
 
-            std::string team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_NOTEAM);
+            std::string team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_NOTEAM);
 
             if (team == 0)
-                team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_ANY);
+                team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_ANY);
             else if (team == HORDE)
-                team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_HORDE);
+                team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_HORDE);
             else if (team == ALLIANCE)
-                team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_ALLIANCE);
+                team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_ALLIANCE);
 
             handler->PSendSysMessage(LANG_COMMAND_GRAVEYARDNEAREST, graveyardId, team_name.c_str(), zone_id);
         }
@@ -1149,11 +1149,11 @@ public:
             std::string team_name;
 
             if (team == 0)
-                team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_ANY);
+                team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_ANY);
             else if (team == HORDE)
-                team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_HORDE);
+                team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_HORDE);
             else if (team == ALLIANCE)
-                team_name = handler->GetTrinityString(LANG_COMMAND_GRAVEYARD_ALLIANCE);
+                team_name = handler->GetFirelandsString(LANG_COMMAND_GRAVEYARD_ALLIANCE);
 
             if (team == ~uint32(0))
                 handler->PSendSysMessage(LANG_COMMAND_ZONENOGRAVEYARDS, zone_id);
@@ -1243,7 +1243,7 @@ public:
                 WorldDatabase.EscapeString(itemName);
 
                 PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_ITEM_TEMPLATE_BY_NAME);
-                stmt->setString(0, itemName);
+                stmt->SetData(0, itemName);
                 PreparedQueryResult result = WorldDatabase.Query(stmt);
 
                 if (!result)
@@ -1280,7 +1280,7 @@ public:
         if (!playerTarget)
             playerTarget = player;
 
-        LOG_DEBUG("misc", handler->GetTrinityString(LANG_ADDITEM), itemId, count);
+        LOG_DEBUG("misc", handler->GetFirelandsString(LANG_ADDITEM), itemId, count);
 
         ItemTemplate const* itemTemplate = sObjectMgr->GetItemTemplate(itemId);
         if (!itemTemplate)
@@ -1359,7 +1359,7 @@ public:
         if (!playerTarget)
             playerTarget = player;
 
-        LOG_DEBUG("misc", handler->GetTrinityString(LANG_ADDITEMSET), itemSetId);
+        LOG_DEBUG("misc", handler->GetFirelandsString(LANG_ADDITEMSET), itemSetId);
 
         bool found = false;
         ItemTemplateContainer const* its = sObjectMgr->GetItemTemplateStore();
@@ -1579,49 +1579,49 @@ public:
                 return false;
 
             PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_PINFO);
-            stmt->setUInt32(0, GUID_LOPART(targetGuid));
+            stmt->SetData(0, GUID_LOPART(targetGuid));
             PreparedQueryResult result = CharacterDatabase.Query(stmt);
 
             if (!result)
                 return false;
 
             Field* fields     = result->Fetch();
-            totalPlayerTime   = fields[0].GetUInt32();
-            level             = fields[1].GetUInt8();
-            money             = fields[2].GetUInt64();
-            accId             = fields[3].GetUInt32();
-            race              = fields[4].GetUInt8();
-            Class             = fields[5].GetUInt8();
-            mapId             = fields[6].GetUInt16();
-            areaId            = fields[7].GetUInt16();
+            totalPlayerTime   = fields[0].Get<uint32>();
+            level             = fields[1].Get<uint8>();
+            money             = fields[2].Get<uint64>();
+            accId             = fields[3].Get<uint32>();
+            race              = fields[4].Get<uint8>();
+            Class             = fields[5].Get<uint8>();
+            mapId             = fields[6].Get<uint16>();
+            areaId            = fields[7].Get<uint16>();
         }
 
-        std::string userName    = handler->GetTrinityString(LANG_ERROR);
-        std::string eMail       = handler->GetTrinityString(LANG_ERROR);
-        std::string lastIp      = handler->GetTrinityString(LANG_ERROR);
+        std::string userName    = handler->GetFirelandsString(LANG_ERROR);
+        std::string eMail       = handler->GetFirelandsString(LANG_ERROR);
+        std::string lastIp      = handler->GetFirelandsString(LANG_ERROR);
         uint32 security         = 0;
-        std::string lastLogin   = handler->GetTrinityString(LANG_ERROR);
+        std::string lastLogin   = handler->GetFirelandsString(LANG_ERROR);
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_PINFO);
-        stmt->setInt32(0, int32(realmID));
-        stmt->setUInt32(1, accId);
+        stmt->SetData(0, int32(realmID));
+        stmt->SetData(1, accId);
         PreparedQueryResult result = LoginDatabase.Query(stmt);
 
         if (result)
         {
             Field* fields = result->Fetch();
-            userName      = fields[0].GetString();
-            security      = fields[1].GetUInt8();
-            eMail         = fields[2].GetString();
-            muteTime      = fields[5].GetUInt64();
+            userName      = fields[0].Get<std::string>();
+            security      = fields[1].Get<uint8>();
+            eMail         = fields[2].Get<std::string>();
+            muteTime      = fields[5].Get<uint64>();
 
             if (eMail.empty())
                 eMail = "-";
 
             if (!handler->GetSession() || handler->GetSession()->GetSecurity() >= AccountTypes(security))
             {
-                lastIp = fields[3].GetString();
-                lastLogin = fields[4].GetString();
+                lastIp = fields[3].Get<std::string>();
+                lastLogin = fields[4].Get<std::string>();
 
                 uint32 ip = inet_addr(lastIp.c_str());
 #if FIRELANDS_ENDIAN == BIGENDIAN
@@ -1630,7 +1630,7 @@ public:
 
                 PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_IP2NATION_COUNTRY);
 
-                stmt->setUInt32(0, ip);
+                stmt->SetData(0, ip);
 
                 PreparedQueryResult result2 = WorldDatabase.Query(stmt);
 
@@ -1638,7 +1638,7 @@ public:
                 {
                     Field* fields2 = result2->Fetch();
                     lastIp.append(" (");
-                    lastIp.append(fields2[0].GetString());
+                    lastIp.append(fields2[0].Get<std::string>());
                     lastIp.append(")");
                 }
             }
@@ -1651,27 +1651,27 @@ public:
 
         std::string nameLink = handler->playerLink(targetName);
 
-        handler->PSendSysMessage(LANG_PINFO_ACCOUNT, (target ? "" : handler->GetTrinityString(LANG_OFFLINE)), nameLink.c_str(), GUID_LOPART(targetGuid), userName.c_str(), accId, eMail.c_str(), security, lastIp.c_str(), lastLogin.c_str(), latency);
+        handler->PSendSysMessage(LANG_PINFO_ACCOUNT, (target ? "" : handler->GetFirelandsString(LANG_OFFLINE)), nameLink.c_str(), GUID_LOPART(targetGuid), userName.c_str(), accId, eMail.c_str(), security, lastIp.c_str(), lastLogin.c_str(), latency);
 
         std::string bannedby = "unknown";
         std::string banreason = "";
 
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_PINFO_BANS);
-        stmt->setUInt32(0, accId);
+        stmt->SetData(0, accId);
         PreparedQueryResult result2 = LoginDatabase.Query(stmt);
         if (!result2)
         {
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PINFO_BANS);
-            stmt->setUInt32(0, GUID_LOPART(targetGuid));
+            stmt->SetData(0, GUID_LOPART(targetGuid));
             result2 = CharacterDatabase.Query(stmt);
         }
 
         if (result2)
         {
             Field* fields = result2->Fetch();
-            banTime       = int64(fields[1].GetUInt64() ? 0 : fields[0].GetUInt32());
-            bannedby      = fields[2].GetString();
-            banreason     = fields[3].GetString();
+            banTime       = int64(fields[1].Get<uint64>() ? 0 : fields[0].Get<uint32>());
+            bannedby      = fields[2].Get<std::string>();
+            banreason     = fields[3].Get<std::string>();
         }
 
         if (muteTime > 0)
@@ -1795,11 +1795,11 @@ public:
         {
             Field* fields = result->Fetch();
 
-            uint32 guildId = fields[0].GetUInt32();
-            std::string guildName = fields[1].GetString();
-            std::string guildRank = fields[2].GetString();
-            std::string note = fields[3].GetString();
-            std::string officeNote = fields[4].GetString();
+            uint32 guildId = fields[0].Get<uint32>();
+            std::string guildName = fields[1].Get<std::string>();
+            std::string guildRank = fields[2].Get<std::string>();
+            std::string note = fields[3].Get<std::string>();
+            std::string officeNote = fields[4].Get<std::string>();
 
             handler->PSendSysMessage(LANG_PINFO_GUILD_INFO, guildName.c_str(), guildId, guildRank.c_str(), note.c_str(), officeNote.c_str());
         }
@@ -1879,17 +1879,17 @@ public:
             // Target is online, mute will be in effect right away.
             int64 muteTime = time(NULL) + notSpeakTime * MINUTE;
             target->GetSession()->m_muteTime = muteTime;
-            stmt->setInt64(0, muteTime);
+            stmt->SetData(0, muteTime);
             ChatHandler(target->GetSession()).PSendSysMessage(LANG_YOUR_CHAT_DISABLED, notSpeakTime, muteReasonStr.c_str());
         }
         else
         {
             // Target is offline, mute will be in effect starting from the next login.
             int32 muteTime = -int32(notSpeakTime * MINUTE);
-            stmt->setInt64(0, muteTime);
+            stmt->SetData(0, muteTime);
         }
 
-        stmt->setUInt32(1, accountId);
+        stmt->SetData(1, accountId);
         LoginDatabase.Execute(stmt);
         std::string nameLink = handler->playerLink(targetName);
 
@@ -1931,8 +1931,8 @@ public:
         }
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_MUTE_TIME);
-        stmt->setInt64(0, 0);
-        stmt->setUInt32(1, accountId);
+        stmt->SetData(0, 0);
+        stmt->SetData(1, accountId);
         LoginDatabase.Execute(stmt);
 
         if (target)

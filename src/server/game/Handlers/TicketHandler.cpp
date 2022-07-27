@@ -151,7 +151,7 @@ void WorldSession::HandleGMTicketCreateOpcode(WorldPacket& recvData)
 
     if (GetPlayer()->getLevel() < sWorld->getIntConfig(CONFIG_TICKET_LEVEL_REQ))
     {
-        SendNotification(GetTrinityString(LANG_TICKET_REQ), sWorld->getIntConfig(CONFIG_TICKET_LEVEL_REQ));
+        SendNotification(GetFirelandsString(LANG_TICKET_REQ), sWorld->getIntConfig(CONFIG_TICKET_LEVEL_REQ));
         return;
     }
 

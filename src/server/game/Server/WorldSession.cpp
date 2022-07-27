@@ -645,7 +645,7 @@ void WorldSession::SendNotification(const char *format, ...)
 
 void WorldSession::SendNotification(uint32 string_id, ...)
 {
-    char const* format = GetTrinityString(string_id);
+    char const* format = GetFirelandsString(string_id);
     if (format)
     {
         va_list ap;
@@ -664,9 +664,9 @@ void WorldSession::SendNotification(uint32 string_id, ...)
     }
 }
 
-const char *WorldSession::GetTrinityString(int32 entry) const
+const char *WorldSession::GetFirelandsString(int32 entry) const
 {
-    return sObjectMgr->GetTrinityString(entry, GetSessionDbLocaleIndex());
+    return sObjectMgr->GetFirelandsString(entry, GetSessionDbLocaleIndex());
 }
 
 void WorldSession::Handle_Ignore(WorldPacket& recvPacket)

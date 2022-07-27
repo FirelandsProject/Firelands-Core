@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -133,7 +133,7 @@ public:
         if (objectInfo->displayId && !sGameObjectDisplayInfoStore.LookupEntry(objectInfo->displayId))
         {
             // report to DB errors log as in loading case
-            LOG_ERROR("sql.sql", "Gameobject (Entry %u GoType: %u) have invalid displayId (%u), not spawned.", objectId, objectInfo->type, objectInfo->displayId);
+            LOG_ERROR("sql.sql", "Gameobject (Entry {} GoType: {}) have invalid displayId ({}), not spawned.", objectId, objectInfo->type, objectInfo->displayId);
             handler->PSendSysMessage(LANG_GAMEOBJECT_HAVE_INVALID_DATA, objectId);
             handler->SetSentErrorMessage(true);
             return false;
@@ -283,14 +283,14 @@ public:
         do
         {
             Field* fields = result->Fetch();
-            guidLow = fields[0].GetUInt32();
-            id =      fields[1].GetUInt32();
-            x =       fields[2].GetFloat();
-            y =       fields[3].GetFloat();
-            z =       fields[4].GetFloat();
-            o =       fields[5].GetFloat();
-            mapId =   fields[6].GetUInt16();
-            phase =   fields[7].GetUInt16();
+            guidLow = fields[0].Get<uint32>();
+            id =      fields[1].Get<uint32>();
+            x =       fields[2].Get<float>();
+            y =       fields[3].Get<float>();
+            z =       fields[4].Get<float>();
+            o =       fields[5].Get<float>();
+            mapId =   fields[6].Get<uint16>();
+            phase =   fields[7].Get<uint16>();
             poolId =  sPoolMgr->IsPartOfAPool<GameObject>(guidLow);
             if (!poolId || sPoolMgr->IsSpawnedObject<GameObject>(guidLow))
                 found = true;
@@ -537,14 +537,14 @@ public:
         Player* player = handler->GetSession()->GetPlayer();
 
         PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_GAMEOBJECT_NEAREST);
-        stmt->setFloat(0, player->GetPositionX());
-        stmt->setFloat(1, player->GetPositionY());
-        stmt->setFloat(2, player->GetPositionZ());
-        stmt->setUInt32(3, player->GetMapId());
-        stmt->setFloat(4, player->GetPositionX());
-        stmt->setFloat(5, player->GetPositionY());
-        stmt->setFloat(6, player->GetPositionZ());
-        stmt->setFloat(7, distance * distance);
+        stmt->SetData(0, player->GetPositionX());
+        stmt->SetData(1, player->GetPositionY());
+        stmt->SetData(2, player->GetPositionZ());
+        stmt->SetData(3, player->GetMapId());
+        stmt->SetData(4, player->GetPositionX());
+        stmt->SetData(5, player->GetPositionY());
+        stmt->SetData(6, player->GetPositionZ());
+        stmt->SetData(7, distance * distance);
         PreparedQueryResult result = WorldDatabase.Query(stmt);
 
         if (result)
@@ -552,12 +552,12 @@ public:
             do
             {
                 Field* fields = result->Fetch();
-                uint32 guid = fields[0].GetUInt32();
-                uint32 entry = fields[1].GetUInt32();
-                float x = fields[2].GetFloat();
-                float y = fields[3].GetFloat();
-                float z = fields[4].GetFloat();
-                uint16 mapId = fields[5].GetUInt16();
+                uint32 guid = fields[0].Get<uint32>();
+                uint32 entry = fields[1].Get<uint32>();
+                float x = fields[2].Get<float>();
+                float y = fields[3].Get<float>();
+                float z = fields[4].Get<float>();
+                uint16 mapId = fields[5].Get<uint16>();
 
                 GameObjectTemplate const* gameObjectInfo = sObjectMgr->GetGameObjectTemplate(entry);
 

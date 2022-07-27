@@ -957,7 +957,7 @@ struct BfTBGameObjectBuilding
         changeWorldState(m_TB->GetDefenderTeam() == TEAM_HORDE ? BATTLEFIELD_TB_OBJECTSTATE_ALLIANCE_DAMAGE : BATTLEFIELD_TB_OBJECTSTATE_HORDE_DAMAGE);
         // Send warning message
         if (m_NameId)
-            m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_TOWER_DAMAGE, sObjectMgr->GetTrinityStringForDBCLocale(m_NameId));
+            m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_TOWER_DAMAGE, sObjectMgr->GetFirelandsStringForDBCLocale(m_NameId));
     }
 
     // Called when associate gameobject is destroy
@@ -969,7 +969,7 @@ struct BfTBGameObjectBuilding
         changeWorldState(m_TB->GetDefenderTeam() == TEAM_HORDE ? BATTLEFIELD_TB_OBJECTSTATE_HORDE_DESTROY : BATTLEFIELD_TB_OBJECTSTATE_ALLIANCE_DESTROY);
         // Warning
         if (m_NameId)
-            m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_TOWER_DESTROY, sObjectMgr->GetTrinityStringForDBCLocale(m_NameId));
+            m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_TOWER_DESTROY, sObjectMgr->GetFirelandsStringForDBCLocale(m_NameId));
 
         switch (m_Type)
         {
@@ -1248,8 +1248,8 @@ struct BfTBWorkShopData
                 // Send warning message to all player for inform a faction attack a workshop
                 changeWorldState(BATTLEFIELD_TB_OBJECTSTATE_NEUTRAL_INTACT);
                 if (!init)
-                    m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_FORT_ATTACK, sObjectMgr->GetTrinityStringForDBCLocale(m_NameId),
-                                                sObjectMgr->GetTrinityStringForDBCLocale(m_TeamControl ? BATTLEFIELD_TB_TEXT_ALLIANCE : BATTLEFIELD_TB_TEXT_HORDE));
+                    m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_FORT_ATTACK, sObjectMgr->GetFirelandsStringForDBCLocale(m_NameId),
+                                                sObjectMgr->GetFirelandsStringForDBCLocale(m_TeamControl ? BATTLEFIELD_TB_TEXT_ALLIANCE : BATTLEFIELD_TB_TEXT_HORDE));
                 ChangeGraveyardControl(TEAM_NEUTRAL);
                 break;
             }
@@ -1265,8 +1265,8 @@ struct BfTBWorkShopData
                 changeWorldState(BATTLEFIELD_TB_OBJECTSTATE_ALLIANCE_INTACT);
                 // Warning message
                 if (!init)
-                    m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_FORT_TAKEN, sObjectMgr->GetTrinityStringForDBCLocale(m_NameId),
-                                                sObjectMgr->GetTrinityStringForDBCLocale(BATTLEFIELD_TB_TEXT_ALLIANCE));
+                    m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_FORT_TAKEN, sObjectMgr->GetFirelandsStringForDBCLocale(m_NameId),
+                                                sObjectMgr->GetFirelandsStringForDBCLocale(BATTLEFIELD_TB_TEXT_ALLIANCE));
                 ChangeGraveyardControl(TEAM_ALLIANCE);
                 break;
             }
@@ -1282,8 +1282,8 @@ struct BfTBWorkShopData
                 changeWorldState(BATTLEFIELD_TB_OBJECTSTATE_HORDE_INTACT);
                 // Warning message
                 if (!init)
-                    m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_FORT_TAKEN, sObjectMgr->GetTrinityStringForDBCLocale(m_NameId),
-                                                sObjectMgr->GetTrinityStringForDBCLocale(BATTLEFIELD_TB_TEXT_HORDE));
+                    m_TB->SendWarningToAllInWar(BATTLEFIELD_TB_TEXT_FORT_TAKEN, sObjectMgr->GetFirelandsStringForDBCLocale(m_NameId),
+                                                sObjectMgr->GetFirelandsStringForDBCLocale(BATTLEFIELD_TB_TEXT_HORDE));
                 // Update graveyard control
                 ChangeGraveyardControl(TEAM_HORDE);
                 break;
