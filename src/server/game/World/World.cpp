@@ -434,7 +434,6 @@ void World::LoadConfigSettings(bool reload)
         }
 
         sLog->LoadFromConfig();
-        sMetric->LoadFromConfigs();
     }
 
     // Set realm id and enable db logging
@@ -2147,8 +2146,6 @@ void World::SetInitialWorldSettings()
     LOG_INFO("server.loading", "WORLD: World initialized in {} minutes {} seconds", (startupDuration / 60000), ((startupDuration % 60000) / 1000)); // outError for red color in console
     LOG_INFO("server.loading", " ");
 
-    METRIC_EVENT("events", "World initialized", "World initialized in " + std::to_string(startupDuration / 60000) + " minutes " + std::to_string((startupDuration % 60000) / 1000) + " seconds");
-
     if (sConfigMgr->isDryRun())
     {
         sMapMgr->UnloadAll();
@@ -2238,7 +2235,6 @@ void World::LoadAutobroadcasts()
 /// Update the World !
 void World::Update(uint32 diff)
 {
-    METRIC_TIMER("world_update_time_total");
 
     ///- Update the game time and check for shutdown time
     _UpdateGameTime();
@@ -2273,13 +2269,11 @@ void World::Update(uint32 diff)
     ///- Update Who List Cache
     if (m_timers[WUPDATE_WHO_LIST].Passed())
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update who list"));
         m_timers[WUPDATE_WHO_LIST].Reset();
         sWhoListCacheMgr->Update();
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Check quest reset times"));
 
         /// Handle daily quests reset time
         if (currentGameTime > m_NextDailyQuestReset)
@@ -2302,19 +2296,16 @@ void World::Update(uint32 diff)
 
     if (currentGameTime > m_NextRandomBGReset)
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Reset random BG"));
         ResetRandomBG();
     }
 
     if (currentGameTime > m_NextCalendarOldEventsDeletionTime)
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Delete old calendar events"));
         CalendarDeleteOldEvents();
     }
 
     if (currentGameTime > m_NextGuildReset)
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Reset guild cap"));
         ResetGuildCap();
     }
 
@@ -2328,7 +2319,6 @@ void World::Update(uint32 diff)
         // pussywizard: handle auctions when the timer has passed
         if (m_timers[WUPDATE_AUCTIONS].Passed())
         {
-            METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update expired auctions"));
 
             m_timers[WUPDATE_AUCTIONS].Reset();
 
@@ -2346,7 +2336,6 @@ void World::Update(uint32 diff)
 
         {
             /// <li> Handle session updates when the timer has passed
-            METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update sessions"));
             UpdateSessions(diff);
         }
     }
@@ -2366,7 +2355,6 @@ void World::Update(uint32 diff)
     {
         if (m_timers[WUPDATE_CLEANDB].Passed())
         {
-            METRIC_TIMER("world_update_time", METRIC_TAG("type", "Clean logs table"));
 
             m_timers[WUPDATE_CLEANDB].Reset();
 
@@ -2378,13 +2366,11 @@ void World::Update(uint32 diff)
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update LFG 0"));
         sLFGMgr->Update(diff, 0); // pussywizard: remove obsolete stuff before finding compatibility during map update
     }
 
     {
         ///- Update objects when the timer has passed (maps, transport, creatures, ...)
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update maps"));
         sMapMgr->Update(diff);
     }
 
@@ -2392,34 +2378,28 @@ void World::Update(uint32 diff)
     {
         if (m_timers[WUPDATE_AUTOBROADCAST].Passed())
         {
-            METRIC_TIMER("world_update_time", METRIC_TAG("type", "Send autobroadcast"));
             m_timers[WUPDATE_AUTOBROADCAST].Reset();
             SendAutoBroadcast();
         }
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update battlegrounds"));
         sBattlegroundMgr->Update(diff);
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update outdoor pvp"));
         sOutdoorPvPMgr->Update(diff);
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update battlefields"));
         sBattlefieldMgr->Update(diff);
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update LFG 2"));
         sLFGMgr->Update(diff, 2); // pussywizard: handle created proposals
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Process query callbacks"));
         // execute callbacks from sql queries that were queued recently
         ProcessQueryCallbacks();
     }
@@ -2427,7 +2407,6 @@ void World::Update(uint32 diff)
     /// <li> Update uptime table
     if (m_timers[WUPDATE_UPTIME].Passed())
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update uptime"));
 
         m_timers[WUPDATE_UPTIME].Reset();
 
@@ -2442,7 +2421,6 @@ void World::Update(uint32 diff)
     ///- Erase corpses once every 20 minutes
     if (m_timers[WUPDATE_CORPSES].Passed())
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Remove old corpses"));
         m_timers[WUPDATE_CORPSES].Reset();
 
         sMapMgr->DoForAllMaps([](Map* map)
@@ -2454,7 +2432,6 @@ void World::Update(uint32 diff)
     ///- Process Game events when necessary
     if (m_timers[WUPDATE_EVENTS].Passed())
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update game events"));
         m_timers[WUPDATE_EVENTS].Reset();                   // to give time for Update() to be processed
         uint32 nextGameEvent = sGameEventMgr->Update();
         m_timers[WUPDATE_EVENTS].SetInterval(nextGameEvent);
@@ -2464,7 +2441,6 @@ void World::Update(uint32 diff)
     ///- Ping to keep MySQL connections alive
     if (m_timers[WUPDATE_PINGDB].Passed())
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Ping MySQL"));
         m_timers[WUPDATE_PINGDB].Reset();
         LOG_DEBUG("sql.driver", "Ping MySQL to keep connection alive");
         CharacterDatabase.KeepAlive();
@@ -2473,33 +2449,23 @@ void World::Update(uint32 diff)
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update instance reset times"));
         // update the instance reset times
         sInstanceSaveMgr->Update();
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Process cli commands"));
         // And last, but not least handle the issued cli commands
         ProcessCliCommands();
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update world scripts"));
         sScriptMgr->OnWorldUpdate(diff);
     }
 
     {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update playersSaveScheduler"));
         playersSaveScheduler.Update(diff);
     }
 
-    {
-        METRIC_TIMER("world_update_time", METRIC_TAG("type", "Update metrics"));
-        // Stats logger update
-        sMetric->Update();
-        METRIC_VALUE("update_time_diff", diff);
-    }
 }
 
 void World::ForceGameEventUpdate()
@@ -2880,10 +2846,6 @@ void World::SendServerMessage(ServerMessageType messageID, std::string stringPar
 void World::UpdateSessions(uint32 diff)
 {
     {
-        METRIC_DETAILED_NO_THRESHOLD_TIMER("world_update_time",
-            METRIC_TAG("type", "Add sessions"),
-            METRIC_TAG("parent_type", "Update sessions"));
-
         ///- Add new sessions
         WorldSession* sess = nullptr;
         while (addSessQueue.next(sess))
@@ -2923,7 +2885,6 @@ void World::UpdateSessions(uint32 diff)
         }
 
         [[maybe_unused]] uint32 currentSessionId = itr->first;
-        METRIC_DETAILED_TIMER("world_update_sessions_time", METRIC_TAG("account_id", std::to_string(currentSessionId)));
 
         if (!pSession->Update(diff, updater))
         {
