@@ -83,3 +83,5 @@ local.properties
 .loadpath
 .project
 .cproject
+
+build/
