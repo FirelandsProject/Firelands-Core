@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -3224,7 +3224,7 @@ void SmartScript::OnUpdate(uint32 const diff)
     }
 }
 
-void SmartScript::FillScript(SmartAIEventList e, WorldObject* obj, AreaTriggerEntry const* at)
+void SmartScript::FillScript(SmartAIEventList e, WorldObject* obj, AreaTrigger const* at)
 {
     if (e.empty())
     {
@@ -3284,7 +3284,7 @@ void SmartScript::GetScript()
     }
 }
 
-void SmartScript::OnInitialize(WorldObject* obj, AreaTriggerEntry const* at)
+void SmartScript::OnInitialize(WorldObject* obj, AreaTrigger const* at)
 {
     if (obj)//handle object based scripts
     {

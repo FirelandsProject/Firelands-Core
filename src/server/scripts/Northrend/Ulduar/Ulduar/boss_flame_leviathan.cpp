@@ -2341,7 +2341,7 @@ class at_RX_214_repair_o_matic_station : public AreaTriggerScript
 public:
     at_RX_214_repair_o_matic_station() : AreaTriggerScript("at_RX_214_repair_o_matic_station") {}
 
-    bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/)
+    bool OnTrigger(Player* player, const AreaTrigger* /*at*/)
     {
         if (InstanceScript* instance = player->GetInstanceScript())
         {

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2006-2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -42,7 +42,7 @@ class at_malfurion_stormrage : public AreaTriggerScript
 public:
     at_malfurion_stormrage() : AreaTriggerScript("at_malfurion_stormrage") { }
 
-    bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/)
+    bool OnTrigger(Player* player, const AreaTrigger* /*at*/)
     {
         if (player->GetInstanceScript() && !player->FindNearestCreature(15362, 15))
             player->SummonCreature(15362, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), -1.52f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 100000);

@@ -374,7 +374,7 @@ public:
         if (!areaTriggerId)
             return false;
 
-        AreaTriggerEntry const* at = sAreaTriggerStore.LookupEntry(areaTriggerId);
+        AreaTrigger const* at = sAreaTriggerStore.LookupEntry(areaTriggerId);
         if (!at)
         {
             handler->PSendSysMessage(LANG_COMMAND_GOAREATRNOTFOUND, areaTriggerId);

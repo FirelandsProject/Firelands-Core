@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -22,24 +22,34 @@
 
 #include "Define.h"
 
-enum HighGuid
-{
-    HIGHGUID_ITEM           = 0x400,                       // blizz 4000
-    HIGHGUID_CONTAINER      = 0x400,                       // blizz 4000
-    HIGHGUID_PLAYER         = 0x000,                       // blizz 0000
-    HIGHGUID_GAMEOBJECT     = 0xF11,                       // blizz F110
-    HIGHGUID_TRANSPORT      = 0xF12,                       // blizz F120 (for GAMEOBJECT_TYPE_TRANSPORT)
-    HIGHGUID_UNIT           = 0xF13,                       // blizz F130
-    HIGHGUID_PET            = 0xF14,                       // blizz F140
-    HIGHGUID_VEHICLE        = 0xF15,                       // blizz F550
-    HIGHGUID_DYNAMICOBJECT  = 0xF10,                       // blizz F100
-    HIGHGUID_CORPSE         = 0xF101,                      // blizz F100
-    HIGHGUID_AREATRIGGER    = 0xF102,                      // blizz F100
-    HIGHGUID_BATTLEGROUND   = 0x1F1,                       // new 4.x
-    HIGHGUID_MO_TRANSPORT   = 0x1FC,                       // blizz 1FC0 (for GAMEOBJECT_TYPE_MO_TRANSPORT)
-    HIGHGUID_GROUP          = 0x1F5,
-    HIGHGUID_GUILD          = 0x1FF                        // new 4.x
-};
+#define CONTACT_DISTANCE             0.5f
+#define INTERACTION_DISTANCE         5.5f
+#define ATTACK_DISTANCE              5.0f
+#define VISIBILITY_COMPENSATION      15.0f // increase searchers
+#define INSPECT_DISTANCE             28.0f
+#define VISIBILITY_INC_FOR_GOBJECTS  30.0f // pussywizard
+#define SPELL_SEARCHER_COMPENSATION  30.0f // increase searchers size in case we have large npc near cell border
+#define TRADE_DISTANCE               11.11f
+#define MAX_VISIBILITY_DISTANCE      250.0f // max distance for visible objects, experimental
+#define SIGHT_RANGE_UNIT             50.0f
+#define MAX_SEARCHER_DISTANCE        150.0f // pussywizard: replace the use of MAX_VISIBILITY_DISTANCE in searchers, because MAX_VISIBILITY_DISTANCE is quite too big for this purpose
+#define VISIBILITY_DISTANCE_INFINITE 533.0f
+#define VISIBILITY_DISTANCE_GIGANTIC 400.0f
+#define VISIBILITY_DISTANCE_LARGE    200.0f
+#define VISIBILITY_DISTANCE_NORMAL   100.0f
+#define VISIBILITY_DISTANCE_SMALL    50.0f
+#define VISIBILITY_DISTANCE_TINY     25.0f
+#define DEFAULT_VISIBILITY_DISTANCE  100.0f // default visible distance, 100 yards on continents
+#define DEFAULT_VISIBILITY_INSTANCE  170.0f                     // default visible distance in instances, 170 yards
+#define VISIBILITY_DIST_WINTERGRASP  175.0f
+#define DEFAULT_VISIBILITY_BGARENAS  533.0f                     // default visible distance in BG/Arenas, roughly 533 yards
+
+#define DEFAULT_WORLD_OBJECT_SIZE   0.388999998569489f      // player size, also currently used (correctly?) for any non Unit world objects
+#define DEFAULT_COMBAT_REACH        1.5f
+#define MIN_MELEE_REACH             2.0f
+#define NOMINAL_MELEE_RANGE         5.0f
+#define MELEE_RANGE                 (NOMINAL_MELEE_RANGE - MIN_MELEE_REACH * 2) //center to center for players
+#define DEFAULT_COLLISION_HEIGHT    2.03128f // Most common value in dbc
 
 // used for creating values for respawn for example
 inline uint64 MAKE_PAIR64(uint32 l, uint32 h);

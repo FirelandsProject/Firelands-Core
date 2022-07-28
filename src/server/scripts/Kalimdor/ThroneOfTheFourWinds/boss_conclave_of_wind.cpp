@@ -1066,7 +1066,7 @@ class at_slipstream_jump : public AreaTriggerScript
 public:
     at_slipstream_jump() : AreaTriggerScript("at_slipstream_jump") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* areaTrigger)
+    bool OnTrigger(Player* player, AreaTrigger const* areaTrigger)
     {
         if (InstanceScript* instance = player->GetInstanceScript())
             if (instance->GetData(DATA_DEACTIVATE_SLIPSTREAM))

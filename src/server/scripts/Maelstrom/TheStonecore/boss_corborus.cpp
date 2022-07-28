@@ -330,7 +330,7 @@ class AreaTrigger_at_rockdoor_break : public AreaTriggerScript
     public:
         AreaTrigger_at_rockdoor_break() : AreaTriggerScript("at_rockdoor_break") {}
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*trigger*/)
         {
             if (InstanceScript* instance = player->GetInstanceScript())
             {

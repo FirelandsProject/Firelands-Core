@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,13 +24,13 @@
 
 class CharacterDatabaseConnection : public MySQLConnection
 {
-    public:
-        //- Constructors for sync and async connections
-        CharacterDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-        CharacterDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
+public:
+    //- Constructors for sync and async connections
+    CharacterDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
+    CharacterDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
 
-        //- Loads database type specific prepared statements
-        void DoPrepareStatements();
+    //- Loads database type specific prepared statements
+    void DoPrepareStatements();
 };
 
 typedef DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabaseWorkerPool;
@@ -241,6 +241,9 @@ enum CharacterDatabaseStatements
     CHAR_UPD_CHANNEL_USAGE,
     CHAR_UPD_CHANNEL_OWNERSHIP,
     CHAR_DEL_OLD_CHANNELS,
+    CHAR_DEL_OLD_CHANNELS_BANS,
+    CHAR_INS_CHANNEL_BAN,
+    CHAR_DEL_CHANNEL_BAN,
 
     CHAR_UPD_EQUIP_SET,
     CHAR_INS_EQUIP_SET,

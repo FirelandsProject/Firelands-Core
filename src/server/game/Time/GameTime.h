@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,39 +15,34 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _FIRELANDS_AUTO_PTR_H
-#define _FIRELANDS_AUTO_PTR_H
+#ifndef __GAMETIME_H
+#define __GAMETIME_H
 
-#include <ace/Bound_Ptr.h>
+#include "Define.h"
+#include "Duration.h"
 
-namespace Firelands
+namespace GameTime
 {
+    // Server start time
+    FC_GAME_API Seconds GetStartTime();
 
-template <class Pointer, class Lock>
-class AutoPtr : public ACE_Strong_Bound_Ptr<Pointer, Lock>
-{
-    typedef ACE_Strong_Bound_Ptr<Pointer, Lock> Base;
+    // Current server time (unix)
+    FC_GAME_API Seconds GetGameTime();
 
-public:
-    AutoPtr()
-        : Base()
-    { }
+    // Milliseconds since server start
+    FC_GAME_API Milliseconds GetGameTimeMS();
 
-    AutoPtr(Pointer* x)
-        : Base(x)
-    { }
+    /// Current chrono system_clock time point
+    FC_GAME_API SystemTimePoint GetSystemTime();
 
-    operator bool() const
-    {
-        return !Base::null();
-    }
+    /// Current chrono steady_clock time point
+    FC_GAME_API TimePoint Now();
 
-    bool operator !() const
-    {
-        return Base::null();
-    }
-};
+    /// Uptime
+    FC_GAME_API Seconds GetUptime();
 
-} // namespace Firelands
+    /// Update all timers
+    void UpdateGameTimers();
+}
 
 #endif

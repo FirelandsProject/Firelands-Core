@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -619,7 +619,7 @@ class at_tyrannus_event_starter : public AreaTriggerScript
     public:
         at_tyrannus_event_starter() : AreaTriggerScript("at_tyrannus_event_starter") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/)
+        bool OnTrigger(Player* player, const AreaTrigger* /*at*/)
         {
             InstanceScript* instance = player->GetInstanceScript();
             if (player->isGameMaster() || !instance)
@@ -642,7 +642,7 @@ class at_tyrannus_en_event_starter : public AreaTriggerScript
     public:
         at_tyrannus_en_event_starter() : AreaTriggerScript("at_tyrannus_en_event_starter") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/)
+        bool OnTrigger(Player* player, const AreaTrigger* /*at*/)
         {
             InstanceScript* instance = player->GetInstanceScript();
             if (player->isGameMaster() || !instance)
@@ -667,7 +667,7 @@ class at_tyrannus_ga_event_starter : public AreaTriggerScript
     public:
         at_tyrannus_ga_event_starter() : AreaTriggerScript("at_tyrannus_ga_event_starter") { }
 
-        bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/)
+        bool OnTrigger(Player* player, const AreaTrigger* /*at*/)
         {
             InstanceScript* instance = player->GetInstanceScript();
             if (player->isGameMaster() || !instance)

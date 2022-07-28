@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2006-2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -36,7 +36,7 @@ class AT_example_areatrigger : public AreaTriggerScript
         {
         }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*trigger*/)
         {
             player->Kill(player);
             return true;

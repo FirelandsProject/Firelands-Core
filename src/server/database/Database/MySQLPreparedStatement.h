@@ -30,10 +30,10 @@ class PreparedStatementBase;
 //- Class of which the instances are unique per MySQLConnection
 //- access to these class objects is only done when a prepared statement task
 //- is executed.
-class AC_DATABASE_API MySQLPreparedStatement
+class DATABASE_API MySQLPreparedStatement
 {
-friend class MySQLConnection;
-friend class PreparedStatementBase;
+    friend class MySQLConnection;
+    friend class PreparedStatementBase;
 
 public:
     MySQLPreparedStatement(MySQLStmt* stmt, std::string_view queryString);

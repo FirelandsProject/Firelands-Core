@@ -2602,7 +2602,7 @@ class at_isle_jump : public AreaTriggerScript
 public:
     at_isle_jump() : AreaTriggerScript("at_isle_jump") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* areaTrigger)
+    bool OnTrigger(Player* player, AreaTrigger const* areaTrigger)
     {
         if (player->GetMotionMaster()->GetCurrentMovementGeneratorType() == EFFECT_MOTION_TYPE)
             return true;

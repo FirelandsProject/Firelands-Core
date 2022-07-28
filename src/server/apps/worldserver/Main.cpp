@@ -117,7 +117,7 @@ void ShutdownAuctionListingThread(std::thread* thread);
 void WorldUpdateLoop();
 variables_map GetConsoleArguments(int argc, char** argv, fs::path& configFile, [[maybe_unused]] std::string& cfg_service);
 
-/// Launch the Azeroth server
+/// Launch the Firelands server
 int main(int argc, char** argv)
 {
     Firelands::Impl::CurrentServerProcessHolder::_type = SERVER_PROCESS_WORLDSERVER;
@@ -231,7 +231,6 @@ int main(int argc, char** argv)
     std::shared_ptr<void> sScriptMgrHandle(nullptr, [](void*)
         {
             sScriptMgr->Unload();
-            //sScriptReloadMgr->Unload();
         });
 
     LOG_INFO("server.loading", "Initializing Scripts...");

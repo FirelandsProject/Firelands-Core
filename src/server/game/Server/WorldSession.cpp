@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -21,7 +21,7 @@
     \ingroup u2w
 */
 
-#include "WorldSocket.h"                                    // must be first to make ACE happy with ACE includes in it
+#include "WorldSocket.h"
 #include <zlib.h>
 #include "Common.h"
 #include "DatabaseEnv.h"

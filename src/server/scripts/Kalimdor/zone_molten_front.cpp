@@ -324,7 +324,7 @@ public:
     {
     }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
     {
         if (player->GetQuestStatus(QUEST_ENTER_HELL) != QUEST_STATUS_INCOMPLETE)
             return true;
@@ -645,7 +645,7 @@ public:
     {
     }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
     {
         if (player->GetQuestStatus(29210) == QUEST_STATUS_INCOMPLETE)
             if (!player->HasAura(97741) &&

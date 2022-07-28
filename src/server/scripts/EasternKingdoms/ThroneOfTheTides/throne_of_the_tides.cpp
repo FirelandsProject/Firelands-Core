@@ -20,7 +20,7 @@ class at_neptulon_pinacle : public AreaTriggerScript
 public:
     at_neptulon_pinacle() : AreaTriggerScript("at_neptulon_pinacle") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
     {
         InstanceScript* instance = player->GetInstanceScript();
         if (!instance || instance->GetData(DATA_PROGRESS_EVENT) >= 2)
@@ -35,7 +35,7 @@ class at_abyssal_halls : public AreaTriggerScript
 public:
     at_abyssal_halls() : AreaTriggerScript("at_abyssal_halls") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
     {
         InstanceScript* instance = player->GetInstanceScript();
         if (!instance || instance->GetData(DATA_PROGRESS_EVENT) >= 1)
@@ -171,7 +171,7 @@ class at_abyssal_halls_x : public AreaTriggerScript
 public:
     at_abyssal_halls_x() : AreaTriggerScript("at_abyssal_halls_x") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
     {
         InstanceScript* instance = player->GetInstanceScript();
         if (!instance || instance->GetData(DATA_LADY_NAZJAR_EVENT) != DONE || instance->GetData(DATA_COMMANDER_ULTHOK) == DONE)

@@ -559,7 +559,7 @@ class at_sulfuron_keep : public AreaTriggerScript
     public:
         at_sulfuron_keep() : AreaTriggerScript("at_sulfuron_keep") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/) override
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/) override
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if ((!instance->IsDone(DATA_RAGNAROS) && !player->GetMap()->IsHeroic())

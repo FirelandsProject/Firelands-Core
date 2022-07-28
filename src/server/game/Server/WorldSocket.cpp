@@ -124,7 +124,7 @@ void WorldSocket::HandleSendAuthSession()
     packet << uint32(1);                                    // 1...31
     packet.append(_authSeed);
 
-    packet.append(Acore::Crypto::GetRandomBytes<32>());               // new encryption seeds
+    packet.append(Firelands::Crypto::GetRandomBytes<32>());               // new encryption seeds
 
     SendPacketAndLogOpcode(packet);
 }
@@ -238,7 +238,7 @@ struct AuthSession
     uint32 LoginServerID = 0;
     uint32 RegionID = 0;
     uint64 DosResponse = 0;
-    Acore::Crypto::SHA1::Digest Digest = {};
+    firelands::Crypto::SHA1::Digest Digest = {};
     std::string Account;
     ByteBuffer AddonInfo;
 };
@@ -502,7 +502,7 @@ void WorldSocket::HandleAuthSessionCallback(std::shared_ptr<AuthSession> authSes
     // Check that Key and account name are the same on client and server
     uint8 t[4] = { 0x00,0x00,0x00,0x00 };
 
-    Acore::Crypto::SHA1 sha;
+    firelands::Crypto::SHA1 sha;
     sha.UpdateData(authSession->Account);
     sha.UpdateData(t);
     sha.UpdateData(authSession->LocalChallenge);

@@ -171,16 +171,20 @@ namespace AccountMgr {
     {
         std::string username;
 
-        if (!GetName(accountId, username))
+        if (!GetName(accountId, username)) {
+            sScriptMgr->OnFailedPasswordChange(accountId);
             return AOR_NAME_NOT_EXIST;                          // account doesn't exist
+        }
 
-        if (utf8length(newPassword) > MAX_PASS_STR)
+        if (utf8length(newPassword) > MAX_PASS_STR) {
+            sScriptMgr->OnFailedPasswordChange(accountId);
             return AOR_PASS_TOO_LONG;
+        }
 
         Utf8ToUpperOnlyLatin(username);
         Utf8ToUpperOnlyLatin(newPassword);
 
-        auto [salt, verifier] = Acore::Crypto::SRP6::MakeRegistrationData(username, newPassword);
+        auto [salt, verifier] = Firelands::Crypto::SRP6::MakeRegistrationData(username, newPassword);
 
         PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_PASSWORD);
 
@@ -294,4 +298,4 @@ namespace AccountMgr {
     {
         return gmlevel == SEC_CONSOLE;
     }
-    }
+}

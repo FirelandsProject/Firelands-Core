@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -35,9 +35,9 @@ class SmartScript
         SmartScript();
         ~SmartScript();
 
-        void OnInitialize(WorldObject* obj, AreaTriggerEntry const* at = NULL);
+        void OnInitialize(WorldObject* obj, AreaTrigger const* at = NULL);
         void GetScript();
-        void FillScript(SmartAIEventList e, WorldObject* obj, AreaTriggerEntry const* at);
+        void FillScript(SmartAIEventList e, WorldObject* obj, AreaTrigger const* at);
 
         void ProcessEventsFor(SMART_EVENT e, Unit* unit = NULL, uint32 var0 = 0, uint32 var1 = 0, bool bvar = false, const SpellInfo* spell = NULL, GameObject* gob = NULL);
         void ProcessEvent(SmartScriptHolder& e, Unit* unit = NULL, uint32 var0 = 0, uint32 var1 = 0, bool bvar = false, const SpellInfo* spell = NULL, GameObject* gob = NULL);
@@ -227,7 +227,7 @@ class SmartScript
         uint64 meOrigGUID;
         GameObject* go;
         uint64 goOrigGUID;
-        AreaTriggerEntry const* trigger;
+        AreaTrigger const* trigger;
         SmartScriptType mScriptType;
         uint32 mEventPhase;
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1116,6 +1116,7 @@ enum Opcodes
     SMSG_OVERRIDE_LIGHT                               = 0x4225,
     SMSG_PAGE_TEXT_QUERY_RESPONSE                     = 0x2B14,
     SMSG_PARTYKILLLOG                                 = 0x4937,
+    SMSG_COMPRESSED_UPDATE_OBJECT                     = 0x01F6,
     SMSG_PARTY_COMMAND_RESULT                         = 0x6E07,
     SMSG_PARTY_MEMBER_STATS                           = 0x2104,
     SMSG_PARTY_MEMBER_STATS_FULL                      = 0x0215,

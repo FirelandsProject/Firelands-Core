@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -491,7 +491,7 @@ bool BattlegroundEY::SetupBattleground()
     //buffs
     for (int i = 0; i < EY_POINTS_MAX; ++i)
     {
-        AreaTriggerEntry const* at = sAreaTriggerStore.LookupEntry(m_Points_Trigger[i]);
+        AreaTrigger const* at = sAreaTriggerStore.LookupEntry(m_Points_Trigger[i]);
         if (!at)
         {
             LOG_ERROR("bg.battleground", "BattlegroundEY: Unknown trigger: %u", m_Points_Trigger[i]);

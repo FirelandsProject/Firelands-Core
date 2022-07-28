@@ -1,7 +1,5 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,14 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _WIN32
-#ifndef _WIN32_SERVICE_
-#define _WIN32_SERVICE_
+#include "ChatCommandHelpers.h"
+#include "Chat.h"
+#include "ObjectMgr.h"
 
-bool WinServiceInstall();
-bool WinServiceUninstall();
-bool WinServiceRun();
+void Firelands::Impl::ChatCommands::SendErrorMessageToHandler(ChatHandler* handler, std::string_view str)
+{
+    handler->SendSysMessage(str);
+    handler->SetSentErrorMessage(true);
+}
 
-#endif                                                      // _WIN32_SERVICE_
-#endif                                                      // _WIN32
-
+char const* Firelands::Impl::ChatCommands::GetFirelandsString(ChatHandler const* handler, FirelandsStrings which)
+{
+    return handler->GetFirelandsString(which);
+}

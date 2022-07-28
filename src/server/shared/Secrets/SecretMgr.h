@@ -36,7 +36,7 @@ enum Secrets : uint32
     NUM_SECRETS
 };
 
-class AC_SHARED_API SecretMgr
+class FC_SHARED_API SecretMgr
 {
 private:
     SecretMgr() = default;

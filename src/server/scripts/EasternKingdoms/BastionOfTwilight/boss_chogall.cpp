@@ -303,7 +303,7 @@ public:
 
         void EnterEvadeMode()
         {
-            // if we passed the 3 % Chogall shouldn´t reset anymore
+            // if we passed the 3 % Chogall shouldnï¿½t reset anymore
             if (dieEvent)
                 return;
 
@@ -1397,7 +1397,7 @@ class at_chogall_room : public AreaTriggerScript
 public:
     at_chogall_room() : AreaTriggerScript("at_chogall_room") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
     {
         if (InstanceScript* instance = player->GetInstanceScript())
             if (Creature* chogall = Creature::GetCreature(*player, instance->GetData64(NPC_CHOGALL)))

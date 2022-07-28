@@ -542,7 +542,7 @@ class at_wickerman_festival : public AreaTriggerScript
 public:
     at_wickerman_festival() : AreaTriggerScript("at_wickerman_festival") {}
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/) override
+    bool OnTrigger(Player* player, AreaTrigger const* /*trigger*/) override
     {
         player->GroupEventHappens(QUEST_CRASHING_WICKERMAN_FESTIVAL, player);
         return true;

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -16,10 +16,11 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef __BATTLEGROUNDNA_H
 #define __BATTLEGROUNDNA_H
 
-#include "Battleground.h"
+#include "Arena.h"
 
 enum BattlegroundNAObjectTypes
 {
@@ -45,27 +46,18 @@ enum BattlegroundNAObjects
     BG_NA_OBJECT_READYMARKER    = 940000
 };
 
-class BattlegroundNA : public Battleground
+class FC_GAME_API BattlegroundNA : public Arena
 {
     public:
         BattlegroundNA();
-        ~BattlegroundNA();
 
         /* inherited from BattlegroundClass */
-        void AddPlayer(Player* player);
-        void StartingEventCloseDoors();
-        void StartingEventOpenDoors();
+    void StartingEventCloseDoors() override;
+    void StartingEventOpenDoors() override;
 
-        void RemovePlayer(Player* player, uint64 guid, uint32 team);
-        void HandleAreaTrigger(Player* Source, uint32 Trigger);
-        bool SetupBattleground();
-        void Reset();
-        void FillInitialWorldStates(WorldPacket &d);
-        void HandleKillPlayer(Player* player, Player* killer);
-        bool HandlePlayerUnderMap(Player* player);
-
-        virtual bool PreUpdateImpl(uint32 diff);
-
-        uint32 doordelete;
+    void HandleAreaTrigger(Player* player, uint32 trigger) override;
+    bool SetupBattleground() override;
+    void FillInitialWorldStates(WorldPacket& d) override;
+    bool HandlePlayerUnderMap(Player* player) override;
 };
 #endif

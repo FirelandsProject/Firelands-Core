@@ -1273,7 +1273,7 @@ void World::LoadConfigSettings(bool reload)
     if (dataPath.empty() || (dataPath.at(dataPath.length() - 1) != '/' && dataPath.at(dataPath.length() - 1) != '\\'))
         dataPath.push_back('/');
 
-#if AC_PLATFORM == AC_PLATFORM_UNIX || AC_PLATFORM == AC_PLATFORM_APPLE
+#if PLATFORM == PLATFORM_UNIX || PLATFORM == PLATFORM_APPLE
     if (dataPath[0] == '~')
     {
         const char* home = getenv("HOME");

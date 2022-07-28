@@ -835,7 +835,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recvData)
         return;
     }
 
-    AreaTriggerEntry const* atEntry = sAreaTriggerStore.LookupEntry(triggerId);
+    AreaTrigger const* atEntry = sAreaTriggerStore.LookupEntry(triggerId);
     if (!atEntry)
     {
         LOG_DEBUG("network.opcode", "HandleAreaTriggerOpcode: Player '{}' (GUID: {}) send unknown (by DBC) Area Trigger ID:{}",

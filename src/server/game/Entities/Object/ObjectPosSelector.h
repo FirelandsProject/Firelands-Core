@@ -1,7 +1,6 @@
 /*
+ * Copyright (C) Azerothcore <http://azerothcore.org/>
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,15 +19,16 @@
 #ifndef _OBJECT_POS_SELECTOR_H
 #define _OBJECT_POS_SELECTOR_H
 
-#include<Common.h>
-
-#include<map>
+#include "Define.h"
+#include <cmath>
+#include <map>
+#include <math.h>
 
 enum UsedPosType { USED_POS_PLUS, USED_POS_MINUS };
 
 inline UsedPosType operator ~(UsedPosType uptype)
 {
-    return uptype==USED_POS_PLUS ? USED_POS_MINUS : USED_POS_PLUS;
+    return uptype == USED_POS_PLUS ? USED_POS_MINUS : USED_POS_PLUS;
 }
 
 struct ObjectPosSelector
@@ -43,7 +43,7 @@ struct ObjectPosSelector
         float dist;                                         // dist to central point (including central point size)
     };
 
-    typedef std::multimap<float, UsedPos> UsedPosList;       // abs(angle)->Node
+    typedef std::multimap<float, UsedPos> UsedPosList;       // std::abs(angle)->Node
 
     ObjectPosSelector(float x, float y, float size, float dist);
 
@@ -62,20 +62,20 @@ struct ObjectPosSelector
 
         float next_angle = nextUsedPos.first;
         if (nextUsedPos.second.sign * sign < 0)              // last node from diff. list (-pi+alpha)
-            next_angle = 2*M_PI-next_angle;                 // move to positive
+            next_angle = 2 * M_PI - next_angle;             // move to positive
 
-        return fabs(angle)+angle_step2 <= next_angle;
+        return std::fabs(angle) + angle_step2 <= next_angle;
     }
 
     bool CheckOriginal() const
     {
         return (m_UsedPosLists[USED_POS_PLUS].empty() || CheckAngle(*m_UsedPosLists[USED_POS_PLUS].begin(), 1.0f, 0)) &&
-            (m_UsedPosLists[USED_POS_MINUS].empty() || CheckAngle(*m_UsedPosLists[USED_POS_MINUS].begin(), -1.0f, 0));
+               (m_UsedPosLists[USED_POS_MINUS].empty() || CheckAngle(*m_UsedPosLists[USED_POS_MINUS].begin(), -1.0f, 0));
     }
 
     bool IsNonBalanced() const { return m_UsedPosLists[USED_POS_PLUS].empty() != m_UsedPosLists[USED_POS_MINUS].empty(); }
 
-    bool NextAngleFor(UsedPosList::value_type const& usedPos, float sign, UsedPosType uptype, float &angle)
+    bool NextAngleFor(UsedPosList::value_type const& usedPos, float sign, UsedPosType uptype, float& angle)
     {
         float angle_step  = GetAngle(usedPos.second);
 
@@ -101,12 +101,12 @@ struct ObjectPosSelector
         return true;
     }
 
-    bool NextSmallStepAngle(float sign, UsedPosType uptype, float &angle)
+    bool NextSmallStepAngle(float sign, UsedPosType uptype, float& angle)
     {
         // next possible angle
         angle  = m_smallStepAngle[uptype] + m_anglestep * sign;
 
-        if (fabs(angle) > M_PI)
+        if (std::fabs(angle) > M_PI)
         {
             m_smallStepOk[uptype] = false;
             return false;
@@ -114,7 +114,7 @@ struct ObjectPosSelector
 
         if (m_smallStepNextUsedPos[uptype])
         {
-            if (fabs(angle) >= m_smallStepNextUsedPos[uptype]->first)
+            if (std::fabs(angle) >= m_smallStepNextUsedPos[uptype]->first)
             {
                 m_smallStepOk[uptype] = false;
                 return false;
@@ -137,7 +137,7 @@ struct ObjectPosSelector
     UsedPosList::value_type const* nextUsedPos(UsedPosType uptype);
 
     // angle from used pos to next possible free pos
-    float GetAngle(UsedPos const& usedPos) const { return acos(m_dist/(usedPos.dist+usedPos.size+m_size)); }
+    float GetAngle(UsedPos const& usedPos) const { return acos(m_dist / (usedPos.dist + usedPos.size + m_size)); }
 
     float m_center_x;
     float m_center_y;

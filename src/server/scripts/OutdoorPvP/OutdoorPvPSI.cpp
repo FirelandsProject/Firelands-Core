@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -150,7 +150,7 @@ bool OutdoorPvPSI::HandleDropFlag(Player* player, uint32 spellId)
         {
         case ALLIANCE:
             {
-                AreaTriggerEntry const* atEntry = sAreaTriggerStore.LookupEntry(SI_AREATRIGGER_A);
+                AreaTrigger const* atEntry = sAreaTriggerStore.LookupEntry(SI_AREATRIGGER_A);
                 if (atEntry)
                 {
                     // 5.0f is safe-distance
@@ -184,7 +184,7 @@ bool OutdoorPvPSI::HandleDropFlag(Player* player, uint32 spellId)
             break;
         case HORDE:
             {
-                AreaTriggerEntry const* atEntry = sAreaTriggerStore.LookupEntry(SI_AREATRIGGER_H);
+                AreaTrigger const* atEntry = sAreaTriggerStore.LookupEntry(SI_AREATRIGGER_H);
                 if (atEntry)
                 {
                     // 5.0f is safe-distance

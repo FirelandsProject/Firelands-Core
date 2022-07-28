@@ -1834,7 +1834,7 @@ class at_hor_intro_start : public AreaTriggerScript
 public:
     at_hor_intro_start() : AreaTriggerScript("at_hor_intro_start") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*trigger*/)
     {
         InstanceScript* _instance = player->GetInstanceScript();
 
@@ -1853,7 +1853,7 @@ class at_hor_waves_restarter : public AreaTriggerScript
 public:
     at_hor_waves_restarter() : AreaTriggerScript("at_hor_waves_restarter") { }
 
-    bool OnTrigger(Player* player, AreaTriggerEntry const* /*trigger*/)
+    bool OnTrigger(Player* player, AreaTrigger const* /*trigger*/)
     {
         InstanceScript* _instance = player->GetInstanceScript();
 
@@ -1890,7 +1890,7 @@ class at_shadow_throne : public AreaTriggerScript
 public:
     at_shadow_throne() : AreaTriggerScript("at_shadow_throne") { }
 
-    bool OnTrigger(Player* player, const AreaTriggerEntry* /*at*/)
+    bool OnTrigger(Player* player, const AreaTrigger* /*at*/)
     {
         InstanceScript* _instance = player->GetInstanceScript();
 

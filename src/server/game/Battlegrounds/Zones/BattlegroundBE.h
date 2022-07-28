@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -20,7 +20,7 @@
 #ifndef __BATTLEGROUNDBE_H
 #define __BATTLEGROUNDBE_H
 
-#include "Battleground.h"
+#include "Arena.h"
 
 enum BattlegroundBEObjectTypes
 {
@@ -46,26 +46,19 @@ enum BattlegroundBEObjects
     BG_BE_OBJECT_READYMARKER    = 940000
 };
 
-class BattlegroundBE : public Battleground
+class FC_GAME_API BattlegroundBE : public Arena
 {
     public:
         BattlegroundBE();
         ~BattlegroundBE();
 
         /* inherited from BattlegroundClass */
-        void AddPlayer(Player* player);
-        void StartingEventCloseDoors();
-        void StartingEventOpenDoors();
+    void StartingEventCloseDoors() override;
+    void StartingEventOpenDoors() override;
 
-        void RemovePlayer(Player* player, uint64 guid, uint32 team);
-        void HandleAreaTrigger(Player* Source, uint32 Trigger);
-        bool SetupBattleground();
-        void Reset();
-        void FillInitialWorldStates(WorldPacket &d);
-        void HandleKillPlayer(Player* player, Player* killer);
-        bool HandlePlayerUnderMap(Player* player);
-
-        /* Scorekeeping */
-        void UpdatePlayerScore(Player* Source, uint32 type, uint32 value, bool doAddHonor = true);
+    void HandleAreaTrigger(Player* player, uint32 trigger) override;
+    bool SetupBattleground() override;
+    void FillInitialWorldStates(WorldPacket& d) override;
+    bool HandlePlayerUnderMap(Player* player) override;
 };
 #endif

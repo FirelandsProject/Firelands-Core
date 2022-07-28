@@ -367,12 +367,12 @@ Log* Log::instance()
     return &instance;
 }
 
-void Log::Initialize(Acore::Asio::IoContext* ioContext)
+void Log::Initialize(Firelands::Asio::IoContext* ioContext)
 {
     if (ioContext)
     {
         _ioContext = ioContext;
-        _strand = new Acore::Asio::Strand(*ioContext);
+        _strand = new Firelands::Asio::Strand(*ioContext);
     }
 
     LoadFromConfig();

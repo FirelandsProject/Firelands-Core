@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -17,30 +17,38 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Battleground.h"
+#include "ArenaSpectator.h"
 #include "ArenaTeam.h"
 #include "ArenaTeamMgr.h"
-#include "Battleground.h"
+#include "BattlegroundBE.h"
+#include "BattlegroundDS.h"
 #include "BattlegroundMgr.h"
+#include "BattlegroundNA.h"
+#include "BattlegroundRL.h"
+#include "BattlegroundRV.h"
+#include "Chat.h"
+#include "ChatTextBuilder.h"
 #include "Creature.h"
+#include "CreatureTextMgr.h"
 #include "Formulas.h"
+#include "GameGraveyard.h"
 #include "GridNotifiersImpl.h"
 #include "Group.h"
-#include "Guild.h"
-#include "GuildMgr.h"
-#include "MapManager.h"
+#include "MapMgr.h"
+#include "MiscPackets.h"
 #include "Object.h"
 #include "ObjectMgr.h"
 #include "Pet.h"
 #include "Player.h"
 #include "ReputationMgr.h"
-#include "SpellAuraEffects.h"
+#include "ScriptMgr.h"
 #include "SpellAuras.h"
+#include "Transport.h"
 #include "Util.h"
 #include "World.h"
 #include "WorldPacket.h"
-#include "InfoMgr.h"
-#include "Transport.h"
-#include "Chat.h"
+#include "WorldStatePackets.h"
 
 namespace Firelands
 {
@@ -72,6 +80,7 @@ namespace Firelands
         private:
             void do_helper(WorldPacket& data, char const* text)
             {
+
                 uint64 target_guid = _source ? _source->GetGUID() : 0;
 
                 data << uint8 (_msgtype);

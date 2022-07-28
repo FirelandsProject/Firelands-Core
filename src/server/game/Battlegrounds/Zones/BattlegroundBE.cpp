@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -27,21 +27,6 @@
 BattlegroundBE::BattlegroundBE()
 {
     BgObjects.resize(BG_BE_OBJECT_MAX);
-
-    StartDelayTimes[BG_STARTING_EVENT_FIRST]  = BG_START_DELAY_1M;
-    StartDelayTimes[BG_STARTING_EVENT_SECOND] = BG_START_DELAY_30S;
-    StartDelayTimes[BG_STARTING_EVENT_THIRD]  = BG_START_DELAY_15S;
-    StartDelayTimes[BG_STARTING_EVENT_FOURTH] = BG_START_DELAY_NONE;
-    //we must set messageIds
-    StartMessageIds[BG_STARTING_EVENT_FIRST]  = LANG_ARENA_ONE_MINUTE;
-    StartMessageIds[BG_STARTING_EVENT_SECOND] = LANG_ARENA_THIRTY_SECONDS;
-    StartMessageIds[BG_STARTING_EVENT_THIRD]  = LANG_ARENA_FIFTEEN_SECONDS;
-    StartMessageIds[BG_STARTING_EVENT_FOURTH] = LANG_ARENA_HAS_BEGUN;
-}
-
-BattlegroundBE::~BattlegroundBE()
-{
-
 }
 
 void BattlegroundBE::StartingEventCloseDoors()
@@ -61,45 +46,8 @@ void BattlegroundBE::StartingEventOpenDoors()
     for (uint32 i = BG_BE_OBJECT_BUFF_1; i <= BG_BE_OBJECT_BUFF_2; ++i)
         SpawnBGObject(i, 60);
 
-    for (uint32 i = BG_BE_OBJECT_READYMARKER_1; i <= BG_BE_OBJECT_READYMARKER_2; ++i)
-        DelObject(i);
 }
 
-void BattlegroundBE::AddPlayer(Player* player)
-{
-    Battleground::AddPlayer(player);
-    BattlegroundScore* sc = new BattlegroundScore;
-    PlayerScores[player->GetGUID()] = sc;
-    sc->BgTeam = player->GetTeam();
-    sc->TalentTree = player->GetPrimaryTalentTree(player->GetActiveSpec());
-    UpdateArenaWorldState();
-}
-
-void BattlegroundBE::RemovePlayer(Player* /*player*/, uint64 /*guid*/, uint32 /*team*/)
-{
-    if (GetStatus() == STATUS_WAIT_LEAVE)
-        return;
-
-    UpdateArenaWorldState();
-    CheckArenaWinConditions();
-}
-
-void BattlegroundBE::HandleKillPlayer(Player* player, Player* killer)
-{
-    if (GetStatus() != STATUS_IN_PROGRESS)
-        return;
-
-    if (!killer)
-    {
-        LOG_ERROR("bg.battleground", "Killer player not found");
-        return;
-    }
-
-    Battleground::HandleKillPlayer(player, killer);
-
-    UpdateArenaWorldState();
-    CheckArenaWinConditions();
-}
 
 bool BattlegroundBE::HandlePlayerUnderMap(Player* player)
 {
@@ -114,25 +62,36 @@ void BattlegroundBE::HandleAreaTrigger(Player* player, uint32 trigger)
 
     switch (trigger)
     {
-        case 4538:                                          // buff trigger?
-        case 4539:                                          // buff trigger?
-            break;
-        default:
-            Battleground::HandleAreaTrigger(player, trigger);
-            break;
+    case 4538:
+    case 4539:
+        break;
+        // OUTSIDE OF ARENA, TELEPORT!
+    case 4919:
+        player->NearTeleportTo(6220.90f, 318.94f, 5.1f, 5.3f);
+        break;
+    case 4921:
+        player->NearTeleportTo(6250.27f, 208.50f, 4.77f, 1.9f);
+        break;
+    case 4922:
+        player->NearTeleportTo(6214.4f, 227.12f, 4.28f, 0.8f);
+        break;
+    case 4923:
+        player->NearTeleportTo(6180.98f, 265.28f, 4.27f, 6.06f);
+        break;
+    case 4924:
+        player->NearTeleportTo(6269.0f, 295.06f, 4.46f, 3.98f);
+        break;
+    case 4944: // under arena -20
+    case 5039: // under arena -40
+    case 5040: // under arena -60
+        player->NearTeleportTo(6238.930176f, 262.963470f, 0.889519f, player->GetOrientation());
+        break;
     }
 }
 
-void BattlegroundBE::FillInitialWorldStates(WorldPacket &data)
-{
+void BattlegroundBE::FillInitialWorldStates(WorldPacket& data) {
     data << uint32(0x9f3) << uint32(1);           // 9
-    UpdateArenaWorldState();
-}
-
-void BattlegroundBE::Reset()
-{
-    //call parent's class reset
-    Battleground::Reset();
+    Arena::FillInitialWorldStates(data);
 }
 
 bool BattlegroundBE::SetupBattleground()
@@ -159,30 +118,3 @@ bool BattlegroundBE::SetupBattleground()
 
     return true;
 }
-
-void BattlegroundBE::UpdatePlayerScore(Player* Source, uint32 type, uint32 value, bool doAddHonor)
-{
-
-    BattlegroundScoreMap::iterator itr = PlayerScores.find(Source->GetGUID());
-    if (itr == PlayerScores.end())                         // player not found...
-        return;
-
-    //there is nothing special in this score
-    Battleground::UpdatePlayerScore(Source, type, value, doAddHonor);
-
-}
-
-/*
-21:45:46 id:231310 [S2C] SMSG_INIT_WORLD_STATES (706 = 0x02C2) len: 86
-0000: 32 02 00 00 76 0e 00 00 00 00 00 00 09 00 f3 09  |  2...v...........
-0010: 00 00 01 00 00 00 f1 09 00 00 01 00 00 00 f0 09  |  ................
-0020: 00 00 02 00 00 00 d4 08 00 00 00 00 00 00 d8 08  |  ................
-0030: 00 00 00 00 00 00 d7 08 00 00 00 00 00 00 d6 08  |  ................
-0040: 00 00 00 00 00 00 d5 08 00 00 00 00 00 00 d3 08  |  ................
-0050: 00 00 00 00 00 00                                |  ......
-
-spell 32724 - Gold Team
-spell 32725 - Green Team
-35774 Gold Team
-35775 Green Team
-*/

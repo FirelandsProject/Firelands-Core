@@ -1,7 +1,6 @@
 /*
+ * Copyright (C) Azerothcore <http://azerothcore.org/>
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
- * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,9 +19,9 @@
 #include "ObjectPosSelector.h"
 
 ObjectPosSelector::ObjectPosSelector(float x, float y, float size, float dist)
-: m_center_x(x), m_center_y(y), m_size(size), m_dist(dist)
+    : m_center_x(x), m_center_y(y), m_size(size), m_dist(dist)
 {
-    m_anglestep = acos(m_dist/(m_dist+2*m_size));
+    m_anglestep = acos(m_dist / (m_dist + 2 * m_size));
 
     m_nextUsedPos[USED_POS_PLUS]  = m_UsedPosLists[USED_POS_PLUS].end();
     m_nextUsedPos[USED_POS_MINUS] = m_UsedPosLists[USED_POS_MINUS].end();
@@ -33,22 +32,22 @@ ObjectPosSelector::ObjectPosSelector(float x, float y, float size, float dist)
     m_smallStepOk[USED_POS_PLUS]  = false;
     m_smallStepOk[USED_POS_MINUS] = false;
 
-    m_smallStepNextUsedPos[USED_POS_PLUS]  = NULL;
-    m_smallStepNextUsedPos[USED_POS_MINUS] = NULL;
+    m_smallStepNextUsedPos[USED_POS_PLUS]  = nullptr;
+    m_smallStepNextUsedPos[USED_POS_MINUS] = nullptr;
 }
 
 ObjectPosSelector::UsedPosList::value_type const* ObjectPosSelector::nextUsedPos(UsedPosType uptype)
 {
     UsedPosList::const_iterator itr = m_nextUsedPos[uptype];
-    if (itr!=m_UsedPosLists[uptype].end())
+    if (itr != m_UsedPosLists[uptype].end())
         ++itr;
 
-    if (itr==m_UsedPosLists[uptype].end())
+    if (itr == m_UsedPosLists[uptype].end())
     {
         if (!m_UsedPosLists[~uptype].empty())
             return &*m_UsedPosLists[~uptype].rbegin();
         else
-            return NULL;
+            return nullptr;
     }
     else
         return &*itr;
@@ -86,9 +85,9 @@ bool ObjectPosSelector::FirstAngle(float& angle)
 
 bool ObjectPosSelector::NextAngle(float& angle)
 {
-    while (m_nextUsedPos[USED_POS_PLUS]!=m_UsedPosLists[USED_POS_PLUS].end() ||
-        m_nextUsedPos[USED_POS_MINUS]!=m_UsedPosLists[USED_POS_MINUS].end() ||
-        m_smallStepOk[USED_POS_PLUS] || m_smallStepOk[USED_POS_MINUS] )
+    while (m_nextUsedPos[USED_POS_PLUS] != m_UsedPosLists[USED_POS_PLUS].end() ||
+            m_nextUsedPos[USED_POS_MINUS] != m_UsedPosLists[USED_POS_MINUS].end() ||
+            m_smallStepOk[USED_POS_PLUS] || m_smallStepOk[USED_POS_MINUS] )
     {
         // calculate next possible angle
         if (NextPosibleAngle(angle))
@@ -100,8 +99,8 @@ bool ObjectPosSelector::NextAngle(float& angle)
 
 bool ObjectPosSelector::NextUsedAngle(float& angle)
 {
-    while (m_nextUsedPos[USED_POS_PLUS]!=m_UsedPosLists[USED_POS_PLUS].end() ||
-        m_nextUsedPos[USED_POS_MINUS]!=m_UsedPosLists[USED_POS_MINUS].end())
+    while (m_nextUsedPos[USED_POS_PLUS] != m_UsedPosLists[USED_POS_PLUS].end() ||
+            m_nextUsedPos[USED_POS_MINUS] != m_UsedPosLists[USED_POS_MINUS].end())
     {
         // calculate next possible angle
         if (!NextPosibleAngle(angle))
@@ -114,8 +113,8 @@ bool ObjectPosSelector::NextUsedAngle(float& angle)
 bool ObjectPosSelector::NextPosibleAngle(float& angle)
 {
     // ++ direction less updated
-    if (m_nextUsedPos[USED_POS_PLUS]!=m_UsedPosLists[USED_POS_PLUS].end() &&
-        (m_nextUsedPos[USED_POS_MINUS]==m_UsedPosLists[USED_POS_MINUS].end() || m_nextUsedPos[USED_POS_PLUS]->first <= m_nextUsedPos[USED_POS_MINUS]->first))
+    if (m_nextUsedPos[USED_POS_PLUS] != m_UsedPosLists[USED_POS_PLUS].end() &&
+            (m_nextUsedPos[USED_POS_MINUS] == m_UsedPosLists[USED_POS_MINUS].end() || m_nextUsedPos[USED_POS_PLUS]->first <= m_nextUsedPos[USED_POS_MINUS]->first))
     {
         bool ok;
         if (m_smallStepOk[USED_POS_PLUS])
@@ -128,7 +127,7 @@ bool ObjectPosSelector::NextPosibleAngle(float& angle)
         return ok;
     }
     // -- direction less updated
-    else if (m_nextUsedPos[USED_POS_MINUS]!=m_UsedPosLists[USED_POS_MINUS].end())
+    else if (m_nextUsedPos[USED_POS_MINUS] != m_UsedPosLists[USED_POS_MINUS].end())
     {
         bool ok;
         if (m_smallStepOk[USED_POS_MINUS])

@@ -1,14 +1,16 @@
 /*
- * This file is part of the AzerothCore Project. See AUTHORS file for Copyright information
+ * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
  * option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along
@@ -20,8 +22,8 @@
 #include "Util.h"
 #include <functional>
 
-using SHA1 = Acore::Crypto::SHA1;
-using SRP6 = Acore::Crypto::SRP6;
+using SHA1 = Firelands::Crypto::SHA1;
+using SRP6 = Firelands::Crypto::SRP6;
 
 /*static*/ std::array<uint8, 1> const SRP6::g = { 7 };
 /*static*/ std::array<uint8, 32> const SRP6::N = HexStrToByteArray<32>("894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7", true);
@@ -44,14 +46,14 @@ using SRP6 = Acore::Crypto::SRP6;
             salt,
             SHA1::GetDigestOf(username, ":", password)
         )
-    ,_N).ToByteArray<32>();
+        , _N).ToByteArray<32>();
 }
 
 /*static*/ SessionKey SRP6::SHA1Interleave(SRP6::EphemeralKey const& S)
 {
     // split S into two buffers
-    std::array<uint8, EPHEMERAL_KEY_LENGTH/2> buf0, buf1;
-    for (size_t i = 0; i < EPHEMERAL_KEY_LENGTH/2; ++i)
+    std::array<uint8, EPHEMERAL_KEY_LENGTH / 2> buf0, buf1;
+    for (size_t i = 0; i < EPHEMERAL_KEY_LENGTH / 2; ++i)
     {
         buf0[i] = S[2 * i + 0];
         buf1[i] = S[2 * i + 1];

@@ -63,7 +63,7 @@ class at_alizabal_intro : public AreaTriggerScript
     public:
         at_alizabal_intro() : AreaTriggerScript("at_alizabal_intro") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (Creature* alizabal = ObjectAccessor::GetCreature(*player, instance->GetData64(DATA_ALIZABAL)))

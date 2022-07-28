@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -18,32 +18,12 @@
  */
 
 #include "BattlegroundNA.h"
-#include "Language.h"
-#include "Object.h"
-#include "ObjectMgr.h"
 #include "Player.h"
 #include "WorldPacket.h"
 
 BattlegroundNA::BattlegroundNA()
 {
-    doordelete = 0;
-
     BgObjects.resize(BG_NA_OBJECT_MAX);
-
-    StartDelayTimes[BG_STARTING_EVENT_FIRST]  = BG_START_DELAY_1M;
-    StartDelayTimes[BG_STARTING_EVENT_SECOND] = BG_START_DELAY_30S;
-    StartDelayTimes[BG_STARTING_EVENT_THIRD]  = BG_START_DELAY_15S;
-    StartDelayTimes[BG_STARTING_EVENT_FOURTH] = BG_START_DELAY_NONE;
-    //we must set messageIds
-    StartMessageIds[BG_STARTING_EVENT_FIRST]  = LANG_ARENA_ONE_MINUTE;
-    StartMessageIds[BG_STARTING_EVENT_SECOND] = LANG_ARENA_THIRTY_SECONDS;
-    StartMessageIds[BG_STARTING_EVENT_THIRD]  = LANG_ARENA_FIFTEEN_SECONDS;
-    StartMessageIds[BG_STARTING_EVENT_FOURTH] = LANG_ARENA_HAS_BEGUN;
-}
-
-BattlegroundNA::~BattlegroundNA()
-{
-
 }
 
 void BattlegroundNA::StartingEventCloseDoors()
@@ -62,62 +42,7 @@ void BattlegroundNA::StartingEventOpenDoors()
     for (uint32 i = BG_NA_OBJECT_BUFF_1; i <= BG_NA_OBJECT_BUFF_2; ++i)
         SpawnBGObject(i, 60);
 
-    for (uint32 i = BG_NA_OBJECT_READYMARKER_1; i <= BG_NA_OBJECT_READYMARKER_2; ++i)
-        DelObject(i);
 }
-
-void BattlegroundNA::AddPlayer(Player* player)
-{
-    Battleground::AddPlayer(player);
-    BattlegroundScore* sc = new BattlegroundScore;
-    PlayerScores[player->GetGUID()] = sc;
-    sc->BgTeam = player->GetTeam();
-    sc->TalentTree = player->GetPrimaryTalentTree(player->GetActiveSpec());
-    UpdateArenaWorldState();
-}
-
-void BattlegroundNA::RemovePlayer(Player* /*player*/, uint64 /*guid*/, uint32 /*team*/)
-{
-    if (GetStatus() == STATUS_WAIT_LEAVE)
-        return;
-
-    UpdateArenaWorldState();
-    CheckArenaWinConditions();
-}
-
-bool BattlegroundNA::PreUpdateImpl(uint32 diff)
-{
-    if (doordelete)
-    {
-        if (doordelete <= diff)
-        {
-            for (uint32 i = BG_NA_OBJECT_DOOR_1; i <= BG_NA_OBJECT_DOOR_2; ++i)
-                DelObject(i);
-            doordelete = 0;
-        }
-        else
-            doordelete -= diff;
-    }
-    return true;
-}
-
-void BattlegroundNA::HandleKillPlayer(Player* player, Player* killer)
-{
-    if (GetStatus() != STATUS_IN_PROGRESS)
-        return;
-
-    if (!killer)
-    {
-        LOG_ERROR("bg.battleground", "BattlegroundNA: Killer player not found");
-        return;
-    }
-
-    Battleground::HandleKillPlayer(player, killer);
-
-    UpdateArenaWorldState();
-    CheckArenaWinConditions();
-}
-
 bool BattlegroundNA::HandlePlayerUnderMap(Player* player)
 {
     player->TeleportTo(GetMapId(), 4055.504395f, 2919.660645f, 13.611241f, player->GetOrientation());
@@ -143,14 +68,9 @@ void BattlegroundNA::HandleAreaTrigger(Player* player, uint32 trigger)
 void BattlegroundNA::FillInitialWorldStates(WorldPacket &data)
 {
     data << uint32(0xa11) << uint32(1);           // 9
-    UpdateArenaWorldState();
+    Arena::FillInitialWorldStates(data);
 }
 
-void BattlegroundNA::Reset()
-{
-    //call parent's class reset
-    Battleground::Reset();
-}
 
 bool BattlegroundNA::SetupBattleground()
 {

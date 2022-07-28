@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -27,7 +27,7 @@ enum BroadcastTextIds
     BROADCAST_TEXT_FLEE_FOR_ASSIST      = 1150
 };
 
-enum TrinityStrings
+enum FirelandsStrings
 {
     // for chat commands
     LANG_SELECT_CHAR_OR_CREATURE        = 1,

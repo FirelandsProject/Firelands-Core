@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -150,7 +150,7 @@ class at_baltharus_plateau : public AreaTriggerScript
     public:
         at_baltharus_plateau() : AreaTriggerScript("at_baltharus_plateau") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
         {
             // Only trigger once
             if (InstanceScript* instance = player->GetInstanceScript())

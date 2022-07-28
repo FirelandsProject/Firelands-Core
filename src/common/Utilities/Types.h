@@ -47,11 +47,11 @@ namespace Firelands
         template<typename... Ts>
         struct Example
         {
-            using TupleArg = Acore::find_type_if_t<Acore::is_tuple, Ts...>;
+            using TupleArg = Firelands::find_type_if_t<Firelands::is_tuple, Ts...>;
 
             bool HasTuple()
             {
-                return !std::is_same_v<TupleArg, Acore::find_type_end>;
+                return !std::is_same_v<TupleArg, Firelands::find_type_end>;
             }
         };
 
@@ -59,7 +59,7 @@ namespace Firelands
         example.HasTuple() == true; // TupleArg is std::tuple<int, int, int>
 
         Example<int, std::string, char> example2;
-        example2.HasTuple() == false; // TupleArg is Acore::find_type_end
+        example2.HasTuple() == false; // TupleArg is Firelands::find_type_end
     */
 
     template<template<typename...> typename Check, typename... Ts>

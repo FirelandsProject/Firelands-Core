@@ -2333,7 +2333,7 @@ class at_icc_saurfang_portal : public AreaTriggerScript
     public:
         at_icc_saurfang_portal() : AreaTriggerScript("at_icc_saurfang_portal") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
         {
             InstanceScript* instance = player->GetInstanceScript();
             if (!instance || !instance->IsDone(DATA_DEATHBRINGER_SAURFANG))
@@ -2367,7 +2367,7 @@ class at_icc_shutdown_traps : public AreaTriggerScript
     public:
         at_icc_shutdown_traps() : AreaTriggerScript("at_icc_shutdown_traps") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 instance->SetData(DATA_COLDFLAME_JETS, DONE);
@@ -2380,7 +2380,7 @@ class at_icc_start_blood_quickening : public AreaTriggerScript
     public:
         at_icc_start_blood_quickening() : AreaTriggerScript("at_icc_start_blood_quickening") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (instance->GetData(DATA_BLOOD_QUICKENING_STATE) == NOT_STARTED)
@@ -2394,7 +2394,7 @@ class at_icc_start_frostwing_gauntlet : public AreaTriggerScript
     public:
         at_icc_start_frostwing_gauntlet() : AreaTriggerScript("at_icc_start_frostwing_gauntlet") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* /*areaTrigger*/)
+        bool OnTrigger(Player* player, AreaTrigger const* /*areaTrigger*/)
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (Creature* crok = ObjectAccessor::GetCreature(*player, instance->GetData64(DATA_CROK_SCOURGEBANE)))
@@ -2408,7 +2408,7 @@ class at_icc_sindragosa_gauntlet : public AreaTriggerScript
     public:
         at_icc_sindragosa_gauntlet() : AreaTriggerScript("at_icc_sindragosa_gauntlet") { }
 
-        bool OnTrigger(Player* player, AreaTriggerEntry const* areaTrigger)
+        bool OnTrigger(Player* player, AreaTrigger const* areaTrigger)
         {
             if (InstanceScript* instance = player->GetInstanceScript())
                 if (instance->GetData(DATA_SINDRAGOSAS_GAUNTLET) == NOT_STARTED)

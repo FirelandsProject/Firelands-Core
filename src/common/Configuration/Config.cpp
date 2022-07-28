@@ -354,7 +354,7 @@ std::string const ConfigMgr::GetConfigPath()
 {
     std::lock_guard<std::mutex> lock(_configLock);
 
-#if AC_PLATFORM == AC_PLATFORM_WINDOWS
+#if PLATFORM == PLATFORM_WINDOWS
     return "configs/";
 #else
     return std::string(_CONF_DIR) + "/";

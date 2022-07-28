@@ -48,12 +48,12 @@ struct B64Impl
     }
 };
 
-/*static*/ std::string Acore::Encoding::Base64::Encode(std::vector<uint8> const& data)
+/*static*/ std::string Firelands::Encoding::Base64::Encode(std::vector<uint8> const& data)
 {
-    return Acore::Impl::GenericBaseEncoding<B64Impl>::Encode(data);
+    return Firelands::Impl::GenericBaseEncoding<B64Impl>::Encode(data);
 }
 
-/*static*/ Optional<std::vector<uint8>> Acore::Encoding::Base64::Decode(std::string const& data)
+/*static*/ Optional<std::vector<uint8>> Firelands::Encoding::Base64::Decode(std::string const& data)
 {
-    return Acore::Impl::GenericBaseEncoding<B64Impl>::Decode(data);
+    return Firelands::Impl::GenericBaseEncoding<B64Impl>::Decode(data);
 }
