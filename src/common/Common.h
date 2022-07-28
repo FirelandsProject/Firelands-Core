@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -20,142 +20,56 @@
 #ifndef FIRELANDS_COMMON_H
 #define FIRELANDS_COMMON_H
 
-// config.h needs to be included 1st
-// TODO this thingy looks like hack, but its not, need to
-// make separate header however, because It makes mess here.
-#ifdef HAVE_CONFIG_H
-// Remove Some things that we will define
-// This is in case including another config.h
-// before trinity config.h
-#ifdef PACKAGE
-#undef PACKAGE
-#endif //PACKAGE
-#ifdef PACKAGE_BUGREPORT
-#undef PACKAGE_BUGREPORT
-#endif //PACKAGE_BUGREPORT
-#ifdef PACKAGE_NAME
-#undef PACKAGE_NAME
-#endif //PACKAGE_NAME
-#ifdef PACKAGE_STRING
-#undef PACKAGE_STRING
-#endif //PACKAGE_STRING
-#ifdef PACKAGE_TARNAME
-#undef PACKAGE_TARNAME
-#endif //PACKAGE_TARNAME
-#ifdef PACKAGE_VERSION
-#undef PACKAGE_VERSION
-#endif //PACKAGE_VERSION
-#ifdef VERSION
-#undef VERSION
-#endif //VERSION
-
-# include "Config.h"
-
-#undef PACKAGE
-#undef PACKAGE_BUGREPORT
-#undef PACKAGE_NAME
-#undef PACKAGE_STRING
-#undef PACKAGE_TARNAME
-#undef PACKAGE_VERSION
-#undef VERSION
-#endif //HAVE_CONFIG_H
-
 #include "Define.h"
-
-#include "Dynamic/UnorderedMap.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-#include <errno.h>
-#include <signal.h>
-#include <assert.h>
-
-#if PLATFORM == PLATFORM_WINDOWS
-#define STRCASECMP stricmp
-#else
-#define STRCASECMP strcasecmp
-#endif
-
-#include <set>
-#include <list>
+#include <array>
+#include <memory>
 #include <string>
-#include <map>
-#include <queue>
-#include <sstream>
-#include <algorithm>
-
-#include "Threading/LockedQueue.h"
-#include "Threading/Threading.h"
-
-#include <ace/Basic_Types.h>
-#include <ace/Guard_T.h>
-#include <ace/RW_Thread_Mutex.h>
-#include <ace/Thread_Mutex.h>
-#include <ace/OS_NS_time.h>
+#include <utility>
 
 #if PLATFORM == PLATFORM_WINDOWS
-#  include <ace/config-all.h>
-// XP winver - needed to compile with standard leak check in MemoryLeaks.h
-// uncomment later if needed
-//#define _WIN32_WINNT 0x0501
-#  include <ws2tcpip.h>
-//#undef WIN32_WINNT
+#include <ws2tcpip.h>
+#if COMPILER == COMPILER_INTEL
+#    if !defined(BOOST_ASIO_HAS_MOVE)
+#      define BOOST_ASIO_HAS_MOVE
+#    endif // !defined(BOOST_ASIO_HAS_MOVE)
+#  endif // if COMPILER == COMPILER_INTEL
 #else
-#  include <sys/types.h>
-#  include <sys/ioctl.h>
-#  include <sys/socket.h>
-#  include <netinet/in.h>
-#  include <unistd.h>
-#  include <netdb.h>
+#include <cstdlib>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif
 
 #if COMPILER == COMPILER_MICROSOFT
-
-#include <float.h>
-
-#define I32FMT "%08I32X"
-#define I64FMT "%016I64X"
-#define snprintf _snprintf
 #define atoll _atoi64
-#define vsnprintf _vsnprintf
-#define finite(X) _finite(X)
 #define llabs _abs64
-
 #else
-
 #define stricmp strcasecmp
-#define strnicmp strncasecmp
-#define I32FMT "%08X"
-#define I64FMT "%016llX"
-
 #endif
-
-inline float finiteAlways(float f) { return finite(f) ? f : 0.0f; }
-
-#define atol(a) strtoul( a, NULL, 10)
 
 #define STRINGIZE(a) #a
 
-enum TimeConstants
-{
-    MINUTE          = 60,
-    HOUR            = MINUTE*60,
-    DAY             = HOUR*24,
-    WEEK            = DAY*7,
-    MONTH           = DAY*30,
-    YEAR            = MONTH*12,
-    IN_MILLISECONDS = 1000
-};
+#define MAX_NETCLIENT_PACKET_SIZE (32767 - 1)               // Client hardcap: int16 with trailing zero space otherwise crash on memory free
+
+ // TimeConstants
+constexpr auto MINUTE = 60;
+constexpr auto HOUR = MINUTE * 60;
+constexpr auto DAY = HOUR * 24;
+constexpr auto WEEK = DAY * 7;
+constexpr auto MONTH = DAY * 30;
+constexpr auto YEAR = MONTH * 12;
+constexpr auto IN_MILLISECONDS = 1000;
 
 enum AccountTypes
 {
-    SEC_PLAYER         = 0,
-    SEC_MODERATOR      = 1,
-    SEC_GAMEMASTER     = 2,
-    SEC_ADMINISTRATOR  = 3,
-    SEC_CONSOLE        = 4                                  // must be always last in list, accounts must have less security level always also
+    SEC_PLAYER = 0,
+    SEC_MODERATOR = 1,
+    SEC_GAMEMASTER = 2,
+    SEC_ADMINISTRATOR = 3,
+    SEC_CONSOLE = 4                                  // must be always last in list, accounts must have less security level always also
 };
 
 enum LocaleConstant
@@ -168,50 +82,30 @@ enum LocaleConstant
     LOCALE_zhTW = 5,
     LOCALE_esES = 6,
     LOCALE_esMX = 7,
-    LOCALE_ruRU = 8
+    LOCALE_ruRU = 8,
+
+    TOTAL_LOCALES
 };
 
-const uint8 TOTAL_LOCALES = 9;
-const LocaleConstant DEFAULT_LOCALE = LOCALE_enUS;
+#define DEFAULT_LOCALE LOCALE_enUS
 
 #define MAX_LOCALES 8
 #define MAX_ACCOUNT_TUTORIAL_VALUES 8
 
-extern char const* localeNames[TOTAL_LOCALES];
+FC_COMMON_API extern char const* localeNames[TOTAL_LOCALES];
 
-LocaleConstant GetLocaleByName(const std::string& name);
-
-typedef std::vector<std::string> StringVector;
-
-// we always use stdlibc++ std::max/std::min, undefine some not C++ standard defines (Win API and some other platforms)
-#ifdef max
-#undef max
-#endif
-
-#ifdef min
-#undef min
-#endif
-
-#ifndef M_PI
-#define M_PI            3.14159265358979323846f
-#endif
+FC_COMMON_API LocaleConstant GetLocaleByName(const std::string& name);
+FC_COMMON_API void CleanStringForMysqlQuery(std::string& str);
 
 #define MAX_QUERY_LEN 32*1024
 
-#define FIRELANDS_GUARD(MUTEX, LOCK) \
-  ACE_Guard< MUTEX > FIRELANDS_GUARD_OBJECT (LOCK); \
-    if (FIRELANDS_GUARD_OBJECT.locked() == 0) ASSERT(false);
-
-//! For proper implementation of multiple-read, single-write pattern, use
-//! ACE_RW_Mutex as underlying @MUTEX
-# define FIRELANDS_WRITE_GUARD(MUTEX, LOCK) \
-  ACE_Write_Guard< MUTEX > FIRELANDS_GUARD_OBJECT (LOCK); \
-    if (FIRELANDS_GUARD_OBJECT.locked() == 0) ASSERT(false);
-
-//! For proper implementation of multiple-read, single-write pattern, use
-//! ACE_RW_Mutex as underlying @MUTEX
-# define FIRELANDS_READ_GUARD(MUTEX, LOCK) \
-  ACE_Read_Guard< MUTEX > FIRELANDS_GUARD_OBJECT (LOCK); \
-    if (FIRELANDS_GUARD_OBJECT.locked() == 0) ASSERT(false);
-
+namespace Firelands
+{
+    template<class ArgumentType, class ResultType>
+    struct unary_function
+    {
+        typedef ArgumentType argument_type;
+        typedef ResultType result_type;
+    };
+}
 #endif
