@@ -22,7 +22,6 @@ if(AUTHSERVER OR WORLDSERVER)
     add_subdirectory(apps)
 
     if(WORLDSERVER)
-        add_subdirectory(collision)
         add_subdirectory(game)
         add_subdirectory(scripts)
     endif()

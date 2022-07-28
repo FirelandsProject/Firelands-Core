@@ -11,6 +11,7 @@
 option(AUTHSERVER       "Build authserver"                                            1)
 option(WORLDSERVER      "Build worldserver"                                           1)
 option(SCRIPTS          "Build core with scripts included"                            1)
+option(MODULES          "Build core with modules included"                            1)
 option(TOOLS            "Build map/vmap/mmap extraction/assembler tools"              0)
 option(USE_SCRIPTPCH    "Use precompiled headers when compiling scripts"              1)
 option(USE_COREPCH      "Use precompiled headers when compiling servers"              1)

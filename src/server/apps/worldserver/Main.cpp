@@ -291,7 +291,7 @@ int main(int argc, char** argv)
     std::shared_ptr<std::thread> soapThread;
     if (sConfigMgr->GetOption<bool>("SOAP.Enabled", false))
     {
-        soapThread.reset(new std::thread(ACSoapThread, sConfigMgr->GetOption<std::string>("SOAP.IP", "127.0.0.1"), uint16(sConfigMgr->GetOption<int32>("SOAP.Port", 7878))),
+        soapThread.reset(new std::thread(FCSoapThread, sConfigMgr->GetOption<std::string>("SOAP.IP", "127.0.0.1"), uint16(sConfigMgr->GetOption<int32>("SOAP.Port", 7878))),
             [](std::thread* thr)
             {
                 thr->join();

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
- * Copyright (C) 2005-2010 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,26 +17,45 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SIGNAL_HANDLER_H__
-#define __SIGNAL_HANDLER_H__
+#ifndef _SIGNAL_HANDLER_H_
+#define _SIGNAL_HANDLER_H_
 
-#include <ace/Event_Handler.h>
+#include <csignal>
+#include <mutex>
+#include <unordered_set>
 
 namespace Firelands
 {
+    /// Handle termination signals
+    class SignalHandler
+    {
+    private:
+        std::unordered_set<int> _handled;
+        mutable std::mutex _mutex;
 
-/// Handle termination signals
-class SignalHandler : public ACE_Event_Handler
-{
     public:
-        int handle_signal(int SigNum, siginfo_t* = NULL, ucontext_t* = NULL)
+        bool handle_signal(int sig, void (*func)(int))
         {
-            HandleSignal(SigNum);
-            return 0;
-        }
-        virtual void HandleSignal(int /*SigNum*/) {};
-};
+            std::lock_guard lock(_mutex);
 
+            if (_handled.find(sig) != _handled.end())
+            {
+                return false;
+            }
+
+            _handled.insert(sig);
+            signal(sig, func);
+            return true;
+        }
+
+        ~SignalHandler()
+        {
+            for (auto const& sig : _handled)
+            {
+                signal(sig, nullptr);
+            }
+        }
+    };
 }
 
-#endif /* __SIGNAL_HANDLER_H__ */
+#endif // _SIGNAL_HANDLER_H_
