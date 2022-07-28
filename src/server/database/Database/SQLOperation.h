@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,22 +19,11 @@
 #ifndef _SQLOPERATION_H
 #define _SQLOPERATION_H
 
-#include <ace/Method_Request.h>
-#include <ace/Activation_Queue.h>
+#include "DatabaseEnvFwd.h"
+#include "Define.h"
+#include <variant>
 
-#include "QueryResult.h"
-
-//- Forward declare (don't include header to prevent circular includes)
-class PreparedStatement;
-
-//- Union that holds element data
-union SQLElementUnion
-{
-    PreparedStatement* stmt;
-    const char* query;
-};
-
-//- Type specifier of our element data
+ //- Type specifier of our element data
 enum SQLElementDataType
 {
     SQL_ELEMENT_RAW,
@@ -44,32 +33,32 @@ enum SQLElementDataType
 //- The element
 struct SQLElementData
 {
-    SQLElementUnion element;
+    std::variant<PreparedStatementBase*, std::string> element;
     SQLElementDataType type;
-};
-
-//- For ambigious resultsets
-union SQLResultSetUnion
-{
-    PreparedResultSet* presult;
-    ResultSet* qresult;
 };
 
 class MySQLConnection;
 
-class SQLOperation : public ACE_Method_Request
+class FC_DATABASE_API SQLOperation
 {
-    public:
-        SQLOperation(): m_conn(NULL) {};
-        virtual int call()
-        {
-            Execute();
-            return 0;
-        }
-        virtual bool Execute() = 0;
-        virtual void SetConnection(MySQLConnection* con) { m_conn = con; }
+public:
+    SQLOperation() = default;
+    virtual ~SQLOperation() = default;
 
-        MySQLConnection* m_conn;
+    virtual int call()
+    {
+        Execute();
+        return 0;
+    }
+
+    virtual bool Execute() = 0;
+    virtual void SetConnection(MySQLConnection* con) { m_conn = con; }
+
+    MySQLConnection* m_conn{ nullptr };
+
+private:
+    SQLOperation(SQLOperation const& right) = delete;
+    SQLOperation& operator=(SQLOperation const& right) = delete;
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,25 +17,25 @@
  */
 
 #include "AdhocStatement.h"
+#include "Errors.h"
 #include "MySQLConnection.h"
+#include "QueryResult.h"
 
-/*! Basic, ad-hoc queries. */
-BasicStatementTask::BasicStatementTask(const char* sql) :
-m_has_result(false)
+ /*! Basic, ad-hoc queries. */
+BasicStatementTask::BasicStatementTask(std::string_view sql, bool async) : m_result(nullptr)
 {
-    m_sql = strdup(sql);
-}
+    m_sql = std::string(sql);
+    m_has_result = async; // If the operation is async, then there's a result
 
-BasicStatementTask::BasicStatementTask(const char* sql, QueryResultFuture result) :
-m_has_result(true),
-m_result(result)
-{
-    m_sql = strdup(sql);
+    if (async)
+        m_result = new QueryResultPromise();
 }
 
 BasicStatementTask::~BasicStatementTask()
 {
-    free((void*)m_sql);
+    m_sql.clear();
+    if (m_has_result && m_result)
+        delete m_result;
 }
 
 bool BasicStatementTask::Execute()
@@ -43,14 +43,14 @@ bool BasicStatementTask::Execute()
     if (m_has_result)
     {
         ResultSet* result = m_conn->Query(m_sql);
-        if (!result || !result->GetRowCount())
+        if (!result || !result->GetRowCount() || !result->NextRow())
         {
             delete result;
-            m_result.set(QueryResult(NULL));
+            m_result->set_value(QueryResult(nullptr));
             return false;
         }
-        result->NextRow();
-        m_result.set(QueryResult(result));
+
+        m_result->set_value(QueryResult(result));
         return true;
     }
 

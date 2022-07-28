@@ -70,6 +70,8 @@ endif()
 # Find revision ID and hash of the sourcetree
 include(cmake/genrev.cmake)
 
+include(src/cmake/fc_macros.cmake)
+
 # print out the results before continuing
 include(cmake/showoptions.cmake)
 

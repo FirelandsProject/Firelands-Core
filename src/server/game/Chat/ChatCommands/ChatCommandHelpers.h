@@ -122,8 +122,8 @@ namespace Firelands::Impl::ChatCommands
             std::variant<std::monostate, std::string_view, std::string> _storage;
     };
 
-    AC_GAME_API void SendErrorMessageToHandler(ChatHandler* handler, std::string_view str);
-    AC_GAME_API char const* GetFirelandsString(ChatHandler const* handler, FirelandsStrings which);
+    FC_GAME_API void SendErrorMessageToHandler(ChatHandler* handler, std::string_view str);
+    FC_GAME_API char const* GetFirelandsString(ChatHandler const* handler, FirelandsStrings which);
     template <typename... Ts>
     std::string FormatFirelandsString(ChatHandler const* handler, FirelandsStrings which, Ts&&... args)
     {

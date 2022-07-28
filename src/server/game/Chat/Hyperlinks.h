@@ -142,7 +142,7 @@ namespace Firelands::Hyperlinks
             }
         };
 
-    #define make_base_tag(ltag, type) struct ltag : public base_tag { using value_type = type; static constexpr std::string_view tag() { return #ltag; } }
+#define make_base_tag(ltag, type) struct ltag : public base_tag { using value_type = type; static constexpr std::string_view tag() { return #ltag; } }
         make_base_tag(area, uint32);
         make_base_tag(areatrigger, uint32);
         make_base_tag(creature, ObjectGuid::LowType);
@@ -156,58 +156,58 @@ namespace Firelands::Hyperlinks
         make_base_tag(taxinode, uint32);
         make_base_tag(tele, uint32);
         make_base_tag(title, uint32);
-    #undef make_base_tag
+#undef make_base_tag
 
-        struct AC_GAME_API achievement
+        struct FC_GAME_API achievement
         {
             using value_type = AchievementLinkData const&;
             static constexpr std::string_view tag() { return "achievement"; }
             static bool StoreTo(AchievementLinkData& val, std::string_view data);
         };
 
-        struct AC_GAME_API enchant
+        struct FC_GAME_API enchant
         {
             using value_type = SpellInfo const*;
             static constexpr std::string_view tag() { return "enchant"; }
             static bool StoreTo(SpellInfo const*& val, std::string_view data);
         };
 
-        struct AC_GAME_API glyph
+        struct FC_GAME_API glyph
         {
             using value_type = GlyphLinkData const&;
             static constexpr std::string_view tag() { return "glyph"; };
             static bool StoreTo(GlyphLinkData& val, std::string_view data);
         };
 
-        struct AC_GAME_API item
+        struct FC_GAME_API item
         {
             using value_type = ItemLinkData const&;
             static constexpr std::string_view tag() { return "item"; }
             static bool StoreTo(ItemLinkData& val, std::string_view data);
         };
 
-        struct AC_GAME_API quest
+        struct FC_GAME_API quest
         {
             using value_type = QuestLinkData const&;
             static constexpr std::string_view tag() { return "quest"; }
             static bool StoreTo(QuestLinkData& val, std::string_view data);
         };
 
-        struct AC_GAME_API spell
+        struct FC_GAME_API spell
         {
             using value_type = SpellInfo const*;
             static constexpr std::string_view tag() { return "spell"; }
             static bool StoreTo(SpellInfo const*& val, std::string_view data);
         };
 
-        struct AC_GAME_API talent
+        struct FC_GAME_API talent
         {
             using value_type = TalentLinkData const&;
             static constexpr std::string_view tag() { return "talent"; }
             static bool StoreTo(TalentLinkData& val, std::string_view data);
         };
 
-        struct AC_GAME_API trade
+        struct FC_GAME_API trade
         {
             using value_type = TradeskillLinkData const&;
             static constexpr std::string_view tag() { return "trade"; }
@@ -248,8 +248,8 @@ namespace Firelands::Hyperlinks
         std::string_view const text;
     };
 
-    HyperlinkInfo AC_GAME_API ParseSingleHyperlink(std::string_view str);
-    bool AC_GAME_API CheckAllLinks(std::string_view str);
+    HyperlinkInfo FC_GAME_API ParseSingleHyperlink(std::string_view str);
+    bool FC_GAME_API CheckAllLinks(std::string_view str);
 }
 
 #endif

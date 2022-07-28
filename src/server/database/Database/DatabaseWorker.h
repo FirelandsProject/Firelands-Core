@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,24 +19,33 @@
 #ifndef _WORKERTHREAD_H
 #define _WORKERTHREAD_H
 
-#include <ace/Task.h>
-#include <ace/Activation_Queue.h>
+#include "Define.h"
+#include <atomic>
+#include <thread>
+
+template <typename T>
+class ProducerConsumerQueue;
 
 class MySQLConnection;
+class SQLOperation;
 
-class DatabaseWorker : protected ACE_Task_Base
+class FC_DATABASE_API DatabaseWorker
 {
-    public:
-        DatabaseWorker(ACE_Activation_Queue* new_queue, MySQLConnection* con);
+public:
+    DatabaseWorker(ProducerConsumerQueue<SQLOperation*>* newQueue, MySQLConnection* connection);
+    ~DatabaseWorker();
 
-        ///- Inherited from ACE_Task_Base
-        int svc();
-        int wait() { return ACE_Task_Base::wait(); }
+private:
+    ProducerConsumerQueue<SQLOperation*>* _queue;
+    MySQLConnection* _connection;
 
-    private:
-        DatabaseWorker() : ACE_Task_Base() {}
-        ACE_Activation_Queue* m_queue;
-        MySQLConnection* m_conn;
+    void WorkerThread();
+    std::thread _workerThread;
+
+    std::atomic<bool> _cancelationToken;
+
+    DatabaseWorker(DatabaseWorker const& right) = delete;
+    DatabaseWorker& operator=(DatabaseWorker const& right) = delete;
 };
 
 #endif

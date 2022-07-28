@@ -247,7 +247,7 @@ int main(int argc, char** argv)
 
     LoadRealmInfo(*ioContext);
 
-    Firelands::Module::SetEnableModulesList(AC_MODULES_LIST);
+    Firelands::Module::SetEnableModulesList(FC_MODULES_LIST);
 
     ///- Initialize the World
     sSecretMgr->Initialize();
@@ -379,7 +379,7 @@ bool StartDB()
     MySQL::Library_Init();
 
     // Load databases
-    DatabaseLoader loader("server.worldserver", DatabaseLoader::DATABASE_NONE, AC_MODULES_LIST);
+    DatabaseLoader loader("server.worldserver", DatabaseLoader::DATABASE_NONE, FC_MODULES_LIST);
     loader
         .AddDatabase(LoginDatabase, "Login")
         .AddDatabase(CharacterDatabase, "Character")
