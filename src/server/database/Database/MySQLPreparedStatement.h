@@ -30,7 +30,7 @@ class PreparedStatementBase;
 //- Class of which the instances are unique per MySQLConnection
 //- access to these class objects is only done when a prepared statement task
 //- is executed.
-class DATABASE_API MySQLPreparedStatement
+class FC_DATABASE_API MySQLPreparedStatement
 {
     friend class MySQLConnection;
     friend class PreparedStatementBase;

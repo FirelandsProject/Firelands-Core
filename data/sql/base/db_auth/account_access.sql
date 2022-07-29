@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `account_access` (
   `id` int unsigned NOT NULL,
   `gmlevel` tinyint unsigned NOT NULL,
   `RealmID` int NOT NULL DEFAULT '-1',
+  `comment` VARCHAR(255) DEFAULT '',
   PRIMARY KEY (`id`,`RealmID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 

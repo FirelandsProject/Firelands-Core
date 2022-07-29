@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `realmlist` (
 DELETE FROM `realmlist`;
 /*!40000 ALTER TABLE `realmlist` DISABLE KEYS */;
 INSERT INTO `realmlist` (`id`, `name`, `address`, `localAddress`, `localSubnetMask`, `port`, `icon`, `flag`, `timezone`, `allowedSecurityLevel`, `population`, `gamebuild`) VALUES
-	(1, 'Cataclysm', 'localhost', '127.0.0.1', '255.255.255.0', 8085, 1, 0, 1, 0, 0, 15595);
+	(1, 'Firelands Cata', 'localhost', '127.0.0.1', '255.255.255.0', 8085, 1, 0, 1, 0, 0, 15595);
 /*!40000 ALTER TABLE `realmlist` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

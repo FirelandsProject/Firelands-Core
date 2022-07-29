@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,23 +19,9 @@
 #ifndef _WORLDDATABASE_H
 #define _WORLDDATABASE_H
 
-#include "DatabaseWorkerPool.h"
 #include "MySQLConnection.h"
 
-class WorldDatabaseConnection : public MySQLConnection
-{
-    public:
-        //- Constructors for sync and async connections
-        WorldDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-        WorldDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
-
-        //- Loads database type specific prepared statements
-        void DoPrepareStatements();
-};
-
-typedef DatabaseWorkerPool<WorldDatabaseConnection> WorldDatabaseWorkerPool;
-
-enum WorldDatabaseStatements
+enum WorldDatabaseStatements : uint32
 {
     /*  Naming standard for defines:
         {DB}_{SEL/INS/UPD/DEL/REP}_{Summary of data changed}
@@ -123,6 +109,20 @@ enum WorldDatabaseStatements
     WORLD_UPD_REPORT_QUESTS,
 
     MAX_WORLDDATABASE_STATEMENTS
+};
+
+class FC_DATABASE_API WorldDatabaseConnection : public MySQLConnection
+{
+public:
+    typedef WorldDatabaseStatements Statements;
+
+    //- Constructors for sync and async connections
+    WorldDatabaseConnection(MySQLConnectionInfo& connInfo);
+    WorldDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
+    ~WorldDatabaseConnection() override;
+
+    //- Loads database type specific prepared statements
+    void DoPrepareStatements() override;
 };
 
 #endif

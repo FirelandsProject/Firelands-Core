@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,15 +19,17 @@
 #ifndef _TRANSACTION_H
 #define _TRANSACTION_H
 
+#include "DatabaseEnvFwd.h"
+#include "Define.h"
 #include "SQLOperation.h"
+#include "StringFormat.h"
+#include <functional>
+#include <mutex>
+#include <utility>
+#include <vector>
 
-#include <future>
-
-//- Forward declare (don't include header to prevent circular includes)
-class PreparedStatement;
-
-/*! Transactions, high level class. */
-class Transaction
+ /*! Transactions, high level class. */
+class FC_DATABASE_API TransactionBase
 {
     friend class TransactionTask;
     friend class MySQLConnection;
@@ -35,56 +37,93 @@ class Transaction
     template <typename T>
     friend class DatabaseWorkerPool;
 
-    public:
-        Transaction() : _cleanedUp(false) {}
-        ~Transaction() { Cleanup(); }
+public:
+    TransactionBase() = default;
+    virtual ~TransactionBase() { Cleanup(); }
 
-        void Append(PreparedStatement* statement);
-        void Append(const char* sql);
-        void PAppend(const char* sql, ...);
+    void Append(std::string_view sql);
 
-        size_t GetSize() const { return m_queries.size(); }
+    template<typename... Args>
+    void Append(std::string_view sql, Args&&... args)
+    {
+        Append(Firelands::StringFormatFmt(sql, std::forward<Args>(args)...));
+    }
 
-    protected:
-        void Cleanup();
-        std::list<SQLElementData> m_queries;
+    [[nodiscard]] std::size_t GetSize() const { return m_queries.size(); }
 
-    private:
-        bool _cleanedUp;
+protected:
+    void AppendPreparedStatement(PreparedStatementBase* statement);
+    void Cleanup();
+    std::vector<SQLElementData> m_queries;
 
+private:
+    bool _cleanedUp{ false };
 };
-typedef Firelands::AutoPtr<Transaction, ACE_Thread_Mutex> SQLTransaction;
-typedef std::future<bool> SQLTransactionFuture;
-typedef std::promise<bool> SQLTransactionPromise;
+
+template<typename T>
+class Transaction : public TransactionBase
+{
+public:
+    using TransactionBase::Append;
+
+    void Append(PreparedStatement<T>* statement)
+    {
+        AppendPreparedStatement(statement);
+    }
+};
 
 /*! Low level class*/
-class TransactionTask : public SQLOperation
+class FC_DATABASE_API TransactionTask : public SQLOperation
 {
-    template <class T> friend class DatabaseWorkerPool;
+    template <class T>
+    friend class DatabaseWorkerPool;
+
     friend class DatabaseWorker;
+    friend class TransactionCallback;
 
-    public:
-        TransactionTask(SQLTransaction trans) : m_trans(trans) { }
-        virtual ~TransactionTask() { }
+public:
+    TransactionTask(std::shared_ptr<TransactionBase> trans) : m_trans(std::move(trans)) { }
+    ~TransactionTask() override = default;
 
-    protected:
-        virtual bool Execute();
+protected:
+    bool Execute() override;
+    int TryExecute();
+    void CleanupOnFailure();
 
-        SQLTransaction m_trans;
+    std::shared_ptr<TransactionBase> m_trans;
+    static std::mutex _deadlockLock;
 };
 
-class TransactionTaskWithFuture : public TransactionTask
+class FC_DATABASE_API TransactionWithResultTask : public TransactionTask
 {
-    public:
-        TransactionTaskWithFuture(SQLTransaction trans) : TransactionTask(trans) { }
+public:
+    TransactionWithResultTask(std::shared_ptr<TransactionBase> trans) : TransactionTask(trans) { }
 
-        SQLTransactionFuture GetFuture() { return _result.get_future(); }
+    TransactionFuture GetFuture() { return m_result.get_future(); }
 
-    protected:
-        bool Execute() override;
+protected:
+    bool Execute() override;
 
-    private:
-        SQLTransactionPromise _result;
+    TransactionPromise m_result;
+};
+
+class FC_DATABASE_API TransactionCallback
+{
+public:
+    TransactionCallback(TransactionFuture&& future) : m_future(std::move(future)) { }
+    TransactionCallback(TransactionCallback&&) = default;
+
+    TransactionCallback& operator=(TransactionCallback&&) = default;
+
+    void AfterComplete(std::function<void(bool)> callback)&
+    {
+        m_callback = std::move(callback);
+    }
+
+    bool InvokeIfReady();
+
+    TransactionFuture m_future;
+    std::function<void(bool)> m_callback;
 };
 
 #endif

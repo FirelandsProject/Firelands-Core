@@ -19,21 +19,7 @@
 #ifndef _CHARACTERDATABASE_H
 #define _CHARACTERDATABASE_H
 
-#include "DatabaseWorkerPool.h"
 #include "MySQLConnection.h"
-
-class CharacterDatabaseConnection : public MySQLConnection
-{
-public:
-    //- Constructors for sync and async connections
-    CharacterDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-    CharacterDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
-
-    //- Loads database type specific prepared statements
-    void DoPrepareStatements();
-};
-
-typedef DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabaseWorkerPool;
 
 enum CharacterDatabaseStatements
 {
@@ -605,5 +591,22 @@ enum CharacterDatabaseStatements
 
     MAX_CHARACTERDATABASE_STATEMENTS
 };
+
+class FC_DATABASE_API CharacterDatabaseConnection : public MySQLConnection
+{
+public:
+    typedef CharacterDatabaseStatements Statements;
+
+    //- Constructors for sync and async connections
+    CharacterDatabaseConnection(MySQLConnectionInfo& connInfo);
+    CharacterDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
+    ~CharacterDatabaseConnection() override;
+
+    //- Loads database type specific prepared statements
+    void DoPrepareStatements() override;
+};
+
+#endif
+
 
 #endif

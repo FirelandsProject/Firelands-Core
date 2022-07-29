@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2022 Firelands Project <https://github.com/FirelandsProject>
- * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/> 
+ * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,21 +19,7 @@
 #ifndef _LOGINDATABASE_H
 #define _LOGINDATABASE_H
 
-#include "DatabaseWorkerPool.h"
 #include "MySQLConnection.h"
-
-class LoginDatabaseConnection : public MySQLConnection
-{
-    public:
-        //- Constructors for sync and async connections
-        LoginDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-        LoginDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
-
-        //- Loads database type specific prepared statements
-        void DoPrepareStatements();
-};
-
-typedef DatabaseWorkerPool<LoginDatabaseConnection> LoginDatabaseWorkerPool;
 
 enum LoginDatabaseStatements
 {
@@ -46,6 +32,7 @@ enum LoginDatabaseStatements
     LOGIN_SEL_REALMLIST,
     LOGIN_DEL_EXPIRED_IP_BANS,
     LOGIN_UPD_EXPIRED_ACCOUNT_BANS,
+    LOGIN_SEL_IP_INFO,
     LOGIN_SEL_IP_BANNED,
     LOGIN_INS_IP_AUTO_BANNED,
     LOGIN_SEL_ACCOUNT_BANNED,
@@ -53,10 +40,10 @@ enum LoginDatabaseStatements
     LOGIN_SEL_ACCOUNT_BANNED_BY_USERNAME,
     LOGIN_INS_ACCOUNT_AUTO_BANNED,
     LOGIN_DEL_ACCOUNT_BANNED,
-    LOGIN_SEL_SESSIONKEY,
-    LOGIN_UPD_VS,
+    LOGIN_UPD_LOGON,
     LOGIN_UPD_LOGONPROOF,
     LOGIN_SEL_LOGONCHALLENGE,
+    LOGIN_SEL_RECONNECTCHALLENGE,
     LOGIN_UPD_FAILEDLOGINS,
     LOGIN_SEL_FAILEDLOGINS,
     LOGIN_SEL_ACCOUNT_ID_BY_NAME,
@@ -64,6 +51,7 @@ enum LoginDatabaseStatements
     LOGIN_SEL_ACCOUNT_INFO_BY_NAME,
     LOGIN_SEL_ACCOUNT_LIST_BY_EMAIL,
     LOGIN_SEL_NUM_CHARS_ON_REALM,
+    LOGIN_SEL_REALM_CHARACTER_COUNTS,
     LOGIN_SEL_ACCOUNT_BY_IP,
     LOGIN_INS_IP_BANNED,
     LOGIN_DEL_IP_NOT_BANNED,
@@ -72,19 +60,21 @@ enum LoginDatabaseStatements
     LOGIN_SEL_ACCOUNT_BY_ID,
     LOGIN_INS_ACCOUNT_BANNED,
     LOGIN_UPD_ACCOUNT_NOT_BANNED,
-    LOGIN_DEL_REALM_CHARACTERS_BY_REALM,
     LOGIN_DEL_REALM_CHARACTERS,
-    LOGIN_INS_REALM_CHARACTERS,
+    LOGIN_REP_REALM_CHARACTERS,
     LOGIN_SEL_SUM_REALM_CHARACTERS,
     LOGIN_INS_ACCOUNT,
     LOGIN_INS_REALM_CHARACTERS_INIT,
     LOGIN_UPD_EXPANSION,
     LOGIN_UPD_ACCOUNT_LOCK,
+    LOGIN_UPD_ACCOUNT_LOCK_COUNTRY,
     LOGIN_INS_LOG,
     LOGIN_UPD_USERNAME,
     LOGIN_UPD_PASSWORD,
     LOGIN_UPD_MUTE_TIME,
+    LOGIN_UPD_MUTE_TIME_LOGIN,
     LOGIN_UPD_LAST_IP,
+    LOGIN_UPD_LAST_ATTEMPT_IP,
     LOGIN_UPD_ACCOUNT_ONLINE,
     LOGIN_UPD_UPTIME_PLAYERS,
     LOGIN_DEL_OLD_LOGS,
@@ -108,13 +98,44 @@ enum LoginDatabaseStatements
     LOGIN_SEL_ACCOUNT_WHOIS,
     LOGIN_SEL_REALMLIST_SECURITY_LEVEL,
     LOGIN_DEL_ACCOUNT,
-    LOGIN_INS_ACCOUNT_IP_HISTORY,
+    LOGIN_SEL_LAST_ATTEMPT_IP,
+    LOGIN_SEL_LAST_IP,
+    LOGIN_INS_ALDL_IP_LOGGING,
+    LOGIN_INS_FACL_IP_LOGGING,
+    LOGIN_INS_CHAR_IP_LOGGING,
+    LOGIN_INS_FALP_IP_LOGGING,
+
+    LOGIN_INS_ACCOUNT_MUTE,
+    LOGIN_SEL_ACCOUNT_MUTE_INFO,
+    LOGIN_DEL_ACCOUNT_MUTED,
+
+    LOGIN_SEL_SECRET_DIGEST,
+    LOGIN_INS_SECRET_DIGEST,
+    LOGIN_DEL_SECRET_DIGEST,
+
+    LOGIN_SEL_ACCOUNT_TOTP_SECRET,
+    LOGIN_UPD_ACCOUNT_TOTP_SECRET,
+
 
     //Support
     LOGIN_INS_BUG_TICKET,
     LOGIN_SEL_AUTOBROADCAST,
 
     MAX_LOGINDATABASE_STATEMENTS
+};
+
+class FC_DATABASE_API LoginDatabaseConnection : public MySQLConnection
+{
+public:
+    typedef LoginDatabaseStatements Statements;
+
+    //- Constructors for sync and async connections
+    LoginDatabaseConnection(MySQLConnectionInfo& connInfo);
+    LoginDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
+    ~LoginDatabaseConnection() override;
+
+    //- Loads database type specific prepared statements
+    void DoPrepareStatements() override;
 };
 
 #endif

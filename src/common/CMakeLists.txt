@@ -8,79 +8,89 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-if(USE_COREPCH)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
-endif()
-
-file(GLOB_RECURSE sources_Configuration Configuration/*.cpp Configuration/*.h)
-file(GLOB_RECURSE sources_Cryptography Cryptography/*.cpp Cryptography/*.h)
-file(GLOB_RECURSE sources_Database Database/*.cpp Database/*.h)
-file(GLOB_RECURSE sources_DataStores DataStores/*.cpp DataStores/*.h)
-file(GLOB_RECURSE sources_Dynamic Dynamic/*.cpp Dynamic/*.h)
-file(GLOB_RECURSE sources_Logging Logging/*.cpp Logging/*.h)
-file(GLOB_RECURSE sources_Packets Packets/*.cpp Packets/*.h)
-file(GLOB_RECURSE sources_Threading Threading/*.cpp Threading/*.h)
-file(GLOB_RECURSE sources_Utilities Utilities/*.cpp Utilities/*.h)
-
-file(GLOB sources_localdir *.cpp *.h)
-
-#
-# Build common sourcelist
-#
-if(USE_COREPCH)
-    set(common_STAT_PCH_HDR PrecompiledHeaders/commonPCH.h)
-    set(common_STAT_PCH_SRC PrecompiledHeaders/commonPCH.cpp)
-endif()
-
-set(common_STAT_SRCS
-    ${common_STAT_SRCS}
-    ${sources_Configuration}
-    ${sources_Cryptography}
-    ${sources_Database}
-    ${sources_DataStores}
-    ${sources_Dynamic}
-    ${sources_Logging}
-    ${sources_Packets}
-    ${sources_Threading}
-    ${sources_Utilities}
-    ${sources_localdir}
-    Debugging/Errors.h
-)
-
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour
-    ${CMAKE_SOURCE_DIR}/dep/SFMT
-    ${CMAKE_SOURCE_DIR}/dep/sockets/include
-    ${CMAKE_SOURCE_DIR}/dep/utf8cpp
-    ${CMAKE_SOURCE_DIR}/src/server
+CollectSourceFiles(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Configuration
-    ${CMAKE_CURRENT_SOURCE_DIR}/Cryptography
-    ${CMAKE_CURRENT_SOURCE_DIR}/Database
-    ${CMAKE_CURRENT_SOURCE_DIR}/DataStores
-    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
-    ${CMAKE_CURRENT_SOURCE_DIR}/Dynamic
-    ${CMAKE_CURRENT_SOURCE_DIR}/Logging
-    ${CMAKE_CURRENT_SOURCE_DIR}/Packets
-    ${CMAKE_CURRENT_SOURCE_DIR}/Threading
-    ${CMAKE_CURRENT_SOURCE_DIR}/Utilities
-    ${CMAKE_SOURCE_DIR}/src/server/game/Entities/Object
-    ${ACE_INCLUDE_DIR}
-    ${MYSQL_INCLUDE_DIR}
-    ${OPENSSL_INCLUDE_DIR}
-)
+    PRIVATE_SOURCES
 
-add_library(common STATIC
-    ${common_STAT_SRCS}
-    ${common_STAT_PCH_SRC}
-)
+    # Exclude
+    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
+    ${CMAKE_CURRENT_SOURCE_DIR}/Platform
+    ${CMAKE_CURRENT_SOURCE_DIR}/Collision
+    ${CMAKE_CURRENT_SOURCE_DIR}/Navigation
+    ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+
+if(WORLDSERVER OR TOOLS)
+    unset(PRIVATE_SOURCES)
+    CollectSourceFiles(
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        PRIVATE_SOURCES
+
+        # Exclude
+        ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
+        ${CMAKE_CURRENT_SOURCE_DIR}/Platform
+        ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+endif()
+
+# Manually set sources for Debugging directory as we don't want to include WheatyExceptionReport in common project
+# It needs to be included both in authserver and worldserver for the static global variable to be properly initialized
+# and to handle crash logs on windows
+list(APPEND PRIVATE_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.h)
+
+if(USE_COREPCH)
+    set(PRIVATE_PCH_HEADER PrecompiledHeaders/commonPCH.h)
+endif()
+
+# Group sources
+GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
+
+add_library(common
+    ${PRIVATE_SOURCES})
+
+CollectIncludeDirectories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC_INCLUDES
+
+    # Exclude
+    ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+
+target_include_directories(common
+    PUBLIC
+
+    # Provide the binary dir for all child targets
+    ${CMAKE_BINARY_DIR}
+    ${PUBLIC_INCLUDES}
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(common
-    ${ACE_LIBRARY}
-)
+    PRIVATE
+    fc-core-interface
+    PUBLIC
+    boost
+    argon2
+    sfmt
+    utf8cpp
+    openssl
+    threads
+    jemalloc
+    stdfs
+    fmt)
+
+if(WORLDSERVER OR TOOLD)
+    target_link_libraries(common
+        PUBLIC
+        g3dlib
+        Detour)
+endif()
+
+set_target_properties(common
+    PROPERTIES
+    FOLDER
+    "server")
 
 # Generate precompiled header
 if(USE_COREPCH)
-    add_cxx_pch(common ${common_STAT_PCH_HDR} ${common_STAT_PCH_SRC})
+    add_cxx_pch(common ${PRIVATE_PCH_HEADER})
 endif()

@@ -45,7 +45,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # set default buildoptions and print them
-include(cmake/options.cmake)
+include(src/cmake/options.cmake)
 
 # turn off PCH totally if enabled (hidden setting, mainly for devs)
 if(NOPCH)
@@ -68,12 +68,12 @@ if(NOT WITHOUT_GIT)
 endif()
 
 # Find revision ID and hash of the sourcetree
-include(cmake/genrev.cmake)
+include(src/cmake/genrev.cmake)
 
 include(src/cmake/fc_macros.cmake)
 
 # print out the results before continuing
-include(cmake/showoptions.cmake)
+include(src/cmake/showoptions.cmake)
 
 # add dependencies
 add_subdirectory(deps)

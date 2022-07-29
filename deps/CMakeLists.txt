@@ -15,7 +15,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 
 add_subdirectory(SFMT)
-
 add_subdirectory(argon2)
 add_subdirectory(boost)
 add_subdirectory(fmt)

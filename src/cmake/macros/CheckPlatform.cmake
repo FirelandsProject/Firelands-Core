@@ -7,10 +7,10 @@ else()
     MESSAGE(STATUS "Detected 32-bit platform")
 endif()
 
-include("${CMAKE_SOURCE_DIR}/cmake/platform/settings.cmake")
+include("${CMAKE_SOURCE_DIR}/src/cmake/platform/settings.cmake")
 
 if(WIN32)
-  include("${CMAKE_SOURCE_DIR}/cmake/platform/win/settings.cmake")
+  include("${CMAKE_SOURCE_DIR}/src/cmake/platform/win/settings.cmake")
 elseif(UNIX)
-  include("${CMAKE_SOURCE_DIR}/cmake/platform/unix/settings.cmake")
+  include("${CMAKE_SOURCE_DIR}/src/cmake/platform/unix/settings.cmake")
 endif()
